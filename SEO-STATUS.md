@@ -58,3 +58,13 @@ GSC：4 个页面全部 URL Inspection + Request Indexing，都进了 Google 优
 ## 后续能继续推排名的（非今日必须）
 - 外链：把 aimanjack.com 三个页面从 realagentusecases.com 内容里链过来；本地目录（GBP、Yelp、Nextdoor）留一致 NAP。
 - 持续更新：给每个板块加真实案例/FAQ，Google 偏好活跃、有深度的页面。
+
+## 第四轮：全站视觉重设计（2026-07-16 晚，taste + ui-ux-pro-max skill 指导）
+
+回滚了当日早前的 GSAP 试验（git 基线 5823d81），用 design-taste-frontend / redesign-existing-projects / ui-ux-pro-max 三个 skill 从头设计：
+
+- **设计系统**：冷调中性底（#f7f8f7）+ 品牌深绿唯一 accent（#0b5d38）+ Satoshi 自托管变量字体（42KB）。圆角规则：交互件 pill / 容器 16px
+- **布局**：非对称分栏 hero（首页=头像照、教育页=授课实拍、website 页=作品截图）；首页 1+2 路径卡（featured 带图）；作品 2 联卡；定价左文右卡分栏；步骤连线；bio 卡
+- **taste 规则执行**：全站 em-dash 清零（含 title/og）、hero 副文案 ≤20 词、眉标全站仅 1 个、无三等宽卡、无衬线默认、动效 transform-only + reduced-motion
+- **SEO 不变量**：URL/H1 语义/正文关键词/JSON-LD/canonical/sitemap 全保留；title 只改标点；图片全部带尺寸+关键词 alt
+- git: 5823d81 基线 → d2f04f7 重设计。回滚随时 `git revert`/`git checkout 5823d81`
