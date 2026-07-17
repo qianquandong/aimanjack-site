@@ -16,6 +16,8 @@ npx wrangler pages deploy . --project-name aimanjack
 
 以后改完再跑第二条命令即可。
 
+**注意**：本仓库 git 分支必须叫 `production`（Pages 项目的 production branch 就是它）。wrangler 会从 git 自动读分支名——分支叫别的名字时部署只会进 Preview 环境，自定义域不更新。
+
 ## 域名从 Shopify 切过来
 
 1. Cloudflare Pages 项目 → Custom domains → 加 `www.aimanjack.com` 和 `aimanjack.com`
