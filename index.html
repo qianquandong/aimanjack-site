@@ -7,8 +7,8 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<title>AI Automation & Websites for Dallas Small Business | AI Man Jack</title>
-<meta name="description" content="AI automation and websites for Dallas small businesses. Missed-call text back, Google review automation, and sites that get you found. $500 build + $49/mo. No contracts.">
+<title>Dallas AI Automation &amp; Small Business Websites | AI Man Jack</title>
+<meta name="description" content="AI automation and websites for Dallas small businesses: missed-call text back, review workflows, and fast sites that help local customers find you.">
 <meta name="keywords" content="AI automation for small business Dallas, small business website Dallas, missed call text back Dallas, AI for nail salons Dallas, barbershop website Dallas, Google review automation Dallas, AI training for small business Dallas, affordable website design Dallas">
 <link rel="canonical" href="https://aimanjack.com/">
 <meta name="robots" content="index, follow">
@@ -27,25 +27,51 @@
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "ProfessionalService",
-  "name": "AI Man Jack",
-  "description": "Dallas AI services: AI education, website building, and AI workflow automation for local businesses.",
-  "url": "https://aimanjack.com/",
-  "email": "jack@aimanjack.com",
-  "telephone": "+1-832-888-6016",
-  "image": "https://aimanjack.com/img/jack-headshot.jpg",
-  "areaServed": { "@type": "City", "name": "Dallas", "containedInPlace": { "@type": "State", "name": "Texas" } },
-  "address": { "@type": "PostalAddress", "addressLocality": "Dallas", "addressRegion": "TX", "addressCountry": "US" },
-  "knowsAbout": ["Artificial Intelligence", "AI automation", "AI education", "small business websites", "AI agents", "workflow automation"],
-  "makesOffer": [
-    { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "AI Education", "description": "Teaching Dallas working professionals to use AI agents in real work." } },
-    { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Website Building", "description": "Websites for Dallas local businesses, built and hosted." }, "price": "500", "priceCurrency": "USD" },
-    { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "AI Workflow Automation", "description": "AI workflows that bring Dallas businesses new customers." }, "price": "49", "priceCurrency": "USD" }
+  "@graph": [
+    {
+      "@type": "ProfessionalService",
+      "@id": "https://aimanjack.com/#business",
+      "name": "AI Man Jack",
+      "description": "Dallas AI services: hands-on AI training, website building, and workflow automation for local professionals and small businesses.",
+      "url": "https://aimanjack.com/",
+      "logo": "https://aimanjack.com/apple-touch-icon.png",
+      "image": "https://aimanjack.com/img/jack-headshot.jpg",
+      "email": "jack@aimanjack.com",
+      "telephone": "+1-832-888-6016",
+      "founder": { "@id": "https://aimanjack.com/#jack" },
+      "areaServed": { "@type": "City", "name": "Dallas", "containedInPlace": { "@type": "State", "name": "Texas" } },
+      "address": { "@type": "PostalAddress", "addressLocality": "Dallas", "addressRegion": "TX", "addressCountry": "US" },
+      "knowsAbout": ["Artificial Intelligence", "AI training", "AI automation", "small business websites", "AI agents", "workflow automation"],
+      "makesOffer": [
+        { "@type": "Offer", "itemOffered": { "@id": "https://aimanjack.com/ai-education/#service" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Website Building", "url": "https://aimanjack.com/website/", "description": "Websites for Dallas local businesses, built and hosted." }, "price": "500", "priceCurrency": "USD" },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "AI Workflow Automation", "url": "https://aimanjack.com/ai-workflow/", "description": "AI workflows that bring Dallas businesses new customers." }, "price": "49", "priceCurrency": "USD" }
+      ]
+    },
+    {
+      "@type": "Person",
+      "@id": "https://aimanjack.com/#jack",
+      "name": "Jack",
+      "url": "https://aimanjack.com/#about",
+      "image": "https://aimanjack.com/img/jack-headshot.jpg",
+      "jobTitle": "AI Educator and Founder",
+      "worksFor": { "@id": "https://aimanjack.com/#business" },
+      "knowsAbout": ["AI agents", "AI training", "workflow automation", "small business websites"]
+    },
+    {
+      "@type": "Service",
+      "@id": "https://aimanjack.com/ai-education/#service",
+      "name": "Hands-On AI Training in Dallas",
+      "url": "https://aimanjack.com/ai-education/",
+      "serviceType": "AI training for professionals and teams",
+      "provider": { "@id": "https://aimanjack.com/#business" },
+      "areaServed": { "@type": "City", "name": "Dallas" }
+    }
   ]
 }
 </script>
 <link rel="preload" href="/fonts/Satoshi-Variable.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/style.css?v=3">
+<link rel="stylesheet" href="/style.css?v=4">
 </head>
 <body>
 
@@ -106,7 +132,7 @@
       <div class="paths">
         <a class="path featured" href="/ai-education/">
           <div class="path-copy">
-            <b>AI Education</b>
+            <b>Hands-On AI Training in Dallas</b>
             <span>Learn to actually use AI agents in your real work. Free weekly breakdowns, plus hands-on training I teach in person to rooms of thirty-plus Dallas professionals.</span>
           </div>
           <img src="/img/jack-teaching.jpg" width="1100" height="825" loading="lazy"

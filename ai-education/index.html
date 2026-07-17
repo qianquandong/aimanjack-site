@@ -7,171 +7,311 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<title>AI Training for Dallas Professionals & Small Teams | AI Man Jack</title>
-<meta name="description" content="Hands-on AI training in Dallas for working professionals and small business teams. Learn to actually use AI agents in real work. Plain English, no coding, no hype. Free weekly breakdowns.">
-<meta name="keywords" content="AI training Dallas, learn AI Dallas, AI training for small business Dallas, AI classes for professionals Dallas, AI training for teams Dallas, how to use AI at work, AI agents training Dallas, AI education Dallas">
+<title>AI Training Dallas for Professionals &amp; Teams | AI Man Jack</title>
+<meta name="description" content="Hands-on AI training in Dallas for professionals and small teams. Build practical AI workflows for real work with no coding or hype. Ask about a workshop.">
 <link rel="canonical" href="https://aimanjack.com/ai-education/">
 <meta name="robots" content="index, follow">
-<meta property="og:type" content="article">
+<meta name="author" content="Jack, AI Man Jack">
+<meta property="og:type" content="website">
 <meta property="og:url" content="https://aimanjack.com/ai-education/">
-<meta property="og:title" content="AI Education in Dallas. Learn to Actually Use AI Agents">
-<meta property="og:description" content="Plain-English AI education for Dallas professionals and teams. Learn to actually use AI agents in real work.">
+<meta property="og:title" content="Hands-On AI Training in Dallas for Professionals and Teams">
+<meta property="og:description" content="Practical, plain-English AI workshops built around the work your team actually does.">
 <meta property="og:image" content="https://aimanjack.com/img/jack-teaching.jpg">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Hands-On AI Training in Dallas">
+<meta name="twitter:description" content="Practical AI workshops for Dallas professionals and small teams. No coding required.">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "Service",
-  "serviceType": "AI Education",
-  "name": "AI Education in Dallas",
-  "description": "Plain-English AI education and training for Dallas working professionals and small business teams. Learn to use AI agents in real work.",
-  "provider": { "@type": "ProfessionalService", "name": "AI Man Jack", "url": "https://aimanjack.com/", "telephone": "+1-832-888-6016", "email": "jack@aimanjack.com" },
-  "areaServed": { "@type": "City", "name": "Dallas", "containedInPlace": { "@type": "State", "name": "Texas" } },
-  "url": "https://aimanjack.com/ai-education/",
-  "image": "https://aimanjack.com/img/jack-teaching.jpg"
-}
-</script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Person",
-  "name": "Jack",
-  "url": "https://aimanjack.com/",
-  "image": "https://aimanjack.com/img/jack-headshot.jpg",
-  "jobTitle": "AI Educator & Founder",
-  "worksFor": { "@type": "ProfessionalService", "name": "AI Man Jack" },
-  "knowsAbout": ["AI agents", "AI training", "workflow automation", "small business websites"],
-  "address": { "@type": "PostalAddress", "addressLocality": "Dallas", "addressRegion": "TX", "addressCountry": "US" }
-}
-</script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://aimanjack.com/" },
-    { "@type": "ListItem", "position": 2, "name": "AI Education", "item": "https://aimanjack.com/ai-education/" }
+  "@graph": [
+    {
+      "@type": "ProfessionalService",
+      "@id": "https://aimanjack.com/#business",
+      "name": "AI Man Jack",
+      "url": "https://aimanjack.com/",
+      "logo": "https://aimanjack.com/apple-touch-icon.png",
+      "image": "https://aimanjack.com/img/jack-headshot.jpg",
+      "telephone": "+1-832-888-6016",
+      "email": "jack@aimanjack.com",
+      "founder": { "@id": "https://aimanjack.com/#jack" },
+      "areaServed": {
+        "@type": "City",
+        "name": "Dallas",
+        "containedInPlace": { "@type": "State", "name": "Texas" }
+      }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://aimanjack.com/#jack",
+      "name": "Jack",
+      "url": "https://aimanjack.com/#about",
+      "image": "https://aimanjack.com/img/jack-headshot.jpg",
+      "jobTitle": "AI Educator and Founder",
+      "worksFor": { "@id": "https://aimanjack.com/#business" },
+      "knowsAbout": ["AI agents", "AI training", "workflow automation", "AI for non-technical professionals"]
+    },
+    {
+      "@type": "Service",
+      "@id": "https://aimanjack.com/ai-education/#service",
+      "name": "Hands-On AI Training in Dallas",
+      "serviceType": "AI training and workshops for professionals and teams",
+      "description": "Plain-English, hands-on AI training for Dallas professionals and small teams, focused on practical workflows for real work.",
+      "url": "https://aimanjack.com/ai-education/",
+      "image": "https://aimanjack.com/img/jack-teaching.jpg",
+      "provider": { "@id": "https://aimanjack.com/#business" },
+      "areaServed": { "@type": "City", "name": "Dallas", "containedInPlace": { "@type": "State", "name": "Texas" } },
+      "audience": { "@type": "BusinessAudience", "audienceType": "Working professionals and small business teams" }
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://aimanjack.com/ai-education/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Do participants need coding experience?",
+          "acceptedAnswer": { "@type": "Answer", "text": "No. The training is designed for working professionals who can use a browser, copy and paste, and describe the work they do. Coding is not required." }
+        },
+        {
+          "@type": "Question",
+          "name": "Can the workshop be customized for a company?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes. Team sessions start with the tasks participants actually do, then focus on a small set of relevant AI workflows instead of a generic tool tour." }
+        },
+        {
+          "@type": "Question",
+          "name": "Is in-person AI training available in Dallas?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes. AI Man Jack offers hands-on, in-person training for professionals and small teams in the Dallas area." }
+        },
+        {
+          "@type": "Question",
+          "name": "What AI tools are covered?",
+          "acceptedAnswer": { "@type": "Answer", "text": "The tools depend on the work. Sessions explain when a chatbot is enough, when an AI agent is useful, and when AI is the wrong choice." }
+        },
+        {
+          "@type": "Question",
+          "name": "How is company data handled?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Every session includes practical guardrails: what not to paste into an AI tool, how to remove sensitive information, and how to follow the company's approved-tool policy." }
+        }
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://aimanjack.com/" },
+        { "@type": "ListItem", "position": 2, "name": "AI Training Dallas", "item": "https://aimanjack.com/ai-education/" }
+      ]
+    }
   ]
 }
 </script>
 <link rel="preload" href="/fonts/Satoshi-Variable.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/style.css?v=3">
+<link rel="stylesheet" href="/style.css?v=4">
 </head>
 <body>
 
 <header>
   <div class="wrap headrow">
     <a class="brand" href="/">AI Man <span>Jack</span><em class="brand-loc"> · Dallas, TX</em></a>
-    <nav>
-      <a href="/ai-education/">Learn AI</a>
-      <a href="/website/">Websites</a>
-      <a href="/ai-workflow/">AI Workflows</a>
-      <a href="/#contact">Contact</a>
+    <nav aria-label="Primary navigation">
+      <a href="/ai-education/" aria-current="page">AI Training</a>
+      <a href="/case-studies/dallas-ai-workshop/">Workshop</a>
+      <a href="/resources/">Resources</a>
+      <a href="#contact">Contact</a>
     </nav>
   </div>
 </header>
 
 <main>
   <div class="wrap">
-    <div class="crumbs"><a href="/">Home</a> › AI Education</div>
+    <div class="crumbs"><a href="/">Home</a> › AI Training Dallas</div>
 
     <div class="hero">
       <div class="hero-split">
         <div class="hero-copy">
-          <h1><em>AI education</em> in Dallas. Learn to actually use AI, not just read about it</h1>
-          <p class="sub">Plain-English AI training for working professionals and small teams. Hands-on, no coding, right here in Dallas, Texas.</p>
+          <div class="kicker">Practical, in-person, no coding required</div>
+          <h1>Hands-on <em>AI training in Dallas</em> for professionals and teams</h1>
+          <p class="sub">Learn to build useful AI workflows around the work you already do. Every session is plain English, grounded in real tasks, and designed to leave you with something you can use the next day.</p>
           <div class="cta-row">
-            <a class="btn" href="https://www.realagentusecases.com" rel="noopener">Get the free weekly breakdown</a>
-            <a class="btn ghost" href="sms:+18328886016">Text me about team training</a>
+            <a class="btn" href="sms:+18328886016">Ask about team training</a>
+            <a class="btn ghost" href="#formats">See workshop formats</a>
           </div>
+          <p class="microcopy">Dallas–Fort Worth · English or Chinese · Individual and team sessions</p>
         </div>
         <div class="hero-media">
           <img src="/img/jack-teaching.jpg" width="1100" height="825" fetchpriority="high"
-               alt="Jack teaching a hands-on AI training class to a full room of professionals in Dallas">
+               alt="Jack leading hands-on AI training for a room of professionals in Dallas, Texas">
         </div>
       </div>
     </div>
 
-    <section>
+    <section class="proof-strip" aria-label="Training highlights">
+      <div><strong>30+</strong><span>professionals taught in a live workshop</span></div>
+      <div><strong>No coding</strong><span>built for people who do real business work</span></div>
+      <div><strong>Hands-on</strong><span>examples, prompts, guardrails, and practice</span></div>
+    </section>
+
+    <section class="prose" id="outcomes">
+      <div class="kicker">The outcome</div>
+      <h2>AI training should change how work gets done</h2>
+      <p><strong>AI Man Jack provides hands-on AI training in Dallas for working professionals and small teams.</strong> The goal is not to memorize AI vocabulary. It is to identify a real task, choose the right tool, build a repeatable workflow, and know where human judgment still belongs.</p>
+      <p>Most people do not need another broad tour of every new AI product. They need help with the work already sitting in front of them: an inbox that will not stay organized, a long document that needs a reliable summary, a spreadsheet that needs cleanup, or a research task that takes too long. Those are the starting points for each session.</p>
+      <div class="outcome-grid">
+        <article class="mini-card">
+          <h3>Choose the right tool</h3>
+          <p>Know when a chatbot is enough, when an agent can take useful action, and when AI adds more risk than value.</p>
+        </article>
+        <article class="mini-card">
+          <h3>Build a repeatable workflow</h3>
+          <p>Turn a one-off demo into clear steps you can run again, check, and improve after the workshop.</p>
+        </article>
+        <article class="mini-card">
+          <h3>Use practical guardrails</h3>
+          <p>Protect customer and company information, verify important outputs, and keep a human in charge of decisions.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="audience">
+      <div class="kicker">Who it is for</div>
+      <h2>Built for non-technical professionals who want useful results</h2>
+      <p class="lead">If your team works in email, documents, spreadsheets, research, sales, operations, or customer service, the training can start with work they already understand.</p>
+      <div class="two-col-list">
+        <ul class="check-list">
+          <li>Small business owners and office managers</li>
+          <li>Analysts, planners, and operations teams</li>
+          <li>Sales and account-management teams</li>
+        </ul>
+        <ul class="check-list">
+          <li>Administrative and customer-service teams</li>
+          <li>Professional associations and community groups</li>
+          <li>Individuals who want patient, one-on-one help</li>
+        </ul>
+      </div>
+      <p class="callout"><strong>Not sure whether AI fits your work?</strong> Text me one task that takes too much time. I will tell you honestly whether AI is a good fit and what a useful first workshop would cover.</p>
+    </section>
+
+    <section class="prose" id="curriculum">
+      <div class="kicker">Sample curriculum</div>
+      <h2>What your team can learn</h2>
+      <p>The exact agenda depends on the participants and their approved tools. A practical session usually moves through four layers:</p>
+      <ol class="steps training-steps">
+        <li><strong>Find the right task.</strong> Separate repetitive information work from decisions that still need human judgment. A good first workflow is frequent, specific, and easy to verify.</li>
+        <li><strong>Give AI useful context.</strong> Learn a prompt structure that explains the goal, source material, constraints, output format, and quality check without relying on “magic words.”</li>
+        <li><strong>Move from chat to workflow.</strong> Connect the steps around a task such as summarizing a document, preparing for a meeting, drafting a response, cleaning a spreadsheet, or turning email into an action list.</li>
+        <li><strong>Add checks and guardrails.</strong> Review sources, protect sensitive data, define where approval is required, and document the workflow so another person can run it.</li>
+      </ol>
+      <p>For a deeper look at the approach, read the <a href="/resources/ai-training-curriculum-nontechnical-teams/">AI training curriculum for non-technical teams</a> or compare <a href="/resources/chatgpt-vs-ai-agents/">ChatGPT and AI agents for business work</a>.</p>
+    </section>
+
+    <section id="formats">
+      <div class="kicker">Flexible formats</div>
+      <h2>Choose the level of help your team needs</h2>
+      <div class="service-grid">
+        <article class="offer">
+          <h3>AI orientation</h3>
+          <p>A focused introduction for a group that needs a shared mental model, practical examples, and clear safety boundaries before choosing use cases.</p>
+          <ul class="compact-list"><li>Good for associations and team meetings</li><li>Demonstration plus guided discussion</li><li>Designed around non-technical questions</li></ul>
+        </article>
+        <article class="offer">
+          <h3>Hands-on team workshop</h3>
+          <p>Participants bring laptops and work through selected tasks with guidance. The session emphasizes practice, verification, and a workflow they can repeat.</p>
+          <ul class="compact-list"><li>Customized around team roles</li><li>Individual or small-group exercises</li><li>Take-home workflow notes</li></ul>
+        </article>
+        <article class="offer">
+          <h3>One-on-one training</h3>
+          <p>A patient session for someone who wants to learn at their own pace, starting with the tools they already use and the work they need to finish.</p>
+          <ul class="compact-list"><li>No technical background required</li><li>Focused on one person's work</li><li>English or Chinese</li></ul>
+        </article>
+      </div>
+      <p class="section-note">Timing, group size, location, and pricing depend on the training goal. Send a text with your audience and the work you want to improve, and I will recommend a format.</p>
+    </section>
+
+    <section id="proof">
+      <div class="panel proof-panel">
+        <div>
+          <div class="kicker">First-hand experience</div>
+          <h2>See how a live Dallas workshop works</h2>
+          <p class="lead">Jack has taught a hands-on AI session to a room of more than 30 working professionals. The workshop case study shows the teaching approach, topics, classroom setup, and the evidence available from that session.</p>
+          <a class="btn ghost" href="/case-studies/dallas-ai-workshop/">Read the workshop case study</a>
+        </div>
+        <figure class="figure">
+          <img src="/img/jack-classroom.jpg" width="1000" height="750" loading="lazy"
+               alt="More than 30 professionals attending a hands-on AI workshop led by Jack in Dallas">
+          <figcaption>A live, hands-on AI workshop for working professionals in Dallas.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section id="instructor">
       <div class="kicker">Your instructor</div>
-      <div class="bio">
-        <img src="/img/jack-headshot.jpg" width="128" height="128" loading="lazy" alt="Jack, AI educator and founder of AI Man Jack, Dallas TX">
+      <h2>Practical experience, explained in plain English</h2>
+      <div class="bio" style="margin-top:22px">
+        <img src="/img/jack-headshot.jpg" width="128" height="128" loading="lazy" alt="Jack, AI educator and founder of AI Man Jack in Dallas, Texas">
         <div class="who">
           <h3>Jack</h3>
           <div class="role">AI educator · Semiconductor engineer · Dallas, TX</div>
-          <p>By day I'm an engineer at a semiconductor company. The rest of the time I teach rooms of
-          thirty-plus professionals how to put AI agents to work, in English and Chinese, and publish a
-          free weekly breakdown of one real AI use case at a real job. No theory I haven't run myself.</p>
+          <p>By day I work as an engineer in the semiconductor industry. I also teach working professionals how to put AI agents to work and publish a free weekly breakdown of one real AI use case at a real job. I teach the tools I have run myself, including where they fail and what still needs human review.</p>
         </div>
       </div>
     </section>
 
-    <section class="prose">
-      <h2>Most "AI training" is hype. This isn't.</h2>
-      <p>Search "learn AI in Dallas" and you'll find week-long bootcamps full of buzzwords, or YouTube
-      videos that show a demo and never the real setup. Meanwhile the person who actually needs AI, the
-      account manager, the office admin, the shop owner, the analyst at a Dallas firm, still doesn't know
-      what to type, where to click, or which tool to trust.</p>
-      <p>My approach to AI education is the opposite of hype. I take one real way a working person is using
-      an AI agent today, and I break it all the way down: the exact tool, the exact prompt, what it saves in
-      time, and where it breaks so you don't get burned. If you can copy, paste, and send a text message,
-      you can use what I teach.</p>
-
-      <h2 style="margin-top:40px">What you'll actually learn</h2>
-      <ul>
-        <li><strong>AI agents for everyday work</strong>: drafting email, summarizing long documents,
-        cleaning up spreadsheets, researching a prospect before a call.</li>
-        <li><strong>Which tool for which job</strong>: when a chatbot is enough, when you need an agent
-        that takes actions, and when AI is the wrong tool entirely.</li>
-        <li><strong>Prompts that hold up</strong>: how to ask so the answer is useful the first time,
-        and how to catch the confident-but-wrong answers.</li>
-        <li><strong>Guardrails</strong>: what not to paste into an AI tool, and how to keep your
-        customers' information safe.</li>
-      </ul>
-    </section>
-
-    <section>
-      <h2>Three ways to learn with me</h2>
-      <div style="margin-top:24px">
-        <div class="offer">
-          <h3>Free weekly breakdowns</h3>
-          <p>Every week I publish one real, working example of someone using an AI agent at their job, the
-          full setup, in English and Chinese. No cost, no fluff. It's the easiest way to start.</p>
-        </div>
-        <div class="offer">
-          <h3>Team training for Dallas businesses</h3>
-          <p>Short, hands-on sessions built around the actual work your team does, not a generic slide deck.
-          Your staff leaves knowing how to use AI on the tasks they do every day.</p>
-        </div>
-        <div class="offer">
-          <h3>One-on-one, for the non-techy</h3>
-          <p>If AI still feels like a foreign language, we go at your pace. I explain it the way I'd explain
-          it to the barber next door, because I do.</p>
-        </div>
+    <section class="prose" id="faq">
+      <div class="kicker">Frequently asked questions</div>
+      <h2>Questions about AI training in Dallas</h2>
+      <div class="faq-list">
+        <details open>
+          <summary>Do participants need coding experience?</summary>
+          <p>No. The training is designed for people who can use a browser, copy and paste, and describe the work they do. Coding is not required.</p>
+        </details>
+        <details>
+          <summary>Can you customize the workshop for our company?</summary>
+          <p>Yes. Team sessions start with the tasks participants actually do. We choose a small set of relevant workflows instead of walking through a generic list of AI products.</p>
+        </details>
+        <details>
+          <summary>Do you offer in-person AI training in Dallas?</summary>
+          <p>Yes. I offer hands-on, in-person training for professionals, small teams, associations, and community groups in the Dallas–Fort Worth area.</p>
+        </details>
+        <details>
+          <summary>What AI tools do you teach?</summary>
+          <p>The tools depend on the work. The training explains when a chatbot is enough, when an agent can help, and when AI is the wrong tool. The goal is a useful workflow, not loyalty to one product.</p>
+        </details>
+        <details>
+          <summary>How do you handle company data and privacy?</summary>
+          <p>Every session includes practical guardrails: what not to paste into an AI tool, how to remove sensitive information, how to follow your company's approved-tool policy, and where human review is required. You can also use the <a href="/resources/ai-data-safety-checklist/">AI data-safety checklist for teams</a> before a workshop.</p>
+        </details>
+        <details>
+          <summary>How much does training cost?</summary>
+          <p>Pricing depends on the format, group size, preparation, and location. Text or email the number of participants and the work you want to improve, and I will recommend a practical scope.</p>
+        </details>
       </div>
-      <figure class="figure" style="margin-top:28px">
-        <img src="/img/jack-classroom.jpg" width="1000" height="750" loading="lazy"
-             alt="A full classroom at one of Jack's AI training workshops in Dallas, Texas">
-        <figcaption>Workshop night in Dallas. Every session is hands-on: bring your laptop, leave with a working setup.</figcaption>
-      </figure>
     </section>
 
-    <section class="prose">
-      <h2>Ready when you are</h2>
-      <p>Start free with the weekly breakdown, or text me about training for you or your Dallas team.
-      Not sure AI is worth your time yet? Tell me what you do all day and I'll tell you honestly whether
-      it'll help.</p>
+    <section id="contact" class="contact-band">
+      <div>
+        <div class="kicker">Start with one real task</div>
+        <h2>Tell me what your team does all day</h2>
+        <p>Send the team size, the roles in the room, and one task that takes too much time. I will suggest a useful workshop direction and tell you if AI is not the right answer.</p>
+      </div>
       <div class="cta-row">
-        <a class="btn" href="https://www.realagentusecases.com" rel="noopener">Get the free weekly breakdown</a>
-        <a class="btn ghost" href="sms:+18328886016">Text me about team training</a>
+        <a class="btn" href="sms:+18328886016">Text (832) 888-6016</a>
+        <a class="btn ghost" href="mailto:jack@aimanjack.com?subject=Dallas%20AI%20training">Email Jack</a>
       </div>
-      <p style="margin-top:30px"><a href="/">← Back to all three: education, websites, and AI workflows</a></p>
+    </section>
+
+    <section class="related-links" aria-labelledby="resources-heading">
+      <h2 id="resources-heading">Practical AI training resources</h2>
+      <div class="resource-grid">
+        <a class="resource-card" href="/resources/ai-training-curriculum-nontechnical-teams/"><span>Team training</span><strong>An AI training curriculum for non-technical teams</strong><em>Read the guide →</em></a>
+        <a class="resource-card" href="/resources/chatgpt-vs-ai-agents/"><span>Tool choice</span><strong>ChatGPT vs. AI agents for business work</strong><em>See the comparison →</em></a>
+        <a class="resource-card" href="/resources/ai-data-safety-checklist/"><span>Guardrails</span><strong>An AI data-safety checklist before training</strong><em>Use the checklist →</em></a>
+      </div>
     </section>
   </div>
 </main>
 
 <footer>
   <div class="wrap">
-    AI Man Jack · AI education in Dallas, TX ·
+    AI Man Jack · Hands-on AI training in Dallas, TX ·
     <a href="mailto:jack@aimanjack.com">jack@aimanjack.com</a> ·
     <a href="sms:+18328886016">(832) 888-6016</a>
   </div>
