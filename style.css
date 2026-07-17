@@ -73,6 +73,12 @@ body{overflow-x:clip}
   width:100%;height:auto;border-radius:var(--radius);
   box-shadow:var(--shadow-lg);border:1px solid rgba(18,32,25,.07);
 }
+/* Soft portrait: feathered edges, photo melts into the page background */
+.hero-media.soft img{
+  border:0;border-radius:0;box-shadow:none;
+  -webkit-mask-image:radial-gradient(74% 74% at 50% 45%,#000 58%,rgba(0,0,0,.6) 79%,transparent 99%);
+  mask-image:radial-gradient(74% 74% at 50% 45%,#000 58%,rgba(0,0,0,.6) 79%,transparent 99%);
+}
 @media(max-width:820px){.hero-media{max-width:420px}}
 
 /* ── Buttons ────────────────────────────── */
