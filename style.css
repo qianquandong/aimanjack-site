@@ -59,6 +59,8 @@ nav a:hover{color:var(--accent-ink);background:var(--tint)}
 /* ── Hero ───────────────────────────────── */
 .hero{padding:72px 0 64px}
 .hero-split{display:grid;grid-template-columns:7fr 5fr;gap:56px;align-items:center}
+.hero-split>*,.paths>*,.panel>*,.work>*{min-width:0}
+body{overflow-x:clip}
 @media(max-width:820px){.hero-split{grid-template-columns:1fr;gap:36px}}
 .hero h1{
   font-size:clamp(2.1rem,4.6vw,3.15rem);line-height:1.06;letter-spacing:-.028em;
@@ -220,10 +222,13 @@ footer a{color:var(--accent-ink)}
   @keyframes rise{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
 }
 
-/* Mobile header fit */
+/* Mobile header: brand row + full-width nav row, no intra-link wrapping */
 .brand-loc{font-style:normal;font-weight:600;color:var(--muted)}
+nav a{white-space:nowrap}
 @media(max-width:720px){
+  header{height:auto;padding:10px 0}
   .brand-loc{display:none}
-  nav{gap:0}
-  nav a{padding:8px 8px;font-size:.86rem}
+  .headrow{flex-direction:column;align-items:flex-start;gap:2px}
+  nav{width:100%;justify-content:space-between;gap:0}
+  nav a{padding:7px 4px;font-size:.92rem}
 }
