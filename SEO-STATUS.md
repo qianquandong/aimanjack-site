@@ -68,3 +68,10 @@ GSC：4 个页面全部 URL Inspection + Request Indexing，都进了 Google 优
 - **taste 规则执行**：全站 em-dash 清零（含 title/og）、hero 副文案 ≤20 词、眉标全站仅 1 个、无三等宽卡、无衬线默认、动效 transform-only + reduced-motion
 - **SEO 不变量**：URL/H1 语义/正文关键词/JSON-LD/canonical/sitemap 全保留；title 只改标点；图片全部带尺寸+关键词 alt
 - git: 5823d81 基线 → d2f04f7 重设计。回滚随时 `git revert`/`git checkout 5823d81`
+
+## 第五轮：内容扩张后的 GSC 提交（2026-07-17）
+
+Jack 扩站到 13 页（business-services 枢纽、2 案例页、community 活动页、resources 集群）后：
+- 修复：活动照片压缩（2MB→740KB）、case-study 时间线 dash 标点、手机导航显示全部 4 项（Free AI Education / Business Services / Events / Resources 单行排布）
+- GSC Request Indexing 已提交 9/10：`/`、/business-services/、/ai-education/、/community/free-ai-workshops-dallas/、/resources/、2 个 case-studies、/resources/chatgpt-vs-ai-agents/、/resources/ai-training-curriculum-nontechnical-teams/
+- **未提交（当日配额用尽）**：/resources/ai-data-safety-checklist/ —— 明天补交，或等 sitemap 自动发现
