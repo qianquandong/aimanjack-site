@@ -14,7 +14,7 @@ npx wrangler pages project create aimanjack --production-branch main
 npx wrangler pages deploy . --project-name aimanjack
 ```
 
-以后改完再跑第二条命令即可。
+以后改完跑 `./deploy.sh`（= wrangler deploy + IndexNow ping Bing）。
 
 **注意**：本仓库 git 分支必须叫 `production`（Pages 项目的 production branch 就是它）。wrangler 会从 git 自动读分支名——分支叫别的名字时部署只会进 Preview 环境，自定义域不更新。
 
