@@ -20,3 +20,39 @@
     io.observe(el);
   });
 })();
+
+/* Apple-design interaction layer.
+   Press feedback fires on pointerdown (not release) and cancels if the finger
+   travels more than ~10px, so a scroll that starts on a button never reads as
+   a tap. The scroll flag drives the header's edge effect. */
+(function () {
+  var PRESSABLE = '.btn,.nav-cta,.nav-phone,.path,.work-card,.resource-card,.offer,' +
+                  'details.faq summary,.sticky-cta-close';
+  var target = null, startX = 0, startY = 0;
+
+  function release() {
+    if (target) { target.classList.remove('is-pressed'); target = null; }
+  }
+
+  document.addEventListener('pointerdown', function (e) {
+    var el = e.target.closest && e.target.closest(PRESSABLE);
+    if (!el) return;
+    target = el; startX = e.clientX; startY = e.clientY;
+    el.classList.add('is-pressed');
+  }, { passive: true });
+
+  document.addEventListener('pointermove', function (e) {
+    if (!target) return;
+    if (Math.abs(e.clientX - startX) > 10 || Math.abs(e.clientY - startY) > 10) release();
+  }, { passive: true });
+
+  ['pointerup', 'pointercancel', 'blur'].forEach(function (ev) {
+    window.addEventListener(ev, release, { passive: true });
+  });
+
+  var scrolled = false;
+  addEventListener('scroll', function () {
+    var on = scrollY > 8;
+    if (on !== scrolled) { scrolled = on; document.body.classList.toggle('scrolled', on); }
+  }, { passive: true });
+})();

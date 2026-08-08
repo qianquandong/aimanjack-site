@@ -445,3 +445,140 @@ details.faq summary::-webkit-details-marker{display:none}
 details.faq summary::after{content:"+";position:absolute;right:18px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:1.2rem}
 details.faq[open] summary::after{content:"–"}
 details.faq p{padding:0 20px 16px;color:var(--muted)}
+
+/* ══════════════════════════════════════════════════════════════
+   Apple design layer
+   Springs over fixed curves · response on pointerdown · translucent
+   materials · size-specific tracking · reduced-motion/transparency aware.
+   ══════════════════════════════════════════════════════════════ */
+
+:root{
+  /* Critically damped, response ≈0.35s — no overshoot, the default everywhere */
+  --spring:cubic-bezier(.32,.72,0,1);
+  /* Slight momentum, for surfaces the user "throws" into place */
+  --spring-momentum:cubic-bezier(.34,1.2,.64,1);
+  --press:100ms ease-out;
+}
+
+/* ── 1. Response: highlight on pointerdown, never on release ──
+   .is-pressed is set by JS on pointerdown and released on cancel/leave,
+   because iOS Safari does not fire :active reliably. */
+.btn,.nav-cta,.nav-phone,.path,.work-card,.resource-card,.offer,
+details.faq summary,.sticky-cta-close,.text-link{
+  -webkit-tap-highlight-color:transparent;
+  touch-action:manipulation;
+}
+/* transform is ignored on non-replaced inline elements — nav links must
+   generate a box before they can respond to a press. */
+nav a{display:inline-flex;align-items:center}
+.btn.is-pressed,.nav-cta.is-pressed,.nav-phone.is-pressed,
+.sticky-cta-close.is-pressed{
+  transform:scale(.97);
+  transition:transform var(--press);
+}
+.path.is-pressed,.work-card.is-pressed,.resource-card.is-pressed,.offer.is-pressed{
+  transform:scale(.988);
+  transition:transform var(--press);
+}
+details.faq summary.is-pressed{background:var(--tint);transition:background var(--press)}
+
+/* ── 2. Springs replace the old fixed curves ──
+   Transform + opacity only, so every one of these is compositor-driven
+   and can be interrupted mid-flight without a layout hit. */
+.btn{transition:background .22s var(--spring),transform .22s var(--spring),box-shadow .22s var(--spring)}
+.btn:hover{transform:translateY(-1px)}
+.path,.work-card,.resource-card,.offer{
+  transition:transform .32s var(--spring),box-shadow .32s var(--spring),border-color .32s var(--spring);
+}
+nav a{transition:color .18s var(--spring),background .18s var(--spring)}
+
+/* ── 3. Materials: translucent chrome, content scrolls underneath ── */
+body>header{
+  background:rgba(247,248,247,.72);
+  backdrop-filter:blur(20px) saturate(180%);
+  -webkit-backdrop-filter:blur(20px) saturate(180%);
+  border-bottom:1px solid transparent;
+  transition:border-color .3s var(--spring),background .3s var(--spring);
+}
+/* Scroll edge effect, not a hard divider: the seam only appears where
+   content actually passes under the bar. */
+body>header::after{
+  content:"";position:absolute;left:0;right:0;top:100%;height:20px;pointer-events:none;
+  background:linear-gradient(to bottom,rgba(247,248,247,.7),transparent);
+  opacity:0;transition:opacity .3s var(--spring);
+}
+body.scrolled>header{border-bottom-color:rgba(18,32,25,.07)}
+body.scrolled>header::after{opacity:1}
+/* Vibrancy: text over a blurred material needs slightly more presence */
+body.scrolled .brand,body.scrolled nav a{letter-spacing:.002em}
+
+/* ── 4. Materialize, don't slide: the sticky bar arrives as a surface,
+   blur and scale resolving together, and leaves along the same path. ── */
+.sticky-cta{
+  transform:translateY(18px) scale(.96);
+  opacity:0;filter:blur(6px);
+  transition:transform .4s var(--spring),opacity .3s var(--spring),filter .4s var(--spring);
+  will-change:transform,opacity,filter;
+}
+.sticky-cta.on{transform:none;opacity:1;filter:blur(0)}
+.sticky-cta-inner{
+  background:rgba(255,255,255,.82);
+  backdrop-filter:blur(24px) saturate(180%);
+  -webkit-backdrop-filter:blur(24px) saturate(180%);
+  border-color:rgba(255,255,255,.6);
+  /* Heavier shadow than a chip: bigger surfaces read thicker */
+  box-shadow:0 2px 8px rgba(18,32,25,.06),0 20px 48px -16px rgba(18,32,25,.28);
+}
+
+/* ── 5. Accordion: expands from its own origin, marker rotates along the
+   same path it will return on (spatial consistency). ── */
+details.faq{transition:border-color .3s var(--spring)}
+details.faq[open]{border-color:#cfd8d2}
+details.faq summary::after{
+  content:"";width:9px;height:9px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);
+  border-radius:1px;transform:translateY(-70%) rotate(45deg);transform-origin:center;
+  transition:transform .3s var(--spring),border-color .3s var(--spring);
+  top:50%;right:20px;position:absolute;font-size:0;
+}
+details.faq[open] summary::after{content:"";transform:translateY(-20%) rotate(225deg);border-color:var(--accent)}
+@supports (interpolate-size:allow-keywords){
+  :root{interpolate-size:allow-keywords}
+  details.faq::details-content{
+    height:0;overflow:hidden;
+    transition:height .34s var(--spring),content-visibility .34s allow-discrete;
+  }
+  details.faq[open]::details-content{height:auto}
+}
+
+/* ── 6. Typography: tracking is size-specific, leading runs inverse to size ── */
+body{font-optical-sizing:auto;text-rendering:optimizeLegibility}
+.hero h1,.article-head h1{letter-spacing:-.032em;line-height:1.04}
+.cta-band h2{letter-spacing:-.024em;line-height:1.1}
+h2{line-height:1.15}
+.price-card .big{letter-spacing:-.028em}
+.lead,.hero .sub{letter-spacing:-.004em}
+/* Small text reads tighter than it is; open it up slightly */
+.sms-chat-note,.microcopy,.quote span,.work-card .cap span,.proof-strip span,
+.sticky-cta-inner span,footer,.byline{letter-spacing:.006em}
+
+/* ── 7. Reduced motion: gentler, not absent ── */
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important}
+  .btn:hover,.path:hover,.work-card:hover,.resource-card:hover,.offer:hover{transform:none}
+  .sticky-cta{transform:none;filter:none;transition:opacity .2s ease}
+  .sticky-cta.on{opacity:1}
+  details.faq summary::after{transition:none}
+}
+/* ── 8. Reduced transparency: frostier and more solid, blur dropped ── */
+@media(prefers-reduced-transparency:reduce){
+  body>header{background:var(--bg);backdrop-filter:none;-webkit-backdrop-filter:none;border-bottom-color:var(--line)}
+  body>header::after{display:none}
+  .sticky-cta-inner{background:var(--surface);backdrop-filter:none;-webkit-backdrop-filter:none;border-color:var(--line)}
+}
+/* ── 9. More contrast: near-solid surfaces, defined borders ── */
+@media(prefers-contrast:more){
+  body>header{background:var(--bg);backdrop-filter:none;border-bottom:1px solid var(--ink)}
+  .sticky-cta-inner{background:#fff;backdrop-filter:none;border:1.5px solid var(--ink)}
+  .btn.ghost,.nav-phone{border-width:2px}
+  .path,.work-card,.price-card,.quote,details.faq{border-color:#98a29c}
+}
