@@ -1,0 +1,12 @@
+.git
+.github
+.wrangler
+.claude
+.deploy
+.DS_Store
+*.md
+deploy.sh
+.deployignore
+design-system
+output
+.gitignore

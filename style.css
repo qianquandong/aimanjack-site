@@ -582,3 +582,9 @@ h2{line-height:1.15}
   .btn.ghost,.nav-phone{border-width:2px}
   .path,.work-card,.price-card,.quote,details.faq{border-color:#98a29c}
 }
+
+/* ── Footer link map (every page reaches every service page) ── */
+.footlinks{display:flex;flex-wrap:wrap;gap:2px 18px;margin:0 0 20px;line-height:1.9}
+.footlinks a{color:var(--muted);text-decoration:none;font-size:.9rem}
+.footlinks a:hover{color:var(--accent-ink);text-decoration:underline}
+@media(max-width:720px){.footlinks{gap:0 14px;font-size:.86rem}}
