@@ -8,7 +8,7 @@ Key facts:
 - Founder: Jack Qian, Business Planner at Texas Instruments and Dallas AI educator. Has run a 70-person multi-agent AI workshop (May 2026) and a 37-person AI hackathon (April 2026) in the Dallas area.
 - Free online checkup: a one-page report covering Google Maps position versus the three nearest competitors, whether ChatGPT and other AI assistants name the business, and three specific issues with a number attached to each. Free, no password or account access needed, delivered within about two days. Started by texting CHECKUP plus the shop name to (469) 425-4142.
 - AI Customer Service + Booking System: a done-for-you AI that answers customers and books appointments 24/7 for Dallas appointment businesses (salons, barbershops, nails, med-spa, dental, auto). $2,000 one-time build, then $200/month to keep it running. Jack builds it, installs it, and runs it; a booking-first website and a tuned Google Business Profile are included, live within a week.
-- AI education: free community talks, workshops, and build events. Paid offering: "AI for Beginner" — a live class taught in person in Dallas and online. No coding required.
+- AI education background: free community AI talks, workshops, and build events run in the Dallas–Fort Worth area — credibility behind the paid work above, not a separate paid offering.
 
 ## Services
 
@@ -17,10 +17,9 @@ Key facts:
 - [Salon AI Booking & Customer Service](https://aimanjack.com/website/salons/): the same AI customer service and booking system tuned for hair salons, nail salons, and beauty pros
 - [AI Consulting & Automation Services](https://aimanjack.com/business-services/): the done-for-you AI customer service and booking system, plus a free checkup to see where you stand first
 
-## AI Education
+## Community & Case Studies
 
-- [AI Education in Dallas](https://aimanjack.com/ai-education/): free community talks and workshops, plus the paid AI for Beginner live class (Dallas + online)
-- [Free Community AI Workshops in Dallas–Fort Worth](https://aimanjack.com/community/free-ai-workshops-dallas/): calendar of free workshops, classes, and meetups
+- [Free Community AI Workshops in Dallas–Fort Worth](https://aimanjack.com/community/free-ai-workshops-dallas/): calendar of past free community workshops and meetups (proof of Jack's hands-on AI track record)
 - [Case study: 70-person Dallas multi-agent AI workshop](https://aimanjack.com/case-studies/dallas-ai-workshop/): May 2026, Claude Code and multi-agent workflows
 - [Case study: Dallas-area AI hackathon](https://aimanjack.com/case-studies/dallas-ai-hackathon/): April 2026, 37 guests built live demos in three hours
 
