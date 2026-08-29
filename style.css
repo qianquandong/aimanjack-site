@@ -517,11 +517,11 @@ body.scrolled .brand,body.scrolled nav a{letter-spacing:.002em}
    blur and scale resolving together, and leaves along the same path. ── */
 .sticky-cta{
   transform:translateY(18px) scale(.96);
-  opacity:0;filter:blur(6px);
-  transition:transform .4s var(--spring),opacity .3s var(--spring),filter .4s var(--spring);
-  will-change:transform,opacity,filter;
+  opacity:0;pointer-events:none; /* invisible bar must not block clicks under it */
+  transition:transform .4s var(--spring),opacity .3s var(--spring);
+  will-change:transform,opacity;
 }
-.sticky-cta.on{transform:none;opacity:1;filter:blur(0)}
+.sticky-cta.on{transform:none;opacity:1;pointer-events:auto}
 .sticky-cta-inner{
   background:rgba(255,255,255,.82);
   backdrop-filter:blur(24px) saturate(180%);
@@ -566,7 +566,7 @@ h2{line-height:1.15}
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important}
   .btn:hover,.path:hover,.work-card:hover,.resource-card:hover,.offer:hover{transform:none}
-  .sticky-cta{transform:none;filter:none;transition:opacity .2s ease}
+  .sticky-cta{transform:none;transition:opacity .2s ease}
   .sticky-cta.on{opacity:1}
   details.faq summary::after{transition:none}
 }
