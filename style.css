@@ -466,6 +466,21 @@ nav a{white-space:nowrap}
 .mini-chat .mc.out{background:var(--tint);border-radius:14px 14px 4px 14px;color:var(--ink);margin-left:auto}
 .mini-chat-foot{margin-top:9px;padding-top:9px;border-top:1px solid var(--line);font-size:.78rem;color:var(--accent-ink);font-weight:650}
 
+/* "Three endings" — price anchoring before the pricing table */
+.options-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px;margin-top:30px}
+.option{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:22px 24px;
+  box-shadow:var(--shadow-sm);display:flex;flex-direction:column;min-width:0}
+.option-label{color:var(--muted);font-size:.74rem;text-transform:uppercase;letter-spacing:.13em;font-weight:720;margin-bottom:9px}
+.option b{font-size:1.08rem;font-weight:720;letter-spacing:-.01em;margin-bottom:7px}
+.option p{margin:0;color:var(--muted);font-size:.95rem;line-height:1.55;max-width:none}
+.option-ours{background:var(--tint);border-color:var(--accent);box-shadow:none}
+.option-ours .option-label,.option-ours b{color:var(--accent-ink)}
+.option-ours p{color:#33463c}
+
+/* Step explanations, split off so the claim reads first */
+.step-why{display:block;margin-top:10px;padding-left:13px;border-left:2px solid var(--line);
+  color:var(--muted);font-size:.93rem;line-height:1.55}
+
 /* Sticky bottom CTA bar */
 .sticky-cta{position:fixed;left:0;right:0;bottom:0;z-index:60;padding:10px 14px;transform:translateY(110%);transition:transform .3s ease}
 .sticky-cta.on{transform:none}
