@@ -441,6 +441,31 @@ nav a{white-space:nowrap}
 .demo-call-note{margin:0;font-size:.86rem;line-height:1.5;color:var(--muted)}
 @media(prefers-reduced-motion:reduce){.demo-dot{animation:none}}
 
+/* Hero: what the paid build actually does (replaces one long paragraph) */
+.hero-points{list-style:none;margin:18px 0 0;padding:0;max-width:520px}
+.hero-points li{padding:7px 0 7px 30px;position:relative;color:var(--ink);line-height:1.55}
+.hero-points li::before{
+  content:"";position:absolute;left:0;top:13px;width:18px;height:18px;border-radius:50%;
+  background:var(--tint) url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%230b5d38" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>') center/11px no-repeat;
+}
+.hero-price{margin:18px 0 0;font-size:1.02rem;color:var(--ink)}
+.hero-price b{font-weight:800;font-size:1.3rem;letter-spacing:-.02em;color:var(--accent-ink)}
+
+/* Hero trust line — plain facts, no invented numbers */
+.trust-strip{list-style:none;display:flex;flex-wrap:wrap;gap:4px 20px;margin:22px 0 0;padding:0;
+  max-width:520px;font-size:.85rem;color:var(--muted)}
+.trust-strip li{position:relative;padding-left:15px}
+.trust-strip li::before{content:"";position:absolute;left:0;top:.6em;width:6px;height:6px;border-radius:50%;background:var(--accent)}
+
+/* Hero right column: the product, shown rather than described */
+.mini-chat{margin-top:18px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+  box-shadow:var(--shadow-sm);padding:14px 16px 12px}
+.mini-chat-head{font-size:.76rem;color:var(--muted);letter-spacing:.02em;margin-bottom:10px}
+.mini-chat .mc{margin:0 0 7px;padding:8px 13px;font-size:.88rem;line-height:1.45;max-width:86%;width:fit-content}
+.mini-chat .mc.in{background:var(--bg);border:1px solid var(--line);border-radius:14px 14px 14px 4px;color:var(--ink)}
+.mini-chat .mc.out{background:var(--tint);border-radius:14px 14px 4px 14px;color:var(--ink);margin-left:auto}
+.mini-chat-foot{margin-top:9px;padding-top:9px;border-top:1px solid var(--line);font-size:.78rem;color:var(--accent-ink);font-weight:650}
+
 /* Sticky bottom CTA bar */
 .sticky-cta{position:fixed;left:0;right:0;bottom:0;z-index:60;padding:10px 14px;transform:translateY(110%);transition:transform .3s ease}
 .sticky-cta.on{transform:none}
