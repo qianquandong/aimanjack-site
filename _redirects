@@ -1,2 +1,10 @@
 /ai-education/  /  301
 /zh/ai-education/  /zh/  301
+/website/*  /products/  301
+/zh/website/*  /zh/products/  301
+/business-services/  /products/  301
+/zh/business-services/  /zh/products/  301
+/missed-call-text-back/  /products/  301
+/zh/missed-call-text-back/  /zh/products/  301
+/resources/*  /  301
+/zh/resources/*  /zh/  301

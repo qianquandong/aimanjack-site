@@ -8,7 +8,7 @@ empty. Needs: pip install fonttools brotli
 import glob, html, os, re, sys, unicodedata
 
 SRC = "fonts/Satoshi-Variable.woff2"
-OUT = "fonts/Satoshi-latin.woff2"
+OUT = "fonts/Satoshi-latin-2.woff2"
 
 def site_text():
     out = []
