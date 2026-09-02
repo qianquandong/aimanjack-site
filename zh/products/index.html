@@ -36,9 +36,10 @@
       "@type": "Service",
       "@id": "https://aimanjack.com/zh/products/#service",
       "serviceType": "AI Customer Service and Booking System",
+      "alternateName": "达拉斯诊所的 AI 接待员和预约系统",
       "name": "达拉斯预约制诊所和店铺的 AI 前台 + 预约系统",
       "description": "全包的 AI，24 小时通过电话和短信替诊所回病人、回客户，并把预约直接写进日历；住在一个预约优先的网站上，配调校好的 Google 商家资料。由 AI Man Jack 为达拉斯—沃斯堡的诊所和预约制店铺搭建、安装并运营。",
-      "provider": { "@id": "https://aimanjack.com/#business" },
+      "provider": {"@type":"ProfessionalService","@id":"https://aimanjack.com/#business","name":"AI Man Jack","url":"https://aimanjack.com/","telephone":"+1-469-425-4142","email":"jack@aimanjack.com"},
       "areaServed": [
         { "@type": "City", "name": "Dallas", "containedInPlace": { "@type": "State", "name": "Texas" } },
         { "@type": "City", "name": "Richardson", "containedInPlace": { "@type": "State", "name": "Texas" } },
@@ -86,7 +87,7 @@
     <a class="brand" href="/zh/">AI Man <span>Jack</span><em class="brand-loc"> · Dallas, TX</em></a>
     <nav aria-label="Primary navigation">
       <a href="/zh/products/" aria-current="page">产品</a>
-      <a class="nav-lang" href="/products/">EN</a>
+      <a class="nav-lang" href="/products/" lang="en">EN</a>
       <a class="nav-demo" href="tel:+14695172968">试打 AI</a><a class="nav-phone" href="sms:+14694254142">(469) 425-4142</a><a class="nav-cta" href="sms:+14694254142?body=CHECKUP%20-%20">免费体检</a>
     </nav>
   </div>
@@ -101,14 +102,14 @@
         <div class="hero-copy">
           <div class="kicker">达拉斯 · Richardson · Plano · Allen</div>
           <h1>一个<em>接每一通电话、直接把预约约下来</em>的 AI 前台 &mdash; 24 小时，全包给你做</h1>
-          <p class="sub">给达拉斯周边的牙科、医美 spa、脊椎和针灸诊所 &mdash; Google 评价不少，预约却还靠打电话的那种。它全天候替你回病人，把人约进你的日历，住在一个预约优先的网站上 &mdash; 搭好、装好、跑起来，全给你做。</p>
+          <p class="sub">给达拉斯周边的牙科、医美 spa、脊椎和针灸诊所 &mdash; Google 评价不少，预约却还靠打电话的那种。它全天候替你回病人，把人约进你的日历，住在一个预约优先的网站上 &mdash; 搭好、装好、跑起来，全给你做。有的诊所把这个叫 AI 接待员，或者 AI 电话代接 &mdash; 是同一件事，只是它还顺手把预约约下来。</p>
           <ul class="hero-points">
             <li>AI 24 小时替你接电话、回短信 &mdash; 那些打不通就转身走掉的病人，你以前根本不知道有过</li>
             <li>你手上正给这位病人看诊，它已经把下一位约进你的日历</li>
             <li>一个以预约为核心的网站，我给你搭好、托管好 &mdash; 含在里面，不另收钱</li>
           </ul>
           <p class="hero-price">一次 <b>$2,000</b>，之后每月 <b>$200</b> &mdash; 上面这些全包，一周内上线</p>
-          <div class="sms-chat" aria-label="Text Jack to start your free checkup">
+          <div class="sms-chat" aria-label="发短信给 Jack，开始你的免费体检">
             <div class="sms-chat-bar"><span class="sms-dot"></span>新消息 · 发送至：(469) 425-4142</div>
             <div class="sms-chat-body">
               <p class="sms-bubble">CHECKUP &mdash; <em>你诊所的名字</em></p>
@@ -172,7 +173,7 @@
         <div class="option">
           <div class="option-label">结局三</div>
           <b>找真人代接服务</b>
-          <p>一个月两三百刀起，换来的是一条留言。留个言，和把人约进来，是两回事。</p>
+          <p>每月一笔固定费用，换来的是一条留言。留个言，和把人约进来，是两回事。</p>
         </div>
         <div class="option option-ours">
           <div class="option-label">我给你装的</div>
@@ -195,7 +196,7 @@
             <li>ChatGPT 等 AI 助手推荐的是你 &mdash; 还是对手</li>
             <li>正在让你流失病人的三件事，每件都配一个真实数字</li>
           </ul>
-          <a class="btn" href="sms:+14694254142?body=CHECKUP">发 CHECKUP 到 (469) 425-4142</a>
+          <a class="btn" href="sms:+14694254142?body=CHECKUP%20-%20">发 CHECKUP 到 (469) 425-4142</a>
         </div>
         <div class="price-card">
           <div class="big">$2,000 <small>全包搭建</small></div>
@@ -279,7 +280,7 @@
         <h2>今晚就看清，你的病人看到的是什么</h2>
         <p>现在发一条短信，两天内一页报告。如果没什么问题，我也照实告诉你，之后再不打扰你。</p>
         <a class="btn btn-inverse" href="sms:+14694254142?body=CHECKUP%20-%20">发 CHECKUP 到 (469) 425-4142</a>
-        <p style="margin:18px auto 0;font-size:.85rem">更想用邮件？<a href="mailto:jack@aimanjack.com" style="color:#fff">jack@aimanjack.com</a></p>
+        <p style="margin:18px auto 0;font-size:.85rem">更想用邮件？<a href="mailto:jack@aimanjack.com?subject=CHECKUP%20-%20" style="color:#fff">jack@aimanjack.com</a></p>
       </div>
     </section>
 
@@ -307,14 +308,14 @@
   </div>
 </footer>
 
-<div class="sticky-cta" id="stickyCta" role="complementary" aria-label="Free checkup call to action">
+<div class="sticky-cta" id="stickyCta" role="complementary" aria-label="免费体检行动号召">
   <div class="sticky-cta-inner">
     <div>
       <strong>你的病人正在问 Google &mdash; 也在问 ChatGPT。</strong>
       <span>看看他们看到的是什么。免费，一页纸，两天内给你。</span>
     </div>
     <a class="btn" href="sms:+14694254142?body=CHECKUP%20-%20">发 CHECKUP</a>
-    <button class="sticky-cta-close" aria-label="Dismiss">&times;</button>
+    <button class="sticky-cta-close" aria-label="关闭">&times;</button>
   </div>
 </div>
 <script src="/reveal.js?v=2" defer></script>

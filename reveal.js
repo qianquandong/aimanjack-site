@@ -81,7 +81,6 @@
       ? decodeURIComponent(href.split('body=')[1].replace(/\+/g, ' ')).trim()
       : 'CHECKUP';
     a.href = 'mailto:' + EMAIL + '?subject=' + encodeURIComponent(body);
-    a.title = EMAIL;
-    if (/\btext\b|短信|发\s*CHECKUP/i.test(label)) a.textContent = relabel;
+    if (/\btext\b|短信|发送|发\s*(CHECKUP|TRAINING)/i.test(label)) a.textContent = relabel;
   });
 })();
