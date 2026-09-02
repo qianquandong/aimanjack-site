@@ -10,3 +10,5 @@ deploy.sh
 design-system
 output
 .gitignore
+scripts
+Satoshi-Variable.woff2

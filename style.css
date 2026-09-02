@@ -6,7 +6,7 @@
 
 @font-face{
   font-family:'Satoshi';
-  src:url('/fonts/Satoshi-Variable.woff2') format('woff2');
+  src:url('/fonts/Satoshi-latin.woff2') format('woff2');
   font-weight:300 900;
   font-display:swap;
 }
@@ -26,12 +26,21 @@
 }
 
 *{box-sizing:border-box;margin:0;padding:0}
+html{color-scheme:light}
 body{
   font-family:'Satoshi',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
   background:var(--bg);color:var(--ink);
   line-height:1.6;font-size:1.0625rem;
   -webkit-font-smoothing:antialiased;
 }
+/* Satoshi carries no CJK glyphs. Naming the CJK faces explicitly keeps the
+   Chinese pages on a known font instead of the OS default, while Latin text
+   (brand, prices, phone numbers) still renders in Satoshi. */
+html[lang="zh"] body{
+  font-family:'Satoshi','PingFang SC','Hiragino Sans GB','Microsoft YaHei',
+              'Noto Sans SC',-apple-system,BlinkMacSystemFont,sans-serif;
+}
+
 .wrap{max-width:1080px;margin:0 auto;padding:0 24px}
 img{max-width:100%;display:block}
 a{color:var(--accent)}
@@ -397,11 +406,15 @@ nav a{white-space:nowrap}
 .quote span{display:block;color:var(--muted);font-size:.9rem;margin-top:2px}
 @media(max-width:820px){.quote-grid{grid-template-columns:1fr}}
 @media(max-width:720px){
-  body>header{height:auto;padding:10px 0}
+  /* One 60px row: brand, language, checkup. The section links and the phone
+     number both appear in the footer and throughout the body, so dropping
+     them here buys back ~80px of the first screen on a phone. */
+  body>header{height:60px;padding:0}
   .brand-loc{display:none}
-  .headrow{flex-direction:column;align-items:flex-start;gap:2px}
-  nav{width:100%;justify-content:space-between;gap:0;flex-wrap:wrap;row-gap:2px}
-  nav a{padding:7px 10px;font-size:.81rem;min-height:44px}
+  .headrow{flex-direction:row;align-items:center;gap:10px}
+  nav{width:auto;flex-wrap:nowrap;gap:4px;align-items:center}
+  nav a:not(.nav-lang):not(.nav-cta){display:none}
+  nav a{padding:8px 12px;font-size:.85rem;min-height:44px}
 }
 
 /* ── GoGlobal-pattern conversion components ───────── */
@@ -412,7 +425,7 @@ nav a{white-space:nowrap}
 .nav-cta{background:var(--accent);color:#fff !important;font-weight:650;padding:7px 18px;margin-left:2px;box-shadow:0 2px 8px -2px rgba(11,93,56,.45)}
 .nav-cta:hover{background:var(--accent-ink);color:#fff}
 @media(max-width:720px){
-  .nav-phone,.nav-cta{padding:6px 12px;font-size:.81rem;min-height:44px}
+  .nav-cta{padding:9px 16px;font-size:.85rem;min-height:44px}
 }
 
 /* SMS chat device (hero CTA) */
@@ -649,3 +662,10 @@ h2{line-height:1.15}
 .footlinks a{color:var(--muted);text-decoration:none;font-size:.9rem}
 .footlinks a:hover{color:var(--accent-ink);text-decoration:underline}
 @media(max-width:720px){.footlinks{gap:0 14px;font-size:.86rem}}
+.footlinks a,footer>.wrap>a,.review-link{display:inline-flex;align-items:center;min-height:44px}
+/* inline-block, not inline-flex: flex would eat the space before "Jack" */
+.brand{display:inline-block;padding:9px 0}
+.demo-call-num{min-height:44px}
+.sticky-cta-close{min-width:44px;min-height:44px}
+.review-link{gap:8px;text-decoration:none}
+.review-link:hover{text-decoration:underline}

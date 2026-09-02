@@ -6,6 +6,16 @@ cd "$(dirname "$0")"
 
 rm -rf .deploy && mkdir .deploy
 rsync -a --exclude-from=.deployignore ./ .deploy/
+
+# Cache-bust by content hash instead of a hand-bumped ?v= number. These assets
+# are served immutable for a year (see _headers), so a forgotten bump would pin
+# every returning visitor to a stale stylesheet.
+hash_of() { md5 -q "$1" 2>/dev/null || md5sum "$1" | cut -d' ' -f1; }
+for asset in style.css reveal.js; do
+  h=$(hash_of "$asset" | cut -c1-8)
+  find .deploy -name '*.html' -exec sed -i '' "s|/$asset?v=[0-9a-f]*|/$asset?v=$h|g" {} +
+done
+
 npx wrangler pages deploy .deploy --project-name aimanjack
 
 KEY=f613b8f49a0f40cdb8a3bf9c265efa53
