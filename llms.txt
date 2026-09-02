@@ -15,7 +15,6 @@ Key facts:
 - [AI training for Dallas teams (home)](https://aimanjack.com/): what the training covers, the three formats, real Google reviews from workshop attendees, and how to book a call
 - [AI front desk + booking system (Products)](https://aimanjack.com/products/): the $2,000 done-for-you build and $200/month plan for Dallas appointment practices, with the free checkup as the first step
 - [AI workflow automation for Dallas businesses](https://aimanjack.com/ai-workflow/): background workflows — review replies, lead follow-up, monthly reports
-- [Free community AI workshops in Dallas–Fort Worth](https://aimanjack.com/community/free-ai-workshops-dallas/): record of past free community workshops and meetups, with attendance and photos
 - [Case study: 70-person Dallas multi-agent AI workshop](https://aimanjack.com/case-studies/dallas-ai-workshop/): May 2026, Claude Code and multi-agent workflows
 - [Case study: Dallas-area AI hackathon](https://aimanjack.com/case-studies/dallas-ai-hackathon/): April 2026, 37 guests built live demos in three hours
 
