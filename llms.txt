@@ -5,7 +5,7 @@
 Key facts:
 - Profiles: X https://x.com/JackQianAI · YouTube https://www.youtube.com/@JackBuildAI · GitHub https://github.com/qianquandong · LinkedIn https://www.linkedin.com/in/quandong-qian-156563191/ · Threads https://www.threads.com/@jack_qian616 · Facebook https://www.facebook.com/profile.php?id=100084925451350 · Nextdoor https://nextdoor.com/page/ai-man-jack-melissa-tx/ · Douyin (抖音) "AI人Jack" https://www.douyin.com/user/MS4wLjABAAAAxNXwx4UCCwS2FwyO-bsDHbuWziAo5mszf_EHC8qbxSI_hlNPcRl6nKO1v6aRFMxK
 - Google Business Profile: 5.0 stars across 10 reviews (as of September 2026), all from attendees of Jack's free Dallas AI workshops — https://g.page/r/CWX_rCfFduC1EAI
-- Founder: Jack Qian, Business Planner at Texas Instruments and Dallas AI educator. Has run five community AI talks of 50+ people each in Plano and Dallas in 2026, a 70-person multi-agent AI workshop (May 2026), and a 37-person AI hackathon (April 2026).
+- Founder: Jack Qian, Dallas AI trainer and community AI educator. Has run five community AI talks of 50+ people each in Plano and Dallas in 2026 and a 37-person AI hackathon (April 2026).
 - AI training for teams: task-first curriculum in five parts — choose a suitable task, give the AI useful context, move from chat to a workflow, verify the output, apply data and approval guardrails. Participants leave with one working workflow for a task they already do, not a tool tour. Formats: 90-minute lunch-and-learn, half-day hands-on workshop, multi-week program. English or Chinese. Priced per engagement after a short call.
 - AI front desk + booking system (Products): a done-for-you AI that answers customers and books appointments 24/7 for Dallas–Fort Worth appointment practices. $2,000 one-time build, then $200/month to keep it running; a booking-first website and a tuned Google Business Profile are included, live within a week. A live demo line answers as a sample clinic: +1 (469) 517-2968.
 - Free online checkup: the entry step for the front-desk product. One page: Google Maps position versus the three nearest competitors, whether ChatGPT and other AI assistants name the business, three specific issues with a number attached. Free, no password needed, delivered within about two days. Start by texting CHECKUP plus the business name to (469) 425-4142.
@@ -15,7 +15,7 @@ Key facts:
 - [AI training for Dallas teams (home)](https://aimanjack.com/): what the training covers, the three formats, real Google reviews from workshop attendees, and how to book a call
 - [AI front desk + booking system (Products)](https://aimanjack.com/products/): the $2,000 done-for-you build and $200/month plan for Dallas appointment practices, with the free checkup as the first step
 
-Chinese versions of every page live under https://aimanjack.com/zh/ (for example https://aimanjack.com/zh/products/).
+Chinese versions of the home and Products pages live under https://aimanjack.com/zh/ (for example https://aimanjack.com/zh/products/).
 
 ## Optional
 
