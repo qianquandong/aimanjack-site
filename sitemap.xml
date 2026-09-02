@@ -19,18 +19,6 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://aimanjack.com/case-studies/dallas-ai-workshop/</loc>
-    <lastmod>2026-09-02</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://aimanjack.com/case-studies/dallas-ai-hackathon/</loc>
-    <lastmod>2026-09-02</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://aimanjack.com/privacy</loc>
     <lastmod>2026-08-11</lastmod>
     <changefreq>yearly</changefreq>
@@ -59,17 +47,5 @@
     <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://aimanjack.com/zh/case-studies/dallas-ai-workshop/</loc>
-    <lastmod>2026-09-02</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://aimanjack.com/zh/case-studies/dallas-ai-hackathon/</loc>
-    <lastmod>2026-09-02</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
   </url>
 </urlset>
