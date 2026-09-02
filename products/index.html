@@ -41,11 +41,17 @@
       "description": "Done-for-you AI that answers patients and customers by phone and text 24/7 and books appointments into the practice's calendar, on a booking-first website, with a tuned Google Business Profile. Built, installed, and run by AI Man Jack for Dallas–Fort Worth clinics and appointment businesses.",
       "provider": {"@type":"ProfessionalService","@id":"https://aimanjack.com/#business","name":"AI Man Jack","url":"https://aimanjack.com/","telephone":"+1-469-425-4142","email":"jack@aimanjack.com"},
       "areaServed": [
-        { "@type": "City", "name": "Dallas", "containedInPlace": { "@type": "State", "name": "Texas" } },
-        { "@type": "City", "name": "Richardson", "containedInPlace": { "@type": "State", "name": "Texas" } },
-        { "@type": "City", "name": "Plano", "containedInPlace": { "@type": "State", "name": "Texas" } },
-        { "@type": "City", "name": "Garland", "containedInPlace": { "@type": "State", "name": "Texas" } },
-        { "@type": "City", "name": "Allen", "containedInPlace": { "@type": "State", "name": "Texas" } }
+        { "@type": "AdministrativeArea", "@id": "https://aimanjack.com/#dfw",
+          "name": "Dallas–Fort Worth metroplex",
+          "sameAs": "https://en.wikipedia.org/wiki/Dallas%E2%80%93Fort_Worth_metroplex",
+          "containedInPlace": { "@type": "State", "name": "Texas", "containedInPlace": { "@type": "Country", "name": "United States" } } },
+        { "@type": "City", "name": "Dallas", "containedInPlace": { "@id": "https://aimanjack.com/#dfw" } },
+        { "@type": "City", "name": "Fort Worth", "containedInPlace": { "@id": "https://aimanjack.com/#dfw" } },
+        { "@type": "City", "name": "Plano", "containedInPlace": { "@id": "https://aimanjack.com/#dfw" } },
+        { "@type": "City", "name": "Richardson", "containedInPlace": { "@id": "https://aimanjack.com/#dfw" } },
+        { "@type": "City", "name": "Frisco", "containedInPlace": { "@id": "https://aimanjack.com/#dfw" } },
+        { "@type": "City", "name": "McKinney", "containedInPlace": { "@id": "https://aimanjack.com/#dfw" } },
+        { "@type": "City", "name": "Arlington", "containedInPlace": { "@id": "https://aimanjack.com/#dfw" } }
       ],
       "audience": { "@type": "BusinessAudience", "name": "Appointment practices in Dallas–Fort Worth: dental offices, med spas, chiropractic and physical therapy, acupuncture, salons and barbershops" },
       "offers": [
@@ -65,11 +71,11 @@
     {
       "@type": "FAQPage",
       "mainEntity": [
-        { "@type": "Question", "name": "Why is the checkup free? What's the catch?", "acceptedAnswer": { "@type": "Answer", "text": "The checkup is how I earn the right to a conversation. If it finds problems and you want them fixed, that work is paid — a done-for-you AI front desk and booking system, website included, for $2,000 one-time, then $200 a month to keep it answering and booking 24/7. If you fix them yourself or do nothing, the page is still yours. No follow-up spam." } },
+        { "@type": "Question", "name": "Why is the checkup free? What’s the catch?", "acceptedAnswer": { "@type": "Answer", "text": "The checkup is how I earn the right to a conversation. If it finds problems and you want them fixed, that work is paid — a done-for-you AI front desk and booking system, website included, for $2,000 one-time, then $200 a month to keep it answering and booking 24/7. If you fix them yourself or do nothing, the page is still yours. No follow-up spam." } },
         { "@type": "Question", "name": "Do you need my passwords or my Google account?", "acceptedAnswer": { "@type": "Answer", "text": "No. Everything in the checkup comes from what patients and customers can already see: your Google listing, your website, your reviews. Nothing needs your password." } },
         { "@type": "Question", "name": "How much does an AI front desk and booking system cost in Dallas?", "acceptedAnswer": { "@type": "Answer", "text": "$2,000 one-time to build and install, then $200 a month to keep it running. That covers an AI that answers patients and books appointments 24/7, a booking-first website for it to live on, a corrected Google Business Profile, plus hosting, updates, and maintenance. Cancel the monthly anytime and you keep the site." } },
         { "@type": "Question", "name": "Why does ChatGPT recommend my competitor instead of me?", "acceptedAnswer": { "@type": "Answer", "text": "Usually not because the competitor is better. An AI assistant answers from text it can find and confirm, so it names the practice it has the most agreeing information about: a Google Business Profile with the correct category and real services listed, hours and phone number that match on every site, recent reviews with replies, and a website that says in plain words what the practice does and where it is. A practice with three of those beats a better practice with none of them." } },
-        { "@type": "Question", "name": "Which businesses is this for?", "acceptedAnswer": { "@type": "Answer", "text": "Appointment practices around Dallas, Richardson, Plano, Garland, and Allen that get plenty of Google reviews but still book by phone: dental offices, med spas, chiropractic and physical therapy, acupuncture — and the hair and nail salons and barbershops the system was first built for." } },
+        { "@type": "Question", "name": "Which businesses is this for?", "acceptedAnswer": { "@type": "Answer", "text": "Appointment practices anywhere in the Dallas–Fort Worth metroplex that get plenty of Google reviews but still book by phone: dental offices, med spas, chiropractic and physical therapy, acupuncture — and the hair and nail salons and barbershops the system was first built for. It is installed on-site across Dallas, Fort Worth, Plano, Richardson, Frisco, McKinney, Arlington, and everywhere between." } },
         { "@type": "Question", "name": "How long does it take to go live?", "acceptedAnswer": { "@type": "Answer", "text": "About a week. It starts with a fifteen-minute chat about where your patients come from and how they book; the site and the AI are typically built, installed, and connected to Google within seven days." } },
         { "@type": "Question", "name": "How do I start?", "acceptedAnswer": { "@type": "Answer", "text": "Text the word CHECKUP to (469) 425-4142 with your practice's name. The one-page report usually comes back within two days. Or call (469) 517-2968 first to hear the AI answer as a sample clinic." } }
       ]
@@ -100,9 +106,8 @@
     <div class="hero">
       <div class="hero-split">
         <div class="hero-copy">
-          <div class="kicker">Dallas · Richardson · Plano · Allen</div>
+          <div class="kicker">Serving the whole Dallas–Fort Worth metroplex</div>
           <h1>An AI front desk that <em>answers every call and books the appointment</em> &mdash; 24/7, done for you</h1>
-          <p class="sub">For dental offices, med spas, chiropractors, and acupuncture clinics around Dallas that get plenty of Google reviews but still book by phone. It answers patients around the clock, books them into your calendar, and lives on a booking-first website &mdash; built, installed, and run for you. Some practices call this an AI receptionist or an AI phone answering service &mdash; same thing, except it also books the appointment.</p>
           <ul class="hero-points">
             <li>An AI that answers every call and text, around the clock &mdash; so you stop losing the patients you never even heard from</li>
             <li>It books them into your calendar while you&rsquo;re with the patient in front of you</li>
@@ -127,10 +132,7 @@
             <li>5 community AI talks, 50+ people each</li>
             <li>Cancel the monthly anytime</li>
           </ul>
-          <div class="cta-row">
-            <a class="btn ghost" href="#how">See how it works</a>
-          </div>
-        </div>
+                  </div>
         <div class="hero-media">
           <div class="mini-chat" aria-label="Example of the AI answering a patient after hours">
             <div class="mini-chat-head">A patient texts your practice &middot; 9:14 PM, closed</div>
@@ -254,7 +256,7 @@
       <h2>The free checkup and the build, answered plainly</h2>
       <div style="max-width:760px;margin-top:26px">
         <details class="faq" open>
-          <summary>Why free? What&rsquo;s the catch?</summary>
+          <summary>Why is the checkup free? What&rsquo;s the catch?</summary>
           <p>The checkup is how I earn the right to a conversation. If it finds problems and you want them fixed, that work is paid &mdash; a done-for-you AI front desk and booking system, website included, for $2,000 one-time, then $200 a month to keep it answering and booking 24/7. If you fix them yourself or do nothing, the page is still yours. No follow-up spam.</p>
         </details>
         <details class="faq">
@@ -262,7 +264,7 @@
           <p>No. Everything in the checkup comes from what patients can already see: your Google listing, your website, your reviews. Nothing needs your password.</p>
         </details>
         <details class="faq">
-          <summary>How much does it cost?</summary>
+          <summary>How much does an AI front desk and booking system cost in Dallas?</summary>
           <p>$2,000 one-time to build and install, then $200 a month to keep it running. That covers an AI that answers patients and books appointments 24/7, a booking-first website for it to live on, a corrected Google Business Profile, plus hosting, updates, and maintenance. Cancel the monthly anytime and you keep the site.</p>
         </details>
         <details class="faq">
@@ -271,7 +273,7 @@
         </details>
         <details class="faq">
           <summary>Which businesses is this for?</summary>
-          <p>Appointment practices around Dallas, Richardson, Plano, Garland, and Allen that get plenty of Google reviews but still book by phone: dental offices, med spas, chiropractic and physical therapy, acupuncture &mdash; and the hair and nail salons and barbershops the system was first built for.</p>
+          <p>Appointment practices anywhere in the Dallas&ndash;Fort Worth metroplex that get plenty of Google reviews but still book by phone: dental offices, med spas, chiropractic and physical therapy, acupuncture &mdash; and the hair and nail salons and barbershops the system was first built for. It is installed on-site across Dallas, Fort Worth, Plano, Richardson, Frisco, McKinney, Arlington, and everywhere between.</p>
         </details>
         <details class="faq">
           <summary>How long does it take to go live?</summary>

@@ -47,12 +47,17 @@
       "telephone": "+1-469-425-4142",
       "founder": { "@id": "https://aimanjack.com/#jack" },
       "areaServed": [
-        { "@type": "City", "name": "Dallas", "containedInPlace": { "@type": "State", "name": "Texas" } },
-        { "@type": "City", "name": "Richardson", "containedInPlace": { "@type": "State", "name": "Texas" } },
-        { "@type": "City", "name": "Plano", "containedInPlace": { "@type": "State", "name": "Texas" } },
-        { "@type": "City", "name": "Garland", "containedInPlace": { "@type": "State", "name": "Texas" } },
-        { "@type": "City", "name": "Allen", "containedInPlace": { "@type": "State", "name": "Texas" } },
-        { "@type": "City", "name": "Melissa", "containedInPlace": { "@type": "State", "name": "Texas" } }
+        { "@type": "AdministrativeArea", "@id": "https://aimanjack.com/#dfw",
+          "name": "Dallas–Fort Worth metroplex",
+          "sameAs": "https://en.wikipedia.org/wiki/Dallas%E2%80%93Fort_Worth_metroplex",
+          "containedInPlace": { "@type": "State", "name": "Texas", "containedInPlace": { "@type": "Country", "name": "United States" } } },
+        { "@type": "City", "name": "Dallas", "containedInPlace": { "@id": "https://aimanjack.com/#dfw" } },
+        { "@type": "City", "name": "Fort Worth", "containedInPlace": { "@id": "https://aimanjack.com/#dfw" } },
+        { "@type": "City", "name": "Plano", "containedInPlace": { "@id": "https://aimanjack.com/#dfw" } },
+        { "@type": "City", "name": "Richardson", "containedInPlace": { "@id": "https://aimanjack.com/#dfw" } },
+        { "@type": "City", "name": "Frisco", "containedInPlace": { "@id": "https://aimanjack.com/#dfw" } },
+        { "@type": "City", "name": "McKinney", "containedInPlace": { "@id": "https://aimanjack.com/#dfw" } },
+        { "@type": "City", "name": "Arlington", "containedInPlace": { "@id": "https://aimanjack.com/#dfw" } }
       ],
       "sameAs": [
         "https://g.page/r/CWX_rCfFduC1EAI",
@@ -134,7 +139,8 @@
         { "@type": "Question", "name": "培训用哪些 AI 工具？", "acceptedAnswer": { "@type": "Answer", "text": "你公司已经批准的那些——ChatGPT、Claude、Gemini、Copilot 都行。方法跨工具通用。开头第一件事就是讲清楚：哪些数据可以放进工具，哪些不行。" } },
         { "@type": "Question", "name": "团队 AI 培训多少钱？", "acceptedAnswer": { "@type": "Answer", "text": "按项目定价，看形式和人数。发 TRAINING 加公司名到 (469) 425-4142，或者发邮件到 jack@aimanjack.com，聊 20 分钟，就会有一个推荐的形式和报价。" } },
         { "@type": "Question", "name": "怎么知道培训有没有效果？", "acceptedAnswer": { "@type": "Answer", "text": "课后两周去看：那条工作流有没有拿真实工作试过、结果准不准、够不够拿来用、审核在哪一步花的时间太长，以及这个任务该继续、该改还是该停。一条小小的、写成文档、又经得起实际使用的工作流，才是结果——不是一屋子看演示看得很开心的人。" } },
-        { "@type": "Question", "name": "能到我们办公室来讲吗？", "acceptedAnswer": { "@type": "Answer", "text": "能。达拉斯—沃斯堡范围内都可以面对面——Dallas、Richardson、Plano、Garland、Allen、Frisco、McKinney。有需要也可以远程。" } }
+        { "@type": "Question", "name": "能到我们办公室来讲吗？", "acceptedAnswer": { "@type": "Answer", "text": "能。整个达拉斯—沃斯堡都会区都可以面对面——Dallas、Fort Worth、Plano、Richardson、Frisco、McKinney、Arlington，中间的城市也都跑。有需要也可以远程。" } },
+        { "@type": "Question", "name": "你也帮人做东西吗？", "acceptedAnswer": { "@type": "Answer", "text": "做：给预约制诊所和店铺的全包 AI 前台 + 预约系统，在产品页。培训和产品是同一个人、同一套方法 —— 一个是教给你，一个是装给你。" } }
       ]
     },
     {
@@ -317,32 +323,32 @@
       <h2>培训这件事，说清楚</h2>
       <div style="max-width:760px;margin-top:26px">
         <details class="faq" open>
-          <summary>这是给谁的？</summary>
+          <summary>这个 AI 培训是给谁的？</summary>
           <p>达拉斯&mdash;沃斯堡 5 到 60 人左右的团队，大多数人不是技术背景：运营、销售、行政、前台、计划、客服。不用写代码，每个人练的都是自己已经在做的任务。</p>
         </details>
         <details class="faq">
-          <summary>学员到底做出什么？</summary>
+          <summary>学员在培训里到底做出什么？</summary>
           <p>一条能跑的工作流，对应自己每周都在做的一件事 &mdash; 从批准过的笔记整理会议简报、客户回复的初稿、从表格里拉出来的周报、某个客户的调研摘要。课结束前它就已经在跑了，每个人还会带走一份核对清单，结果发出去之前先过一遍。</p>
         </details>
         <details class="faq">
-          <summary>中文还是英文？</summary>
+          <summary>用中文还是英文？</summary>
           <p>都可以。2026 年达拉斯的免费社区系列是中文场；企业场用现场最顺的那种语言，材料两种语言都有。</p>
         </details>
         <details class="faq">
-          <summary>用哪些 AI 工具？</summary>
+          <summary>培训用哪些 AI 工具？</summary>
           <p>你公司已经批准的那些 &mdash; ChatGPT、Claude、Gemini、Copilot 都行。方法跨工具通用。开头第一件事就是讲清楚：哪些数据可以放进工具，哪些不行。</p>
         </details>
         <details class="faq">
-          <summary>多少钱？</summary>
+          <summary>团队 AI 培训多少钱？</summary>
           <p>按项目定价，看形式和人数。发 TRAINING 加公司名到 (469) 425-4142，或者发邮件到 <a href="mailto:jack@aimanjack.com">jack@aimanjack.com</a>。聊 20 分钟，就会有一个推荐的形式和报价。</p>
         </details>
         <details class="faq">
-          <summary>怎么知道有没有效果？</summary>
+          <summary>怎么知道培训有没有效果？</summary>
           <p>课后两周去看：那条工作流有没有拿真实工作试过、结果准不准、够不够拿来用、审核在哪一步花的时间太长，以及这个任务该继续、该改还是该停。出勤率和满意度不算数。</p>
         </details>
         <details class="faq">
           <summary>能到我们办公室来讲吗？</summary>
-          <p>能。达拉斯&mdash;沃斯堡范围内都可以面对面 &mdash; Dallas、Richardson、Plano、Garland、Allen、Frisco、McKinney。有需要也可以远程。</p>
+          <p>能。整个达拉斯&mdash;沃斯堡都会区都可以面对面 &mdash; Dallas、Fort Worth、Plano、Richardson、Frisco、McKinney、Arlington，中间的城市也都跑。有需要也可以远程。</p>
         </details>
         <details class="faq">
           <summary>你也帮人做东西吗？</summary>

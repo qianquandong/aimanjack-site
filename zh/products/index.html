@@ -41,11 +41,17 @@
       "description": "全包的 AI，24 小时通过电话和短信替诊所回病人、回客户，并把预约直接写进日历；住在一个预约优先的网站上，配调校好的 Google 商家资料。由 AI Man Jack 为达拉斯—沃斯堡的诊所和预约制店铺搭建、安装并运营。",
       "provider": {"@type":"ProfessionalService","@id":"https://aimanjack.com/#business","name":"AI Man Jack","url":"https://aimanjack.com/","telephone":"+1-469-425-4142","email":"jack@aimanjack.com"},
       "areaServed": [
-        { "@type": "City", "name": "Dallas", "containedInPlace": { "@type": "State", "name": "Texas" } },
-        { "@type": "City", "name": "Richardson", "containedInPlace": { "@type": "State", "name": "Texas" } },
-        { "@type": "City", "name": "Plano", "containedInPlace": { "@type": "State", "name": "Texas" } },
-        { "@type": "City", "name": "Garland", "containedInPlace": { "@type": "State", "name": "Texas" } },
-        { "@type": "City", "name": "Allen", "containedInPlace": { "@type": "State", "name": "Texas" } }
+        { "@type": "AdministrativeArea", "@id": "https://aimanjack.com/#dfw",
+          "name": "Dallas–Fort Worth metroplex",
+          "sameAs": "https://en.wikipedia.org/wiki/Dallas%E2%80%93Fort_Worth_metroplex",
+          "containedInPlace": { "@type": "State", "name": "Texas", "containedInPlace": { "@type": "Country", "name": "United States" } } },
+        { "@type": "City", "name": "Dallas", "containedInPlace": { "@id": "https://aimanjack.com/#dfw" } },
+        { "@type": "City", "name": "Fort Worth", "containedInPlace": { "@id": "https://aimanjack.com/#dfw" } },
+        { "@type": "City", "name": "Plano", "containedInPlace": { "@id": "https://aimanjack.com/#dfw" } },
+        { "@type": "City", "name": "Richardson", "containedInPlace": { "@id": "https://aimanjack.com/#dfw" } },
+        { "@type": "City", "name": "Frisco", "containedInPlace": { "@id": "https://aimanjack.com/#dfw" } },
+        { "@type": "City", "name": "McKinney", "containedInPlace": { "@id": "https://aimanjack.com/#dfw" } },
+        { "@type": "City", "name": "Arlington", "containedInPlace": { "@id": "https://aimanjack.com/#dfw" } }
       ],
       "audience": { "@type": "BusinessAudience", "name": "达拉斯—沃斯堡的预约制诊所和店铺：牙科、医美 spa、脊椎和物理治疗、针灸、美发美甲和理发店" },
       "offers": [
@@ -69,7 +75,7 @@
         { "@type": "Question", "name": "需要我的密码或 Google 账号吗？", "acceptedAnswer": { "@type": "Answer", "text": "不需要。体检里的一切都来自病人和客户本来就能看到的：你的 Google 资料、你的网站、你的评价。全程不用任何密码。" } },
         { "@type": "Question", "name": "在达拉斯，一套 AI 前台 + 预约系统要多少钱？", "acceptedAnswer": { "@type": "Answer", "text": "$2,000 一次性搭建并安装，之后每月 $200 让它一直跑。这套包含一个 24 小时替你接电话、帮客户约时间的 AI、一个给它安家的预约优先网站、改正过的 Google 商家资料，外加托管、更新和维护。月费随时可停，网站还是你的。" } },
         { "@type": "Question", "name": "ChatGPT 为什么推荐对手，不推荐我？", "acceptedAnswer": { "@type": "Answer", "text": "通常不是因为对手更好。AI 助手只根据它能找到、又能核实的信息回答，所以它会报那家信息最一致的诊所：Google 商家资料分类正确、服务项目写全，营业时间和电话在每个网站都对得上，有近期评价而且商家有回复，网站用大白话说清楚做什么、在哪。三样占齐的诊所，赢过一样都没占的更好的诊所。" } },
-        { "@type": "Question", "name": "这是给哪种生意的？", "acceptedAnswer": { "@type": "Answer", "text": "达拉斯、Richardson、Plano、Garland、Allen 周边、Google 评价不少但预约还靠打电话的预约制诊所和店铺：牙科、医美 spa、脊椎和物理治疗、针灸——还有这套系统最早就是为它们做的美发美甲和理发店。" } },
+        { "@type": "Question", "name": "这是给哪种生意的？", "acceptedAnswer": { "@type": "Answer", "text": "整个达拉斯—沃斯堡都会区、Google 评价不少但预约还靠打电话的预约制诊所和店铺：牙科、医美 spa、脊椎和物理治疗、针灸——还有这套系统最早就是为它们做的美发美甲和理发店。Dallas、Fort Worth、Plano、Richardson、Frisco、McKinney、Arlington，以及中间的城市，我都上门装。" } },
         { "@type": "Question", "name": "上线要多久？", "acceptedAnswer": { "@type": "Answer", "text": "大概一周。先花十五分钟聊聊你的病人从哪来、怎么预约；网站和 AI 一般在七天内建好、装好，并接上 Google。" } },
         { "@type": "Question", "name": "怎么开始？", "acceptedAnswer": { "@type": "Answer", "text": "发 CHECKUP 到 (469) 425-4142，带上你诊所的名字。一页报告一般两天内给你。也可以先打 (469) 517-2968，听听 AI 扮一家样板诊所的前台是怎么接电话的。" } }
       ]
@@ -100,9 +106,8 @@
     <div class="hero">
       <div class="hero-split">
         <div class="hero-copy">
-          <div class="kicker">达拉斯 · Richardson · Plano · Allen</div>
+          <div class="kicker">整个达拉斯—沃斯堡都会区都做</div>
           <h1>一个<em>接每一通电话、直接把预约约下来</em>的 AI 前台 &mdash; 24 小时，全包给你做</h1>
-          <p class="sub">给达拉斯周边的牙科、医美 spa、脊椎和针灸诊所 &mdash; Google 评价不少，预约却还靠打电话的那种。它全天候替你回病人，把人约进你的日历，住在一个预约优先的网站上 &mdash; 搭好、装好、跑起来，全给你做。有的诊所把这个叫 AI 接待员，或者 AI 电话代接 &mdash; 是同一件事，只是它还顺手把预约约下来。</p>
           <ul class="hero-points">
             <li>AI 24 小时替你接电话、回短信 &mdash; 那些打不通就转身走掉的病人，你以前根本不知道有过</li>
             <li>你手上正给这位病人看诊，它已经把下一位约进你的日历</li>
@@ -127,10 +132,7 @@
             <li>5 场社区 AI 讲座，每场 50+ 人</li>
             <li>月费随时可停</li>
           </ul>
-          <div class="cta-row">
-            <a class="btn ghost" href="#how">看看具体怎么做</a>
-          </div>
-        </div>
+                  </div>
         <div class="hero-media">
           <div class="mini-chat" aria-label="AI 在打烊后替诊所回病人的示例">
             <div class="mini-chat-head">病人给你诊所发短信 &middot; 晚上 9:14，已打烊</div>
@@ -253,7 +255,7 @@
           <p>不需要。体检里的一切都来自病人本来就能看到的：你的 Google 资料、你的网站、你的评价。全程不用任何密码。</p>
         </details>
         <details class="faq">
-          <summary>多少钱？</summary>
+          <summary>在达拉斯，一套 AI 前台 + 预约系统要多少钱？</summary>
           <p>$2,000 一次性搭建并安装，之后每月 $200 让它一直跑。这套包含一个 24 小时替你接电话、帮客户约时间的 AI、一个给它安家的预约优先网站、改正过的 Google 商家资料，外加托管、更新和维护。月费随时可停，网站还是你的。</p>
         </details>
         <details class="faq">
@@ -262,7 +264,7 @@
         </details>
         <details class="faq">
           <summary>这是给哪种生意的？</summary>
-          <p>达拉斯、Richardson、Plano、Garland、Allen 周边、Google 评价不少但预约还靠打电话的预约制诊所和店铺：牙科、医美 spa、脊椎和物理治疗、针灸 &mdash; 还有这套系统最早就是为它们做的美发美甲和理发店。</p>
+          <p>整个达拉斯&mdash;沃斯堡都会区、Google 评价不少但预约还靠打电话的预约制诊所和店铺：牙科、医美 spa、脊椎和物理治疗、针灸 &mdash; 还有这套系统最早就是为它们做的美发美甲和理发店。Dallas、Fort Worth、Plano、Richardson、Frisco、McKinney、Arlington，以及中间的城市，我都上门装。</p>
         </details>
         <details class="faq">
           <summary>上线要多久？</summary>

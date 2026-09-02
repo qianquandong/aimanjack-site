@@ -65,7 +65,7 @@ nav a[aria-current="page"]{color:var(--accent-ink);background:var(--tint);font-w
 
 /* ── Hero ───────────────────────────────── */
 .hero{padding:72px 0 64px}
-.hero-split{display:grid;grid-template-columns:7fr 5fr;gap:56px;align-items:center}
+.hero-split{display:grid;grid-template-columns:7fr 5fr;gap:56px;align-items:start}
 .hero-split>*,.paths>*,.panel>*,.work>*{min-width:0}
 body{overflow-x:clip}
 @media(max-width:820px){.hero-split{grid-template-columns:1fr;gap:36px}}
