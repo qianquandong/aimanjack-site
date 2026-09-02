@@ -14,7 +14,6 @@ Key facts:
 
 - [AI training for Dallas teams (home)](https://aimanjack.com/): what the training covers, the three formats, real Google reviews from workshop attendees, and how to book a call
 - [AI front desk + booking system (Products)](https://aimanjack.com/products/): the $2,000 done-for-you build and $200/month plan for Dallas appointment practices, with the free checkup as the first step
-- [AI workflow automation for Dallas businesses](https://aimanjack.com/ai-workflow/): background workflows — review replies, lead follow-up, monthly reports
 
 Chinese versions of every page live under https://aimanjack.com/zh/ (for example https://aimanjack.com/zh/products/).
 
