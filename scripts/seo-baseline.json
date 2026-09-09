@@ -2,9 +2,35 @@
  "capturedAt": "2026-09-09",
  "pages": {
   "/": {
+   "title": "AI Front Desk + Booking for Dallas Clinics | AI Man Jack",
+   "description": "AI front desk, booking system and website — all three for $2,000, then $200/month. Answers patients and books appointments 24/7 for Dallas clinics.",
+   "canonical": "https://aimanjack.com/",
+   "hreflang": "en,x-default,zh",
+   "h1": "An AI front desk that  answers every call and books the appointment  &mdash; 24/7, done for you",
+   "robots": "index, follow, max-image-preview:large, max-snippet:-1",
+   "schemaTypes": "AdministrativeArea,Answer,BusinessAudience,City,Country,FAQPage,Offer,ProfessionalService,Question,Service,State",
+   "ogImage": "https://aimanjack.com/img/og-products.jpg",
+   "smsLinks": 4,
+   "ga4": true,
+   "h1Count": 1
+  },
+  "/zh/": {
+   "title": "达拉斯诊所 AI 前台 + 预约系统 | AI Man Jack",
+   "description": "AI 前台、预约系统、网站，三样一口价 $2,000，之后每月 $200。24 小时替达拉斯诊所接电话、帮客户约时间。打个电话给 AI，它替你把时间约下来。",
+   "canonical": "https://aimanjack.com/zh/",
+   "hreflang": "en,x-default,zh",
+   "h1": "一个 接每一通电话、直接把预约约下来 的 AI 前台 &mdash; 24 小时，全包给你做",
+   "robots": "index, follow, max-image-preview:large, max-snippet:-1",
+   "schemaTypes": "AdministrativeArea,Answer,BusinessAudience,City,Country,FAQPage,Offer,ProfessionalService,Question,Service,State",
+   "ogImage": "https://aimanjack.com/img/og-products-zh.jpg",
+   "smsLinks": 4,
+   "ga4": true,
+   "h1Count": 1
+  },
+  "/ai-training/": {
    "title": "AI Training for Dallas Teams, Hands-On | AI Man Jack",
    "description": "Hands-on AI training for Dallas teams, in English or Chinese. People leave with one working workflow for a task they already do. 5.0 on Google, 10 reviews.",
-   "canonical": "https://aimanjack.com/",
+   "canonical": "https://aimanjack.com/ai-training/",
    "hreflang": "en,x-default,zh",
    "h1": "Hands-on AI training for Dallas teams,  in English or Chinese",
    "robots": "index, follow, max-image-preview:large, max-snippet:-1",
@@ -14,42 +40,16 @@
    "ga4": true,
    "h1Count": 1
   },
-  "/zh/": {
+  "/zh/ai-training/": {
    "title": "达拉斯团队 AI 实战培训 | AI Man Jack",
    "description": "面向达拉斯团队的动手 AI 培训，中英文皆可。每个人带一个自己每周都在做的任务来，带着一条能跑的工作流走。Google 10 条评价，5.0 分。",
-   "canonical": "https://aimanjack.com/zh/",
+   "canonical": "https://aimanjack.com/zh/ai-training/",
    "hreflang": "en,x-default,zh",
    "h1": "给达拉斯团队的动手 AI 培训， 中文或英文都行",
    "robots": "index, follow, max-image-preview:large, max-snippet:-1",
    "schemaTypes": "AdministrativeArea,AggregateRating,Answer,City,Country,FAQPage,Offer,Organization,Person,PostalAddress,ProfessionalService,Question,Rating,Review,Service,State,WebSite",
    "ogImage": "https://aimanjack.com/img/og-training-zh.jpg",
    "smsLinks": 9,
-   "ga4": true,
-   "h1Count": 1
-  },
-  "/products/": {
-   "title": "AI Front Desk + Booking for Dallas Clinics | AI Man Jack",
-   "description": "AI front desk, booking system and website — all three for $2,000, then $200/month. Answers patients and books appointments 24/7 for Dallas clinics.",
-   "canonical": "https://aimanjack.com/products/",
-   "hreflang": "en,x-default,zh",
-   "h1": "An AI front desk that  answers every call and books the appointment  &mdash; 24/7, done for you",
-   "robots": "index, follow, max-image-preview:large, max-snippet:-1",
-   "schemaTypes": "AdministrativeArea,Answer,BreadcrumbList,BusinessAudience,City,Country,FAQPage,ListItem,Offer,ProfessionalService,Question,Service,State",
-   "ogImage": "https://aimanjack.com/img/og-products.jpg",
-   "smsLinks": 4,
-   "ga4": true,
-   "h1Count": 1
-  },
-  "/zh/products/": {
-   "title": "达拉斯诊所 AI 前台 + 预约系统 | AI Man Jack",
-   "description": "AI 前台、预约系统、网站，三样一口价 $2,000，之后每月 $200。24 小时替达拉斯诊所接电话、帮客户约时间。打个电话给 AI，它替你把时间约下来。",
-   "canonical": "https://aimanjack.com/zh/products/",
-   "hreflang": "en,x-default,zh",
-   "h1": "一个 接每一通电话、直接把预约约下来 的 AI 前台 &mdash; 24 小时，全包给你做",
-   "robots": "index, follow, max-image-preview:large, max-snippet:-1",
-   "schemaTypes": "AdministrativeArea,Answer,BreadcrumbList,BusinessAudience,City,Country,FAQPage,ListItem,Offer,ProfessionalService,Question,Service,State",
-   "ogImage": "https://aimanjack.com/img/og-products-zh.jpg",
-   "smsLinks": 4,
    "ga4": true,
    "h1Count": 1
   }

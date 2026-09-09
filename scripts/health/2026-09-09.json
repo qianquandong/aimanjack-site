@@ -4,42 +4,42 @@
   {
    "id": "up:/",
    "status": "PASS",
-   "detail": "HTTP 200 357ms"
+   "detail": "HTTP 200 297ms"
   },
   {
    "id": "perf:home-fetch",
    "status": "PASS",
-   "detail": "357ms full fetch (PSI weekly gives the real CWV)"
+   "detail": "297ms full fetch (PSI weekly gives the real CWV)"
   },
   {
    "id": "up:/zh/",
    "status": "PASS",
-   "detail": "HTTP 200 74ms"
+   "detail": "HTTP 200 53ms"
   },
   {
-   "id": "up:/products/",
+   "id": "up:/ai-training/",
    "status": "PASS",
-   "detail": "HTTP 200 70ms"
+   "detail": "HTTP 200 46ms"
   },
   {
-   "id": "up:/zh/products/",
+   "id": "up:/zh/ai-training/",
    "status": "PASS",
-   "detail": "HTTP 200 58ms"
+   "detail": "HTTP 200 47ms"
   },
   {
    "id": "up:/sitemap.xml",
    "status": "PASS",
-   "detail": "HTTP 200 38ms"
+   "detail": "HTTP 200 33ms"
   },
   {
    "id": "up:/robots.txt",
    "status": "PASS",
-   "detail": "HTTP 200 28ms"
+   "detail": "HTTP 200 35ms"
   },
   {
    "id": "up:/llms.txt",
    "status": "PASS",
-   "detail": "HTTP 200 41ms"
+   "detail": "HTTP 200 36ms"
   },
   {
    "id": "up:404",
@@ -64,17 +64,17 @@
   {
    "id": "page:/:schema",
    "status": "PASS",
-   "detail": "AdministrativeArea,AggregateRating,Answer,City,Country,FAQPage,Offer,Organizatio"
+   "detail": "AdministrativeArea,Answer,BusinessAudience,City,Country,FAQPage,Offer,Profession"
   },
   {
    "id": "page:/:cta",
    "status": "PASS",
-   "detail": "9 sms: CTAs to (469) 425-4142"
+   "detail": "4 sms: CTAs to (469) 425-4142"
   },
   {
    "id": "page:/:og-image",
    "status": "PASS",
-   "detail": "https://aimanjack.com/img/og-training.jpg"
+   "detail": "https://aimanjack.com/img/og-products.jpg"
   },
   {
    "id": "track:ga4",
@@ -89,42 +89,42 @@
   {
    "id": "page:/zh/:schema",
    "status": "PASS",
-   "detail": "AdministrativeArea,AggregateRating,Answer,City,Country,FAQPage,Offer,Organizatio"
+   "detail": "AdministrativeArea,Answer,BusinessAudience,City,Country,FAQPage,Offer,Profession"
   },
   {
    "id": "page:/zh/:cta",
    "status": "PASS",
+   "detail": "4 sms: CTAs to (469) 425-4142"
+  },
+  {
+   "id": "page:/ai-training/:h1",
+   "status": "PASS",
+   "detail": "1 h1"
+  },
+  {
+   "id": "page:/ai-training/:schema",
+   "status": "PASS",
+   "detail": "AdministrativeArea,AggregateRating,Answer,City,Country,FAQPage,Offer,Organizatio"
+  },
+  {
+   "id": "page:/ai-training/:cta",
+   "status": "PASS",
    "detail": "9 sms: CTAs to (469) 425-4142"
   },
   {
-   "id": "page:/products/:h1",
+   "id": "page:/zh/ai-training/:h1",
    "status": "PASS",
    "detail": "1 h1"
   },
   {
-   "id": "page:/products/:schema",
+   "id": "page:/zh/ai-training/:schema",
    "status": "PASS",
-   "detail": "AdministrativeArea,Answer,BreadcrumbList,BusinessAudience,City,Country,FAQPage,L"
+   "detail": "AdministrativeArea,AggregateRating,Answer,City,Country,FAQPage,Offer,Organizatio"
   },
   {
-   "id": "page:/products/:cta",
+   "id": "page:/zh/ai-training/:cta",
    "status": "PASS",
-   "detail": "4 sms: CTAs to (469) 425-4142"
-  },
-  {
-   "id": "page:/zh/products/:h1",
-   "status": "PASS",
-   "detail": "1 h1"
-  },
-  {
-   "id": "page:/zh/products/:schema",
-   "status": "PASS",
-   "detail": "AdministrativeArea,Answer,BreadcrumbList,BusinessAudience,City,Country,FAQPage,L"
-  },
-  {
-   "id": "page:/zh/products/:cta",
-   "status": "PASS",
-   "detail": "4 sms: CTAs to (469) 425-4142"
+   "detail": "9 sms: CTAs to (469) 425-4142"
   },
   {
    "id": "drift",
