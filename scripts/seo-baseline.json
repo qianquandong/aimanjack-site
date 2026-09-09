@@ -11,7 +11,7 @@
    "schemaTypes": "AdministrativeArea,AggregateRating,Answer,City,Country,FAQPage,Offer,Organization,Person,PostalAddress,ProfessionalService,Question,Rating,Review,Service,State,WebSite",
    "ogImage": "https://aimanjack.com/img/og-training.jpg",
    "smsLinks": 9,
-   "ga4": false,
+   "ga4": true,
    "h1Count": 1
   },
   "/zh/": {
@@ -24,7 +24,7 @@
    "schemaTypes": "AdministrativeArea,AggregateRating,Answer,City,Country,FAQPage,Offer,Organization,Person,PostalAddress,ProfessionalService,Question,Rating,Review,Service,State,WebSite",
    "ogImage": "https://aimanjack.com/img/og-training-zh.jpg",
    "smsLinks": 9,
-   "ga4": false,
+   "ga4": true,
    "h1Count": 1
   },
   "/products/": {
@@ -36,21 +36,21 @@
    "robots": "index, follow, max-image-preview:large, max-snippet:-1",
    "schemaTypes": "AdministrativeArea,Answer,BreadcrumbList,BusinessAudience,City,Country,FAQPage,ListItem,Offer,ProfessionalService,Question,Service,State",
    "ogImage": "https://aimanjack.com/img/og-products.jpg",
-   "smsLinks": 8,
-   "ga4": false,
+   "smsLinks": 4,
+   "ga4": true,
    "h1Count": 1
   },
   "/zh/products/": {
    "title": "达拉斯诊所 AI 前台 + 预约系统 | AI Man Jack",
-   "description": "AI 前台、预约系统、网站，三样一口价 $2,000，之后每月 $200。24 小时替达拉斯诊所接电话、帮客户约时间。先从一页免费体检开始。",
+   "description": "AI 前台、预约系统、网站，三样一口价 $2,000，之后每月 $200。24 小时替达拉斯诊所接电话、帮客户约时间。打个电话给 AI，它替你把时间约下来。",
    "canonical": "https://aimanjack.com/zh/products/",
    "hreflang": "en,x-default,zh",
    "h1": "一个 接每一通电话、直接把预约约下来 的 AI 前台 &mdash; 24 小时，全包给你做",
    "robots": "index, follow, max-image-preview:large, max-snippet:-1",
    "schemaTypes": "AdministrativeArea,Answer,BreadcrumbList,BusinessAudience,City,Country,FAQPage,ListItem,Offer,ProfessionalService,Question,Service,State",
    "ogImage": "https://aimanjack.com/img/og-products-zh.jpg",
-   "smsLinks": 8,
-   "ga4": false,
+   "smsLinks": 4,
+   "ga4": true,
    "h1Count": 1
   }
  }

@@ -4,42 +4,42 @@
   {
    "id": "up:/",
    "status": "PASS",
-   "detail": "HTTP 200 396ms"
+   "detail": "HTTP 200 357ms"
   },
   {
    "id": "perf:home-fetch",
    "status": "PASS",
-   "detail": "396ms full fetch (PSI weekly gives the real CWV)"
+   "detail": "357ms full fetch (PSI weekly gives the real CWV)"
   },
   {
    "id": "up:/zh/",
    "status": "PASS",
-   "detail": "HTTP 200 60ms"
+   "detail": "HTTP 200 74ms"
   },
   {
    "id": "up:/products/",
    "status": "PASS",
-   "detail": "HTTP 200 62ms"
+   "detail": "HTTP 200 70ms"
   },
   {
    "id": "up:/zh/products/",
    "status": "PASS",
-   "detail": "HTTP 200 65ms"
+   "detail": "HTTP 200 58ms"
   },
   {
    "id": "up:/sitemap.xml",
    "status": "PASS",
-   "detail": "HTTP 200 39ms"
+   "detail": "HTTP 200 38ms"
   },
   {
    "id": "up:/robots.txt",
    "status": "PASS",
-   "detail": "HTTP 200 74ms"
+   "detail": "HTTP 200 28ms"
   },
   {
    "id": "up:/llms.txt",
    "status": "PASS",
-   "detail": "HTTP 200 29ms"
+   "detail": "HTTP 200 41ms"
   },
   {
    "id": "up:404",
@@ -78,7 +78,7 @@
   },
   {
    "id": "track:ga4",
-   "status": "FAIL",
+   "status": "PASS",
    "detail": "no GA4 tag → visitors and conversion rate are unmeasurable"
   },
   {
@@ -109,7 +109,7 @@
   {
    "id": "page:/products/:cta",
    "status": "PASS",
-   "detail": "8 sms: CTAs to (469) 425-4142"
+   "detail": "4 sms: CTAs to (469) 425-4142"
   },
   {
    "id": "page:/zh/products/:h1",
@@ -124,7 +124,7 @@
   {
    "id": "page:/zh/products/:cta",
    "status": "PASS",
-   "detail": "8 sms: CTAs to (469) 425-4142"
+   "detail": "4 sms: CTAs to (469) 425-4142"
   },
   {
    "id": "drift",
@@ -143,7 +143,7 @@
   },
   {
    "id": "creds:google-api",
-   "status": "WARN",
+   "status": "PASS",
    "detail": "GSC/GA4/PSI via claude-seo need ~/.config/claude-seo/google-api.json"
   }
  ]
