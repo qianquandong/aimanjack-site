@@ -4,13 +4,6 @@
 set -e
 cd "$(dirname "$0")"
 
-# Every deploy must be a commit on GitHub, so any live version can be rolled back:
-#   git log --oneline            # find the sha that was live
-#   git revert <bad-sha>         # or: git checkout <good-sha> -- . && git commit
-#   sh deploy.sh
-[ -z "$(git status --porcelain)" ] || { echo "Uncommitted changes. Commit first so GitHub matches what goes live."; git status --short; exit 1; }
-git push origin "$(git branch --show-current)"
-
 rm -rf .deploy && mkdir .deploy
 rsync -a --exclude-from=.deployignore ./ .deploy/
 
