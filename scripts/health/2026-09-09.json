@@ -1,0 +1,150 @@
+{
+ "date": "2026-09-09",
+ "checks": [
+  {
+   "id": "up:/",
+   "status": "PASS",
+   "detail": "HTTP 200 396ms"
+  },
+  {
+   "id": "perf:home-fetch",
+   "status": "PASS",
+   "detail": "396ms full fetch (PSI weekly gives the real CWV)"
+  },
+  {
+   "id": "up:/zh/",
+   "status": "PASS",
+   "detail": "HTTP 200 60ms"
+  },
+  {
+   "id": "up:/products/",
+   "status": "PASS",
+   "detail": "HTTP 200 62ms"
+  },
+  {
+   "id": "up:/zh/products/",
+   "status": "PASS",
+   "detail": "HTTP 200 65ms"
+  },
+  {
+   "id": "up:/sitemap.xml",
+   "status": "PASS",
+   "detail": "HTTP 200 39ms"
+  },
+  {
+   "id": "up:/robots.txt",
+   "status": "PASS",
+   "detail": "HTTP 200 74ms"
+  },
+  {
+   "id": "up:/llms.txt",
+   "status": "PASS",
+   "detail": "HTTP 200 29ms"
+  },
+  {
+   "id": "up:404",
+   "status": "PASS",
+   "detail": "random path must 404, not soft-200"
+  },
+  {
+   "id": "redirects",
+   "status": "PASS",
+   "detail": "all _redirects rules hold"
+  },
+  {
+   "id": "sitemap:pages",
+   "status": "PASS",
+   "detail": "6 urls"
+  },
+  {
+   "id": "page:/:h1",
+   "status": "PASS",
+   "detail": "1 h1"
+  },
+  {
+   "id": "page:/:schema",
+   "status": "PASS",
+   "detail": "AdministrativeArea,AggregateRating,Answer,City,Country,FAQPage,Offer,Organizatio"
+  },
+  {
+   "id": "page:/:cta",
+   "status": "PASS",
+   "detail": "9 sms: CTAs to (469) 425-4142"
+  },
+  {
+   "id": "page:/:og-image",
+   "status": "PASS",
+   "detail": "https://aimanjack.com/img/og-training.jpg"
+  },
+  {
+   "id": "track:ga4",
+   "status": "FAIL",
+   "detail": "no GA4 tag → visitors and conversion rate are unmeasurable"
+  },
+  {
+   "id": "page:/zh/:h1",
+   "status": "PASS",
+   "detail": "1 h1"
+  },
+  {
+   "id": "page:/zh/:schema",
+   "status": "PASS",
+   "detail": "AdministrativeArea,AggregateRating,Answer,City,Country,FAQPage,Offer,Organizatio"
+  },
+  {
+   "id": "page:/zh/:cta",
+   "status": "PASS",
+   "detail": "9 sms: CTAs to (469) 425-4142"
+  },
+  {
+   "id": "page:/products/:h1",
+   "status": "PASS",
+   "detail": "1 h1"
+  },
+  {
+   "id": "page:/products/:schema",
+   "status": "PASS",
+   "detail": "AdministrativeArea,Answer,BreadcrumbList,BusinessAudience,City,Country,FAQPage,L"
+  },
+  {
+   "id": "page:/products/:cta",
+   "status": "PASS",
+   "detail": "8 sms: CTAs to (469) 425-4142"
+  },
+  {
+   "id": "page:/zh/products/:h1",
+   "status": "PASS",
+   "detail": "1 h1"
+  },
+  {
+   "id": "page:/zh/products/:schema",
+   "status": "PASS",
+   "detail": "AdministrativeArea,Answer,BreadcrumbList,BusinessAudience,City,Country,FAQPage,L"
+  },
+  {
+   "id": "page:/zh/products/:cta",
+   "status": "PASS",
+   "detail": "8 sms: CTAs to (469) 425-4142"
+  },
+  {
+   "id": "drift",
+   "status": "PASS",
+   "detail": "no on-page drift vs baseline (intentional change? rerun with --baseline)"
+  },
+  {
+   "id": "geo:robots",
+   "status": "PASS",
+   "detail": "AI crawlers (GPTBot/OAI-SearchBot/PerplexityBot/ClaudeBot) must not be blocked"
+  },
+  {
+   "id": "geo:llms-current",
+   "status": "PASS",
+   "detail": "llms.txt must name training + $2,000 product + phone; stale copy misleads AI answers"
+  },
+  {
+   "id": "creds:google-api",
+   "status": "WARN",
+   "detail": "GSC/GA4/PSI via claude-seo need ~/.config/claude-seo/google-api.json"
+  }
+ ]
+}

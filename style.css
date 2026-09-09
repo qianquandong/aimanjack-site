@@ -218,6 +218,7 @@ p{max-width:66ch;margin-bottom:16px}
 }
 .tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:34px;align-items:stretch}
 @media(max-width:820px){.tiers{grid-template-columns:1fr}}
+.tiers-one{grid-template-columns:min(540px,100%);justify-content:center}
 /* min-width:0 — grid items default to min-width:auto, so the 2.5rem price line
    pushed the card wider than its column and gave the whole page a sideways scroll on phones */
 .tiers .price-card{display:flex;flex-direction:column;padding:28px;min-width:0}
@@ -492,6 +493,7 @@ nav a{white-space:nowrap}
   color:var(--accent-ink);text-decoration:none;border-bottom:2px solid transparent}
 .demo-call-num:hover,.demo-call-num:focus-visible{border-bottom-color:var(--accent)}
 .demo-call-note{margin:0;font-size:.86rem;line-height:1.5;color:var(--muted)}
+.demo-call .btn{margin-top:14px}
 @media(prefers-reduced-motion:reduce){.demo-dot{animation:none}}
 
 /* Hero: what the paid build actually does (replaces one long paragraph) */

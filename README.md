@@ -23,3 +23,7 @@ npx wrangler pages deploy . --project-name aimanjack
 1. Cloudflare Pages 项目 → Custom domains → 加 `www.aimanjack.com` 和 `aimanjack.com`
 2. DNS 里把原来指向 Shopify 的记录（A 23.227.38.65 / CNAME shops.myshopify.com 之类）删掉，按 Pages 提示指到 `aimanjack.pages.dev`
 3. 确认新站通了之后，再去 Shopify 后台把域名解绑、关店（别忘了先导出订单/客户数据，Shopify 月费也记得停）
+
+## 每日健康检验
+
+`node scripts/health.mjs`，设计与阈值见 `HEALTH-CHECK.md`；定时任务 `aimanjack-daily-health` 每天 7:00 本机跑。
