@@ -4,42 +4,42 @@
   {
    "id": "up:/",
    "status": "PASS",
-   "detail": "HTTP 200 297ms"
+   "detail": "HTTP 200 250ms"
   },
   {
    "id": "perf:home-fetch",
    "status": "PASS",
-   "detail": "297ms full fetch (PSI weekly gives the real CWV)"
+   "detail": "250ms full fetch (PSI weekly gives the real CWV)"
   },
   {
    "id": "up:/zh/",
    "status": "PASS",
-   "detail": "HTTP 200 53ms"
+   "detail": "HTTP 200 56ms"
   },
   {
    "id": "up:/ai-training/",
    "status": "PASS",
-   "detail": "HTTP 200 46ms"
+   "detail": "HTTP 200 60ms"
   },
   {
    "id": "up:/zh/ai-training/",
    "status": "PASS",
-   "detail": "HTTP 200 47ms"
+   "detail": "HTTP 200 53ms"
   },
   {
    "id": "up:/sitemap.xml",
    "status": "PASS",
-   "detail": "HTTP 200 33ms"
+   "detail": "HTTP 200 30ms"
   },
   {
    "id": "up:/robots.txt",
    "status": "PASS",
-   "detail": "HTTP 200 35ms"
+   "detail": "HTTP 200 37ms"
   },
   {
    "id": "up:/llms.txt",
    "status": "PASS",
-   "detail": "HTTP 200 36ms"
+   "detail": "HTTP 200 34ms"
   },
   {
    "id": "up:404",
@@ -72,6 +72,11 @@
    "detail": "4 sms: CTAs to (469) 425-4142"
   },
   {
+   "id": "page:/:cta-labels",
+   "status": "PASS",
+   "detail": "every CTA label matches its protocol"
+  },
+  {
    "id": "page:/:og-image",
    "status": "PASS",
    "detail": "https://aimanjack.com/img/og-products.jpg"
@@ -97,6 +102,11 @@
    "detail": "4 sms: CTAs to (469) 425-4142"
   },
   {
+   "id": "page:/zh/:cta-labels",
+   "status": "PASS",
+   "detail": "every CTA label matches its protocol"
+  },
+  {
    "id": "page:/ai-training/:h1",
    "status": "PASS",
    "detail": "1 h1"
@@ -112,6 +122,11 @@
    "detail": "9 sms: CTAs to (469) 425-4142"
   },
   {
+   "id": "page:/ai-training/:cta-labels",
+   "status": "PASS",
+   "detail": "every CTA label matches its protocol"
+  },
+  {
    "id": "page:/zh/ai-training/:h1",
    "status": "PASS",
    "detail": "1 h1"
@@ -125,6 +140,11 @@
    "id": "page:/zh/ai-training/:cta",
    "status": "PASS",
    "detail": "9 sms: CTAs to (469) 425-4142"
+  },
+  {
+   "id": "page:/zh/ai-training/:cta-labels",
+   "status": "PASS",
+   "detail": "every CTA label matches its protocol"
   },
   {
    "id": "drift",

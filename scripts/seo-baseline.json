@@ -3,10 +3,10 @@
  "pages": {
   "/": {
    "title": "AI Front Desk + Booking for Dallas Clinics | AI Man Jack",
-   "description": "AI front desk, booking system and website — all three for $2,000, then $200/month. Answers patients and books appointments 24/7 for Dallas clinics.",
+   "description": "AI front desk, booking system and website for Dallas appointment practices: $2,000 to build, then $200/month. Answers calls and books 24/7. Call the demo line.",
    "canonical": "https://aimanjack.com/",
    "hreflang": "en,x-default,zh",
-   "h1": "An AI front desk that  answers every call and books the appointment  &mdash; 24/7, done for you",
+   "h1": "An AI front desk that  answers calls and books appointments , set up and run for you",
    "robots": "index, follow, max-image-preview:large, max-snippet:-1",
    "schemaTypes": "AdministrativeArea,Answer,BusinessAudience,City,Country,FAQPage,Offer,ProfessionalService,Question,Service,State",
    "ogImage": "https://aimanjack.com/img/og-products.jpg",
@@ -16,10 +16,10 @@
   },
   "/zh/": {
    "title": "达拉斯诊所 AI 前台 + 预约系统 | AI Man Jack",
-   "description": "AI 前台、预约系统、网站，三样一口价 $2,000，之后每月 $200。24 小时替达拉斯诊所接电话、帮客户约时间。打个电话给 AI，它替你把时间约下来。",
+   "description": "AI 前台、预约系统、网站，一次 $2,000，之后每月 $200。全天候替达拉斯预约制诊所和店铺接电话、约时间。先拨 AI 演示线听听它怎么接。",
    "canonical": "https://aimanjack.com/zh/",
    "hreflang": "en,x-default,zh",
-   "h1": "一个 接每一通电话、直接把预约约下来 的 AI 前台 &mdash; 24 小时，全包给你做",
+   "h1": "一个 接电话、帮客户约时间 的 AI 前台，我给你装好、替你维护",
    "robots": "index, follow, max-image-preview:large, max-snippet:-1",
    "schemaTypes": "AdministrativeArea,Answer,BusinessAudience,City,Country,FAQPage,Offer,ProfessionalService,Question,Service,State",
    "ogImage": "https://aimanjack.com/img/og-products-zh.jpg",
