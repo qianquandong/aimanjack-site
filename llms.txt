@@ -11,10 +11,10 @@ Key facts:
 
 ## Pages
 
-- [AI training for Dallas teams (home)](https://aimanjack.com/): what the training covers, the three formats, real Google reviews from workshop attendees, and how to book a call
-- [AI front desk + booking system (Products)](https://aimanjack.com/products/): the $2,000 done-for-you build (AI front desk + booking system + website, all three) and the $200/month plan for Dallas appointment practices, entered by calling the AI line and letting it book the call
+- [AI training for Dallas teams](https://aimanjack.com/ai-training/): what the training covers, the three formats, real Google reviews from workshop attendees, and how to book a call
+- [AI front desk + booking system (home)](https://aimanjack.com/): the $2,000 done-for-you build (AI front desk + booking system + website, all three) and the $200/month plan for Dallas appointment practices, entered by calling the AI line and letting it book the call
 
-Chinese versions of the home and Products pages live under https://aimanjack.com/zh/ (for example https://aimanjack.com/zh/products/).
+Chinese versions of the home and AI training pages live under https://aimanjack.com/zh/ (for example https://aimanjack.com/zh/ai-training/).
 
 ## Optional
 

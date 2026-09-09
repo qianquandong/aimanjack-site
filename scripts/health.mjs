@@ -7,7 +7,7 @@
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 
 const SITE = "https://aimanjack.com";
-const PAGES = ["/", "/zh/", "/products/", "/zh/products/"];
+const PAGES = ["/", "/zh/", "/ai-training/", "/zh/ai-training/"];
 const BASELINE = "scripts/seo-baseline.json";
 const today = new Date().toISOString().slice(0, 10);
 const checks = [];
