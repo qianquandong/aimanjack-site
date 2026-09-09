@@ -719,3 +719,15 @@ h2{line-height:1.15}
 .sticky-cta-close{min-width:44px;min-height:44px}
 .review-link{gap:8px;text-decoration:none}
 .review-link:hover{text-decoration:underline}
+
+/* Mobile hero: the primary CTA (demo-call button) must land inside the first
+   screen at 390x844. Measured 2026-09-09: button bottom 872px -> target <=780. */
+@media(max-width:720px){
+  .hero{padding-top:36px}
+  .hero-points{margin-top:12px}
+  .hero-points li{padding:4px 0 4px 30px}
+  .hero-price{margin-top:12px}
+  .demo-call{margin-top:10px;padding:12px 14px}
+  .demo-call-note{display:none}
+  .demo-call .btn{margin-top:10px}
+}

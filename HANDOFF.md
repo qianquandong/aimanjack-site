@@ -64,7 +64,7 @@ Jack 2026-09-09 说过：aimanjack.com 的上线不用再逐次跟他确认。
 sh /Users/joseesp/aimanjack-site/deploy.sh
 ```
 
-deploy.sh 顺序：工作树不干净就退出 → `git push origin <当前分支>` → 压缩 CSS + 内容 hash 换缓存 → `wrangler pages deploy` → ping IndexNow。所以每个上线版本在 GitHub 上都有 commit，回退用 `git revert <sha>` 再跑 deploy.sh。
+deploy.sh 顺序：暂存到 .deploy → 压缩 CSS + 内容 hash 换缓存 → `wrangler pages deploy` → ping IndexNow。**它不 push、也不检查工作区**（09-09 加过一次，被 1636856 revert 掉了）。所以上线前自己 commit + `git -C /Users/joseesp/aimanjack-site push origin production`，否则 GitHub 上没有对应版本，回退就没有锚点。回退 = `git revert <sha>` → push → deploy.sh。
 
 坑：wrangler 按**当前 git 分支名**决定 prod 还是 preview。不在 `production` 上跑，只会发到 `<branch>.aimanjack.pages.dev`，aimanjack.com 不动。
 
@@ -81,7 +81,7 @@ deploy.sh 顺序：工作树不干净就退出 → `git push origin <当前分�
 ## 7. 硬规矩
 
 - 电话有两个，都对：(469) 425-4142 是短信/主号（A2P 审核要求全站 CTA 用它），(469) 517-2968 是 AI 演示线。别「统一」。
-- `/privacy` 和 `/sms-terms` 页脚故意不放互链，A2P 审核员在看。
+- `/privacy` 和 `/sms-terms` 是 A2P 审核用的页面，改动前想清楚；它们有正常页脚和互链。A2P 审核状态未核实。
 - ProfessionalService 实体 `#business`（含 10 条评价、AggregateRating）定义在 `/ai-training/` 页里，首页的 Service 用 `@id` 引用它。改评价数只改一处。
 - `.deployignore` 排除 `*.md`、`scripts/`、`.planning` 等，内部文档不会上线。新增内部文件放这些位置。
 - 老 URL 全部 301 在 `_redirects`：`/products/`→`/`，`/ai-education/`→`/ai-training/`，其余旧页面→首页或培训页。别删规则，健康脚本每天验它们。

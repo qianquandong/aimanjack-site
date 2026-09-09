@@ -65,19 +65,19 @@ node scripts/health.mjs --baseline   # 有意改了 title/H1/schema 之后重打
 | 项 | 值 | 状态 |
 |---|---|---|
 | GA4 property | AI Man Jack · 553511876（账号 EnglishmanJack） | 已建 |
-| GA4 Measurement ID | G-H7EF9HVN02 | 标签已写进 4 个 HTML + `_headers` CSP 放行，**待部署** |
+| GA4 Measurement ID | G-H7EF9HVN02 | 标签已上线（4 个页面）+ `_headers` CSP 放行 |
 | Google Cloud 项目 | claude-seo · inductive-album-508120-s2 | 已开 Search Console / PageSpeed / CrUX / Analytics Data 四个 API |
 | Service account | claude-seo@inductive-album-508120-s2.iam.gserviceaccount.com | GSC Full 权限 ✓、GA4 Viewer ✓ |
 | claude-seo 凭证 | `~/.config/claude-seo/google-api.json` + `service_account.json` | Tier 2，GSC / GA4 / PSI 三条通道实测可用 |
 | GSC 基线 | 2026-08-12 → 09-06：2 次点击 / 269 次曝光 | 阶段 0 起点 |
 
-还没做的：① `sh deploy.sh` 上线 GA4 标签（要先确认 production 分支，且会一并带上 9 月 8 日未提交的页面改动）；② 首个 `cta_click` 事件到达后，在 GA4 → Admin → Events 里把它星标成 Key event；③ 可选：Cloudflare Pages 打开 Web Analytics 做对照。
+还没做的：① 首个 `cta_click` 事件到达后，在 GA4 → Admin → Events 里把它星标成 Key event；② 可选：Cloudflare Pages 打开 Web Analytics 做对照。
 
 ## 3. 文件
 
 | 路径 | 作用 | 是否上线 |
 |---|---|---|
-| `scripts/health.mjs` | 每日机械检查 | 否（`.deployignore` 排除 scripts/ 和 *.md） |
+| `scripts/health.mjs` | 每日机械检查；页面清单在文件顶部的 `PAGES`，加页时改它 | 否（`.deployignore` 排除 scripts/ 和 *.md） |
 | `scripts/seo-baseline.json` | on-page 基线 | 否 |
 | `scripts/health/*.json` | 每日快照（任务会把 GSC/GA4 数追加进当天文件） | 否 |
 | `scripts/geo-mentions.json` | 每周 GEO 探针记录 | 否 |

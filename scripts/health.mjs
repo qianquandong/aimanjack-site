@@ -55,6 +55,10 @@ for (const p of PAGES) {
   add(`page:${p}:h1`, snap[p].h1Count === 1 ? "PASS" : "FAIL", `${snap[p].h1Count} h1`);
   add(`page:${p}:schema`, types !== "PARSE_ERROR" && types.includes("ProfessionalService") ? "PASS" : "FAIL", types.slice(0, 80));
   add(`page:${p}:cta`, snap[p].smsLinks >= 2 ? "PASS" : "FAIL", `${snap[p].smsLinks} sms: CTAs to (469) 425-4142`);
+  // Label must say what the click does: "Call" → tel:, "Text" → sms:, "Email" → mailto:
+  const mism = [...h.matchAll(/<a [^>]*href="(tel:|sms:|mailto:)[^"]*"[^>]*>([^<]*)<\/a>/g)].filter(([, proto, t]) =>
+    (/\bCall\b|打|拨/.test(t) && proto !== "tel:") || (/\bText\b|短信|发 TRAINING/.test(t) && proto !== "sms:") || (/\bEmail\b|邮件/.test(t) && proto !== "mailto:")).map(([, proto, t]) => `${proto} "${t.trim()}"`);
+  add(`page:${p}:cta-labels`, mism.length ? "FAIL" : "PASS", mism.join("; ") || "every CTA label matches its protocol");
   if (p === "/") { add("page:/:og-image", (await get(snap[p].ogImage, { method: "HEAD" })).status === 200 ? "PASS" : "FAIL", snap[p].ogImage); add("track:ga4", snap[p].ga4 ? "PASS" : "FAIL", "no GA4 tag → visitors and conversion rate are unmeasurable"); }
 }
 if (process.argv.includes("--baseline") || !existsSync(BASELINE)) { writeFileSync(BASELINE, JSON.stringify({ capturedAt: today, pages: snap }, null, 1) + "\n"); add("drift", "PASS", `baseline captured → ${BASELINE}`); }

@@ -70,7 +70,6 @@
 
   var EMAIL = 'jack@aimanjack.com';
   var zh = document.documentElement.lang.indexOf('zh') === 0;
-  var relabel = zh ? '发邮件给我' : 'Email me instead';
 
   [].forEach.call(document.querySelectorAll('a[href^="sms:"]'), function (a) {
     var label = a.textContent.trim();
@@ -81,6 +80,10 @@
       ? decodeURIComponent(href.split('body=')[1].replace(/\+/g, ' ')).trim()
       : 'CHECKUP';
     a.href = 'mailto:' + EMAIL + '?subject=' + encodeURIComponent(body);
-    if (/\btext\b|短信|发送|发\s*(CHECKUP|TRAINING)/i.test(label)) a.textContent = relabel;
+    // The label must say what the click now does. Every swapped link is relabelled,
+    // not just the ones that happened to contain the word "text".
+    var training = /TRAINING/i.test(body);
+    a.textContent = zh ? (training ? '给 Jack 发邮件问培训' : '发邮件到 ' + EMAIL)
+                       : (training ? 'Email Jack about training' : 'Email ' + EMAIL);
   });
 })();
