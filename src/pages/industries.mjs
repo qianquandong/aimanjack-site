@@ -1,6 +1,6 @@
 import { SITE } from '../config.mjs';
 import { L } from '../layout.mjs';
-import { eyebrow, pageHero, breadcrumb, transcript, industryCards, faq, faqJsonLd, finalCta, INDUSTRIES, SERVICE_LD, BUSINESS_REF, T } from '../components.mjs';
+import { eyebrow, pageHero, breadcrumb, transcript, industryCards, faq, faqJsonLd, finalCta, dataHandling, INDUSTRIES, SERVICE_LD, BUSINESS_REF, T } from '../components.mjs';
 
 const index = {
   en: { title: 'AI Receptionist by Industry: Salons, Med Spas, Clinics | AI Man Jack', description: 'How the AI receptionist handles calls for salons, med spas, clinics, home-service and repair businesses in Dallas–Fort Worth: real call scenarios, example transcripts and what each business needs to set up.',
@@ -53,7 +53,7 @@ const V = {
     en: { title: 'AI Receptionist for Dental, Chiropractic and PT Clinics | AI Man Jack', description: 'An AI receptionist for dental, chiropractic, physical therapy and acupuncture clinics in DFW: new-patient scheduling, approved insurance answers, reschedules, and an emergency protocol you define.',
       h1: 'New patients booked. Emergencies routed the way you decide.', sub: 'The AI schedules new and existing patients, answers from your approved insurance list, and follows your protocol for anything urgent.',
       scen: [['New patient', 'Are you taking new patients, and do you take Aetna?', 'Confirms from your approved insurance list, explains the new-patient visit length, and books it on Growth and Pro.'], ['Reschedule', 'I need to move my Tuesday adjustment.', 'Finds the existing time by name and phone, offers alternatives inside the provider’s hours, and confirms the change.'], ['Pain or urgent', 'My tooth broke and it really hurts.', 'Follows your emergency protocol: transfer to staff during hours, or read the after-hours instruction you wrote.']],
-      lines: [['c', '“I’m a new patient. Do you take Delta Dental?”'], ['a', '“Yes, Delta Dental is accepted. A new-patient visit is about an hour. I have Wednesday at 9:00 or Friday at 2:00.”'], ['c', '“Friday.”'], ['a', '“Friday at 2:00. Please arrive ten minutes early for forms. Can I get your name and date of birth for the chart?”']],
+      lines: [['c', '“I’m a new patient. Do you take Delta Dental?”'], ['a', '“Yes, Delta Dental is accepted. A new-patient visit is about an hour. I have Wednesday at 9:00 or Friday at 2:00.”'], ['c', '“Friday.”'], ['a', '“Friday at 2:00. Please arrive ten minutes early for forms. Can I get your name and a callback number?”']],
       result: 'New patient booked · Friday · 2:00 PM',
       needs: ['Accepted insurance list, exactly as you want it stated', 'Appointment types and durations: new patient, follow-up, adjustment', 'Provider schedules and which visits each provider takes', 'Emergency protocol: transfer number and after-hours instruction', 'What patient details the AI may collect on the call', 'Questions that must go to staff'],
       faq: [['Will it answer insurance questions?', 'Only from the list you approved, and it does not verify coverage. It can note the plan and tell the patient your front desk confirms benefits.'], ['What about emergencies?', 'It follows the protocol you write: transfer to staff during hours, and after hours it reads your instruction, which may include directing the caller to emergency services.'], ['Is this HIPAA compliant?', 'We make no compliance certification claim. Which patient details the AI may collect is decided with you before setup.'], ['Can patients reschedule?', 'Yes on Growth and Pro, following the provider’s hours and your notice rules.']],
@@ -62,7 +62,7 @@ const V = {
     zh: { title: '牙科、脊椎和物理治疗诊所的 AI 前台 | AI Man Jack', description: '面向 DFW 牙科、脊椎、物理治疗和针灸诊所的 AI 前台：新患者排期、按确认过的保险清单回答、改期，以及由你定的急诊处理规则。',
       h1: '新患者约好了。急诊按你定的规则转。', sub: 'AI 给新老患者排期，按你确认过的保险清单回答，紧急情况按你的规则处理。',
       scen: [['新患者', '你们接新患者吗？收 Aetna 吗？', '按你确认过的保险清单回答，说明新患者初诊时长，Growth 和 Pro 方案里直接约上。'], ['改期', '我周二的调整要挪一下。', '按姓名和电话找到原预约，在医生时间内给出备选，确认变动。'], ['疼痛或紧急', '我牙崩了，特别疼。', '按你的急诊规则走：营业时间内转给员工，下班后读你写的说明。']],
-      lines: [['c', '我是新患者，你们收 Delta Dental 吗？'], ['a', '收，Delta Dental 可以用。新患者初诊大约一小时。周三 9:00 或周五 2:00 有空。'], ['c', '周五。'], ['a', '周五 2:00。请提前十分钟到填表。方便留个姓名和出生日期建档吗？']],
+      lines: [['c', '我是新患者，你们收 Delta Dental 吗？'], ['a', '收，Delta Dental 可以用。新患者初诊大约一小时。周三 9:00 或周五 2:00 有空。'], ['c', '周五。'], ['a', '周五 2:00。请提前十分钟到填表。方便留个姓名和回电号码吗？']],
       result: '新患者已预约 · 周五 · 2:00 PM',
       needs: ['接受的保险清单，按你想要的说法写', '预约类型和时长：新患者、复诊、调整', '医生排班，各自接哪类就诊', '急诊规则：转接号码和下班后的说明', 'AI 在电话里可以收集哪些患者信息', '必须交给员工的问题'],
       faq: [['它会回答保险问题吗？', '只按你确认过的清单答，不核保。它可以记下保险计划，并告诉患者由前台确认福利。'], ['急诊怎么办？', '按你写的规则走：营业时间内转给员工，下班后读你的说明，说明里可以包括让来电者联系急救。'], ['符合 HIPAA 吗？', '我们不做合规认证的声明。AI 可以收集哪些患者信息，安装前和你一起定。'], ['患者能改期吗？', 'Growth 和 Pro 方案可以，按医生时间和你的通知规则。']],
@@ -114,6 +114,7 @@ const vertical = (lang, slug) => {
     title: c.title, description: c.description,
     body: `<div class="wrap">${bc.html}</div>${pageHero(lang, { eyebrow: ind.name, h1: c.h1, sub: c.sub })}
 <section class="section"><div class="wrap">${eyebrow(lang === 'zh' ? '真实来电场景' : 'Real call scenarios')}<h2>${lang === 'zh' ? '这家店会接到的三种电话' : 'Three calls this business gets'}</h2><div class="scenarios">${c.scen.map(([h, q, p]) => `<div class="card"><h3>${h}</h3><q>${q}</q><p>${p}</p></div>`).join('')}</div>${c.callout ? `<p class="callout">${c.callout}</p>` : ''}</div></section>
+${c.callout ? dataHandling(lang) : ''}
 <section class="section soft"><div class="wrap split"><div>${eyebrow(lang === 'zh' ? '示例通话' : 'Example call')}<h2>${lang === 'zh' ? '从头到尾' : 'Start to finish'}</h2><p class="lead">${lang === 'zh' ? '价格、人员和时段都来自店主确认过的信息。' : 'Prices, people and slots all come from the owner’s approved sheet.'}</p></div>${transcript(lang, c.lines, c.result)}</div></section>
 <section class="section"><div class="wrap"><h2>${lang === 'zh' ? '需要你准备什么' : 'What it needs from you'}</h2><ul class="needs">${c.needs.map((n) => `<li>${n}</li>`).join('')}</ul></div></section>
 <section class="section soft"><div class="wrap narrow"><h2>${lang === 'zh' ? '证据' : 'Proof'}</h2><p class="lead">${lang === 'zh' ? '这个行业的试点数据整理中。目前的真实项目见' : 'Pilot results for this industry are coming soon. Current real deployments are on the'} <a href="${L(lang, '/case-studies/')}">${lang === 'zh' ? '案例页' : 'case studies page'}</a>${lang === 'zh' ? '。' : '.'}</p></div></section>

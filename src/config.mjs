@@ -12,7 +12,7 @@ export const SMS_DISPLAY = '(469) 425-4142';
 
 // Secondary CTA. Empty = Jack's booking system is not live yet → CTA is "Email Jack" (mailto).
 // Set to the real booking page URL and the label switches to "Book a 15-min demo" everywhere.
-export const BOOK_URL = '';
+export const BOOK_URL = '/book/';   // src/pages/book.mjs; a site-relative path is localised per language
 
 export const GA4_ID = 'G-H7EF9HVN02';
 export const GBP_URL = 'https://g.page/r/CWX_rCfFduC1EAI';
@@ -20,6 +20,7 @@ export const GBP_URL = 'https://g.page/r/CWX_rCfFduC1EAI';
 // Pricing — approved 2026-09-09 (PRD §15). Change here only with Jack's decision.
 export const PRICING = {
   overage: 0.45,
+  addon: { website: 500 },   // Website + Google Business Profile: optional, one-time, any plan
   tiers: [
     { id: 'starter', monthly: 199, setup: 750,  minutes: 200,  recommended: false },
     { id: 'growth',  monthly: 299, setup: 1500, minutes: 300,  recommended: true },

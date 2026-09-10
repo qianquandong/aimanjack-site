@@ -10,7 +10,7 @@ AI Man Jack LLC 的官网，Jack Qian 在达拉斯的生意。2026-09-09 按 `ai
 |---|---|---|---|
 | 首页 | `/` | `/zh/` | Hero「Your phone can answer itself.」+ PhoneDemoCard + 怎么运作 + 示例通话 + 能力 + 行业 + 对接 + 案例 + 价格 + 创始人 + 12 条 FAQ + 终 CTA + GEO 事实段 |
 | 产品 | `/ai-receptionist/` | `/zh/ai-receptionist/` | 一通电话里发生什么、语言与边界、需要你准备什么 |
-| 价格 | `/pricing/` | `/zh/pricing/` | Starter $199+$750 / Growth $299+$1,500 / Pro $599+$2,000，完整对比表，服务条款白话版 |
+| 价格 | `/pricing/` | `/zh/pricing/` | Starter $199+$750 / Growth $299+$1,500 / Pro $599+$2,000，网站 + GBP 是 +$500 可选加购，完整对比表，服务条款白话版 |
 | 行业 | `/industries/` + `salons` `med-spas` `clinics` `home-services` `repair-services` | 同 `/zh/` | 每页 3 个来电场景、示例对话、需要准备什么、行业 FAQ |
 | 对接 | `/integrations/` | `/zh/integrations/` | 每项标 Supported / Pilot / Ask us |
 | 案例 | `/case-studies/` + `ai-man-jack` `car-dealership-sms` | 同 `/zh/` | 不编数字，写测了什么、还没验证什么 |
@@ -73,7 +73,7 @@ sh /Users/joseesp/aimanjack-site/deploy.sh               # 在 production 分支
 
 ## 7. 待 Jack
 
-1. 给 `BOOK_URL`（自建预约系统的链接）。计划和第三方对接测试清单在 `BOOKING-PLAN.md`。
+1. 预约系统：2026-09-09 晚 Codex 在本仓库开始做（`functions/`、`db/`、`wrangler.toml`、`src/pages/book.mjs`、`scripts/booking-smoke.mjs`），`BOOK_URL` 已指到 `/book/`。**两个 agent 别同时改同一个文件**；Codex 负责 book.mjs / functions / db / wrangler，Claude 负责其余页面。第三方对接测试清单在 `BOOKING-PLAN.md` §4。
 2. 车行案例：店名能不能公开、有没有数字。
 3. 演示线数据：Twilio CLI 本机已登录（profile `car-sms-agent`，两个号码都在），`twilio api:core:calls:list --to +14695172968 --start-time-after <date>` 拉通话记录，只发汇总，不发号码。第一个完整月（2026 年 10 月）结束后回填 `/case-studies/ai-man-jack/`。
 4. `/privacy` 最好加一段 AI 通话数据处理说明（现在只写了短信）；改之前想清楚 A2P 审核的影响。

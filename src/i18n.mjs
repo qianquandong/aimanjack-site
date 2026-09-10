@@ -36,21 +36,21 @@ export const T = {
     skip: '跳到正文', menu: '菜单', close: '关闭',
     nav: { how: '怎么运作', useCases: '适用行业', pricing: '价格', cases: '案例', about: '关于' },
     cta: {
-      call: '打给 AI', callNow: '立即拨打', email: '给 Jack 发邮件', book: '预约 15 分钟演示',
+      call: '打电话试一下', callNow: '现在就打', email: '给 Jack 发邮件', book: '预约 15 分钟演示',
       seeHow: '看看怎么运作', viewPricing: '看价格', readCase: '看完整案例', text: '给 Jack 发短信',
-      noSignup: '不用注册，直接打。', callYourself: '你也打一个试试',
+      noSignup: '不用注册，拿起电话就能试。', callYourself: '你也打一个试试',
     },
     demo: {
-      try: '试试这个 AI 前台', alwaysOn: '全天 24 小时在线', langs: '英语 · 西班牙语 · 中文',
+      try: '现在就试试', alwaysOn: '24 小时都在', langs: '中文 · 英文 · 西班牙语',
       live: '通话中', role: 'AI 前台', customer: '顾客', ai: 'AI', booked: '预约已确认',
       example: '示例对话',
     },
     modal: {
-      title: '打给 AI 前台', scan: '用手机扫码直接拨号，或者手动拨这个号码。',
-      tryAsking: '可以试试', prompts: ['问问价格。', '试着约个时间。', '再试试改时间。'],
+      title: '打电话试一下', scan: '用手机扫一下就能拨号，或者直接拨这个号码。',
+      tryAsking: '可以这样问', prompts: ['问问价格。', '约个时间。', '再改一次时间。'],
       copy: '复制号码', copied: '号码已复制', qrAlt: '扫码拨打 AI 演示线的二维码',
     },
-    sticky: '打给 AI',
+    sticky: '打电话试一下',
     footer: {
       product: '产品', solutions: '行业', company: '公司', location: '所在地',
       how: '怎么运作', pricing: '价格', integrations: '对接', cases: '案例', product_page: 'AI 前台',

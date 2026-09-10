@@ -1,6 +1,6 @@
 import { SITE, DEMO_DISPLAY } from '../config.mjs';
 import { L } from '../layout.mjs';
-import { eyebrow, pageHero, breadcrumb, phoneCard, howItWorks, transcript, capabilities, industryCards, integrationList, pricingCards, faq, faqJsonLd, finalCta, geoFacts, HOME_FAQ, SERVICE_LD, BUSINESS_REF, T } from '../components.mjs';
+import { eyebrow, pageHero, breadcrumb, phoneCard, howItWorks, transcript, capabilities, industryCards, integrationList, pricingCards, faq, faqJsonLd, finalCta, geoFacts, dataHandling, HOME_FAQ, SERVICE_LD, BUSINESS_REF, T } from '../components.mjs';
 
 const copy = {
   en: {
@@ -34,9 +34,9 @@ const copy = {
     title: '接电话、约时间的 AI 前台 | AI Man Jack',
     description: 'AI Man Jack 的 AI 前台怎么运作：只回答确认过的问题、记下来电信息、完成预约，不该答的时候交接给人。支持英语、西班牙语和中文。',
     crumb: 'AI 前台', eyebrow: '产品',
-    h1: '会接、会约、也知道什么时候该交给人的 AI 前台。',
-    sub: '每次都接得起，只按你确认过的信息回答，把电话变成一个预约，或者一次干净的交接。不即兴发挥。',
-    tryH: '先听，再读。', trySub: '演示线就是这个产品，只是配的是我们自己的信息。问问服务多少钱，约个时间，再改一次时间。',
+    h1: '会接电话、会预约，也知道什么时候该找人的 AI 前台。',
+    sub: '电话次次接得起，只说你确认过的，要么约成一个预约，要么干净地交给人。不瞎编。',
+    tryH: '先打个电话听听，再往下看。', trySub: '演示线就是这套产品，只是配的是我们自己的信息。问问多少钱，约个时间，再改一次。',
     flowH: '一通电话里发生了什么', flow: [
       ['问候', 'AI 报上你的店名，问需要什么帮助。来电者可以说英语、西班牙语或中文。'],
       ['听懂需求', '它先分类：问问题、要预约、改预约，还是它不该处理的事。'],
@@ -72,6 +72,7 @@ ${howItWorks(lang)}
 ${capabilities(lang)}
 <section class="section"><div class="wrap"><h2>${c.needsH}</h2><p class="lead">${c.needsSub}</p><ul class="needs">${c.needs.map((n) => `<li>${n}</li>`).join('')}</ul></div></section>
 <section class="section soft"><div class="wrap"><h2>${c.langH}</h2><div class="grid-3">${c.lang.map(([h, p]) => `<div class="card"><h3>${h}</h3><p>${p}</p></div>`).join('')}</div></div></section>
+${dataHandling(lang)}
 ${industryCards(lang)}
 <section class="section"><div class="wrap">${eyebrow(t.footer.integrations)}<h2>${lang === 'zh' ? '对接状态' : 'Integration status'}</h2>${integrationList(lang, { compact: true })}<p style="margin-top:24px"><a href="${L(lang, '/integrations/')}" data-event="integration_click">${lang === 'zh' ? '所有对接' : 'All integrations'} &rarr;</a></p></div></section>
 <section class="section" id="pricing"><div class="wrap">${eyebrow(t.nav.pricing)}<h2>${c.priceH}</h2><p class="lead">${c.priceSub}</p>${pricingCards(lang, { pos: 'product-pricing' })}<p style="margin-top:24px"><a href="${L(lang, '/pricing/')}">${t.cta.viewPricing} &rarr;</a></p></div></section>

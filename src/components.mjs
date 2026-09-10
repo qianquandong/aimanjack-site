@@ -69,7 +69,7 @@ const FAQ = {
     ['How long does setup take?', 'About one week after we receive your hours, services, prices and booking rules, then a tuning period that varies by business.'],
     ['What happens if the phone or booking integration fails?', 'The fallback flow runs, so callers can still leave a message, be transferred, or have their details texted to you. Jack is notified and fixes the connection.'],
     ['Can I turn the AI off?', 'Yes. Contact Jack and call forwarding is switched off. Your phone rings the way it did before.'],
-    ['Who owns the number and data?', 'Your website files and domain are yours, and you pay the domain renewal. Included hosting ends with the service. Call data stays in your account and is not sold. The AI phone number is provided by AI Man Jack and stays with AI Man Jack after cancellation; if you forwarded your own number, forwarding is simply switched off and your number is untouched.'],
+    ['Who owns the number and data?', 'Your number is yours. If you forwarded your existing number, forwarding is switched off and nothing else changes. If AI Man Jack provisioned a number for your business, it can be transferred or ported to you when service ends, subject to carrier requirements. No vendor lock-in. Your website files and domain are yours too; included hosting ends with the service. Call data stays in your account and is not sold.'],
     ['Is this appropriate for healthcare businesses?', 'Clinics are welcome. Sensitive or regulated workflows are discussed before setup, and no compliance certification is claimed.'],
   ],
   zh: [
@@ -83,7 +83,7 @@ const FAQ = {
     ['安装要多久？', '收到你的营业时间、服务项目、价格和预约规则后，大约一周上线，之后还有一段磨合期，长短看店的情况。'],
     ['电话或预约对接出问题怎么办？', '兜底流程会接上：来电者仍然可以留言、转接，或者把信息短信发给你。Jack 会收到通知去修。'],
     ['我能把 AI 关掉吗？', '能。联系 Jack，关掉呼叫转接，你的电话就和以前一样响。'],
-    ['号码和数据归谁？', '网站文件和域名都是你的，域名续费由你付。服务停止后，包含的托管也随之停止。通话数据留在你的账户里，不会出售。AI 号码由 AI Man Jack 提供，取消后仍归 AI Man Jack；如果你用的是自己号码转接，关掉转接即可，你的号码不受影响。'],
+    ['号码和数据归谁？', '号码是你的。用自己号码转接的，关掉转接就行，别的都不变。号码是 AI Man Jack 帮你申请的，服务结束时可以转到你名下（按运营商的规定办）。不锁你。网站文件和域名也是你的，服务停止后包含的托管随之停止。通话数据留在你的账户里，不会出售。'],
     ['医疗类商家适合用吗？', '诊所欢迎。涉及敏感或受监管流程的，安装前先聊；我们不做任何合规认证的声明。'],
   ],
 };
@@ -126,11 +126,11 @@ ${cta ? `<p class="transcript-cta">${callBtn(lang, { event: 'demo_call_click', p
 // How it works — three steps, each with a small product-UI visual (PRD §9).
 export function howItWorks(lang, id = 'how') {
   const s = lang === 'zh' ? {
-    h: '从一通电话，到一个确认的预约。',
+    h: '从电话响，到预约成。',
     steps: [
-      ['顾客来电', '保留你现在的号码，或者把来电转给 AI，看设置怎么定。', `<div class="mini incoming"><span class="mini-dot"></span><b>来电</b><span>(214) ··· ····</span></div>`],
-      ['AI 接起来聊', '它回答已确认的问题、查空位，按你的预约规则走。', `<div class="mini chat"><p class="b cust">周六上午有空吗？</p><p class="b ai">有，10:30 可以。</p></div>`],
-      ['预约确认', '预约进入接好的预约流程，顾客收到确认。', `<div class="mini booked-mini"><span class="check">&#10003;</span><b>已预约</b><span>周六 · 10:30 AM</span></div>`],
+      ['客户打进来', '用你现在的号码转接，或者给 AI 一个新号码，装的时候定。', `<div class="mini incoming"><span class="mini-dot"></span><b>来电</b><span>(214) ··· ····</span></div>`],
+      ['AI 接起来聊', '只答你确认过的问题，查空位，按你店里的规矩约。', `<div class="mini chat"><p class="b cust">周六上午有空吗？</p><p class="b ai">有，10:30 可以。</p></div>`],
+      ['预约成了', '预约进你的系统，客户收到确认，你不用管。', `<div class="mini booked-mini"><span class="check">&#10003;</span><b>已预约</b><span>周六 · 10:30 AM</span></div>`],
     ],
   } : {
     h: 'From phone call to booked appointment.',
@@ -146,10 +146,10 @@ export function howItWorks(lang, id = 'how') {
 
 export function capabilities(lang) {
   const c = lang === 'zh' ? { h: '你们每天在接的那些电话。', cards: [
-    ['营业问题', '营业时间、地址、服务项目，以及你确认过的价格。'],
-    ['预约', '查空位、预约、改期，支持的方案里还能取消。'],
-    ['留资', '来电者姓名、电话、想做的项目、方便的时间。'],
-    ['交接', '转给真人、留言，或者把来电信息短信发给你。AI 不该答的，就按你设的兜底方式走。'],
+    ['问店里的事', '几点开门、在哪儿、做什么项目、多少钱，都按你确认过的说。'],
+    ['约时间', '查空位、约、改期，Growth 以上还能取消。'],
+    ['记下客人信息', '姓名、电话、想做什么、什么时候方便。'],
+    ['交给人', '转给你或员工、留言，或者把来电信息短信发给你。AI 不该答的，按你定的方式处理。'],
   ] } : { h: 'The calls your team answers every day.', cards: [
     ['Business questions', 'Hours, location, service information and the pricing you approve.'],
     ['Scheduling', 'Check availability, book, reschedule, and cancel on plans that include it.'],
@@ -161,11 +161,15 @@ export function capabilities(lang) {
 }
 
 export function industryCards(lang, { heading = true, hl = 'h3' } = {}) {
-  const other = lang === 'zh' ? ['其他预约制生意', '不在列表里？说说你怎么接电话。'] : ['Other appointment businesses', 'Not listed? Tell us how you take calls today.'];
-  return `${heading ? `<section class="section" id="industries"><div class="wrap">${eyebrow(T[lang].nav.useCases)}<h2>${lang === 'zh' ? '为靠预约吃饭的生意而做。' : 'Built for businesses that run on appointments.'}</h2>` : ''}
+  const other = lang === 'zh' ? ['其他行业', '不在这个单子里？跟我们说说你们店怎么接电话。'] : ['Other appointment businesses', 'Not listed? Tell us how you take calls today.'];
+  return `${heading ? `<section class="section" id="industries"><div class="wrap">${eyebrow(T[lang].nav.useCases)}<h2>${lang === 'zh' ? '靠预约吃饭的生意，都用得上。' : 'Built for businesses that run on appointments.'}</h2>` : ''}
 <div class="grid-3 industry-grid">${INDUSTRIES.map((i) => `<a class="card link-card" href="${L(lang, `/industries/${i.slug}/`)}"><${hl} class="h3">${i[lang].name}</${hl}><p>${i[lang].tag}</p><span class="arrow" aria-hidden="true">&rarr;</span></a>`).join('')}
 <a class="card link-card" href="${L(lang, '/contact/')}"><${hl} class="h3">${other[0]}</${hl}><p>${other[1]}</p><span class="arrow" aria-hidden="true">&rarr;</span></a></div>${heading ? '</div></section>' : ''}`;
 }
+
+export const integrationLine = (lang) => lang === 'zh'
+  ? `<p class="int-line">自带预约系统 · 现有号码转接 · Google 日历测试中 · <a href="${L(lang, '/integrations/')}" data-event="integration_click">全部对接和状态 &rarr;</a></p>`
+  : `<p class="int-line">Booking system included · Call forwarding supported · Google Calendar pilot · <a href="${L(lang, '/integrations/')}" data-event="integration_click">All integrations and their status &rarr;</a></p>`;
 
 export function integrationList(lang, { compact = false, hl = 'h3' } = {}) {
   const rows = INTEGRATIONS.filter((c) => !compact || ['Booking', 'Calendar', 'Phone system'].includes(c.cat.en)).map((c) =>
@@ -179,8 +183,9 @@ export function caseCards(lang, { hl = 'h3' } = {}) {
 
 // Pricing (PRD §15, approved table). compact = three cards only; full = cards + comparison table.
 const TIER_COPY = {
-  en: { starter: ['Starter', 'Basic phone reception for a business that already has a website.'], growth: ['Growth', 'AI receptionist, booking, and a one-page website.'], pro: ['Pro', 'More minutes and more complex reception within one location.'],
+  en: { starter: ['Starter', 'AI receptionist: answers approved questions, takes messages, transfers calls. No booking.'], growth: ['Growth', 'Everything in Starter, plus booking, rescheduling and cancellation.'], pro: ['Pro', 'Everything in Growth, plus multiple staff, services and routing within one location.'],
     recommended: 'Recommended', mo: '/ month', setup: 'one-time setup', minutes: 'minutes / month included', overage: 'overage', choose: 'Start with', full: 'See the full comparison',
+    addon: ['Optional add-on: website + Google Business Profile', `+${money(PRICING.addon.website)} one-time, on any plan`, ['One-page booking-focused website with call and booking entry points', 'Hosting and basic SEO setup (titles, descriptions, sitemap) while the service is active', 'Google Business Profile reviewed and corrected to match what the AI says', 'Already have a website? Skip this. The AI works with it as is.']],
     rows: [
       ['Monthly fee', (t) => `<b>${money(t.monthly)}</b> / month`],
       ['One-time setup fee', (t) => `<b>${money(t.setup)}</b>`],
@@ -188,14 +193,12 @@ const TIER_COPY = {
       ['Voice overage', () => `$${PRICING.overage.toFixed(2)} / minute`],
       ['AI FAQs, messages and call transfers', () => 'Included'],
       ['AI booking, rescheduling and cancellation', (t) => ({ starter: 'Not included', growth: 'One standard booking workflow', pro: 'Multiple staff and service routing within one location' })[t.id]],
-      ['Website', (t) => ({ starter: 'Use your existing website; no website build included', growth: 'One-page booking-focused website', pro: 'Business website with up to 3 pages' })[t.id]],
-      ['Mobile-friendly site with call and booking entry points', (t) => t.id === 'starter' ? 'No website work included' : 'Included'],
-      ['Basic website SEO setup', (t) => t.id === 'starter' ? 'Not included' : 'Included'],
-      ['Website hosting', (t) => t.id === 'starter' ? 'Not included' : 'Included'],
       ['Call review and reporting', (t) => ({ starter: 'Monthly summary', growth: 'Monthly spot checks and summary', pro: 'Weekly spot checks and monthly summary' })[t.id]],
+      ['Website + Google Business Profile', () => `Optional add-on, +${money(PRICING.addon.website)} one-time`],
     ] },
-  zh: { starter: ['Starter', '已经有网站、只需要基础电话接待的商家。'], growth: ['Growth', 'AI 前台、预约，加一个单页网站。'], pro: ['Pro', '更多分钟数，单店内更复杂的接待。'],
+  zh: { starter: ['Starter', 'AI 前台：答你确认过的问题、留言、转接。不做预约。'], growth: ['Growth', 'Starter 的全部，加上预约、改期、取消。'], pro: ['Pro', 'Growth 的全部，加上单店内多员工、多项目分流。'],
     recommended: '推荐', mo: '/ 月', setup: '一次性安装费', minutes: '分钟 / 月', overage: '超出部分', choose: '选择', full: '看完整对比',
+    addon: ['可选加购：网站 + Google 商家资料', `一次性 +${money(PRICING.addon.website)}，任何方案都能加`, ['单页预约型网站，带拨号和预约入口', '服务期间含托管和基础 SEO 设置（标题、描述、sitemap）', 'Google 商家资料检查并改正，和 AI 说的一致', '已经有网站？不用加，AI 直接配你现有的网站。']],
     rows: [
       ['月费', (t) => `<b>${money(t.monthly)}</b> / 月`],
       ['一次性安装费', (t) => `<b>${money(t.setup)}</b>`],
@@ -203,11 +206,8 @@ const TIER_COPY = {
       ['超出部分', () => `每分钟 $${PRICING.overage.toFixed(2)}`],
       ['AI 答疑、留言、转接', () => '包含'],
       ['AI 预约、改期、取消', (t) => ({ starter: '不包含', growth: '一套标准预约流程', pro: '单店内多员工、多项目分流' })[t.id]],
-      ['网站', (t) => ({ starter: '用你现有的网站，不含建站', growth: '单页预约型网站', pro: '最多 3 页的商家网站' })[t.id]],
-      ['手机端友好，带拨号和预约入口', (t) => t.id === 'starter' ? '不含网站工作' : '包含'],
-      ['基础网站 SEO 设置', (t) => t.id === 'starter' ? '不包含' : '包含'],
-      ['网站托管', (t) => t.id === 'starter' ? '不包含' : '包含'],
       ['通话回顾与报告', (t) => ({ starter: '每月摘要', growth: '每月抽查 + 摘要', pro: '每周抽查 + 每月摘要' })[t.id]],
+      ['网站 + Google 商家资料', () => `可选加购，一次性 +${money(PRICING.addon.website)}`],
     ] },
 };
 
@@ -227,30 +227,35 @@ export function pricingTable(lang) {
 <tbody>${c.rows.map(([label, f]) => `<tr><th scope="row">${label}</th>${PRICING.tiers.map((t) => `<td>${f(t)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
 }
 
+export function addonBlock(lang) {
+  const [h, price, items] = TIER_COPY[lang].addon;
+  return `<div class="addon"><div><p class="eyebrow">${lang === 'zh' ? '加购' : 'Add-on'}</p><h2 class="h3">${h}</h2><p class="addon-price">${price}</p></div><ul>${items.map((i) => `<li>${i}</li>`).join('')}</ul></div>`;
+}
+
 export function contactSales(lang) {
   const s = lang === 'zh'
-    ? ['多店、双语网站，或者要定制对接？', '联系我们聊范围和报价。', '联系 Jack']
-    : ['Need multiple locations, a bilingual website or custom integrations?', 'Contact us to discuss scope and pricing.', 'Contact Jack'];
-  return `<div class="contact-sales"><div><h2 class="h3">${s[0]}</h2><p>${s[1]}</p></div><a class="btn btn-secondary" href="mailto:${EMAIL}?subject=${encodeURIComponent(lang === 'zh' ? '定制方案咨询' : 'Custom scope')}" data-event="email_click" data-pos="contact-sales">${s[2]}</a></div>`;
+    ? ['多店、双语网站，或者要定制对接？', '约 15 分钟，聊范围和报价。']
+    : ['Need multiple locations, a bilingual website or custom integrations?', 'Book 15 minutes to talk scope and pricing.'];
+  return `<div class="contact-sales"><div><h2 class="h3">${s[0]}</h2><p>${s[1]}</p></div>${secondaryBtn(lang, { pos: 'contact-sales' })}</div>`;
 }
 
 export function founder(lang) {
   const f = lang === 'zh'
-    ? ['本地搭建，真人负责。', 'AI Man Jack 帮 DFW 的商家装上实用的 AI 系统，省下员工时间，接住漏掉的机会。安装、测试和后续支持都由 Jack 本人负责。', '认识 Jack']
+    ? ['达拉斯本地搭建，有问题找得到人。', 'AI Man Jack 帮 DFW 的华人老板和本地商家装实用的 AI 系统，省下员工时间，接住漏掉的客人。安装、测试、后来的支持，都是 Jack 本人。', '认识 Jack']
     : ['Built locally. Supported by a real person.', 'AI Man Jack helps DFW businesses install practical AI systems that save staff time and capture missed opportunities. Jack handles setup, testing, and ongoing support.', 'About Jack'];
   return `<section class="section founder"><div class="wrap founder-row"><img src="/img/jack-portrait-256.webp" width="128" height="128" loading="lazy" decoding="async" alt="Jack Qian"><div><h2>${f[0]}</h2><p>${f[1]}</p><a href="${L(lang, '/about/')}">${f[2]} &rarr;</a></div></div></section>`;
 }
 
 export function faq(lang, items = FAQ[lang], { heading = true } = {}) {
   const h = lang === 'zh' ? '常见问题' : 'Common questions';
-  return `${heading ? `<section class="section" id="faq"><div class="wrap narrow"><h2>${h}</h2>` : ''}<div class="faq">${items.map(([q, a], i) => `<details${i === 0 ? ' open' : ''}><summary>${q}</summary><div class="faq-a"><p>${a}</p></div></details>`).join('')}</div>${heading ? '</div></section>' : ''}`;
+  return `${heading ? `<section class="section" id="faq"><div class="wrap narrow"><h2>${h}</h2>` : ''}<div class="faq">${items.map(([q, a], i) => `<details><summary>${q}</summary><div class="faq-a"><p>${a}</p></div></details>`).join('')}</div>${heading ? '</div></section>' : ''}`;
 }
 export const faqJsonLd = (items) => ({ '@type': 'FAQPage', mainEntity: items.map(([q, a]) => ({ '@type': 'Question', name: q.replace(/<[^>]+>/g, ''), acceptedAnswer: { '@type': 'Answer', text: a.replace(/<[^>]+>/g, '') } })) });
 export const HOME_FAQ = FAQ;
 
 export function finalCta(lang, { h, sub } = {}) {
   const d = lang === 'zh'
-    ? ['先试，再买。', '打给 AI 前台，让它给你约个时间。问问价格，试着预约，再试试改时间。']
+    ? ['先试，再买。', '打个电话给 AI 前台，让它给你约个时间。问问价格，约个时间，再改一次。']
     : ['Try it before you buy it.', 'Call the AI receptionist and ask it to book an appointment. Ask about price. Ask for an appointment. Try changing the time.'];
   return `<section class="section final-cta" id="start"><div class="wrap narrow center"><h2>${h || d[0]}</h2><p class="lead">${sub || d[1]}</p>
 <div class="cta-row center">${callBtn(lang, { event: 'demo_call_click', pos: 'final', cls: 'btn-lg' })}${secondaryBtn(lang, { pos: 'final', cls: 'btn-lg' })}</div>
@@ -269,6 +274,18 @@ export function geoFacts(lang) {
     ['Where service is available', 'Dallas–Fort Worth, including Dallas, Fort Worth, Plano, Richardson, Frisco, McKinney and Arlington, and remote implementation where supported.'],
   ];
   return `<section class="section facts"><div class="wrap"><div class="grid-3">${g.map(([h, p]) => `<div><h2 class="h3">${h}</h2><p>${p}</p></div>`).join('')}</div></div></section>`;
+}
+
+// Data-handling trust block (facts from Jack, 2026-09-09: no recordings, no transcripts stored).
+export function dataHandling(lang) {
+  const d = lang === 'zh' ? {
+    h: '通话数据，能少存就少存', items: ['不录音。', 'AI Man Jack 不保存对话文字记录。', '只把完成预约流程需要的信息（姓名、电话、项目、时间）写进你的系统。', '电话线路（Twilio）只留通话元数据：时间、时长、号码。'],
+    note: '医疗类部署逐家审核。整条流程没验证完之前，我们不做 HIPAA 合规的声明。',
+  } : {
+    h: 'Designed to minimize call data', items: ['No call recordings.', 'No conversation transcripts stored by AI Man Jack.', 'Only the information needed to complete the configured workflow (name, phone, service, time) is passed into your business system.', 'The phone carrier (Twilio) keeps call metadata only: time, duration, numbers.'],
+    note: 'Healthcare deployments are reviewed individually. We do not claim HIPAA compliance unless the complete workflow has been verified.',
+  };
+  return `<section class="section soft" id="data"><div class="wrap split"><div><h2>${d.h}</h2><p class="lead">${d.note}</p></div><ul class="needs" style="columns:1">${d.items.map((i) => `<li>${i}</li>`).join('')}</ul></div></section>`;
 }
 
 // Breadcrumb html + JSON-LD. items: [[label, path(EN)]] excluding home.

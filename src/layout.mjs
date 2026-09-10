@@ -11,7 +11,7 @@ export const callBtn = (lang, { event = 'demo_call_click', pos = '', cls = '', l
   `<a class="btn btn-primary ${cls}" href="tel:${DEMO_TEL}" data-call data-event="${event}" data-pos="${pos}">${label || T[lang].cta.call}</a>`;
 
 export const secondaryBtn = (lang, { pos = '', cls = '' } = {}) => BOOK_URL
-  ? `<a class="btn btn-secondary ${cls}" href="${BOOK_URL}" data-event="book_demo_click" data-pos="${pos}">${T[lang].cta.book}</a>`
+  ? `<a class="btn btn-secondary ${cls}" href="${BOOK_URL.startsWith('/') ? L(lang, BOOK_URL) : BOOK_URL}" data-event="book_demo_click" data-pos="${pos}">${T[lang].cta.book}</a>`
   : `<a class="btn btn-secondary ${cls}" href="mailto:${EMAIL}?subject=${encodeURIComponent(lang === 'zh' ? 'AI 前台咨询' : 'AI receptionist demo')}" data-event="email_click" data-pos="${pos}">${T[lang].cta.email}</a>`;
 
 export const textLink = (lang, { pos = '', body = '' } = {}) =>

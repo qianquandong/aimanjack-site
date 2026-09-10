@@ -1875,11 +1875,11 @@ Answers to the 38 pre-implementation questions. This section overrides any confl
 
 | # | Question | Decision |
 |---|---|---|
-| 16 | Structure | Approved initial tiers: Starter $199/month + $750 setup; Growth (recommended) $299/month + $1,500 setup; Pro $599/month + $2,000 setup. Separate Contact Sales block for custom requirements. Section 15 contains the full approved comparison. |
-| 17 | Website inclusion | Starter uses the existing website with no website build. Growth includes a one-page website; Pro includes up to 3 pages. Remove the separate $500 website add-on. Omit GBP from public package copy. |
+| 16 | Structure | Tiers: Starter $199/month + $750 setup (FAQs, messages, transfers); Growth (recommended) $299/month + $1,500 setup (adds booking, reschedule, cancel); Pro $599/month + $2,000 setup (adds multi-staff, services, routing). **Revised 2026-09-09 (review round 2):** website is no longer bundled into Growth/Pro. Separate Contact Sales block for custom requirements. |
+| 17 | Website inclusion | **Revised 2026-09-09 (review round 2):** Website + Google Business Profile is an optional add-on on any plan, +$500 one-time (one-page booking-focused site, hosting and basic SEO while active, GBP reviewed and corrected). Businesses with a website skip it. |
 | 18 | Included minutes | Starter 200, Growth 300, Pro 1,000 minutes/month; all tiers $0.45/minute overage. No estimated call-count conversion. Prices approved for initial testing; actual cost validation remains open. |
 | 19 | Support scope | Public table shows call review/reporting only: monthly summary / monthly spot checks and summary / weekly spot checks and monthly summary. Omit routine information-change allowances from public pricing; define maintenance in the service agreement. No response-time promise. |
-| 20 | Ownership after cancel | Client retains website files and domain and pays domain renewal. Included hosting ends with service. AI number: provided by AI Man Jack and stays with AI Man Jack after cancellation (Jack, 2026-09-09); a client's own forwarded number is untouched. |
+| 20 | Ownership after cancel | Client retains website files and domain and pays domain renewal. Included hosting ends with service. **AI number (revised 2026-09-09, review round 2): the client's number is theirs; a number AI Man Jack provisioned can be transferred/ported to the client at end of service, subject to carrier requirements. No vendor lock-in.** |
 | 21 | Go-live | About one week, then a tuning period of variable length. |
 
 ## Product facts
@@ -1913,6 +1913,10 @@ Answers to the 38 pre-implementation questions. This section overrides any confl
 | 36 | Analytics | Rename to PRD event names; update health script. |
 | 37 | `/case-studies/*` redirect | Removed, because case-study pages now exist. Other redirects stay. |
 | 38 | `/terms` | New short page; Jack reviews the text. |
+
+## Review round 2 (2026-09-09, evening)
+
+Jack forwarded an external review. Applied: secondary CTA is **Book a 15-min demo** → `/book/` (booking system being built by Codex in this repo, BOOKING-PLAN.md W1); number ownership → client (port out); pricing → website/GBP back to a +$500 add-on; Chinese hero and core copy rewritten for Chinese-American owners (not translated); clinic and med-spa pages get a **Designed to minimize call data** block (no recordings, no transcripts stored, only workflow data passed on; no HIPAA claim); DOB removed from the clinic example call; homepage integrations collapsed to one line; FAQ collapsed by default.
 
 ## Open items for Jack
 

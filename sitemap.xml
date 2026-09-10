@@ -2,6 +2,8 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://aimanjack.com/about/</loc><lastmod>2026-09-10</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://aimanjack.com/zh/about/</loc><lastmod>2026-09-10</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://aimanjack.com/book/</loc><lastmod>2026-09-10</lastmod><changefreq>yearly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://aimanjack.com/zh/book/</loc><lastmod>2026-09-10</lastmod><changefreq>yearly</changefreq><priority>0.6</priority></url>
   <url><loc>https://aimanjack.com/case-studies/</loc><lastmod>2026-09-10</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://aimanjack.com/zh/case-studies/</loc><lastmod>2026-09-10</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://aimanjack.com/case-studies/ai-man-jack/</loc><lastmod>2026-09-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>

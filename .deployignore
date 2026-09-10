@@ -14,3 +14,7 @@ scripts
 Satoshi-Variable.woff2
 .planning
 src
+db
+functions
+wrangler.toml
+.dev.vars
