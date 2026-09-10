@@ -37,7 +37,7 @@ node scripts/build.mjs        # src/ → 38 个 HTML + sitemap.xml
 | `src/qr-demo.svg` | 拨号二维码，`npx qrcode -t svg "tel:+14695172968"` 生成 |
 | `style.css` | 唯一样式表；deploy 时压缩并按内容 hash 换 `?v=` |
 
-**预约系统（2026-09-09 W1 已建）**：`BOOK_URL = '/book/'`，全站第二 CTA 已是「Book a 15-min demo」（事件 `book_demo_click`）。页面在 `src/pages/book.mjs`，API 是 Pages Function `functions/v1/[[route]].js`（同域 `/v1/*`，随 deploy.sh 一起上线），数据在 D1 `aimanjack-booking`（建表和种子 `db/schema.sql`，绑定在 `wrangler.toml`）。改 Jack 的可约时间 = 改 `availability_rules` 表（现在周一到周五 19:00–21:00、周六 10:00–18:00，中部时间）；放假用 `blocks` 表。看预约：`GET /v1/bookings?business=aimanjack`，带 `Authorization: Bearer <ADMIN_TOKEN>`（令牌在本机 `.dev.vars`，Pages secret 已设 production + preview）。改完 API 跑 `node scripts/booking-smoke.mjs <base-url> <token>`。
+**预约系统（2026-09-09 W1 已建）**：`BOOK_URL = '/book/'`，全站第二 CTA 已是「Book a 15-min demo」（事件 `book_demo_click`）。页面在 `src/pages/book.mjs`，API 是 Pages Function `functions/v1/[[route]].js`（同域 `/v1/*`，随 deploy.sh 一起上线），数据在 Supabase（项目 aimanjack-crm，schema `booking`；建表和种子 `db/schema.sql`，用 `node scripts/supabase-sql.mjs db/schema.sql` 应用，Management API 免 psql）。改 Jack 的可约时间 = 改 `availability_rules` 表（现在周一到周五 19:00–21:00、周六 10:00–18:00，中部时间）；放假用 `blocks` 表。看预约：`GET /v1/bookings?business=aimanjack`，带 `Authorization: Bearer <ADMIN_TOKEN>`（令牌在本机 `.dev.vars`，Pages secret 已设 production + preview）。API 还要一个 Pages secret `SB_SECRET_KEY`（Supabase 秘密 key，production + preview 都要）。改完 API 跑 `node scripts/booking-smoke.mjs <base-url> <token>`。
 
 **改价格**：只改 `src/config.mjs` 的 `PRICING` 和 `src/components.mjs` 的 `TIER_COPY`，重建；schema 的 Offer 也跟着变。
 

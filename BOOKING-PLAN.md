@@ -8,12 +8,12 @@
 
 | 块 | 内容 | 给谁用 |
 |---|---|---|
-| 数据 | Cloudflare D1：`businesses` `services` `staff` `availability_rules` `blocks` `bookings` `events`（每次改动一条流水） | 全部 |
+| 数据 | Supabase Postgres（schema `booking`，Jack 2026-09-09 决定，不用 D1）：`businesses` `services` `staff` `availability_rules` `blocks` `bookings` `events`（每次改动一条流水） | 全部 |
 | API | 一个 Worker：`GET /v1/availability`、`POST /v1/bookings`、`PATCH /v1/bookings/:id`（改期）、`DELETE /v1/bookings/:id`（取消）、`GET /v1/bookings?business=…`；每个写请求带 `Idempotency-Key`；时区固定 `America/Chicago`，对外只用 ISO 8601 带时区 | 网页、语音 agent、短信 agent |
 | 网页预约 | `https://aimanjack.com/book/`（静态页 + 一小段 JS 调 API），选服务 → 选时段 → 留姓名电话 → 确认页。这个地址就是 `src/config.mjs` 的 `BOOK_URL` | 网站访客 |
 | 语音工具 | 给 `voice-rt` 加四个 tool：`check_availability` `create_booking` `reschedule_booking` `cancel_booking`，全部打同一个 API，AI 只复述 API 返回的时段，不自己算 | 演示线，之后是客户的线 |
 | 通知 | 来电者：确认短信（从 (469) 425-4142 发，A2P 已覆盖这个号；文案要走 SMS terms）。店主：每条新预约 / 改期 / 取消一条摘要短信。Jack 自己：同步到 Google Calendar（Pilot） | 全部 |
-| 管理 | 先不做后台。用 `wrangler d1 execute` 和一个只读的 `/v1/bookings` 列表（Cloudflare Access 保护）看数据 | Jack |
+| 管理 | 先不做后台。用 Supabase 后台 / `scripts/supabase-sql.mjs` 和一个只读的 `/v1/bookings` 列表（Cloudflare Access 保护）看数据 | Jack |
 
 不做的：支付和定金、多店、员工登录、顾客账户、邮件提醒。这些等第一个付费客户提出再说。
 
@@ -24,14 +24,14 @@
 - 提前量：最早 `min_lead_min`（默认 60 分钟），最远 `max_days_ahead`（默认 30 天）。
 - 每时段容量 `capacity`（上门服务用「时间窗 + 容量」，美发用「staff + 时长」，同一套字段）。
 - 改期和取消受 `cancel_window_hours` 限制，超过窗口 API 拒绝并返回原因，AI 照着说。
-- 双重预订用 D1 事务 + 唯一索引 `(staff_id, start_at)` 挡住。
+- 双重预订用 Postgres 函数 `booking.create_booking` / `move_booking` 挡住：每个 staff 一把 advisory lock，锁内查容量再写。
 - 每次写入记 `events`（who: web / voice / sms / admin），案例页的数字从这张表出。
 
 ## 3. 里程碑
 
 | 周 | 交付 | 验收 |
 |---|---|---|
-| W1 ✅ 2026-09-09 | D1 建表 + API + `/book/` 页面，只配 AI Man Jack 自己（一个 service：15 分钟通话）。实现：Pages Function `functions/v1/[[route]].js` + D1 `aimanjack-booking` + `src/pages/book.mjs`；列表接口用 Bearer token 而不是 Cloudflare Access（够用，少一处配置） | 网页能约、改、取消（本地 + preview 跑过 `scripts/booking-smoke.mjs`）；`BOOK_URL='/book/'`，第二 CTA 已变「Book a 15-min demo」 |
+| W1 ✅ 2026-09-09 | D1 建表 + API + `/book/` 页面，只配 AI Man Jack 自己（一个 service：15 分钟通话）。实现：Pages Function `functions/v1/[[route]].js` + Supabase schema `booking`（PostgREST）+ `src/pages/book.mjs`；列表接口用 Bearer token 而不是 Cloudflare Access（够用，少一处配置） | 网页能约、改、取消（本地 + preview 跑过 `scripts/booking-smoke.mjs`）；`BOOK_URL='/book/'`，第二 CTA 已变「Book a 15-min demo」 |
 | W2 | 语音四个 tool 接入 `voice-rt`；确认短信 | 打演示线完成 PRD 的三件事：问价、约时间、改时间；来电者收到确认短信 |
 | W3 | Google Calendar 同步（Jack 的日历）；店主摘要短信；`events` 汇总脚本 | 日历里出现预约；案例页能从 `events` 出数 |
 | W4 | 第一个 Growth 客户配置：services / staff / rules 从表单导入 | 客户的线端到端走通一次真实预约 |

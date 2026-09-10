@@ -6,11 +6,24 @@
 //   DELETE /v1/bookings/:id                                          cancel
 //   GET    /v1/bookings?business=  (Authorization: Bearer ADMIN_TOKEN) read-only list
 // Writes take an Idempotency-Key header and an X-Source header (web | voice | sms | admin; default web).
-// Instants are stored as UTC ISO; responses render them in the business tz with an offset (ISO 8601).
+// Data: Supabase Postgres (schema `booking`, db/schema.sql) via PostgREST with the secret key — env.SUPABASE_URL + env.SB_SECRET_KEY.
+// Instants are timestamptz; responses render them in the business tz with an offset (ISO 8601).
 
 const SOURCES = new Set(['web', 'voice', 'sms', 'admin']);
 const json = (data, status = 200) => new Response(JSON.stringify(data), { status, headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' } });
 const fail = (status, error, message) => json({ error, message }, status);
+
+// ── Supabase (PostgREST, schema `booking`) ──
+const q = (o) => new URLSearchParams(o).toString();
+async function sb(env, path, { method = 'GET', body, headers } = {}) {
+  const r = await fetch(`${env.SUPABASE_URL}/rest/v1/${path}`, { method, body: body && JSON.stringify(body), headers: {
+    apikey: env.SB_SECRET_KEY, authorization: `Bearer ${env.SB_SECRET_KEY}`, 'content-type': 'application/json',
+    'accept-profile': 'booking', 'content-profile': 'booking', prefer: 'return=representation', ...headers } });
+  const text = await r.text(), data = text ? JSON.parse(text) : null;
+  if (!r.ok) { const e = new Error(`supabase ${r.status} ${path}: ${text}`); e.code = data?.code; throw e; }
+  return data;
+}
+const one = async (env, path) => (await sb(env, path + '&limit=1'))[0] ?? null;
 
 // ── time (all math in UTC ms; the tz only matters when reading rules and rendering) ──
 const pad = (n) => String(n).padStart(2, '0');
@@ -38,9 +51,9 @@ const isDate = (s) => /^\d{4}-\d{2}-\d{2}$/.test(s || '');
 
 // ── data ──
 async function loadBizSvc(env, bizId, svcId) {
-  const biz = bizId && await env.DB.prepare('SELECT * FROM businesses WHERE id=?').bind(bizId).first();
+  const biz = bizId && await one(env, 'businesses?' + q({ id: 'eq.' + bizId }));
   if (!biz) return { error: fail(404, 'business_not_found', 'Unknown business.') };
-  const svc = svcId && await env.DB.prepare('SELECT * FROM services WHERE business_id=? AND id=? AND active=1').bind(bizId, svcId).first();
+  const svc = svcId && await one(env, 'services?' + q({ business_id: 'eq.' + bizId, id: 'eq.' + svcId, active: 'is.true' }));
   if (!svc) return { error: fail(404, 'service_not_found', 'Unknown service.') };
   return { biz, svc };
 }
@@ -52,13 +65,14 @@ async function openSlots(env, biz, svc, { from, to, staffId, excludeId, now = Da
   from = isDate(from) && from > today ? from : today;
   to = isDate(to) && to < last ? to : last;
   if (to > addDays(from, 31)) to = addDays(from, 31);
-  const staffQ = 'SELECT id, name FROM staff WHERE business_id=? AND active=1' + (staffId ? ' AND id=?' : '');
-  const staff = (await env.DB.prepare(staffQ).bind(...(staffId ? [biz.id, staffId] : [biz.id])).all()).results;
-  const rules = (await env.DB.prepare('SELECT staff_id, weekday, start_hm, end_hm FROM availability_rules WHERE business_id=?').bind(biz.id).all()).results;
   const lo = new Date(localToUtc(from, '00:00', tz) - 864e5).toISOString(), hi = new Date(localToUtc(addDays(to, 1), '00:00', tz) + 864e5).toISOString();
-  const blocks = (await env.DB.prepare('SELECT staff_id, start_at, end_at FROM blocks WHERE business_id=? AND end_at>? AND start_at<?').bind(biz.id, lo, hi).all()).results;
-  const booked = (await env.DB.prepare("SELECT id, staff_id, start_at, end_at FROM bookings WHERE business_id=? AND status='confirmed' AND end_at>? AND start_at<?").bind(biz.id, lo, hi).all()).results
-    .filter((b) => b.id !== excludeId);
+  const [staff, rules, blocks, booked] = await Promise.all([
+    sb(env, 'staff?' + q({ business_id: 'eq.' + biz.id, active: 'is.true', select: 'id,name', ...(staffId ? { id: 'eq.' + staffId } : {}) })),
+    sb(env, 'availability_rules?' + q({ business_id: 'eq.' + biz.id, select: 'staff_id,weekday,start_hm,end_hm' })),
+    sb(env, 'blocks?' + q({ business_id: 'eq.' + biz.id, end_at: 'gt.' + lo, start_at: 'lt.' + hi, select: 'staff_id,start_at,end_at' })),
+    sb(env, 'bookings?' + q({ business_id: 'eq.' + biz.id, status: 'eq.confirmed', end_at: 'gt.' + lo, start_at: 'lt.' + hi, select: 'id,staff_id,start_at,end_at' })),
+  ]);
+  const bookedRows = booked.filter((b) => b.id !== excludeId);
   const len = svc.duration_min * 60000, buf = svc.buffer_min * 60000, earliest = now + biz.min_lead_min * 60000;
   const hits = (rows, sid, s, e) => rows.filter((r) => (r.staff_id == null || r.staff_id === sid) && Date.parse(r.end_at) > s && Date.parse(r.start_at) < e).length;
   const days = [];
@@ -69,7 +83,7 @@ async function openSlots(env, biz, svc, { from, to, staffId, excludeId, now = Da
       const rs = localToUtc(d, r.start_hm, tz), re = localToUtc(d, r.end_hm, tz);
       for (let s = rs; s + len <= re; s += len) {
         const e = s + len;
-        if (s < earliest || hits(blocks, st.id, s, e) || hits(booked, st.id, s - buf, e + buf) >= svc.capacity) continue;
+        if (s < earliest || hits(blocks, st.id, s, e) || hits(bookedRows, st.id, s - buf, e + buf) >= svc.capacity) continue;
         slots.push({ start_at: isoLocal(s, tz), end_at: isoLocal(e, tz), staff_id: st.id, staff_name: st.name, _ms: s });
       }
     }
@@ -88,12 +102,8 @@ async function findSlot(env, biz, svc, startAt, opts) {
   return days[0]?.slots.find((s) => s._ms === ms) ?? null;
 }
 
-const BOOKING_SQL = `SELECT b.*, s.name AS service_name, s.duration_min, s.buffer_min, s.capacity, st.name AS staff_name,
-  bz.name AS business_name, bz.tz, bz.cancel_window_hours
-  FROM bookings b JOIN businesses bz ON bz.id=b.business_id
-  JOIN services s ON s.business_id=b.business_id AND s.id=b.service_id
-  JOIN staff st ON st.business_id=b.business_id AND st.id=b.staff_id`;
-const getBooking = (env, id) => env.DB.prepare(BOOKING_SQL + ' WHERE b.id=?').bind(id).first();
+const getBooking = (env, id) => one(env, 'bookings_full?' + q({ id: 'eq.' + id }));
+const byIdem = (env, biz, key) => one(env, 'bookings_full?' + q({ business_id: 'eq.' + biz, idempotency_key: 'eq.' + key }));
 
 function view(b, origin) {
   const start = Date.parse(b.start_at), until = start - b.cancel_window_hours * 3600e3;
@@ -108,7 +118,7 @@ function view(b, origin) {
 }
 
 const logEvent = (env, b, type, source, payload) =>
-  env.DB.prepare('INSERT INTO events (business_id, booking_id, type, source, payload) VALUES (?,?,?,?,?)').bind(b.business_id, b.id, type, source, JSON.stringify(payload)).run();
+  sb(env, 'events', { method: 'POST', body: { business_id: b.business_id, booking_id: b.id, type, source, payload }, headers: { prefer: 'return=minimal' } });
 
 function normPhone(raw) {
   const d = String(raw || '').replace(/\D/g, '');
@@ -139,10 +149,7 @@ async function create(env, req, origin) {
   if (r.error) return r.error;
   const { biz, svc } = r, source = SOURCES.has(req.headers.get('x-source')) ? req.headers.get('x-source') : 'web';
   const idem = clean(req.headers.get('idempotency-key'), 128) || null;
-  if (idem) {
-    const ex = await env.DB.prepare(BOOKING_SQL + ' WHERE b.business_id=? AND b.idempotency_key=?').bind(biz.id, idem).first();
-    if (ex) return json(view(ex, origin), 200);
-  }
+  if (idem) { const ex = await byIdem(env, biz.id, idem); if (ex) return json(view(ex, origin), 200); }
   const name = clean(body.customer_name, 80), phone = normPhone(body.customer_phone);
   if (!name) return fail(400, 'name_required', 'customer_name is required.');
   if (!phone) return fail(400, 'phone_invalid', 'customer_phone must be a valid phone number.');
@@ -151,18 +158,16 @@ async function create(env, req, origin) {
   const id = crypto.randomUUID().replace(/-/g, '').slice(0, 16);
   const start = new Date(slot._ms).toISOString(), end = new Date(slot._ms + svc.duration_min * 60000).toISOString();
   const buf = svc.buffer_min * 60000, lo = new Date(slot._ms - buf).toISOString(), hi = new Date(slot._ms + svc.duration_min * 60000 + buf).toISOString();
-  let res;
+  let ok;
   try {
-    // Single conditional INSERT = atomic capacity check; no read-then-write race.
-    res = await env.DB.prepare(`INSERT INTO bookings (id, business_id, service_id, staff_id, start_at, end_at, customer_name, customer_phone, customer_email, note, source, idempotency_key)
-      SELECT ?,?,?,?,?,?,?,?,?,?,?,? WHERE (SELECT COUNT(*) FROM bookings WHERE business_id=? AND staff_id=? AND status='confirmed' AND end_at>? AND start_at<?) < ?`)
-      .bind(id, biz.id, svc.id, slot.staff_id, start, end, name, phone, clean(body.customer_email, 120) || null, clean(body.note, 500) || null, source, idem,
-        biz.id, slot.staff_id, lo, hi, svc.capacity).run();
+    // booking.create_booking(): advisory lock + capacity check + insert in one transaction.
+    ok = await sb(env, 'rpc/create_booking', { method: 'POST', body: { p: { id, business_id: biz.id, service_id: svc.id, staff_id: slot.staff_id, start_at: start, end_at: end, lo, hi, capacity: svc.capacity,
+      customer_name: name, customer_phone: phone, customer_email: clean(body.customer_email, 120) || null, note: clean(body.note, 500) || null, source, idempotency_key: idem } } });
   } catch (e) {
-    if (idem && /UNIQUE/.test(String(e))) { const ex = await env.DB.prepare(BOOKING_SQL + ' WHERE b.business_id=? AND b.idempotency_key=?').bind(biz.id, idem).first(); if (ex) return json(view(ex, origin), 200); }
+    if (idem && e.code === '23505') { const ex = await byIdem(env, biz.id, idem); if (ex) return json(view(ex, origin), 200); }
     throw e;
   }
-  if (!res.meta.changes) return fail(409, 'slot_unavailable', 'That time was just taken. Pick another one.');
+  if (!ok) return fail(409, 'slot_unavailable', 'That time was just taken. Pick another one.');
   const b = await getBooking(env, id);
   await logEvent(env, b, 'created', source, { start_at: b.start_at, service: b.service_id, staff: b.staff_id });
   return json(view(b, origin), 201);
@@ -179,10 +184,8 @@ async function reschedule(env, req, b, origin) {
   if (!slot) return fail(409, 'slot_unavailable', 'That time is not available. Pick another one.');
   const start = new Date(slot._ms).toISOString(), end = new Date(slot._ms + b.duration_min * 60000).toISOString();
   const buf = b.buffer_min * 60000, lo = new Date(slot._ms - buf).toISOString(), hi = new Date(slot._ms + b.duration_min * 60000 + buf).toISOString();
-  const res = await env.DB.prepare(`UPDATE bookings SET start_at=?, end_at=?, staff_id=?, updated_at=strftime('%Y-%m-%dT%H:%M:%fZ','now')
-    WHERE id=? AND status='confirmed' AND (SELECT COUNT(*) FROM bookings WHERE business_id=? AND staff_id=? AND status='confirmed' AND id<>? AND end_at>? AND start_at<?) < ?`)
-    .bind(start, end, slot.staff_id, b.id, b.business_id, slot.staff_id, b.id, lo, hi, b.capacity).run();
-  if (!res.meta.changes) return fail(409, 'slot_unavailable', 'That time was just taken. Pick another one.');
+  const ok = await sb(env, 'rpc/move_booking', { method: 'POST', body: { p: { id: b.id, business_id: b.business_id, staff_id: slot.staff_id, start_at: start, end_at: end, lo, hi, capacity: b.capacity } } });
+  if (!ok) return fail(409, 'slot_unavailable', 'That time was just taken. Pick another one.');
   const nb = await getBooking(env, b.id);
   await logEvent(env, nb, 'rescheduled', source, { from: b.start_at, to: nb.start_at });
   return json(view(nb, origin));
@@ -192,7 +195,7 @@ async function cancel(env, req, b, origin) {
   if (b.status !== 'confirmed') return json(view(b, origin));
   if (windowClosed(b)) return fail(409, 'cancel_window', windowMsg(b));
   const source = SOURCES.has(req.headers.get('x-source')) ? req.headers.get('x-source') : 'web';
-  await env.DB.prepare("UPDATE bookings SET status='cancelled', updated_at=strftime('%Y-%m-%dT%H:%M:%fZ','now') WHERE id=?").bind(b.id).run();
+  await sb(env, 'bookings?' + q({ id: 'eq.' + b.id, status: 'eq.confirmed' }), { method: 'PATCH', body: { status: 'cancelled', updated_at: new Date().toISOString() }, headers: { prefer: 'return=minimal' } });
   const nb = await getBooking(env, b.id);
   await logEvent(env, nb, 'cancelled', source, { start_at: b.start_at });
   return json(view(nb, origin));
@@ -204,8 +207,8 @@ async function list(env, req, url, origin) {
   const biz = url.searchParams.get('business');
   if (!biz) return fail(400, 'business_required', 'business is required.');
   const from = url.searchParams.get('from'), status = url.searchParams.get('status');
-  const rows = (await env.DB.prepare(BOOKING_SQL + ' WHERE b.business_id=? AND b.start_at>=? ' + (status ? 'AND b.status=? ' : '') + 'ORDER BY b.start_at LIMIT 500')
-    .bind(...[biz, isDate(from) ? from : new Date(Date.now() - 864e5).toISOString().slice(0, 10), ...(status ? [status] : [])]).all()).results;
+  const rows = await sb(env, 'bookings_full?' + q({ business_id: 'eq.' + biz, start_at: 'gte.' + (isDate(from) ? from : new Date(Date.now() - 864e5).toISOString().slice(0, 10)),
+    ...(status ? { status: 'eq.' + status } : {}), order: 'start_at.asc', limit: '500' }));
   return json({ business: biz, count: rows.length, bookings: rows.map((b) => view(b, origin)) });
 }
 
