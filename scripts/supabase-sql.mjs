@@ -3,6 +3,7 @@
 //   node scripts/supabase-sql.mjs db/schema.sql            file
 //   node scripts/supabase-sql.mjs "select count(*) from booking.bookings"
 //   node scripts/supabase-sql.mjs --expose booking         add a schema to PostgREST's exposed list
+//   node scripts/supabase-sql.mjs --keys                   list API key names/types (never values)
 // Credentials: SUPABASE_ACCESS_TOKEN + SUPABASE_PROJECT_REF from $SB_ENV_FILE (default: the CRM's .env —
 // booking lives in the same project, schema `booking`).
 import { readFileSync, existsSync } from 'node:fs';
@@ -16,7 +17,9 @@ const call = async (path, init = {}) => {
   return body ? JSON.parse(body) : null;
 };
 const [a, b] = process.argv.slice(2);
-if (a === '--expose') {
+if (a === '--keys') {
+  for (const k of await call('/api-keys?reveal=false')) console.log(`${k.type.padEnd(12)} ${k.name.padEnd(20)} ${k.prefix ?? ''}`);
+} else if (a === '--expose') {
   const cfg = await call('/postgrest');
   const schemas = cfg.db_schema.split(',').map((s) => s.trim());
   if (!schemas.includes(b)) { schemas.push(b); await call('/postgrest', { method: 'PATCH', body: JSON.stringify({ db_schema: schemas.join(', ') }) }); }
