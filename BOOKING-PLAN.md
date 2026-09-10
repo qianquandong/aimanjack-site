@@ -32,7 +32,7 @@
 | 周 | 交付 | 验收 |
 |---|---|---|
 | W1 ✅ 2026-09-09 | D1 建表 + API + `/book/` 页面，只配 AI Man Jack 自己（一个 service：15 分钟通话）。实现：Pages Function `functions/v1/[[route]].js` + Supabase schema `booking`（PostgREST）+ `src/pages/book.mjs`；列表接口用 Bearer token 而不是 Cloudflare Access（够用，少一处配置） | 网页能约、改、取消（本地 + preview 跑过 `scripts/booking-smoke.mjs`）；`BOOK_URL='/book/'`，第二 CTA 已变「Book a 15-min demo」 |
-| W2 | 语音四个 tool 接入 `voice-rt`；确认短信 | 打演示线完成 PRD 的三件事：问价、约时间、改时间；来电者收到确认短信 |
+| W2 ✅ 2026-09-10（待 Jack 真机打一通验收） | `voice-rt` 接了五个 tool（check_availability / create_booking / find_bookings / reschedule_booking / cancel_booking），SMS agent 同一套 tool，都打 `aimanjack.com/v1`；每次约/改/取消给来电者和 Jack 各发一条短信（从 425-4142 发，带 STOP）；演示线人设换成 AI Man Jack 前台，报价与网站一致。代码在 `~/claudeCode/car-sms-agent/worker.js`，调试 `POST /tool` | 工具链已用 `/tool` 跑通并收到短信；剩打演示线完成 PRD 三件事的人工验收 |
 | W3 | Google Calendar 同步（Jack 的日历）；店主摘要短信；`events` 汇总脚本 | 日历里出现预约；案例页能从 `events` 出数 |
 | W4 | 第一个 Growth 客户配置：services / staff / rules 从表单导入 | 客户的线端到端走通一次真实预约 |
 
