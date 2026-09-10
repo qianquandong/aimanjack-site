@@ -14,9 +14,9 @@ AI Man Jack LLC 的官网，Jack Qian 在达拉斯的生意。2026-09-09 按 `ai
 | 行业 | `/industries/` + `salons` `med-spas` `clinics` `home-services` `repair-services` | 同 `/zh/` | 每页 3 个来电场景、示例对话、需要准备什么、行业 FAQ |
 | 对接 | `/integrations/` | `/zh/integrations/` | 每项标 Supported / Pilot / Ask us |
 | 案例 | `/case-studies/` + `ai-man-jack` `car-dealership-sms` | 同 `/zh/` | 不编数字，写测了什么、还没验证什么 |
-| 培训 | `/ai-training/` | `/zh/ai-training/` | 内容和 schema 沿用旧站，只换了壳；产品交叉推荐段改成新价格 |
+| 培训 | `/ai-training/` | `/zh/ai-training/` | 内容和 schema 沿用旧站，只换了壳；产品交叉推荐段不写价格，只说「联系 Jack 了解详情」 |
 | 公司 | `/about/` `/contact/` | 同 `/zh/` | 联系页无表单：演示线 / 邮件 / 短信 |
-| 法务 | `/privacy` `/sms-terms` `/terms` | `/zh/privacy` 等 | 前两个英文原文一字未动（A2P 审核用），`/terms` 是新写的，**Jack 上线前要审** |
+| 法务 | `/privacy` `/sms-terms` `/terms` | `/zh/privacy` 等 | 前两个英文原文一字未动（A2P 审核用），`/terms` 是新写的（Jack 2026-09-09 让 Claude 拍板，已定稿） |
 
 ## 2. 怎么改页面（关键变化）
 
@@ -73,14 +73,11 @@ sh /Users/joseesp/aimanjack-site/deploy.sh               # 在 production 分支
 
 ## 7. 待 Jack
 
-1. 审 `/terms` 和 `/zh/terms` 文案（责任限制、德州法律那几段）。
-2. 给 `BOOK_URL`（自建预约系统的链接）。
-3. 定 AI 号码取消后的归属，改 FAQ 第 11 条和价格页「归属」段。
-4. 测第三方预约软件，升级 `src/components.mjs` 里 `INTEGRATIONS` 的标签。
-5. 车行案例：店名能不能公开、有没有数字。
-6. 演示线第一个完整月的数据，回填 `/case-studies/ai-man-jack/`。
-7. `/privacy` 最好加一段 AI 通话数据处理说明（现在只写了短信）；改之前想清楚 A2P 审核的影响。
-8. GSC 对新页面 Request Indexing；GA4 星标 Key event。
+1. 给 `BOOK_URL`（自建预约系统的链接）。计划和第三方对接测试清单在 `BOOKING-PLAN.md`。
+2. 车行案例：店名能不能公开、有没有数字。
+3. 演示线数据：Twilio CLI 本机已登录（profile `car-sms-agent`，两个号码都在），`twilio api:core:calls:list --to +14695172968 --start-time-after <date>` 拉通话记录，只发汇总，不发号码。第一个完整月（2026 年 10 月）结束后回填 `/case-studies/ai-man-jack/`。
+4. `/privacy` 最好加一段 AI 通话数据处理说明（现在只写了短信）；改之前想清楚 A2P 审核的影响。
+5. GSC 对新页面 Request Indexing；GA4 星标 Key event。
 
 ## 8. 相关文件
 

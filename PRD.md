@@ -1879,7 +1879,7 @@ Answers to the 38 pre-implementation questions. This section overrides any confl
 | 17 | Website inclusion | Starter uses the existing website with no website build. Growth includes a one-page website; Pro includes up to 3 pages. Remove the separate $500 website add-on. Omit GBP from public package copy. |
 | 18 | Included minutes | Starter 200, Growth 300, Pro 1,000 minutes/month; all tiers $0.45/minute overage. No estimated call-count conversion. Prices approved for initial testing; actual cost validation remains open. |
 | 19 | Support scope | Public table shows call review/reporting only: monthly summary / monthly spot checks and summary / weekly spot checks and monthly summary. Omit routine information-change allowances from public pricing; define maintenance in the service agreement. No response-time promise. |
-| 20 | Ownership after cancel | Client retains website files and domain and pays domain renewal. Included hosting ends with service. AI number: TODO Jack. |
+| 20 | Ownership after cancel | Client retains website files and domain and pays domain renewal. Included hosting ends with service. AI number: provided by AI Man Jack and stays with AI Man Jack after cancellation (Jack, 2026-09-09); a client's own forwarded number is untouched. |
 | 21 | Go-live | About one week, then a tuning period of variable length. |
 
 ## Product facts
@@ -1918,8 +1918,7 @@ Answers to the 38 pre-implementation questions. This section overrides any confl
 
 - Validate actual per-minute costs, setup hours and ongoing maintenance against the approved initial pricing in Section 15; obtain Jack's decision before any later price change.
 - Finalize service-agreement maintenance boundaries, Pro staff/calendar limits, any messaging or third-party charges, and hosting/offboarding details without reintroducing GBP or routine-change rows into public pricing.
-- Ownership of the AI phone number after cancellation.
 - Booking system URL, to switch the secondary CTA to "Book a 15-min demo".
-- Integration tests, to upgrade labels on `/integrations`.
+- Integration tests, to upgrade labels on `/integrations` (tracked in the booking-system plan, `BOOKING-PLAN.md`).
 - Dealership name and any measured numbers for the SMS case study.
 - Review of `/terms` and `/privacy` wording.

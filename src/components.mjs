@@ -69,7 +69,7 @@ const FAQ = {
     ['How long does setup take?', 'About one week after we receive your hours, services, prices and booking rules, then a tuning period that varies by business.'],
     ['What happens if the phone or booking integration fails?', 'The fallback flow runs, so callers can still leave a message, be transferred, or have their details texted to you. Jack is notified and fixes the connection.'],
     ['Can I turn the AI off?', 'Yes. Contact Jack and call forwarding is switched off. Your phone rings the way it did before.'],
-    ['Who owns the number and data?', 'Your website files and domain are yours, and you pay the domain renewal. Included hosting ends with the service. Call data stays in your account and is not sold. Ownership of the AI phone number is confirmed in your service agreement before launch.'],
+    ['Who owns the number and data?', 'Your website files and domain are yours, and you pay the domain renewal. Included hosting ends with the service. Call data stays in your account and is not sold. The AI phone number is provided by AI Man Jack and stays with AI Man Jack after cancellation; if you forwarded your own number, forwarding is simply switched off and your number is untouched.'],
     ['Is this appropriate for healthcare businesses?', 'Clinics are welcome. Sensitive or regulated workflows are discussed before setup, and no compliance certification is claimed.'],
   ],
   zh: [
@@ -83,7 +83,7 @@ const FAQ = {
     ['安装要多久？', '收到你的营业时间、服务项目、价格和预约规则后，大约一周上线，之后还有一段磨合期，长短看店的情况。'],
     ['电话或预约对接出问题怎么办？', '兜底流程会接上：来电者仍然可以留言、转接，或者把信息短信发给你。Jack 会收到通知去修。'],
     ['我能把 AI 关掉吗？', '能。联系 Jack，关掉呼叫转接，你的电话就和以前一样响。'],
-    ['号码和数据归谁？', '网站文件和域名都是你的，域名续费由你付。服务停止后，包含的托管也随之停止。通话数据留在你的账户里，不会出售。AI 号码的归属在上线前的服务协议里写清楚。'],
+    ['号码和数据归谁？', '网站文件和域名都是你的，域名续费由你付。服务停止后，包含的托管也随之停止。通话数据留在你的账户里，不会出售。AI 号码由 AI Man Jack 提供，取消后仍归 AI Man Jack；如果你用的是自己号码转接，关掉转接即可，你的号码不受影响。'],
     ['医疗类商家适合用吗？', '诊所欢迎。涉及敏感或受监管流程的，安装前先聊；我们不做任何合规认证的声明。'],
   ],
 };

@@ -84,7 +84,7 @@ const terms = {
 <h2>4. Service limits</h2>
 <p>The AI answers only from approved information and may still make mistakes. When it should not answer, it runs the fallback you chose: message, transfer, or a text to you. We do not guarantee call volume, bookings, revenue, search rankings or AI-assistant recommendations. We aim for continuous availability but do not guarantee uptime; if a phone or booking connection fails, the fallback runs and we are notified.</p>
 <h2>5. Term and cancellation</h2>
-<p>Service is month to month. You may cancel at any time with the notice stated in your service agreement. On cancellation, included hosting ends, forwarding is switched off, and you keep your website files and your domain. Ownership of the AI phone number is stated in your service agreement.</p>
+<p>Service is month to month. You may cancel at any time with the notice stated in your service agreement. On cancellation, included hosting ends, forwarding is switched off, and you keep your website files and your domain. The AI phone number is provided by us and remains ours after cancellation; a number you forwarded to the AI is yours and is simply no longer forwarded.</p>
 <h2>6. Data</h2>
 <p>Call and message data is processed to deliver the service and is not sold. See the <a href="/privacy">Privacy Policy</a> and <a href="/sms-terms">SMS Terms</a>.</p>
 <h2>7. Liability</h2>
@@ -113,7 +113,7 @@ const terms = {
 <h2>4. 服务边界</h2>
 <p>AI 只按确认过的信息回答，仍可能出错。它不该答的时候，按你选的兜底方式处理：留言、转接或短信通知你。我们不保证来电量、预约数、营收、搜索排名或 AI 助手推荐。我们尽力保持持续可用，但不保证在线率；电话或预约对接故障时，兜底流程接上，我们会收到通知。</p>
 <h2>5. 期限和取消</h2>
-<p>服务按月。你可以随时取消，通知期见服务协议。取消后，包含的托管停止，转接关闭，网站文件和域名归你。AI 号码的归属见服务协议。</p>
+<p>服务按月。你可以随时取消，通知期见服务协议。取消后，包含的托管停止，转接关闭，网站文件和域名归你。AI 号码由我们提供，取消后仍归我们；你转接给 AI 的自有号码归你，只是不再转接。</p>
 <h2>6. 数据</h2>
 <p>通话和短信数据仅用于提供服务，不出售。见<a href="/zh/privacy">隐私政策</a>和<a href="/zh/sms-terms">短信条款</a>。</p>
 <h2>7. 责任限制</h2>

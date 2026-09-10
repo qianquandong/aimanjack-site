@@ -12,7 +12,7 @@ const copy = {
     termsH: 'Service terms in plain words', terms: [
       ['Minutes and overage', `Included voice minutes are per month and do not roll over. Overage is billed at $${PRICING.overage.toFixed(2)} per minute. Messaging or third-party charges, if any, are confirmed before contracting and never added silently.`],
       ['Website delivery', 'Included websites assume one language, a reusable design template, text and images you provide, and two revision rounds. Basic SEO means titles, descriptions, indexing configuration and a sitemap. No ranking is guaranteed and ongoing content is not included.'],
-      ['Ownership', 'You own your domain and pay its renewal. You keep the website files and the domain after cancellation. Included hosting ends with the service. Ownership of the AI phone number is confirmed in your service agreement before launch.'],
+      ['Ownership', 'You own your domain and pay its renewal. You keep the website files and the domain after cancellation. Included hosting ends with the service. The AI phone number is provided by AI Man Jack and stays with AI Man Jack after cancellation; your own forwarded number is untouched.'],
       ['Cancellation', 'Month to month. Stop any time; billing and offboarding details are in the service agreement.'],
       ['Go-live', 'About one week after we receive your details, for a verified standard workflow, then a tuning period that varies.'],
       ['Turning it off and support', 'Contact Jack to switch the AI off. Maintenance boundaries, additional pages and redesigns are defined in the service agreement, not on this page. No response-time promise is made.'],
@@ -29,7 +29,7 @@ const copy = {
     termsH: '服务条款，说人话', terms: [
       ['分钟数和超出', `包含的通话分钟按月计，不累积。超出部分每分钟 $${PRICING.overage.toFixed(2)}。如有短信或第三方费用，签约前先确认，不会悄悄加。`],
       ['网站交付', '包含的网站按一种语言、可复用的设计模板、你提供文字和图片、两轮修改来做。基础 SEO 指标题、描述、索引配置和 sitemap。不保证排名，不含持续内容。'],
-      ['归属', '域名是你的，续费你付。取消后，网站文件和域名都归你。包含的托管随服务停止。AI 号码的归属，上线前在服务协议里确认。'],
+      ['归属', '域名是你的，续费你付。取消后，网站文件和域名都归你。包含的托管随服务停止。AI 号码由 AI Man Jack 提供，取消后仍归 AI Man Jack；你自己转接的号码不受影响。'],
       ['取消', '按月付，随时停。账单和交接细节见服务协议。'],
       ['上线时间', '收到资料后大约一周，前提是标准流程已验证；之后有一段长短不定的磨合期。'],
       ['关闭和支持', '联系 Jack 就能关掉 AI。日常维护范围、新增页面和改版，在服务协议里定，不在这一页。不承诺响应时间。'],
