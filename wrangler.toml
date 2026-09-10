@@ -1,0 +1,15 @@
+# Cloudflare Pages project for aimanjack.com. deploy.sh stages the site into .deploy and runs
+# `wrangler pages deploy` — this file adds the booking API (functions/v1/) and its D1 binding.
+# Local dev: rsync the site into .deploy (see deploy.sh), then `npx wrangler pages dev .deploy`.
+name = "aimanjack"
+pages_build_output_dir = ".deploy"
+compatibility_date = "2026-06-01"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "aimanjack-booking"
+database_id = "e305306e-6b20-4db7-b201-84e6b33fe095"
+
+# Secret (not here): ADMIN_TOKEN — bearer token for GET /v1/bookings?business=… (read-only list).
+#   npx wrangler pages secret put ADMIN_TOKEN --project-name aimanjack
+# Local: put ADMIN_TOKEN=… in .dev.vars (gitignored).
