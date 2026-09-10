@@ -73,7 +73,7 @@ sh /Users/joseesp/aimanjack-site/deploy.sh               # 在 production 分支
 
 ## 7. 待 Jack
 
-1. 预约系统：2026-09-09 晚 Codex 在本仓库开始做（`functions/`、`db/`、`wrangler.toml`、`src/pages/book.mjs`、`scripts/booking-smoke.mjs`），`BOOK_URL` 已指到 `/book/`。**两个 agent 别同时改同一个文件**；Codex 负责 book.mjs / functions / db / wrangler，Claude 负责其余页面。第三方对接测试清单在 `BOOKING-PLAN.md` §4。
+1. 预约系统 W1、W2 已上线（2026-09-10 凌晨，Claude 做的，不是 Codex）：网页 `/book/`、API `/v1`（`functions/`，数据在 Supabase schema `booking`）、演示线和短信 agent（`~/claudeCode/car-sms-agent`）都通过 API 约/改/取消，双方收确认短信。待 Jack：打一通演示线做人工验收。W3：Google Calendar 同步、`events` 汇总。计划在 `BOOKING-PLAN.md`。
 2. 车行案例：店名能不能公开、有没有数字。
 3. 演示线数据：Twilio CLI 本机已登录（profile `car-sms-agent`，两个号码都在），`twilio api:core:calls:list --to +14695172968 --start-time-after <date>` 拉通话记录，只发汇总，不发号码。第一个完整月（2026 年 10 月）结束后回填 `/case-studies/ai-man-jack/`。
 4. `/privacy` 最好加一段 AI 通话数据处理说明（现在只写了短信）；改之前想清楚 A2P 审核的影响。
