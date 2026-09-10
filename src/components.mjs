@@ -160,21 +160,21 @@ export function capabilities(lang) {
 <div class="grid-4">${c.cards.map(([h, p]) => `<div class="card"><h3>${h}</h3><p>${p}</p></div>`).join('')}</div></div></section>`;
 }
 
-export function industryCards(lang, { heading = true } = {}) {
+export function industryCards(lang, { heading = true, hl = 'h3' } = {}) {
   const other = lang === 'zh' ? ['其他预约制生意', '不在列表里？说说你怎么接电话。'] : ['Other appointment businesses', 'Not listed? Tell us how you take calls today.'];
   return `${heading ? `<section class="section" id="industries"><div class="wrap">${eyebrow(T[lang].nav.useCases)}<h2>${lang === 'zh' ? '为靠预约吃饭的生意而做。' : 'Built for businesses that run on appointments.'}</h2>` : ''}
-<div class="grid-3 industry-grid">${INDUSTRIES.map((i) => `<a class="card link-card" href="${L(lang, `/industries/${i.slug}/`)}"><h3>${i[lang].name}</h3><p>${i[lang].tag}</p><span class="arrow" aria-hidden="true">&rarr;</span></a>`).join('')}
-<a class="card link-card" href="${L(lang, '/contact/')}"><h3>${other[0]}</h3><p>${other[1]}</p><span class="arrow" aria-hidden="true">&rarr;</span></a></div>${heading ? '</div></section>' : ''}`;
+<div class="grid-3 industry-grid">${INDUSTRIES.map((i) => `<a class="card link-card" href="${L(lang, `/industries/${i.slug}/`)}"><${hl} class="h3">${i[lang].name}</${hl}><p>${i[lang].tag}</p><span class="arrow" aria-hidden="true">&rarr;</span></a>`).join('')}
+<a class="card link-card" href="${L(lang, '/contact/')}"><${hl} class="h3">${other[0]}</${hl}><p>${other[1]}</p><span class="arrow" aria-hidden="true">&rarr;</span></a></div>${heading ? '</div></section>' : ''}`;
 }
 
-export function integrationList(lang, { compact = false } = {}) {
+export function integrationList(lang, { compact = false, hl = 'h3' } = {}) {
   const rows = INTEGRATIONS.filter((c) => !compact || ['Booking', 'Calendar', 'Phone system'].includes(c.cat.en)).map((c) =>
-    `<div class="int-cat"><h3>${c.cat[lang]}</h3><ul>${c.items.map((i) => `<li><span>${i.name[lang]}</span><span class="badge badge-${i.status}">${STATUS[i.status][lang]}</span></li>`).join('')}</ul></div>`).join('');
+    `<div class="int-cat"><${hl} class="h3">${c.cat[lang]}</${hl}><ul>${c.items.map((i) => `<li><span>${i.name[lang]}</span><span class="badge badge-${i.status}">${STATUS[i.status][lang]}</span></li>`).join('')}</ul></div>`).join('');
   return `<div class="int-grid">${rows}</div>`;
 }
 
-export function caseCards(lang) {
-  return `<div class="grid-2">${CASES.map((c) => `<article class="card case-card"><p class="status">${c[lang].status}</p><h3>${c[lang].name}</h3><p class="muted">${c[lang].type}</p><p>${c[lang].summary}</p><a href="${L(lang, `/case-studies/${c.slug}/`)}" data-event="case_study_click">${T[lang].cta.readCase} &rarr;</a></article>`).join('')}</div>`;
+export function caseCards(lang, { hl = 'h3' } = {}) {
+  return `<div class="grid-2">${CASES.map((c) => `<article class="card case-card"><p class="status">${c[lang].status}</p><${hl} class="h3">${c[lang].name}</${hl}><p class="muted">${c[lang].type}</p><p>${c[lang].summary}</p><a href="${L(lang, `/case-studies/${c.slug}/`)}" data-event="case_study_click">${T[lang].cta.readCase} &rarr;</a></article>`).join('')}</div>`;
 }
 
 // Pricing (PRD §15, approved table). compact = three cards only; full = cards + comparison table.
@@ -211,10 +211,10 @@ const TIER_COPY = {
     ] },
 };
 
-export function pricingCards(lang, { pos = 'pricing' } = {}) {
+export function pricingCards(lang, { pos = 'pricing', hl = 'h3' } = {}) {
   const c = TIER_COPY[lang];
   return `<div class="tiers">${PRICING.tiers.map((t) => `<div class="tier${t.recommended ? ' rec' : ''}">${t.recommended ? `<span class="rec-badge">${c.recommended}</span>` : ''}
-<h3>${c[t.id][0]}</h3><p class="tier-desc">${c[t.id][1]}</p>
+<${hl} class="h3">${c[t.id][0]}</${hl}><p class="tier-desc">${c[t.id][1]}</p>
 <p class="price"><b>${money(t.monthly)}</b><span>${c.mo}</span></p>
 <p class="setup">+ ${money(t.setup)} ${c.setup}</p>
 <ul><li>${t.minutes.toLocaleString()} ${c.minutes}</li><li>$${PRICING.overage.toFixed(2)}/min ${c.overage}</li><li>${c.rows[4][0]}</li>${[5, 6].map((i) => { const v = c.rows[i][1](t); const no = /^(Not included|No website|不包含|不含)/.test(v); return `<li class="${no ? 'no' : ''}">${no ? `${c.rows[i][0]}: ${v.charAt(0).toLowerCase() + v.slice(1)}` : v}</li>`; }).join('')}</ul>
@@ -231,7 +231,7 @@ export function contactSales(lang) {
   const s = lang === 'zh'
     ? ['多店、双语网站，或者要定制对接？', '联系我们聊范围和报价。', '联系 Jack']
     : ['Need multiple locations, a bilingual website or custom integrations?', 'Contact us to discuss scope and pricing.', 'Contact Jack'];
-  return `<div class="contact-sales"><div><h3>${s[0]}</h3><p>${s[1]}</p></div><a class="btn btn-secondary" href="mailto:${EMAIL}?subject=${encodeURIComponent(lang === 'zh' ? '定制方案咨询' : 'Custom scope')}" data-event="email_click" data-pos="contact-sales">${s[2]}</a></div>`;
+  return `<div class="contact-sales"><div><h2 class="h3">${s[0]}</h2><p>${s[1]}</p></div><a class="btn btn-secondary" href="mailto:${EMAIL}?subject=${encodeURIComponent(lang === 'zh' ? '定制方案咨询' : 'Custom scope')}" data-event="email_click" data-pos="contact-sales">${s[2]}</a></div>`;
 }
 
 export function founder(lang) {

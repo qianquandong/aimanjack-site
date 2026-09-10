@@ -44,7 +44,7 @@ const page = (lang) => {
   return {
     title: c.title, description: c.description, view: 'pricing_view',
     body: `<div class="wrap">${bc.html}</div>${pageHero(lang, { eyebrow: T[lang].nav.pricing, h1: c.h1, sub: c.sub, ctas: false })}
-<section class="wrap" style="padding-bottom:64px">${pricingCards(lang, { pos: 'pricing' })}${contactSales(lang)}</section>
+<section class="wrap" style="padding-bottom:64px">${pricingCards(lang, { pos: 'pricing', hl: 'h2' })}${contactSales(lang)}</section>
 <section class="section"><div class="wrap"><h2>${c.tableH}</h2>${pricingTable(lang)}</div></section>
 <section class="section soft"><div class="wrap split"><div class="notes"><h2>${c.setupH}</h2><ul>${c.setup.map((s) => `<li>${s}</li>`).join('')}</ul></div>
 <div class="notes"><h2>${c.termsH}</h2>${c.terms.map(([h, p]) => `<h3>${h}</h3><p>${p}</p>`).join('')}</div></div></section>

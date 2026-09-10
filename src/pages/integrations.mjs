@@ -33,7 +33,7 @@ const page = (lang) => {
   return {
     title: c.title, description: c.description, view: 'integration_view',
     body: `<div class="wrap">${bc.html}</div>${pageHero(lang, { eyebrow: T[lang].footer.integrations, h1: c.h1, sub: c.sub, ctas: false })}
-<section class="wrap" style="padding-bottom:64px"><div class="legend">${['supported', 'pilot', 'ask'].map((s) => `<span><span class="badge badge-${s}">${STATUS[s][lang]}</span></span>`).join('')}</div>${integrationList(lang)}</section>
+<section class="wrap" style="padding-bottom:64px"><div class="legend">${['supported', 'pilot', 'ask'].map((s) => `<span><span class="badge badge-${s}">${STATUS[s][lang]}</span></span>`).join('')}</div>${integrationList(lang, { hl: 'h2' })}</section>
 <section class="section soft"><div class="wrap"><h2>${c.howH}</h2><div class="grid-3">${c.how.map(([h, p]) => `<div class="card"><h3>${h}</h3><p>${p}</p></div>`).join('')}</div></div></section>
 <section class="section"><div class="wrap narrow"><h2>${c.askH}</h2><p class="lead">${c.askSub}</p><p class="cta-row"><a class="btn btn-secondary" href="mailto:${EMAIL}?subject=${encodeURIComponent(lang === 'zh' ? '对接咨询' : 'Integration question')}" data-event="email_click" data-pos="integrations">${c.ask}</a></p></div></section>
 ${finalCta(lang)}`,

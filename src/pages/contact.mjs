@@ -35,7 +35,7 @@ const page = (lang) => {
   return {
     title: c.title, description: c.description,
     body: `<div class="wrap">${bc.html}</div>${pageHero(lang, { eyebrow: T[lang].footer.contact, h1: c.h1, sub: c.sub, ctas: false })}
-<section class="wrap" style="padding-bottom:64px"><div class="contact-grid">${c.cards.map(([h, p, big, href, ev, label, call]) => `<div class="card"><h3>${h}</h3><p>${p}</p><p class="big">${big}</p><a class="btn ${call ? 'btn-primary' : 'btn-secondary'}" href="${href}" ${call ? 'data-call' : ''} data-event="${ev}" data-pos="contact">${label}</a></div>`).join('')}</div></section>
+<section class="wrap" style="padding-bottom:64px"><div class="contact-grid">${c.cards.map(([h, p, big, href, ev, label, call]) => `<div class="card"><h2 class="h3">${h}</h2><p>${p}</p><p class="big">${big}</p><a class="btn ${call ? 'btn-primary' : 'btn-secondary'}" href="${href}" ${call ? 'data-call' : ''} data-event="${ev}" data-pos="contact">${label}</a></div>`).join('')}</div></section>
 <section class="section soft"><div class="wrap split"><div><h2>${c.nextH}</h2><ol class="prose" style="margin-left:22px">${c.next.map((n) => `<li>${n}</li>`).join('')}</ol></div>
 <div><h2>${c.idH}</h2><dl class="kv">${c.id.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join('')}</dl></div></div></section>`,
     jsonld: [{ '@type': 'ContactPage', '@id': `${SITE}${lang === 'zh' ? '/zh' : ''}/contact/`, name: c.title, about: { '@id': `${SITE}/#business` } }, BUSINESS_REF, bc.ld],

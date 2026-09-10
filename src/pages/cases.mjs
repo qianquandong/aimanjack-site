@@ -82,7 +82,7 @@ const indexPage = (lang) => {
   return {
     title: c.title, description: c.description, view: 'case_study_view',
     body: `<div class="wrap">${bc.html}</div>${pageHero(lang, { eyebrow: c.crumb, h1: c.h1, sub: c.sub, ctas: false })}
-<section class="wrap" style="padding-bottom:64px">${caseCards(lang)}</section>${finalCta(lang)}`,
+<section class="wrap" style="padding-bottom:64px">${caseCards(lang, { hl: 'h2' })}</section>${finalCta(lang)}`,
     jsonld: [BUSINESS_REF, bc.ld],
   };
 };

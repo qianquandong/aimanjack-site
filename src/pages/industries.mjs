@@ -127,7 +127,7 @@ ${finalCta(lang)}`,
 const indexPage = (lang) => {
   const c = index[lang], bc = breadcrumb(lang, [[c.crumb, '/industries/']]);
   return { title: c.title, description: c.description,
-    body: `<div class="wrap">${bc.html}</div>${pageHero(lang, { eyebrow: c.crumb, h1: c.h1, sub: c.sub, ctas: false })}<section class="wrap" style="padding-bottom:64px">${industryCards(lang, { heading: false })}</section>${finalCta(lang)}`,
+    body: `<div class="wrap">${bc.html}</div>${pageHero(lang, { eyebrow: c.crumb, h1: c.h1, sub: c.sub, ctas: false })}<section class="wrap" style="padding-bottom:64px">${industryCards(lang, { heading: false, hl: 'h2' })}</section>${finalCta(lang)}`,
     jsonld: [BUSINESS_REF, bc.ld] };
 };
 
