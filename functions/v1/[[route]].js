@@ -4,7 +4,7 @@
 //   GET    /v1/bookings/:id
 //   PATCH  /v1/bookings/:id        { start_at }                      reschedule
 //   DELETE /v1/bookings/:id                                          cancel
-//   GET    /v1/bookings?business=  (Authorization: Bearer ADMIN_TOKEN) read-only list
+//   GET    /v1/bookings?business=[&phone=&status=&from=]  (Authorization: Bearer ADMIN_TOKEN) read-only list; phone= finds a caller's bookings
 // Writes take an Idempotency-Key header and an X-Source header (web | voice | sms | admin; default web).
 // Data: Supabase Postgres (schema `booking`, db/schema.sql) via PostgREST with the secret key — env.SUPABASE_URL + env.SB_SECRET_KEY.
 // Instants are timestamptz; responses render them in the business tz with an offset (ISO 8601).
@@ -206,9 +206,9 @@ async function list(env, req, url, origin) {
   if (!env.ADMIN_TOKEN || auth !== `Bearer ${env.ADMIN_TOKEN}`) return fail(401, 'unauthorized', 'Bearer token required.');
   const biz = url.searchParams.get('business');
   if (!biz) return fail(400, 'business_required', 'business is required.');
-  const from = url.searchParams.get('from'), status = url.searchParams.get('status');
+  const from = url.searchParams.get('from'), status = url.searchParams.get('status'), phone = normPhone(url.searchParams.get('phone'));
   const rows = await sb(env, 'bookings_full?' + q({ business_id: 'eq.' + biz, start_at: 'gte.' + (isDate(from) ? from : new Date(Date.now() - 864e5).toISOString().slice(0, 10)),
-    ...(status ? { status: 'eq.' + status } : {}), order: 'start_at.asc', limit: '500' }));
+    ...(status ? { status: 'eq.' + status } : {}), ...(phone ? { customer_phone: 'eq.' + phone } : {}), order: 'start_at.asc', limit: '500' }));
   return json({ business: biz, count: rows.length, bookings: rows.map((b) => view(b, origin)) });
 }
 
