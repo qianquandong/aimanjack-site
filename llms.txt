@@ -1,22 +1,34 @@
 # AI Man Jack
 
-> AI Man Jack (aimanjack.com) is Jack Qian's Dallas, Texas practice. Two things: hands-on AI training for teams (in English or Chinese — 90-minute lunch-and-learns, half-day workshops, multi-week programs; no public price list, quotes after a 20-minute call), and a done-for-you AI front desk for Dallas–Fort Worth appointment practices (dental, med spa, chiropractic/PT, acupuncture, salons): an AI that answers patients and books appointments 24/7, on a booking-first website, $2,000 one-time for all three (AI front desk, booking system, website) then $200/month. It starts by calling the AI demo line +1 (469) 517-2968: the AI answers, and books the caller's fifteen-minute call with Jack — the same booking system that gets installed. Contact: jack@aimanjack.com, +1 (469) 425-4142 (text TRAINING with a company name for the training side). Service area: the whole Dallas–Fort Worth metroplex (Texas, USA) — Dallas, Fort Worth, Plano, Richardson, Frisco, McKinney, Arlington and everywhere between.
+> AI Man Jack LLC (aimanjack.com) is Jack Qian's company in Dallas, Texas. Its main product is an AI receptionist for appointment-based businesses in Dallas–Fort Worth: it answers calls 24/7, handles approved business questions (hours, services, prices), captures caller details, and books appointments through the connected booking workflow, in English, Spanish and Chinese. When it should not answer, it runs a configured fallback: take a message, transfer to a person, or text the owner. Anyone can try it by calling the demo line +1 (469) 517-2968 (no signup). Pricing: Starter $199/month + $750 setup (200 minutes, questions and messages, no booking, uses your existing website); Growth $299/month + $1,500 setup (300 minutes, one standard booking workflow, one-page website, hosting); Pro $599/month + $2,000 setup (1,000 minutes, multi-staff and service routing within one location, website up to 3 pages). Overage $0.45/minute on all plans. Month to month. The company also runs hands-on AI training for teams, priced per engagement. Contact: jack@aimanjack.com, text +1 (469) 425-4142. Service area: the Dallas–Fort Worth metroplex (Dallas, Fort Worth, Plano, Richardson, Frisco, McKinney, Arlington and between); remote implementation where supported.
 
 Key facts:
-- Profiles: X https://x.com/JackQianAI · YouTube https://www.youtube.com/@JackBuildAI · GitHub https://github.com/qianquandong · LinkedIn https://www.linkedin.com/in/quandong-qian-156563191/ · Threads https://www.threads.com/@jack_qian616 · Facebook https://www.facebook.com/profile.php?id=100084925451350 · Nextdoor https://nextdoor.com/page/ai-man-jack-melissa-tx/ · Douyin (抖音) "AI人Jack" https://www.douyin.com/user/MS4wLjABAAAAxNXwx4UCCwS2FwyO-bsDHbuWziAo5mszf_EHC8qbxSI_hlNPcRl6nKO1v6aRFMxK
-- Google Business Profile: 5.0 stars across 10 reviews (as of September 2026), all from attendees of Jack's Dallas community AI workshops — https://g.page/r/CWX_rCfFduC1EAI
-- Founder: Jack Qian, Dallas AI trainer and community AI educator. Has run five community AI talks of 50+ people each in Plano and Dallas in 2026 and a 37-person AI hackathon (April 2026).
-- AI training for teams: task-first curriculum in five parts — choose a suitable task, give the AI useful context, move from chat to a workflow, verify the output, apply data and approval guardrails. Participants leave with one working workflow for a task they already do, not a tool tour. Formats: 90-minute lunch-and-learn, half-day hands-on workshop, multi-week program. English or Chinese. Priced per engagement after a short call.
-- AI front desk + booking system (Products): a done-for-you AI that answers customers and books appointments 24/7 for Dallas–Fort Worth appointment practices. $2,000 one-time covers all three — the AI front desk, the booking system, and the booking-first website it runs on — then $200/month to keep it running. A tuned Google Business Profile is included. Live within a week. The entry point is the live AI line +1 (469) 517-2968: it answers, and books the caller's fifteen-minute call with Jack, so a prospect uses the product before talking to a human.
+- Company: AI Man Jack LLC, Dallas, Texas. Founder and operator: Jack Qian. One person handles setup, testing and support.
+- Product: AI receptionist + booking for salons and beauty, med spas, clinics (dental, chiropractic, physical therapy, acupuncture), home services and repair services. Demo line: +1 (469) 517-2968, always on.
+- Languages: English, Spanish, Chinese.
+- Limits: the AI answers only from information the business approved; it does not invent answers, does not give medical or legal advice, and makes no promise about search rankings or AI-assistant recommendations. Unsupported questions go to the fallback flow (message, transfer, or text to the owner).
+- Integrations (as of September 2026): AI Man Jack's own booking system = Supported; call forwarding or a new dedicated number = Supported; texting the owner = Supported; Google Calendar and customer confirmation texts = Pilot; Square, Booksy, Vagaro, Fresha, Calendly, VoIP systems and CRMs = Ask us (not yet tested).
+- Setup: about one week after the business supplies hours, services, prices and booking rules, then a tuning period. Cancellation: month to month. The client keeps website files and domain; included hosting ends with the service.
+- Case studies: AI Man Jack's own demo line (pilot, numbers published after the first full month) and an SMS booking agent for a used-car dealership in DFW (live, metrics not yet published). No customer metrics are invented.
+- Training: hands-on AI training for Dallas teams in English or Chinese; 90-minute, half-day and multi-week formats; 5.0 stars across 10 Google reviews from workshop attendees (https://g.page/r/CWX_rCfFduC1EAI); five community talks of 50+ people and a 37-person hackathon in 2026.
+- Profiles: X https://x.com/JackQianAI · YouTube https://www.youtube.com/@JackBuildAI · GitHub https://github.com/qianquandong · LinkedIn https://www.linkedin.com/in/quandong-qian-156563191/ · Nextdoor https://nextdoor.com/page/ai-man-jack-melissa-tx/
 
 ## Pages
 
-- [AI training for Dallas teams](https://aimanjack.com/ai-training/): what the training covers, the three formats, real Google reviews from workshop attendees, and how to book a call
-- [AI front desk + booking system (home)](https://aimanjack.com/): the $2,000 done-for-you build (AI front desk + booking system + website, all three) and the $200/month plan for Dallas appointment practices, entered by calling the AI line and letting it book the call
+- [Home](https://aimanjack.com/): what the AI receptionist does, how a call becomes a booking, capabilities, industries, integrations, pricing summary, FAQ
+- [AI receptionist](https://aimanjack.com/ai-receptionist/): what happens on a call, languages and limits, what the business must provide
+- [Pricing](https://aimanjack.com/pricing/): Starter, Growth, Pro comparison table, setup scope, service terms in plain words
+- [Industries](https://aimanjack.com/industries/): salons, med spas, clinics, home services, repair services, each with call scenarios and an example transcript
+- [Integrations](https://aimanjack.com/integrations/): every integration with a Supported / Pilot / Ask us label
+- [Case studies](https://aimanjack.com/case-studies/): the demo line pilot and the dealership SMS agent
+- [AI training for teams](https://aimanjack.com/ai-training/): curriculum, formats, Google reviews
+- [About](https://aimanjack.com/about/): the company and Jack Qian
+- [Contact](https://aimanjack.com/contact/): call the demo, email, or text
 
-Chinese versions of the home and AI training pages live under https://aimanjack.com/zh/ (for example https://aimanjack.com/zh/ai-training/).
+Chinese versions of every page live under https://aimanjack.com/zh/ (for example https://aimanjack.com/zh/pricing/).
 
 ## Optional
 
+- [Terms of Service](https://aimanjack.com/terms)
 - [Privacy policy](https://aimanjack.com/privacy)
 - [SMS terms](https://aimanjack.com/sms-terms)

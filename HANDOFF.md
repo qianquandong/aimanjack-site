@@ -1,96 +1,92 @@
-# HANDOFF — aimanjack.com（2026-09-09）
+# HANDOFF — aimanjack.com（2026-09-09，PRD 改版）
 
 给下一个接手的人（或下一个会话）。读完这一页就能接着干，不用翻聊天记录。
 
 ## 1. 这个站是什么
 
-AI Man Jack LLC 的官网，Jack Qian 在达拉斯的生意。两条业务线，**首页是产品，培训是次页**（2026-09-09 刚换的，Jack 定的）：
+AI Man Jack LLC 的官网，Jack Qian 在达拉斯的生意。2026-09-09 按 `aimanjack_frontend_PRD.md`（Jack 的 Codex 输出目录）整站重做，产品是 **AI 前台 + 预约**，培训是次页。
 
 | 页面 | EN | ZH | 内容 |
 |---|---|---|---|
-| 首页 | `/` | `/zh/` | AI 前台 + 预约系统，$2,000 一次性 + $200/月，面向 DFW 预约制诊所和店铺。入口是打 AI 演示线 (469) 517-2968 |
-| 培训 | `/ai-training/` | `/zh/ai-training/` | 团队动手 AI 培训，按项目报价。CTA 是发短信 TRAINING 到 (469) 425-4142 |
-| 其他 | `/privacy` `/sms-terms` | — | A2P 审核用，别动 |
+| 首页 | `/` | `/zh/` | Hero「Your phone can answer itself.」+ PhoneDemoCard + 怎么运作 + 示例通话 + 能力 + 行业 + 对接 + 案例 + 价格 + 创始人 + 12 条 FAQ + 终 CTA + GEO 事实段 |
+| 产品 | `/ai-receptionist/` | `/zh/ai-receptionist/` | 一通电话里发生什么、语言与边界、需要你准备什么 |
+| 价格 | `/pricing/` | `/zh/pricing/` | Starter $199+$750 / Growth $299+$1,500 / Pro $599+$2,000，完整对比表，服务条款白话版 |
+| 行业 | `/industries/` + `salons` `med-spas` `clinics` `home-services` `repair-services` | 同 `/zh/` | 每页 3 个来电场景、示例对话、需要准备什么、行业 FAQ |
+| 对接 | `/integrations/` | `/zh/integrations/` | 每项标 Supported / Pilot / Ask us |
+| 案例 | `/case-studies/` + `ai-man-jack` `car-dealership-sms` | 同 `/zh/` | 不编数字，写测了什么、还没验证什么 |
+| 培训 | `/ai-training/` | `/zh/ai-training/` | 内容和 schema 沿用旧站，只换了壳；产品交叉推荐段改成新价格 |
+| 公司 | `/about/` `/contact/` | 同 `/zh/` | 联系页无表单：演示线 / 邮件 / 短信 |
+| 法务 | `/privacy` `/sms-terms` `/terms` | `/zh/privacy` 等 | 前两个英文原文一字未动（A2P 审核用），`/terms` 是新写的，**Jack 上线前要审** |
 
-手写静态 HTML + 一个 `style.css`，没有框架。仓库 `/Users/joseesp/aimanjack-site`，GitHub `qianquandong/aimanjack-site`，分支 `production`。跟 `jackqian-site`（realagentusecases.com，Next.js）是两个仓库，别混。
+## 2. 怎么改页面（关键变化）
 
-## 2. 目标与现状
+站点现在是**生成的**：`src/` 是源，根目录 HTML 是产物，两者都提交。
 
-Jack 的目标：每天 1000 个目标受众进站，转化率 ≥10%。截至今天两个数都刚开始能测：
+```bash
+node scripts/build.mjs        # src/ → 38 个 HTML + sitemap.xml
+```
 
-| | 数值 | 来源 |
-|---|---|---|
-| GSC 近 28 天 | 2 次点击 / 269 次曝光 | 2026-08-12 → 09-06 |
-| 排名词 | 「ai automation dallas」一类，50–90 位 | 跟新首页定位对得上，跟培训页对不上 |
-| GA4 | 今天刚埋，0 数据 | 明天起有 |
-| 转化 | 未知 | 宽口径 = 点 sms/tel/mailto（GA4 `cta_click`）；严口径 = 真收到短信/预约，Jack 手工报 |
-
-阶梯和熔断阈值在 `HEALTH-CHECK.md` §0 和 §1，别在这里重复。
-
-## 3. 今天接好的线（全部实测可用）
-
-| 项 | 值 |
+| 文件 | 管什么 |
 |---|---|
-| GA4 property | AI Man Jack · 553511876（账号 EnglishmanJack，跟 realagentusecases 同账号不同 property） |
-| Measurement ID | G-H7EF9HVN02，标签在 4 个 HTML 的 `</head>` 前，带 `cta_click` 事件监听 |
-| CSP | `_headers` 已放行 googletagmanager / google-analytics |
-| Google Cloud 项目 | claude-seo · inductive-album-508120-s2 |
-| 已开 API | Search Console、PageSpeed Insights、Chrome UX Report、Analytics Data（Indexing API 没开，用不上） |
-| Service account | claude-seo@inductive-album-508120-s2.iam.gserviceaccount.com，GSC Full + GA4 Viewer |
-| 凭证文件 | `~/.config/claude-seo/google-api.json` + `service_account.json`（不在仓库里） |
-| 验证命令 | `"$HOME/.claude/skills/seo/bin/claude-seo" run google_auth.py --check` → 应显示 Tier 2 全 OK |
+| `src/config.mjs` | 所有事实常量：两个电话、邮箱、**BOOK_URL**、三档价格、GA4 ID |
+| `src/i18n.mjs` | 页头页脚、按钮、弹窗、粘底条的中英文案 |
+| `src/layout.mjs` | 页面外壳：head/meta/hreflang、header、footer、拨号弹窗（含二维码）、粘底 Call 条、内联 JS（弹窗、复制号码、GA4 事件） |
+| `src/components.mjs` | 可复用块：PhoneDemoCard、transcript、howItWorks、pricingCards/Table、faq、finalCta、geoFacts、breadcrumb；行业/对接/案例/FAQ 的数据也在这 |
+| `src/pages/*.mjs` | 每个文件一组页面，`en` 和 `zh` 并排写 |
+| `src/training-schema.*.json` | 培训页的 JSON-LD 原样保留（含 10 条评价 AggregateRating） |
+| `src/qr-demo.svg` | 拨号二维码，`npx qrcode -t svg "tel:+14695172968"` 生成 |
+| `style.css` | 唯一样式表；deploy 时压缩并按内容 hash 换 `?v=` |
 
-## 4. 每天怎么转
+**Jack 的预约系统上线后**：把 `src/config.mjs` 的 `BOOK_URL` 填上，重建。全站第二 CTA 自动从「Email Jack」变成「Book a 15-min demo」，事件名变 `book_demo_click`。
 
-- **定时任务** `aimanjack-daily-health`（本机，每天 7:00，App 开着才跑）：跑 `node scripts/health.mjs`，拉 GSC 7 天环比和 GA4，≤12 行中文日报。周六加全站审计、PSI、3 条 GEO 探针。prompt 在 `~/.claude/scheduled-tasks/aimanjack-daily-health/SKILL.md`。
-- **健康脚本** `scripts/health.mjs`：零凭证，查 4 页 + sitemap/robots/llms.txt 是否 200、随机路径 404、`_redirects` 每条 301 仍成立、每页 1 个 H1、JSON-LD 可解析、≥2 个 sms CTA、GA4 标签在、robots 不挡 AI 爬虫、llms.txt 讲当前产品；title/description/canonical/hreflang/H1/schema/og:image 对比 `scripts/seo-baseline.json`。快照写 `scripts/health/YYYY-MM-DD.json`。
+**改价格**：只改 `src/config.mjs` 的 `PRICING` 和 `src/components.mjs` 的 `TIER_COPY`，重建；schema 的 Offer 也跟着变。
+
+## 3. 硬规矩（没变的）
+
+- 电话有两个，都对：(469) 425-4142 是短信/主号（A2P 要求全站 `sms:` 用它），(469) 517-2968 是 AI 演示线（`tel:`）。别「统一」。
+- `/privacy` 和 `/sms-terms` 英文正文是 A2P 审核页，一字未动；中文版是翻译。
+- 不编数字：案例、集成标签、评价数都只写核实过的。评价数变了改 `src/training-schema.*.json` 和 `llms.txt`。
+- 老 URL 全部 301 在 `_redirects`；`/case-studies/*` 那条已删（现在是真页面）。健康脚本每天验它们。
+- `.deployignore` 排除 `src/`、`scripts/`、`*.md`、`.planning`，内部文件不会上线。
+
+## 4. 追踪
+
+GA4 `G-H7EF9HVN02`，标签在 `load` 后异步加载，只在 `aimanjack.com` 域名下发。事件按 PRD §35 命名：`hero_call_click` `header_call_click` `sticky_call_click` `demo_call_click` `email_click` `sms_click` `book_demo_click`（预约系统上线后）`language_change` `case_study_click` `integration_click`；页面级 `pricing_view` `case_study_view` `integration_view`。参数：`cta_position` `page` `language` `device`。旧的 `cta_click` 已停。**Jack**：GA4 Admin → Events 把 `demo_call_click` 和 `hero_call_click` 星标成 Key event。
+
+## 5. 每天怎么转
+
+- 定时任务 `aimanjack-daily-health`（本机 7:00）跑 `node scripts/health.mjs`：现在查 22 个页面（11 EN + 11 ZH）是否 200、每页 1 个 H1、JSON-LD 可解析且含 ProfessionalService、≥1 个 `tel:` 演示 CTA + ≥1 个 `sms:`、CTA 标签和协议一致、robots 放行、llms.txt 提到培训 + $199 + 两个号码；title/description/canonical/hreflang/H1/schema/og:image 对比 `scripts/seo-baseline.json`。
 - **有意改了页面之后必须** `node scripts/health.mjs --baseline`，不然第二天报 drift。
 
-常用命令：
+## 6. 上线
 
 ```bash
-node scripts/health.mjs                # 日检
-node scripts/health.mjs --baseline     # 改版后重打基线
-"$HOME/.claude/skills/seo/bin/claude-seo" run gsc_query.py query --days 7 --dimensions query --limit 20
-"$HOME/.claude/skills/seo/bin/claude-seo" run ga4_report.py --days 7
-"$HOME/.claude/skills/seo/bin/claude-seo" run pagespeed_check.py https://aimanjack.com/ --strategy mobile
+node scripts/build.mjs                                   # 先生成
+git -C /Users/joseesp/aimanjack-site add -A && git -C /Users/joseesp/aimanjack-site commit -m "..."
+sh /Users/joseesp/aimanjack-site/deploy.sh --preview     # 当前分支 → <branch>.aimanjack.pages.dev，不 ping IndexNow
+sh /Users/joseesp/aimanjack-site/deploy.sh               # 在 production 分支上跑 = 正式上线 + IndexNow
 ```
 
-## 5. 上线
+坑：wrangler 按**当前 git 分支名**决定 prod 还是 preview。正式上线必须 `git checkout production && git merge --ff-only redesign`（或对应分支）再跑 deploy.sh。deploy.sh 不 push、不检查工作区，所以上线前自己 commit + `git -C /Users/joseesp/aimanjack-site push origin production`。回退 = `git revert <sha>` → 重建 → push → deploy.sh。
 
-Jack 2026-09-09 说过：aimanjack.com 的上线不用再逐次跟他确认。
+上线后固定动作：curl 看 title 和 301 → `node scripts/health.mjs --baseline` → commit → push。
 
-```bash
-sh /Users/joseesp/aimanjack-site/deploy.sh
-```
+## 7. 待 Jack
 
-deploy.sh 顺序：暂存到 .deploy → 压缩 CSS + 内容 hash 换缓存 → `wrangler pages deploy` → ping IndexNow。**它不 push、也不检查工作区**（09-09 加过一次，被 1636856 revert 掉了）。所以上线前自己 commit + `git -C /Users/joseesp/aimanjack-site push origin production`，否则 GitHub 上没有对应版本，回退就没有锚点。回退 = `git revert <sha>` → push → deploy.sh。
-
-坑：wrangler 按**当前 git 分支名**决定 prod 还是 preview。不在 `production` 上跑，只会发到 `<branch>.aimanjack.pages.dev`，aimanjack.com 不动。
-
-上线后固定动作：curl 看 title 和 301 → `--baseline` → commit → push。
-
-## 6. 待办（按重要性）
-
-1. **Jack**：GSC 对 `/` 和 `/ai-training/` 各点一次 Request Indexing。没有 API，只能手点。
-2. **Jack**：第一个 `cta_click` 到 GA4 后，Admin → Events 把它星标成 Key event。日报会提醒。
-3. **Jack，每周**：GBP 发一条更新。评价数不再是 10 条 5.0 时告诉 Claude，改 `ai-training/index.html` 的 AggregateRating 和 `llms.txt`。
-4. **Claude，14 天后**：基线跑满，按 `HEALTH-CHECK.md` 阶梯出阶段 1 内容清单。GSC 现有曝光词是 automation/前台方向，优先做这个集群的长尾页和城市页，培训词其次。
-5. 可选：Cloudflare Pages 打开 Web Analytics 做 GA4 对照。
-
-## 7. 硬规矩
-
-- 电话有两个，都对：(469) 425-4142 是短信/主号（A2P 审核要求全站 CTA 用它），(469) 517-2968 是 AI 演示线。别「统一」。
-- `/privacy` 和 `/sms-terms` 是 A2P 审核用的页面，改动前想清楚；它们有正常页脚和互链。A2P 审核状态未核实。
-- ProfessionalService 实体 `#business`（含 10 条评价、AggregateRating）定义在 `/ai-training/` 页里，首页的 Service 用 `@id` 引用它。改评价数只改一处。
-- `.deployignore` 排除 `*.md`、`scripts/`、`.planning` 等，内部文档不会上线。新增内部文件放这些位置。
-- 老 URL 全部 301 在 `_redirects`：`/products/`→`/`，`/ai-education/`→`/ai-training/`，其余旧页面→首页或培训页。别删规则，健康脚本每天验它们。
+1. 审 `/terms` 和 `/zh/terms` 文案（责任限制、德州法律那几段）。
+2. 给 `BOOK_URL`（自建预约系统的链接）。
+3. 定 AI 号码取消后的归属，改 FAQ 第 11 条和价格页「归属」段。
+4. 测第三方预约软件，升级 `src/components.mjs` 里 `INTEGRATIONS` 的标签。
+5. 车行案例：店名能不能公开、有没有数字。
+6. 演示线第一个完整月的数据，回填 `/case-studies/ai-man-jack/`。
+7. `/privacy` 最好加一段 AI 通话数据处理说明（现在只写了短信）；改之前想清楚 A2P 审核的影响。
+8. GSC 对新页面 Request Indexing；GA4 星标 Key event。
 
 ## 8. 相关文件
 
 | 文件 | 用途 |
 |---|---|
 | `HEALTH-CHECK.md` | 漏斗口径、阶梯、三层检查、熔断阈值、接线记录 |
-| `SEO-STATUS.md` | 7 月以来的 SEO 历史流水，看背景用 |
-| `README.md` | 部署与日检一句话 |
-| `~/.claude/projects/-Users-joseesp-jackqian-site/memory/aimanjack-*.md` | Claude 的跨会话备忘（部署规矩、LLC 署名、健康检查） |
+| `SEO-STATUS.md` | 7 月以来的 SEO 历史流水 |
+| `README.md` | 构建、部署、日检一句话 |
+| `~/.claude/projects/-Users-joseesp-jackqian-site/memory/aimanjack-*.md` | Claude 的跨会话备忘 |

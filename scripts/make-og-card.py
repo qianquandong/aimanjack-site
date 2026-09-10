@@ -4,7 +4,7 @@
 from PIL import Image, ImageDraw, ImageFont
 
 W, H = 1200, 630
-BG, INK, GREEN, MUTED, LINE, TINT = "#f7f8f7", "#141a17", "#0b5d38", "#59615c", "#dfe4e1", "#e9f2ed"
+BG, INK, ACCENT, MUTED, LINE, TINT = "#ffffff", "#141414", "#1e4fd8", "#5c6066", "#e3e3df", "#edf1fd"
 HEL = "/System/Library/Fonts/Helvetica.ttc"
 CJK = "/System/Library/Fonts/Hiragino Sans GB.ttc"
 
@@ -30,9 +30,9 @@ def card(out, kicker, l1, l2, cta, site="aimanjack.com", zh=False, portrait=True
 
     x = 72
     hs = 52 if not zh else 54
-    d.text((x, 104), kicker, font=fe(22), fill=GREEN)
+    d.text((x, 104), kicker, font=fe(22), fill=ACCENT)
     d.text((x, 206), l1, font=f(hs), fill=INK)
-    d.text((x, 206 + hs + 22), l2, font=f(hs), fill=GREEN)
+    d.text((x, 206 + hs + 22), l2, font=f(hs), fill=ACCENT)
 
     d.line((x, H - 138, 700, H - 138), fill=LINE, width=2)
     d.text((x, H - 110), cta, font=f(29), fill=INK)
@@ -40,28 +40,18 @@ def card(out, kicker, l1, l2, cta, site="aimanjack.com", zh=False, portrait=True
     im.save(out, quality=90, optimize=True)
     print("wrote", out)
 
-# Home — AI training for teams
-card("img/og-training.jpg",
-     "AI TRAINING · DALLAS–FORT WORTH",
-     "Hands-on AI training",
-     "for your team",
-     "English or Chinese — text TRAINING to (469) 425-4142")
-card("img/og-training-zh.jpg",
-     "AI TRAINING · DALLAS–FORT WORTH",
-     "给你团队的",
-     "动手 AI 培训",
-     "中英文皆可 — 发 TRAINING 到 (469) 425-4142",
+# AI receptionist (home + every product page), 2026-09-09 redesign.
+card("img/og-receptionist.jpg",
+     "AI RECEPTIONIST · DALLAS–FORT WORTH",
+     "Your phone can",
+     "answer itself.",
+     "Call the AI demo: (469) 517-2968 — no signup")
+card("img/og-receptionist-zh.jpg",
+     "AI RECEPTIONIST · DALLAS–FORT WORTH",
+     "你的电话，",
+     "能自己接。",
+     "拨打 AI 演示线 (469) 517-2968，不用注册",
      zh=True)
 
-# Products — AI front desk
-card("img/og-products.jpg",
-     "DALLAS CLINICS & APPOINTMENT PRACTICES",
-     "An AI front desk that",
-     "answers and books 24/7",
-     "$2,000 build · $200/mo — text CHECKUP to (469) 425-4142")
-card("img/og-products-zh.jpg",
-     "DALLAS CLINICS & APPOINTMENT PRACTICES",
-     "24 小时接电话约时间的",
-     "AI 前台",
-     "$2,000 搭建 · 每月 $200 — 发 CHECKUP 到 (469) 425-4142",
-     zh=True)
+# Training cards (img/og-training*.jpg) were generated with the previous palette and are
+# left in place: the file names are cached immutable, so a recolor would need new names.

@@ -1,29 +1,15 @@
-# aimanjack.com — 纯静态站
+# aimanjack.com — 生成的静态站
 
-一个 `index.html`，零依赖。本地预览：直接双击打开，或 `python3 -m http.server --directory .`。
+源在 `src/`，产物是根目录的 HTML（两者都提交）。零依赖，Node 22。
 
-## 上线前待办
-
-- [x] 电话已填：(832) 888-6016
-- [x] 邮箱已填：jack@aimanjack.com（收件已验证通）
-
-## 部署（Cloudflare Pages）
-
-```sh
-npx wrangler pages project create aimanjack --production-branch main
-npx wrangler pages deploy . --project-name aimanjack
+```bash
+node scripts/build.mjs                                   # src/ → HTML + sitemap.xml
+python3 -m http.server 8787 --directory .                # 本地预览（或 .claude/launch.json 的 aimanjack-static）
+node scripts/health.mjs                                  # 日检；改版后加 --baseline
+sh deploy.sh --preview                                   # 当前分支 → <branch>.aimanjack.pages.dev
+sh deploy.sh                                             # production 分支上 = 正式上线 + IndexNow
 ```
 
-以后改完跑 `./deploy.sh`（= wrangler deploy + IndexNow ping Bing）。
+改事实（电话、价格、预约链接、GA4）只改 `src/config.mjs`。页面在 `src/pages/`，中英文并排。结构和规矩见 `HANDOFF.md`。
 
-**注意**：本仓库 git 分支必须叫 `production`（Pages 项目的 production branch 就是它）。wrangler 会从 git 自动读分支名——分支叫别的名字时部署只会进 Preview 环境，自定义域不更新。
-
-## 域名从 Shopify 切过来
-
-1. Cloudflare Pages 项目 → Custom domains → 加 `www.aimanjack.com` 和 `aimanjack.com`
-2. DNS 里把原来指向 Shopify 的记录（A 23.227.38.65 / CNAME shops.myshopify.com 之类）删掉，按 Pages 提示指到 `aimanjack.pages.dev`
-3. 确认新站通了之后，再去 Shopify 后台把域名解绑、关店（别忘了先导出订单/客户数据，Shopify 月费也记得停）
-
-## 每日健康检验
-
-`node scripts/health.mjs`，设计与阈值见 `HEALTH-CHECK.md`；定时任务 `aimanjack-daily-health` 每天 7:00 本机跑。
+**注意**：wrangler 按当前 git 分支名决定 prod 还是 preview，正式上线必须在 `production` 分支上跑。

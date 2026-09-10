@@ -1,0 +1,325 @@
+[
+ {
+  "@type": "ProfessionalService",
+  "@id": "https://aimanjack.com/#business",
+  "name": "AI Man Jack",
+  "description": "面向达拉斯—沃斯堡团队的动手 AI 培训（中文或英文），以及给预约制诊所和店铺的全包 AI 前台 + 预约系统。",
+  "url": "https://aimanjack.com/",
+  "logo": "https://aimanjack.com/apple-touch-icon.png",
+  "image": "https://aimanjack.com/img/hero-workshop-1600.webp",
+  "email": "jack@aimanjack.com",
+  "telephone": "+1-469-425-4142",
+  "founder": {
+   "@id": "https://aimanjack.com/#jack"
+  },
+  "areaServed": [
+   {
+    "@type": "AdministrativeArea",
+    "@id": "https://aimanjack.com/#dfw",
+    "name": "Dallas–Fort Worth metroplex",
+    "sameAs": "https://en.wikipedia.org/wiki/Dallas%E2%80%93Fort_Worth_metroplex",
+    "containedInPlace": {
+     "@type": "State",
+     "name": "Texas",
+     "containedInPlace": {
+      "@type": "Country",
+      "name": "United States"
+     }
+    }
+   },
+   {
+    "@type": "City",
+    "name": "Dallas",
+    "containedInPlace": {
+     "@id": "https://aimanjack.com/#dfw"
+    }
+   },
+   {
+    "@type": "City",
+    "name": "Fort Worth",
+    "containedInPlace": {
+     "@id": "https://aimanjack.com/#dfw"
+    }
+   },
+   {
+    "@type": "City",
+    "name": "Plano",
+    "containedInPlace": {
+     "@id": "https://aimanjack.com/#dfw"
+    }
+   },
+   {
+    "@type": "City",
+    "name": "Richardson",
+    "containedInPlace": {
+     "@id": "https://aimanjack.com/#dfw"
+    }
+   },
+   {
+    "@type": "City",
+    "name": "Frisco",
+    "containedInPlace": {
+     "@id": "https://aimanjack.com/#dfw"
+    }
+   },
+   {
+    "@type": "City",
+    "name": "McKinney",
+    "containedInPlace": {
+     "@id": "https://aimanjack.com/#dfw"
+    }
+   },
+   {
+    "@type": "City",
+    "name": "Arlington",
+    "containedInPlace": {
+     "@id": "https://aimanjack.com/#dfw"
+    }
+   }
+  ],
+  "sameAs": [
+   "https://g.page/r/CWX_rCfFduC1EAI",
+   "https://nextdoor.com/page/ai-man-jack-melissa-tx/",
+   "https://www.linkedin.com/in/quandong-qian-156563191/",
+   "https://www.youtube.com/@JackBuildAI",
+   "https://x.com/JackQianAI",
+   "https://www.facebook.com/profile.php?id=100084925451350"
+  ],
+  "address": {
+   "@type": "PostalAddress",
+   "addressLocality": "Dallas",
+   "addressRegion": "TX",
+   "addressCountry": "US"
+  },
+  "priceRange": "$0-$2000",
+  "currenciesAccepted": "USD",
+  "availableLanguage": [
+   "en",
+   "zh"
+  ],
+  "knowsAbout": [
+   "AI training",
+   "corporate AI training",
+   "AI workshops",
+   "AI agents",
+   "workflow automation",
+   "AI customer service",
+   "appointment booking systems"
+  ],
+  "makesOffer": [
+   {
+    "@type": "Offer",
+    "itemOffered": {
+     "@type": "Service",
+     "name": "团队动手 AI 培训",
+     "url": "https://aimanjack.com/zh/ai-training/#formats",
+     "description": "面向达拉斯—沃斯堡团队的面对面 AI 培训，中文或英文。三种形式：90 分钟午间分享、半天动手 workshop、多周项目制。每位学员拿自己已经在做的任务来练，带着一条能跑的工作流和一份核对清单走。价格按项目定，先聊 20 分钟再报价。"
+    },
+    "priceCurrency": "USD"
+   },
+   {
+    "@type": "Offer",
+    "itemOffered": {
+     "@type": "Service",
+     "name": "AI 前台 + 预约系统",
+     "url": "https://aimanjack.com/zh/",
+     "description": "给达拉斯—沃斯堡预约制诊所和店铺（牙科、医美 spa、脊椎和物理治疗、针灸、美发美甲）的全包 AI，24 小时替你回客户、帮客户约时间，AI 前台、预约系统和网站三样都算在 $2,000 一次性搭建里；之后每月 $200。"
+    },
+    "price": "2000",
+    "priceCurrency": "USD"
+   }
+  ],
+  "review": [
+   {
+    "@type": "Review",
+    "reviewBody": "I had such a great experience at this AI workshop. It was practical, inspiring, and genuinely fun. Jack, the host, did an amazing job of breaking down complex AI concepts in a way that was easy to understand…",
+    "reviewRating": {
+     "@type": "Rating",
+     "ratingValue": "5",
+     "bestRating": "5"
+    },
+    "author": {
+     "@type": "Person",
+     "name": "emily xu"
+    },
+    "itemReviewed": {
+     "@id": "https://aimanjack.com/#business"
+    },
+    "publisher": {
+     "@type": "Organization",
+     "name": "Google"
+    }
+   },
+   {
+    "@type": "Review",
+    "reviewBody": "I really enjoyed Jack’s AI seminar! He has a very forward-thinking perspective on AI and does a great job of explaining everything from understanding AI to actually using it in real life…",
+    "reviewRating": {
+     "@type": "Rating",
+     "ratingValue": "5",
+     "bestRating": "5"
+    },
+    "author": {
+     "@type": "Person",
+     "name": "U Rachel"
+    },
+    "itemReviewed": {
+     "@id": "https://aimanjack.com/#business"
+    },
+    "publisher": {
+     "@type": "Organization",
+     "name": "Google"
+    }
+   },
+   {
+    "@type": "Review",
+    "reviewBody": "This AI course was very informative and easy to follow. It covered the fundamentals of AI and its basic applications, making it especially suitable for beginners with little or no prior experience.",
+    "reviewRating": {
+     "@type": "Rating",
+     "ratingValue": "5",
+     "bestRating": "5"
+    },
+    "author": {
+     "@type": "Person",
+     "name": "Yuqi Guan"
+    },
+    "itemReviewed": {
+     "@id": "https://aimanjack.com/#business"
+    },
+    "publisher": {
+     "@type": "Organization",
+     "name": "Google"
+    }
+   }
+  ],
+  "aggregateRating": {
+   "@type": "AggregateRating",
+   "ratingValue": "5.0",
+   "reviewCount": 10,
+   "bestRating": "5",
+   "worstRating": "1"
+  }
+ },
+ {
+  "@type": "Person",
+  "@id": "https://aimanjack.com/#jack",
+  "name": "Jack Qian",
+  "alternateName": "AI Man Jack",
+  "url": "https://aimanjack.com/zh/ai-training/#about",
+  "image": "https://aimanjack.com/img/jack-headshot.jpg",
+  "jobTitle": [
+   "AI Trainer",
+   "Community AI Educator"
+  ],
+  "worksFor": {
+   "@id": "https://aimanjack.com/#business"
+  },
+  "knowsAbout": [
+   "AI agents",
+   "AI training",
+   "workflow automation",
+   "small business websites"
+  ],
+  "knowsLanguage": [
+   "en",
+   "zh"
+  ],
+  "sameAs": [
+   "https://realagentusecases.com/",
+   "https://luma.com/user/usr-FlERJUF6Mcrie58",
+   "https://www.facebook.com/profile.php?id=100084925451350",
+   "https://x.com/JackQianAI",
+   "https://github.com/qianquandong",
+   "https://www.linkedin.com/in/quandong-qian-156563191/",
+   "https://www.youtube.com/@JackBuildAI",
+   "https://www.threads.com/@jack_qian616",
+   "https://www.douyin.com/user/MS4wLjABAAAAxNXwx4UCCwS2FwyO-bsDHbuWziAo5mszf_EHC8qbxSI_hlNPcRl6nKO1v6aRFMxK",
+   "https://nextdoor.com/page/ai-man-jack-melissa-tx/"
+  ]
+ },
+ {
+  "@type": "FAQPage",
+  "@id": "https://aimanjack.com/zh/#faq",
+  "isPartOf": {
+   "@id": "https://aimanjack.com/#business"
+  },
+  "mainEntity": [
+   {
+    "@type": "Question",
+    "name": "这个 AI 培训是给谁的？",
+    "acceptedAnswer": {
+     "@type": "Answer",
+     "text": "达拉斯—沃斯堡 5 到 60 人左右的团队，大多数人不是技术背景：运营、销售、行政、前台、计划、客服。不用写代码，每个人练的都是自己已经在做的任务。"
+    }
+   },
+   {
+    "@type": "Question",
+    "name": "学员在培训里到底做出什么？",
+    "acceptedAnswer": {
+     "@type": "Answer",
+     "text": "一条能跑的工作流，对应自己每周都在做的一件事——从批准过的笔记整理会议简报、客户回复的初稿、从表格里拉出来的周报、某个客户的调研摘要。课结束前它就已经在跑了，每个人还会带走一份核对清单，结果发出去之前先过一遍。"
+    }
+   },
+   {
+    "@type": "Question",
+    "name": "用中文还是英文？",
+    "acceptedAnswer": {
+     "@type": "Answer",
+     "text": "都可以。2026 年达拉斯的社区系列是中文场；企业场用现场最顺的那种语言，材料两种语言都有。"
+    }
+   },
+   {
+    "@type": "Question",
+    "name": "培训用哪些 AI 工具？",
+    "acceptedAnswer": {
+     "@type": "Answer",
+     "text": "你公司已经批准的那些——ChatGPT、Claude、Gemini、Copilot 都行。方法跨工具通用。开头第一件事就是讲清楚：哪些数据可以放进工具，哪些不行。"
+    }
+   },
+   {
+    "@type": "Question",
+    "name": "团队 AI 培训多少钱？",
+    "acceptedAnswer": {
+     "@type": "Answer",
+     "text": "按项目定价，看形式和人数。发 TRAINING 加公司名到 (469) 425-4142，或者发邮件到 jack@aimanjack.com，聊 20 分钟，就会有一个推荐的形式和报价。"
+    }
+   },
+   {
+    "@type": "Question",
+    "name": "怎么知道培训有没有效果？",
+    "acceptedAnswer": {
+     "@type": "Answer",
+     "text": "课后两周去看：那条工作流有没有拿真实工作试过、结果准不准、够不够拿来用、审核在哪一步花的时间太长，以及这个任务该继续、该改还是该停。一条小小的、写成文档、又经得起实际使用的工作流，才是结果——不是一屋子看演示看得很开心的人。"
+    }
+   },
+   {
+    "@type": "Question",
+    "name": "能到我们办公室来讲吗？",
+    "acceptedAnswer": {
+     "@type": "Answer",
+     "text": "能。整个达拉斯—沃斯堡都会区都可以面对面——Dallas、Fort Worth、Plano、Richardson、Frisco、McKinney、Arlington，中间的城市也都跑。有需要也可以远程。"
+    }
+   },
+   {
+    "@type": "Question",
+    "name": "你也帮人做东西吗？",
+    "acceptedAnswer": {
+     "@type": "Answer",
+     "text": "做：给预约制诊所和店铺的全包 AI 前台 + 预约系统，在产品页。培训和产品是同一个人、同一套方法 —— 一个是教给你，一个是装给你。"
+    }
+   }
+  ]
+ },
+ {
+  "@type": "WebSite",
+  "@id": "https://aimanjack.com/#website",
+  "url": "https://aimanjack.com/",
+  "name": "AI Man Jack",
+  "inLanguage": [
+   "en",
+   "zh"
+  ],
+  "publisher": {
+   "@id": "https://aimanjack.com/#business"
+  }
+ }
+]

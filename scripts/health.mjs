@@ -7,7 +7,8 @@
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 
 const SITE = "https://aimanjack.com";
-const PAGES = ["/", "/zh/", "/ai-training/", "/zh/ai-training/"];
+const EN = ["/", "/ai-receptionist/", "/pricing/", "/industries/", "/industries/salons/", "/integrations/", "/case-studies/", "/case-studies/ai-man-jack/", "/about/", "/contact/", "/ai-training/"];
+const PAGES = [...EN, ...EN.map((p) => "/zh" + p)];
 const BASELINE = "scripts/seo-baseline.json";
 const today = new Date().toISOString().slice(0, 10);
 const checks = [];
@@ -49,12 +50,12 @@ for (const p of PAGES) {
     title: m(h, /<title>([^<]*)<\/title>/), description: m(h, /<meta name="description" content="([^"]*)"/),
     canonical: m(h, /<link rel="canonical" href="([^"]*)"/), hreflang: [...h.matchAll(/hreflang="([^"]+)"/g)].map((x) => x[1]).sort().join(","),
     h1: m(h, /<h1[^>]*>([\s\S]*?)<\/h1>/).replace(/<[^>]+>|\s+/g, " ").trim(), robots: m(h, /<meta name="robots" content="([^"]*)"/),
-    schemaTypes: types, ogImage: m(h, /property="og:image" content="([^"]*)"/), smsLinks: (h.match(/href="sms:\+14694254142/g) ?? []).length,
+    schemaTypes: types, ogImage: m(h, /property="og:image" content="([^"]*)"/), smsLinks: (h.match(/href="sms:\+14694254142/g) ?? []).length, telDemo: (h.match(/href="tel:\+14695172968"/g) ?? []).length,
     ga4: /googletagmanager\.com\/gtag/.test(h), h1Count: (h.match(/<h1[\s>]/g) ?? []).length,
   };
   add(`page:${p}:h1`, snap[p].h1Count === 1 ? "PASS" : "FAIL", `${snap[p].h1Count} h1`);
   add(`page:${p}:schema`, types !== "PARSE_ERROR" && types.includes("ProfessionalService") ? "PASS" : "FAIL", types.slice(0, 80));
-  add(`page:${p}:cta`, snap[p].smsLinks >= 2 ? "PASS" : "FAIL", `${snap[p].smsLinks} sms: CTAs to (469) 425-4142`);
+  add(`page:${p}:cta`, snap[p].telDemo >= 1 && snap[p].smsLinks >= 1 ? "PASS" : "FAIL", `${snap[p].telDemo} tel: demo CTAs, ${snap[p].smsLinks} sms: CTAs to (469) 425-4142`);
   // Label must say what the click does: "Call" → tel:, "Text" → sms:, "Email" → mailto:
   const mism = [...h.matchAll(/<a [^>]*href="(tel:|sms:|mailto:)[^"]*"[^>]*>([^<]*)<\/a>/g)].filter(([, proto, t]) =>
     (/\bCall\b|打|拨/.test(t) && proto !== "tel:") || (/\bText\b|短信|发 TRAINING/.test(t) && proto !== "sms:") || (/\bEmail\b|邮件/.test(t) && proto !== "mailto:")).map(([, proto, t]) => `${proto} "${t.trim()}"`);
@@ -72,7 +73,7 @@ else {
 const robots = (await get("/robots.txt")).body;
 add("geo:robots", /User-agent: \*\s+Allow: \//.test(robots) && !/Disallow: \/\s*$/m.test(robots) ? "PASS" : "FAIL", "AI crawlers (GPTBot/OAI-SearchBot/PerplexityBot/ClaudeBot) must not be blocked");
 const llms = (await get("/llms.txt")).body;
-add("geo:llms-current", /training/i.test(llms) && /\$2,000/.test(llms) && /425-4142/.test(llms) ? "PASS" : "FAIL", "llms.txt must name training + $2,000 product + phone; stale copy misleads AI answers");
+add("geo:llms-current", /training/i.test(llms) && /\$199/.test(llms) && /517-2968/.test(llms) && /425-4142/.test(llms) ? "PASS" : "FAIL", "llms.txt must name training + $199 Starter plan + both phone numbers; stale copy misleads AI answers");
 
 // 6. Data plumbing the task needs — WARN until Jack wires them (HEALTH-CHECK.md §2)
 add("creds:google-api", existsSync(`${process.env.HOME}/.config/claude-seo/google-api.json`) ? "PASS" : "WARN", "GSC/GA4/PSI via claude-seo need ~/.config/claude-seo/google-api.json");
