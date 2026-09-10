@@ -19,7 +19,7 @@ const copy = {
       manageH: 'Your appointment', manageP: '{time} · Jack calls {phone}', change: 'Change time', cancel: 'Cancel appointment', changeH: 'Pick a new time',
       confirmMove: 'Move your call to {time}?', confirmCancel: 'Cancel this appointment?', moved: 'Moved to {time}.', cancelled: 'This appointment was cancelled.',
       closed: 'It is too close to the appointment to change it online. Text Jack at ' + SMS_DISPLAY + '.',
-      taken: 'That time was just taken. Pick another one.', yes: 'Yes, do it', no: 'Go back', notFound: 'We could not find that booking.',
+      taken: 'That time was just taken. Pick another one.', yes: 'Yes, do it', no: 'Go back', moreDays: 'More dates', moreTimes: 'More times', notFound: 'We could not find that booking.',
       error: `Something went wrong. Try again, or text Jack at ${SMS_DISPLAY}.`, bookAnother: 'Book a new time',
     },
   },
@@ -36,7 +36,7 @@ const copy = {
       manageH: '你的预约', manageP: '{time} · Jack 打 {phone}', change: '改时间', cancel: '取消预约', changeH: '选个新时间',
       confirmMove: '把通话改到 {time}？', confirmCancel: '确定取消这个预约？', moved: '已改到 {time}。', cancelled: '这个预约已经取消了。',
       closed: '离通话时间太近，网上改不了了。给 Jack 发短信：' + SMS_DISPLAY,
-      taken: '这个时间刚被约走了，换一个吧。', yes: '确定', no: '返回', notFound: '没找到这个预约。',
+      taken: '这个时间刚被约走了，换一个吧。', yes: '确定', no: '返回', moreDays: '更多日期', moreTimes: '更多时间', notFound: '没找到这个预约。',
       error: `出了点问题。再试一次，或者给 Jack 发短信：${SMS_DISPLAY}`, bookAnother: '重新约一个时间',
     },
   },
@@ -56,12 +56,16 @@ var errText=function(e){return e==='slot_unavailable'?S.s.taken:e==='cancel_wind
 var api=function(m,p,b){return fetch(p,{method:m,headers:{'content-type':'application/json','idempotency-key':crypto.randomUUID(),'x-source':'web'},body:b?JSON.stringify(b):undefined}).then(function(r){return r.json().then(function(j){return r.ok?j:Promise.reject(j)})})};
 var show=function(id,on){$(id).hidden=!on};
 function ask(text,yes){$('bk-ask-p').textContent=text;show('bk-ask',true);$('bk-ask').scrollIntoView({behavior:'smooth',block:'center'});$('bk-yes').onclick=function(){show('bk-ask',false);yes()};$('bk-no').onclick=function(){show('bk-ask',false)}}
-function chips(el,items,label,on){el.innerHTML='';items.forEach(function(it){var b=D.createElement('button');b.type='button';b.className='bk-chip';b.textContent=label(it);b.setAttribute('aria-pressed','false');b.addEventListener('click',function(){el.querySelectorAll('.bk-chip').forEach(function(x){x.setAttribute('aria-pressed','false')});b.setAttribute('aria-pressed','true');on(it)});el.appendChild(b)})}
+function chips(el,items,label,on,more){el.innerHTML='';var vis=more?more.pick(items):items;
+ vis.forEach(function(it){var b=D.createElement('button');b.type='button';b.className='bk-chip';b.textContent=label(it);b.setAttribute('aria-pressed','false');b.addEventListener('click',function(){el.querySelectorAll('.bk-chip').forEach(function(x){x.setAttribute('aria-pressed','false')});b.setAttribute('aria-pressed','true');on(it)});el.appendChild(b)});
+ if(vis.length<items.length){var m=D.createElement('button');m.type='button';m.className='bk-chip bk-more';m.textContent=more.label;m.addEventListener('click',function(){chips(el,items,label,on)});el.appendChild(m)}}
+var firstDays=function(a){return a.slice(0,5)};
+var firstTimes=function(a){var h=a.filter(function(s){return new Date(s.start_at).getUTCMinutes()%30===0});return (h.length?h:a).slice(0,8)};
 function loadTimes(){msg(S.s.loading);show('bk-pick',true);
  return api('GET','/v1/availability?business='+S.business+'&service='+S.service).then(function(r){avail=r.days;msg('');
   if(!avail.length){msg(S.s.none);return}
   chips($('bk-days'),avail,function(d){return fmtDay.format(new Date(d.slots[0].start_at))},function(d){show('bk-time',true);picked=null;
-   chips($('bk-slots'),d.slots,function(s){return fmtTime.format(new Date(s.start_at))},function(s){picked=s;bookingId?move(s):(show('bk-form',true),$('bk-name').focus())})})
+   chips($('bk-slots'),d.slots,function(s){return fmtTime.format(new Date(s.start_at))},function(s){picked=s;bookingId?move(s):(show('bk-form',true),$('bk-name').focus())},{label:S.s.moreTimes,pick:firstTimes})},{label:S.s.moreDays,pick:firstDays})
  }).catch(function(e){msg(errText(e&&e.error))})}
 function done(b,head,line){booking=b;show('bk-ask',false);show('bk-pick',false);show('bk-time',false);show('bk-form',false);show('bk-manage',false);show('bk-done',true);
  $('bk-done-h').textContent=head;$('bk-done-p').textContent=line;var a=$('bk-done-link');a.href=b.manage_url;a.textContent=b.manage_url;show('bk-done-linkwrap',b.status==='confirmed')}

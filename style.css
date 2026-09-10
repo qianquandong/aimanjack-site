@@ -425,3 +425,4 @@ html[lang=zh] .eyebrow{letter-spacing:.06em}
 .bk-alt{font-size:15px;color:var(--muted)}
 .bk button:disabled{opacity:.5;cursor:not-allowed}
 .bk-ask p{color:var(--ink);font-weight:500}
+.bk-more{border-style:dashed;color:var(--muted)}
