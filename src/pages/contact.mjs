@@ -5,10 +5,10 @@ const copy = {
   en: {
     title: 'Contact AI Man Jack, Dallas | Call, Email or Text',
     description: 'Three ways to reach AI Man Jack in Dallas: call the AI demo line at (469) 517-2968, email jack@aimanjack.com, or text (469) 425-4142. No form, no wait.',
-    crumb: 'Contact', h1: 'Talk to the AI first, then to Jack.',
+    crumb: 'Contact', h1: 'Talk to Jessy first, then to Jack.',
     sub: 'No form. Pick whichever is fastest for you.',
     cards: [
-      ['Call the AI demo', 'The receptionist answers 24/7 in English, Spanish or Chinese. Ask what the service costs and ask for a time with Jack.', DEMO_DISPLAY, `tel:${DEMO_TEL}`, 'demo_call_click', T.en.cta.call, true],
+      ['Call Jessy, the AI demo', 'Jessy answers 24/7 in English, Spanish or Chinese. Ask what the service costs and ask for a time with Jack.', DEMO_DISPLAY, `tel:${DEMO_TEL}`, 'demo_call_click', T.en.cta.call, true],
       ['Email Jack', 'Best for describing your business, your booking system and your call volume. Replies come from Jack, not a queue.', EMAIL, `mailto:${EMAIL}?subject=AI%20receptionist`, 'email_click', 'Email Jack', false],
       ['Text Jack', 'Short questions. Include your business name and what you do.', SMS_DISPLAY, `sms:${SMS_TEL}`, 'sms_click', 'Text ' + SMS_DISPLAY, false],
     ],
@@ -18,10 +18,10 @@ const copy = {
   zh: {
     title: '联系 AI Man Jack | 打电话、发邮件或短信',
     description: '联系达拉斯 AI Man Jack 的三种方式：拨打 AI 演示线 (469) 517-2968，发邮件到 jack@aimanjack.com，或发短信到 (469) 425-4142。不用填表，不用等。',
-    crumb: '联系', h1: '先跟 AI 聊，再跟 Jack 聊。',
+    crumb: '联系', h1: '先跟 Jessy 聊，再跟 Jack 聊。',
     sub: '不用填表。哪个方便用哪个。',
     cards: [
-      ['打 AI 演示线', 'AI 前台 24 小时接，英语、西班牙语、中文都行。问问服务多少钱，再约个和 Jack 通话的时间。', DEMO_DISPLAY, `tel:${DEMO_TEL}`, 'demo_call_click', T.zh.cta.call, true],
+      ['打给 Jessy（AI 演示线）', 'Jessy 24 小时接，英语、西班牙语、中文都行。问问服务多少钱，再约个和 Jack 通话的时间。', DEMO_DISPLAY, `tel:${DEMO_TEL}`, 'demo_call_click', T.zh.cta.call, true],
       ['给 Jack 发邮件', '适合说清楚你的店、你的预约系统和来电量。回信的是 Jack 本人，不是客服队列。', EMAIL, `mailto:${EMAIL}?subject=${encodeURIComponent('AI 前台咨询')}`, 'email_click', '给 Jack 发邮件', false],
       ['给 Jack 发短信', '问短问题。写上店名和你们做什么。', SMS_DISPLAY, `sms:${SMS_TEL}`, 'sms_click', '发短信到 ' + SMS_DISPLAY, false],
     ],
