@@ -1,0 +1,620 @@
+{
+ "date": "2026-09-11",
+ "checks": [
+  {
+   "id": "up:/",
+   "status": "PASS",
+   "detail": "HTTP 200 246ms"
+  },
+  {
+   "id": "perf:home-fetch",
+   "status": "PASS",
+   "detail": "246ms full fetch (PSI weekly gives the real CWV)"
+  },
+  {
+   "id": "up:/ai-receptionist/",
+   "status": "PASS",
+   "detail": "HTTP 200 71ms"
+  },
+  {
+   "id": "up:/pricing/",
+   "status": "PASS",
+   "detail": "HTTP 200 44ms"
+  },
+  {
+   "id": "up:/industries/",
+   "status": "PASS",
+   "detail": "HTTP 200 72ms"
+  },
+  {
+   "id": "up:/industries/salons/",
+   "status": "PASS",
+   "detail": "HTTP 200 38ms"
+  },
+  {
+   "id": "up:/integrations/",
+   "status": "PASS",
+   "detail": "HTTP 200 64ms"
+  },
+  {
+   "id": "up:/case-studies/",
+   "status": "PASS",
+   "detail": "HTTP 200 87ms"
+  },
+  {
+   "id": "up:/case-studies/ai-man-jack/",
+   "status": "PASS",
+   "detail": "HTTP 200 74ms"
+  },
+  {
+   "id": "up:/about/",
+   "status": "PASS",
+   "detail": "HTTP 200 39ms"
+  },
+  {
+   "id": "up:/contact/",
+   "status": "PASS",
+   "detail": "HTTP 200 37ms"
+  },
+  {
+   "id": "up:/ai-training/",
+   "status": "PASS",
+   "detail": "HTTP 200 68ms"
+  },
+  {
+   "id": "up:/zh/",
+   "status": "PASS",
+   "detail": "HTTP 200 38ms"
+  },
+  {
+   "id": "up:/zh/ai-receptionist/",
+   "status": "PASS",
+   "detail": "HTTP 200 68ms"
+  },
+  {
+   "id": "up:/zh/pricing/",
+   "status": "PASS",
+   "detail": "HTTP 200 42ms"
+  },
+  {
+   "id": "up:/zh/industries/",
+   "status": "PASS",
+   "detail": "HTTP 200 38ms"
+  },
+  {
+   "id": "up:/zh/industries/salons/",
+   "status": "PASS",
+   "detail": "HTTP 200 37ms"
+  },
+  {
+   "id": "up:/zh/integrations/",
+   "status": "PASS",
+   "detail": "HTTP 200 40ms"
+  },
+  {
+   "id": "up:/zh/case-studies/",
+   "status": "PASS",
+   "detail": "HTTP 200 68ms"
+  },
+  {
+   "id": "up:/zh/case-studies/ai-man-jack/",
+   "status": "PASS",
+   "detail": "HTTP 200 82ms"
+  },
+  {
+   "id": "up:/zh/about/",
+   "status": "PASS",
+   "detail": "HTTP 200 78ms"
+  },
+  {
+   "id": "up:/zh/contact/",
+   "status": "PASS",
+   "detail": "HTTP 200 68ms"
+  },
+  {
+   "id": "up:/zh/ai-training/",
+   "status": "PASS",
+   "detail": "HTTP 200 40ms"
+  },
+  {
+   "id": "up:/sitemap.xml",
+   "status": "PASS",
+   "detail": "HTTP 200 60ms"
+  },
+  {
+   "id": "up:/robots.txt",
+   "status": "PASS",
+   "detail": "HTTP 200 45ms"
+  },
+  {
+   "id": "up:/llms.txt",
+   "status": "PASS",
+   "detail": "HTTP 200 28ms"
+  },
+  {
+   "id": "up:404",
+   "status": "PASS",
+   "detail": "random path must 404, not soft-200"
+  },
+  {
+   "id": "redirects",
+   "status": "PASS",
+   "detail": "all _redirects rules hold"
+  },
+  {
+   "id": "sitemap:pages",
+   "status": "PASS",
+   "detail": "40 urls"
+  },
+  {
+   "id": "page:/:h1",
+   "status": "PASS",
+   "detail": "1 h1"
+  },
+  {
+   "id": "page:/:schema",
+   "status": "PASS",
+   "detail": "AdministrativeArea,Answer,BusinessAudience,City,Country,FAQPage,Offer,PostalAddr"
+  },
+  {
+   "id": "page:/:cta",
+   "status": "PASS",
+   "detail": "9 tel: demo CTAs, 1 sms: CTAs to (469) 425-4142"
+  },
+  {
+   "id": "page:/:cta-labels",
+   "status": "PASS",
+   "detail": "every CTA label matches its protocol"
+  },
+  {
+   "id": "page:/:og-image",
+   "status": "PASS",
+   "detail": "https://aimanjack.com/img/og-receptionist.jpg"
+  },
+  {
+   "id": "track:ga4",
+   "status": "PASS",
+   "detail": "no GA4 tag → visitors and conversion rate are unmeasurable"
+  },
+  {
+   "id": "page:/ai-receptionist/:h1",
+   "status": "PASS",
+   "detail": "1 h1"
+  },
+  {
+   "id": "page:/ai-receptionist/:schema",
+   "status": "PASS",
+   "detail": "AdministrativeArea,Answer,BreadcrumbList,BusinessAudience,City,Country,FAQPage,L"
+  },
+  {
+   "id": "page:/ai-receptionist/:cta",
+   "status": "PASS",
+   "detail": "9 tel: demo CTAs, 1 sms: CTAs to (469) 425-4142"
+  },
+  {
+   "id": "page:/ai-receptionist/:cta-labels",
+   "status": "PASS",
+   "detail": "every CTA label matches its protocol"
+  },
+  {
+   "id": "page:/pricing/:h1",
+   "status": "PASS",
+   "detail": "1 h1"
+  },
+  {
+   "id": "page:/pricing/:schema",
+   "status": "PASS",
+   "detail": "AdministrativeArea,Answer,BreadcrumbList,BusinessAudience,City,Country,FAQPage,L"
+  },
+  {
+   "id": "page:/pricing/:cta",
+   "status": "PASS",
+   "detail": "5 tel: demo CTAs, 1 sms: CTAs to (469) 425-4142"
+  },
+  {
+   "id": "page:/pricing/:cta-labels",
+   "status": "PASS",
+   "detail": "every CTA label matches its protocol"
+  },
+  {
+   "id": "page:/industries/:h1",
+   "status": "PASS",
+   "detail": "1 h1"
+  },
+  {
+   "id": "page:/industries/:schema",
+   "status": "PASS",
+   "detail": "BreadcrumbList,ListItem,ProfessionalService"
+  },
+  {
+   "id": "page:/industries/:cta",
+   "status": "PASS",
+   "detail": "5 tel: demo CTAs, 1 sms: CTAs to (469) 425-4142"
+  },
+  {
+   "id": "page:/industries/:cta-labels",
+   "status": "PASS",
+   "detail": "every CTA label matches its protocol"
+  },
+  {
+   "id": "page:/industries/salons/:h1",
+   "status": "PASS",
+   "detail": "1 h1"
+  },
+  {
+   "id": "page:/industries/salons/:schema",
+   "status": "PASS",
+   "detail": "AdministrativeArea,Answer,BreadcrumbList,BusinessAudience,City,Country,FAQPage,L"
+  },
+  {
+   "id": "page:/industries/salons/:cta",
+   "status": "PASS",
+   "detail": "7 tel: demo CTAs, 1 sms: CTAs to (469) 425-4142"
+  },
+  {
+   "id": "page:/industries/salons/:cta-labels",
+   "status": "PASS",
+   "detail": "every CTA label matches its protocol"
+  },
+  {
+   "id": "page:/integrations/:h1",
+   "status": "PASS",
+   "detail": "1 h1"
+  },
+  {
+   "id": "page:/integrations/:schema",
+   "status": "PASS",
+   "detail": "BreadcrumbList,ListItem,ProfessionalService"
+  },
+  {
+   "id": "page:/integrations/:cta",
+   "status": "PASS",
+   "detail": "5 tel: demo CTAs, 1 sms: CTAs to (469) 425-4142"
+  },
+  {
+   "id": "page:/integrations/:cta-labels",
+   "status": "PASS",
+   "detail": "every CTA label matches its protocol"
+  },
+  {
+   "id": "page:/case-studies/:h1",
+   "status": "PASS",
+   "detail": "1 h1"
+  },
+  {
+   "id": "page:/case-studies/:schema",
+   "status": "PASS",
+   "detail": "BreadcrumbList,ListItem,ProfessionalService"
+  },
+  {
+   "id": "page:/case-studies/:cta",
+   "status": "PASS",
+   "detail": "5 tel: demo CTAs, 1 sms: CTAs to (469) 425-4142"
+  },
+  {
+   "id": "page:/case-studies/:cta-labels",
+   "status": "PASS",
+   "detail": "every CTA label matches its protocol"
+  },
+  {
+   "id": "page:/case-studies/ai-man-jack/:h1",
+   "status": "PASS",
+   "detail": "1 h1"
+  },
+  {
+   "id": "page:/case-studies/ai-man-jack/:schema",
+   "status": "PASS",
+   "detail": "Article,BreadcrumbList,ListItem,ProfessionalService"
+  },
+  {
+   "id": "page:/case-studies/ai-man-jack/:cta",
+   "status": "PASS",
+   "detail": "5 tel: demo CTAs, 1 sms: CTAs to (469) 425-4142"
+  },
+  {
+   "id": "page:/case-studies/ai-man-jack/:cta-labels",
+   "status": "PASS",
+   "detail": "every CTA label matches its protocol"
+  },
+  {
+   "id": "page:/about/:h1",
+   "status": "PASS",
+   "detail": "1 h1"
+  },
+  {
+   "id": "page:/about/:schema",
+   "status": "PASS",
+   "detail": "AdministrativeArea,BreadcrumbList,City,Country,ListItem,Person,PostalAddress,Pro"
+  },
+  {
+   "id": "page:/about/:cta",
+   "status": "PASS",
+   "detail": "7 tel: demo CTAs, 2 sms: CTAs to (469) 425-4142"
+  },
+  {
+   "id": "page:/about/:cta-labels",
+   "status": "PASS",
+   "detail": "every CTA label matches its protocol"
+  },
+  {
+   "id": "page:/contact/:h1",
+   "status": "PASS",
+   "detail": "1 h1"
+  },
+  {
+   "id": "page:/contact/:schema",
+   "status": "PASS",
+   "detail": "BreadcrumbList,ContactPage,ListItem,ProfessionalService"
+  },
+  {
+   "id": "page:/contact/:cta",
+   "status": "PASS",
+   "detail": "4 tel: demo CTAs, 2 sms: CTAs to (469) 425-4142"
+  },
+  {
+   "id": "page:/contact/:cta-labels",
+   "status": "PASS",
+   "detail": "every CTA label matches its protocol"
+  },
+  {
+   "id": "page:/ai-training/:h1",
+   "status": "PASS",
+   "detail": "1 h1"
+  },
+  {
+   "id": "page:/ai-training/:schema",
+   "status": "PASS",
+   "detail": "AdministrativeArea,AggregateRating,Answer,City,Country,FAQPage,Offer,Organizatio"
+  },
+  {
+   "id": "page:/ai-training/:cta",
+   "status": "PASS",
+   "detail": "3 tel: demo CTAs, 6 sms: CTAs to (469) 425-4142"
+  },
+  {
+   "id": "page:/ai-training/:cta-labels",
+   "status": "PASS",
+   "detail": "every CTA label matches its protocol"
+  },
+  {
+   "id": "page:/zh/:h1",
+   "status": "PASS",
+   "detail": "1 h1"
+  },
+  {
+   "id": "page:/zh/:schema",
+   "status": "PASS",
+   "detail": "AdministrativeArea,Answer,BusinessAudience,City,Country,FAQPage,Offer,PostalAddr"
+  },
+  {
+   "id": "page:/zh/:cta",
+   "status": "PASS",
+   "detail": "9 tel: demo CTAs, 1 sms: CTAs to (469) 425-4142"
+  },
+  {
+   "id": "page:/zh/:cta-labels",
+   "status": "PASS",
+   "detail": "every CTA label matches its protocol"
+  },
+  {
+   "id": "page:/zh/ai-receptionist/:h1",
+   "status": "PASS",
+   "detail": "1 h1"
+  },
+  {
+   "id": "page:/zh/ai-receptionist/:schema",
+   "status": "PASS",
+   "detail": "AdministrativeArea,Answer,BreadcrumbList,BusinessAudience,City,Country,FAQPage,L"
+  },
+  {
+   "id": "page:/zh/ai-receptionist/:cta",
+   "status": "PASS",
+   "detail": "9 tel: demo CTAs, 1 sms: CTAs to (469) 425-4142"
+  },
+  {
+   "id": "page:/zh/ai-receptionist/:cta-labels",
+   "status": "PASS",
+   "detail": "every CTA label matches its protocol"
+  },
+  {
+   "id": "page:/zh/pricing/:h1",
+   "status": "PASS",
+   "detail": "1 h1"
+  },
+  {
+   "id": "page:/zh/pricing/:schema",
+   "status": "PASS",
+   "detail": "AdministrativeArea,Answer,BreadcrumbList,BusinessAudience,City,Country,FAQPage,L"
+  },
+  {
+   "id": "page:/zh/pricing/:cta",
+   "status": "PASS",
+   "detail": "5 tel: demo CTAs, 1 sms: CTAs to (469) 425-4142"
+  },
+  {
+   "id": "page:/zh/pricing/:cta-labels",
+   "status": "PASS",
+   "detail": "every CTA label matches its protocol"
+  },
+  {
+   "id": "page:/zh/industries/:h1",
+   "status": "PASS",
+   "detail": "1 h1"
+  },
+  {
+   "id": "page:/zh/industries/:schema",
+   "status": "PASS",
+   "detail": "BreadcrumbList,ListItem,ProfessionalService"
+  },
+  {
+   "id": "page:/zh/industries/:cta",
+   "status": "PASS",
+   "detail": "5 tel: demo CTAs, 1 sms: CTAs to (469) 425-4142"
+  },
+  {
+   "id": "page:/zh/industries/:cta-labels",
+   "status": "PASS",
+   "detail": "every CTA label matches its protocol"
+  },
+  {
+   "id": "page:/zh/industries/salons/:h1",
+   "status": "PASS",
+   "detail": "1 h1"
+  },
+  {
+   "id": "page:/zh/industries/salons/:schema",
+   "status": "PASS",
+   "detail": "AdministrativeArea,Answer,BreadcrumbList,BusinessAudience,City,Country,FAQPage,L"
+  },
+  {
+   "id": "page:/zh/industries/salons/:cta",
+   "status": "PASS",
+   "detail": "7 tel: demo CTAs, 1 sms: CTAs to (469) 425-4142"
+  },
+  {
+   "id": "page:/zh/industries/salons/:cta-labels",
+   "status": "PASS",
+   "detail": "every CTA label matches its protocol"
+  },
+  {
+   "id": "page:/zh/integrations/:h1",
+   "status": "PASS",
+   "detail": "1 h1"
+  },
+  {
+   "id": "page:/zh/integrations/:schema",
+   "status": "PASS",
+   "detail": "BreadcrumbList,ListItem,ProfessionalService"
+  },
+  {
+   "id": "page:/zh/integrations/:cta",
+   "status": "PASS",
+   "detail": "5 tel: demo CTAs, 1 sms: CTAs to (469) 425-4142"
+  },
+  {
+   "id": "page:/zh/integrations/:cta-labels",
+   "status": "PASS",
+   "detail": "every CTA label matches its protocol"
+  },
+  {
+   "id": "page:/zh/case-studies/:h1",
+   "status": "PASS",
+   "detail": "1 h1"
+  },
+  {
+   "id": "page:/zh/case-studies/:schema",
+   "status": "PASS",
+   "detail": "BreadcrumbList,ListItem,ProfessionalService"
+  },
+  {
+   "id": "page:/zh/case-studies/:cta",
+   "status": "PASS",
+   "detail": "5 tel: demo CTAs, 1 sms: CTAs to (469) 425-4142"
+  },
+  {
+   "id": "page:/zh/case-studies/:cta-labels",
+   "status": "PASS",
+   "detail": "every CTA label matches its protocol"
+  },
+  {
+   "id": "page:/zh/case-studies/ai-man-jack/:h1",
+   "status": "PASS",
+   "detail": "1 h1"
+  },
+  {
+   "id": "page:/zh/case-studies/ai-man-jack/:schema",
+   "status": "PASS",
+   "detail": "Article,BreadcrumbList,ListItem,ProfessionalService"
+  },
+  {
+   "id": "page:/zh/case-studies/ai-man-jack/:cta",
+   "status": "PASS",
+   "detail": "5 tel: demo CTAs, 1 sms: CTAs to (469) 425-4142"
+  },
+  {
+   "id": "page:/zh/case-studies/ai-man-jack/:cta-labels",
+   "status": "PASS",
+   "detail": "every CTA label matches its protocol"
+  },
+  {
+   "id": "page:/zh/about/:h1",
+   "status": "PASS",
+   "detail": "1 h1"
+  },
+  {
+   "id": "page:/zh/about/:schema",
+   "status": "PASS",
+   "detail": "AdministrativeArea,BreadcrumbList,City,Country,ListItem,Person,PostalAddress,Pro"
+  },
+  {
+   "id": "page:/zh/about/:cta",
+   "status": "PASS",
+   "detail": "7 tel: demo CTAs, 2 sms: CTAs to (469) 425-4142"
+  },
+  {
+   "id": "page:/zh/about/:cta-labels",
+   "status": "PASS",
+   "detail": "every CTA label matches its protocol"
+  },
+  {
+   "id": "page:/zh/contact/:h1",
+   "status": "PASS",
+   "detail": "1 h1"
+  },
+  {
+   "id": "page:/zh/contact/:schema",
+   "status": "PASS",
+   "detail": "BreadcrumbList,ContactPage,ListItem,ProfessionalService"
+  },
+  {
+   "id": "page:/zh/contact/:cta",
+   "status": "PASS",
+   "detail": "4 tel: demo CTAs, 2 sms: CTAs to (469) 425-4142"
+  },
+  {
+   "id": "page:/zh/contact/:cta-labels",
+   "status": "PASS",
+   "detail": "every CTA label matches its protocol"
+  },
+  {
+   "id": "page:/zh/ai-training/:h1",
+   "status": "PASS",
+   "detail": "1 h1"
+  },
+  {
+   "id": "page:/zh/ai-training/:schema",
+   "status": "PASS",
+   "detail": "AdministrativeArea,AggregateRating,Answer,City,Country,FAQPage,Offer,Organizatio"
+  },
+  {
+   "id": "page:/zh/ai-training/:cta",
+   "status": "PASS",
+   "detail": "3 tel: demo CTAs, 6 sms: CTAs to (469) 425-4142"
+  },
+  {
+   "id": "page:/zh/ai-training/:cta-labels",
+   "status": "PASS",
+   "detail": "every CTA label matches its protocol"
+  },
+  {
+   "id": "drift",
+   "status": "PASS",
+   "detail": "baseline captured → scripts/seo-baseline.json"
+  },
+  {
+   "id": "geo:robots",
+   "status": "PASS",
+   "detail": "AI crawlers (GPTBot/OAI-SearchBot/PerplexityBot/ClaudeBot) must not be blocked"
+  },
+  {
+   "id": "geo:llms-current",
+   "status": "PASS",
+   "detail": "llms.txt must name training + $199 Starter plan + both phone numbers; stale copy misleads AI answers"
+  },
+  {
+   "id": "creds:google-api",
+   "status": "PASS",
+   "detail": "GSC/GA4/PSI via claude-seo need ~/.config/claude-seo/google-api.json"
+  }
+ ]
+}
