@@ -28,7 +28,7 @@ function header(lang, path) {
   return `<header class="site-header"><div class="wrap head-row">
 <a class="brand" href="${L(lang, '/')}" aria-label="${BRAND}">AI Man <span>Jack</span></a>
 <nav class="nav" aria-label="Primary">${links}<a class="lang" href="${other}" lang="${t.otherLangCode}" hreflang="${t.otherLangCode}" data-event="language_change">${t.otherLang}</a></nav>
-<details class="menu"><summary><span class="menu-icon" aria-hidden="true"></span>${t.menu}</summary>
+<details class="menu"><summary aria-label="${t.menu}"><span class="menu-icon" aria-hidden="true"></span><span class="menu-label">${t.menu}</span></summary>
 <nav class="nav mobile-nav" aria-label="Primary, mobile">${links}<a class="lang" href="${other}" lang="${t.otherLangCode}" hreflang="${t.otherLangCode}" data-event="language_change">${t.otherLang}</a></nav></details>
 ${callBtn(lang, { event: 'header_call_click', pos: 'header', cls: 'btn-sm head-call' })}
 </div></header>`;
