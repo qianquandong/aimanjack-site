@@ -8,8 +8,16 @@ compatibility_date = "2026-06-01"
 [vars]
 # Booking data lives in Supabase (project aimanjack-crm, schema `booking`; db/schema.sql).
 SUPABASE_URL = "https://lalmvbxibkozmtnpfbcw.supabase.co"
+# Booking emails (Cloudflare Email Sending, REST API — Pages Functions have no send_email binding).
+# aimanjack.com must be onboarded under Email Service → Email Sending in the dashboard (adds SPF/DKIM).
+CF_ACCOUNT_ID = "6e58305e2e9f1f725ce66d0746f740e5"
+EMAIL_FROM = "bookings@aimanjack.com"
+OWNER_EMAIL = "jack@aimanjack.com"
+SITE_ORIGIN = "https://aimanjack.com"
 
 # Secrets (not here) — set for production AND preview (`--env preview`):
 #   npx wrangler pages secret put SB_SECRET_KEY --project-name aimanjack   Supabase secret (service-role) key
 #   npx wrangler pages secret put ADMIN_TOKEN   --project-name aimanjack   bearer for GET /v1/bookings?business=…
+#   npx wrangler pages secret put CF_EMAIL_TOKEN --project-name aimanjack   API token, permission Account → Email Sending → Edit
+#     (unset = no emails, bookings still work)
 # Local: .dev.vars (gitignored) with the same two names.

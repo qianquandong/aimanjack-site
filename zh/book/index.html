@@ -52,6 +52,7 @@
 <form id="bk-form" class="bk-form" hidden autocomplete="on"><h2 class="bk-h">你的信息</h2>
 <label>姓名<input id="bk-name" name="name" autocomplete="name" required maxlength="80"></label>
 <label>手机号<input id="bk-phone" name="tel" type="tel" autocomplete="tel" required inputmode="tel" minlength="10"></label>
+<label>邮箱（选填，用来收确认邮件）<input id="bk-email" name="email" type="email" autocomplete="email" maxlength="120"></label>
 <label>店名（选填）<input id="bk-biz" name="organization" autocomplete="organization" maxlength="120"></label>
 <button class="btn btn-primary" id="bk-submit" type="submit">确认预约</button></form>
 <div id="bk-done" class="bk-card bk-done" hidden><h2 class="h3" id="bk-done-h"></h2><p id="bk-done-p"></p><p id="bk-done-linkwrap">改期或取消，用这个链接：<br><a id="bk-done-link" href="/book/"></a></p><p><a class="btn btn-secondary btn-sm" href="/zh/book/">重新约一个时间</a></p></div>
@@ -59,7 +60,7 @@
 <p id="bk-msg" class="bk-msg" role="status" aria-live="polite"></p>
 <p class="bk-alt">不想选时间？ <a href="sms:+14694254142" data-event="sms_click" data-pos="book">给 Jessy 发短信 · (469) 425-4142</a></p>
 </section>
-<script>window.BK={"lang":"zh","tz":"America/Chicago","business":"aimanjack","service":"demo-call","s":{"day":"选日期","time":"选时间","you":"你的信息","tz":"时间均为美国中部时间（达拉斯）。","name":"姓名","phone":"手机号","biz":"店名（选填）","submit":"确认预约","working":"正在预约…","loading":"正在加载时间…","none":"接下来 30 天没有空档，给 Jessy 发短信吧：(469) 425-4142","doneH":"约好了。","doneP":"Jack 会在 {time} 打 {phone}。","doneLink":"改期或取消，用这个链接：","manageH":"你的预约","manageP":"{time} · Jack 打 {phone}","change":"改时间","cancel":"取消预约","changeH":"选个新时间","confirmMove":"把通话改到 {time}？","confirmCancel":"确定取消这个预约？","moved":"已改到 {time}。","cancelled":"这个预约已经取消了。","closed":"离通话时间太近，网上改不了了。给 Jessy 发短信：(469) 425-4142","taken":"这个时间刚被约走了，换一个吧。","yes":"确定","no":"返回","moreDays":"更多日期","moreTimes":"更多时间","notFound":"没找到这个预约。","error":"出了点问题。再试一次，或者给 Jessy 发短信：(469) 425-4142","bookAnother":"重新约一个时间"}}</script>
+<script>window.BK={"lang":"zh","tz":"America/Chicago","business":"aimanjack","service":"demo-call","s":{"day":"选日期","time":"选时间","you":"你的信息","tz":"时间均为美国中部时间（达拉斯）。","name":"姓名","phone":"手机号","email":"邮箱（选填，用来收确认邮件）","biz":"店名（选填）","submit":"确认预约","working":"正在预约…","loading":"正在加载时间…","none":"接下来 30 天没有空档，给 Jessy 发短信吧：(469) 425-4142","doneH":"约好了。","doneP":"Jack 会在 {time} 打 {phone}。","doneLink":"改期或取消，用这个链接：","manageH":"你的预约","manageP":"{time} · Jack 打 {phone}","change":"改时间","cancel":"取消预约","changeH":"选个新时间","confirmMove":"把通话改到 {time}？","confirmCancel":"确定取消这个预约？","moved":"已改到 {time}。","cancelled":"这个预约已经取消了。","closed":"离通话时间太近，网上改不了了。给 Jessy 发短信：(469) 425-4142","taken":"这个时间刚被约走了，换一个吧。","yes":"确定","no":"返回","moreDays":"更多日期","moreTimes":"更多时间","notFound":"没找到这个预约。","error":"出了点问题。再试一次，或者给 Jessy 发短信：(469) 425-4142","bookAnother":"重新约一个时间"}}</script>
 <script>
 (function(){var S=window.BK,D=document,$=function(i){return D.getElementById(i)},loc=S.lang==='zh'?'zh-CN':'en-US';
 var q=new URLSearchParams(location.search),bookingId=q.get('id'),avail=[],picked=null,booking=null;
@@ -87,7 +88,7 @@ function loadTimes(){msg(S.s.loading);show('bk-pick',true);
 function done(b,head,line){booking=b;show('bk-ask',false);show('bk-pick',false);show('bk-time',false);show('bk-form',false);show('bk-manage',false);show('bk-done',true);
  $('bk-done-h').textContent=head;$('bk-done-p').textContent=line;var a=$('bk-done-link');a.href=b.manage_url;a.textContent=b.manage_url;show('bk-done-linkwrap',b.status==='confirmed')}
 $('bk-form').addEventListener('submit',function(e){e.preventDefault();if(!picked)return;var btn=$('bk-submit');btn.disabled=true;btn.textContent=S.s.working;msg('');
- api('POST','/v1/bookings',{business:S.business,service:S.service,start_at:picked.start_at,staff:picked.staff_id,customer_name:$('bk-name').value,customer_phone:$('bk-phone').value,note:$('bk-biz').value||undefined})
+ api('POST','/v1/bookings',{business:S.business,service:S.service,start_at:picked.start_at,staff:picked.staff_id,customer_name:$('bk-name').value,customer_phone:$('bk-phone').value,customer_email:$('bk-email').value||undefined,note:$('bk-biz').value||undefined})
  .then(function(b){track('book_demo_submit');done(b,S.s.doneH,t('doneP',{phone:ph(b.customer_phone),time:fmtFull.format(new Date(b.start_at))}))})
  .catch(function(e){msg(errText(e&&e.error));if(e&&e.error==='slot_unavailable')loadTimes()}).then(function(){btn.disabled=false;btn.textContent=S.s.submit})});
 function move(s){var when=fmtFull.format(new Date(s.start_at));ask(t('confirmMove',{time:when}),function(){msg('');

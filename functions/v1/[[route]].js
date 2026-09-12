@@ -7,6 +7,9 @@
 //   GET    /v1/bookings?business=[&phone=&status=&from=]  (Authorization: Bearer ADMIN_TOKEN) read-only list; phone= finds a caller's bookings
 // Writes take an Idempotency-Key header and an X-Source header (web | voice | sms | admin; default web).
 // Data: Supabase Postgres (schema `booking`, db/schema.sql) via PostgREST with the secret key — env.SUPABASE_URL + env.SB_SECRET_KEY.
+// Email: after every write, a confirmation goes to customer_email (if given) and a notice to OWNER_EMAIL, via the
+// Cloudflare Email Sending REST API (Pages Functions have no send_email binding) — env.CF_ACCOUNT_ID + env.CF_EMAIL_TOKEN
+// + env.EMAIL_FROM. No token = no email, booking still succeeds. Sent in waitUntil so the response never waits on it.
 // Instants are timestamptz; responses render them in the business tz with an offset (ISO 8601).
 
 const SOURCES = new Set(['web', 'voice', 'sms', 'admin']);
@@ -120,6 +123,36 @@ function view(b, origin) {
 const logEvent = (env, b, type, source, payload) =>
   sb(env, 'events', { method: 'POST', body: { business_id: b.business_id, booking_id: b.id, type, source, payload }, headers: { prefer: 'return=minimal' } });
 
+// ── email (Cloudflare Email Sending, REST) ──
+const whenFmt = {};
+const fmtWhen = (b) => (whenFmt[b.tz] ??= new Intl.DateTimeFormat('en-US', { timeZone: b.tz, weekday: 'long', month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit', timeZoneName: 'short' })).format(new Date(b.start_at));
+const prettyPhone = (p) => { const m = /^\+1(\d{3})(\d{3})(\d{4})$/.exec(p || ''); return m ? `(${m[1]}) ${m[2]}-${m[3]}` : p; };
+const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+async function sendMail(env, { to, subject, text, reply_to }) {
+  const r = await fetch(`https://api.cloudflare.com/client/v4/accounts/${env.CF_ACCOUNT_ID}/email/sending/send`, {
+    method: 'POST', headers: { authorization: `Bearer ${env.CF_EMAIL_TOKEN}`, 'content-type': 'application/json' },
+    body: JSON.stringify({ to, from: { address: env.EMAIL_FROM, name: 'AI Man Jack' }, reply_to, subject, text, html: `<pre style="font:15px/1.5 -apple-system,Segoe UI,sans-serif;white-space:pre-wrap;margin:0">${esc(text)}</pre>` }),
+  });
+  if (!r.ok) throw new Error(`email ${r.status}: ${(await r.text()).slice(0, 300)}`);
+}
+
+// kind: created | rescheduled | cancelled. Customer gets a confirmation, the owner a one-line notice.
+function notify(env, ctx, b, kind, source) {
+  if (!env.CF_EMAIL_TOKEN || !env.EMAIL_FROM) return;
+  const v = view(b, env.SITE_ORIGIN || 'https://aimanjack.com'), when = fmtWhen(b), phone = prettyPhone(b.customer_phone), who = `${b.customer_name} · ${phone}${b.customer_email ? ' · ' + b.customer_email : ''}`;
+  const subj = { created: `Confirmed: your ${b.service_name} with Jack, ${when}`, rescheduled: `Moved: your ${b.service_name} is now ${when}`, cancelled: `Cancelled: your ${b.service_name} on ${when}` }[kind];
+  const line = { created: `You're booked. Jack will call ${phone} on ${when}.`, rescheduled: `Your call is moved. Jack will call ${phone} on ${when}.`, cancelled: `Your call on ${when} is cancelled. Book a new time any time.` }[kind];
+  const manage = kind === 'cancelled' ? `Book again: ${env.SITE_ORIGIN || 'https://aimanjack.com'}/book/` : `Change or cancel (up to ${b.cancel_window_hours}h before): ${v.manage_url}`;
+  const customer = `Hi ${b.customer_name},\n\n${line}\n\n${manage}\n\nQuestions? Just reply to this email.\n\nJack\nAI Man Jack`;
+  const head = `${kind} (${source}): ${b.service_name} ${when}`;
+  const owner = [head, who, b.note, v.manage_url].filter(Boolean).join('\n');
+  const jobs = [];
+  if (b.customer_email) jobs.push(sendMail(env, { to: b.customer_email, subject: subj, text: customer, reply_to: env.OWNER_EMAIL }));
+  if (env.OWNER_EMAIL && source !== 'admin') jobs.push(sendMail(env, { to: env.OWNER_EMAIL, subject: `[booking] ${head}`, text: owner, reply_to: b.customer_email || undefined }));
+  ctx.waitUntil(Promise.allSettled(jobs).then((rs) => rs.forEach((r, i) => r.status === 'rejected' && console.error('booking email', i, r.reason?.message))));
+}
+
 function normPhone(raw) {
   const d = String(raw || '').replace(/\D/g, '');
   if (d.length === 10) return '+1' + d;
@@ -142,7 +175,7 @@ async function availability(env, url) {
   return json({ business: r.biz.id, service: r.svc.id, service_name: r.svc.name, duration_min: r.svc.duration_min, tz: r.biz.tz, ...out });
 }
 
-async function create(env, req, origin) {
+async function create(env, req, origin, ctx) {
   const body = await req.json().catch(() => null);
   if (!body) return fail(400, 'bad_json', 'Body must be JSON.');
   const r = await loadBizSvc(env, body.business, body.service);
@@ -170,10 +203,11 @@ async function create(env, req, origin) {
   if (!ok) return fail(409, 'slot_unavailable', 'That time was just taken. Pick another one.');
   const b = await getBooking(env, id);
   await logEvent(env, b, 'created', source, { start_at: b.start_at, service: b.service_id, staff: b.staff_id });
+  notify(env, ctx, b, 'created', source);
   return json(view(b, origin), 201);
 }
 
-async function reschedule(env, req, b, origin) {
+async function reschedule(env, req, b, origin, ctx) {
   const body = await req.json().catch(() => null);
   if (!body?.start_at) return fail(400, 'start_at_required', 'start_at is required.');
   if (b.status !== 'confirmed') return fail(409, 'booking_cancelled', 'This appointment was cancelled. Book a new one.');
@@ -188,16 +222,18 @@ async function reschedule(env, req, b, origin) {
   if (!ok) return fail(409, 'slot_unavailable', 'That time was just taken. Pick another one.');
   const nb = await getBooking(env, b.id);
   await logEvent(env, nb, 'rescheduled', source, { from: b.start_at, to: nb.start_at });
+  notify(env, ctx, nb, 'rescheduled', source);
   return json(view(nb, origin));
 }
 
-async function cancel(env, req, b, origin) {
+async function cancel(env, req, b, origin, ctx) {
   if (b.status !== 'confirmed') return json(view(b, origin));
   if (windowClosed(b)) return fail(409, 'cancel_window', windowMsg(b));
   const source = SOURCES.has(req.headers.get('x-source')) ? req.headers.get('x-source') : 'web';
   await sb(env, 'bookings?' + q({ id: 'eq.' + b.id, status: 'eq.confirmed' }), { method: 'PATCH', body: { status: 'cancelled', updated_at: new Date().toISOString() }, headers: { prefer: 'return=minimal' } });
   const nb = await getBooking(env, b.id);
   await logEvent(env, nb, 'cancelled', source, { start_at: b.start_at });
+  notify(env, ctx, nb, 'cancelled', source);
   return json(view(nb, origin));
 }
 
@@ -212,20 +248,21 @@ async function list(env, req, url, origin) {
   return json({ business: biz, count: rows.length, bookings: rows.map((b) => view(b, origin)) });
 }
 
-export async function onRequest({ request: req, env, params }) {
+export async function onRequest(ctx) {
+  const { request: req, env, params } = ctx;
   const url = new URL(req.url), origin = url.origin, [res, id, extra] = params.route || [];
   try {
     if (res === 'availability' && req.method === 'GET') return await availability(env, url);
     if (res === 'bookings' && !id) {
-      if (req.method === 'POST') return await create(env, req, origin);
+      if (req.method === 'POST') return await create(env, req, origin, ctx);
       if (req.method === 'GET') return await list(env, req, url, origin);
     }
     if (res === 'bookings' && id && !extra) {
       const b = await getBooking(env, id);
       if (!b) return fail(404, 'booking_not_found', 'No such booking.');
       if (req.method === 'GET') return json(view(b, origin));
-      if (req.method === 'PATCH') return await reschedule(env, req, b, origin);
-      if (req.method === 'DELETE') return await cancel(env, req, b, origin);
+      if (req.method === 'PATCH') return await reschedule(env, req, b, origin, ctx);
+      if (req.method === 'DELETE') return await cancel(env, req, b, origin, ctx);
     }
     return fail(404, 'not_found', 'No such route.');
   } catch (e) {
