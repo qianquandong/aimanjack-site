@@ -6,7 +6,7 @@ export const T = {
     nav: { how: 'How it works', useCases: 'Use cases', pricing: 'Pricing', cases: 'Case studies', about: 'About' },
     cta: {
       call: 'Call Jessy', callNow: 'Call now', email: 'Email Jack', book: 'Book a 15-min demo',
-      seeHow: 'See how it works', viewPricing: 'View pricing', readCase: 'Read the case study', text: 'Text Jack',
+      seeHow: 'See how it works', viewPricing: 'View pricing', readCase: 'Read the case study', text: 'Text Jessy',
       noSignup: 'No signup. Just call.', callYourself: 'Call it yourself',
     },
     demo: {
@@ -37,7 +37,7 @@ export const T = {
     nav: { how: '怎么运作', useCases: '适用行业', pricing: '价格', cases: '案例', about: '关于' },
     cta: {
       call: '打给 Jessy', callNow: '现在就打', email: '给 Jack 发邮件', book: '预约 15 分钟演示',
-      seeHow: '看看怎么运作', viewPricing: '看价格', readCase: '看完整案例', text: '给 Jack 发短信',
+      seeHow: '看看怎么运作', viewPricing: '看价格', readCase: '看完整案例', text: '给 Jessy 发短信',
       noSignup: '不用注册，拿起电话就能试。', callYourself: '你也打一个试试',
     },
     demo: {
