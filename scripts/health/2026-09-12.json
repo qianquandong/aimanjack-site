@@ -1,115 +1,115 @@
 {
- "date": "2026-09-11",
+ "date": "2026-09-12",
  "checks": [
   {
    "id": "up:/",
    "status": "PASS",
-   "detail": "HTTP 200 286ms"
+   "detail": "HTTP 200 250ms"
   },
   {
    "id": "perf:home-fetch",
    "status": "PASS",
-   "detail": "286ms full fetch (PSI weekly gives the real CWV)"
+   "detail": "250ms full fetch (PSI weekly gives the real CWV)"
   },
   {
    "id": "up:/ai-receptionist/",
    "status": "PASS",
-   "detail": "HTTP 200 46ms"
+   "detail": "HTTP 200 38ms"
   },
   {
    "id": "up:/pricing/",
    "status": "PASS",
-   "detail": "HTTP 200 147ms"
+   "detail": "HTTP 200 41ms"
   },
   {
    "id": "up:/industries/",
    "status": "PASS",
-   "detail": "HTTP 200 42ms"
+   "detail": "HTTP 200 33ms"
   },
   {
    "id": "up:/industries/salons/",
    "status": "PASS",
-   "detail": "HTTP 200 170ms"
+   "detail": "HTTP 200 41ms"
   },
   {
    "id": "up:/integrations/",
    "status": "PASS",
-   "detail": "HTTP 200 131ms"
+   "detail": "HTTP 200 41ms"
   },
   {
    "id": "up:/case-studies/",
    "status": "PASS",
-   "detail": "HTTP 200 38ms"
+   "detail": "HTTP 200 41ms"
   },
   {
    "id": "up:/case-studies/ai-man-jack/",
    "status": "PASS",
-   "detail": "HTTP 200 121ms"
+   "detail": "HTTP 200 38ms"
   },
   {
    "id": "up:/about/",
    "status": "PASS",
-   "detail": "HTTP 200 43ms"
+   "detail": "HTTP 200 39ms"
   },
   {
    "id": "up:/contact/",
    "status": "PASS",
-   "detail": "HTTP 200 38ms"
+   "detail": "HTTP 200 36ms"
   },
   {
    "id": "up:/ai-training/",
    "status": "PASS",
-   "detail": "HTTP 200 108ms"
+   "detail": "HTTP 200 36ms"
   },
   {
    "id": "up:/zh/",
    "status": "PASS",
-   "detail": "HTTP 200 36ms"
+   "detail": "HTTP 200 34ms"
   },
   {
    "id": "up:/zh/ai-receptionist/",
    "status": "PASS",
-   "detail": "HTTP 200 39ms"
+   "detail": "HTTP 200 43ms"
   },
   {
    "id": "up:/zh/pricing/",
    "status": "PASS",
-   "detail": "HTTP 200 41ms"
+   "detail": "HTTP 200 39ms"
   },
   {
    "id": "up:/zh/industries/",
    "status": "PASS",
-   "detail": "HTTP 200 126ms"
+   "detail": "HTTP 200 36ms"
   },
   {
    "id": "up:/zh/industries/salons/",
    "status": "PASS",
-   "detail": "HTTP 200 170ms"
+   "detail": "HTTP 200 37ms"
   },
   {
    "id": "up:/zh/integrations/",
    "status": "PASS",
-   "detail": "HTTP 200 37ms"
+   "detail": "HTTP 200 36ms"
   },
   {
    "id": "up:/zh/case-studies/",
    "status": "PASS",
-   "detail": "HTTP 200 122ms"
+   "detail": "HTTP 200 35ms"
   },
   {
    "id": "up:/zh/case-studies/ai-man-jack/",
    "status": "PASS",
-   "detail": "HTTP 200 36ms"
+   "detail": "HTTP 200 40ms"
   },
   {
    "id": "up:/zh/about/",
    "status": "PASS",
-   "detail": "HTTP 200 41ms"
+   "detail": "HTTP 200 34ms"
   },
   {
    "id": "up:/zh/contact/",
    "status": "PASS",
-   "detail": "HTTP 200 142ms"
+   "detail": "HTTP 200 41ms"
   },
   {
    "id": "up:/zh/ai-training/",
@@ -119,17 +119,17 @@
   {
    "id": "up:/sitemap.xml",
    "status": "PASS",
-   "detail": "HTTP 200 23ms"
+   "detail": "HTTP 200 28ms"
   },
   {
    "id": "up:/robots.txt",
    "status": "PASS",
-   "detail": "HTTP 200 43ms"
+   "detail": "HTTP 200 23ms"
   },
   {
    "id": "up:/llms.txt",
    "status": "PASS",
-   "detail": "HTTP 200 28ms"
+   "detail": "HTTP 200 26ms"
   },
   {
    "id": "up:404",
@@ -599,7 +599,7 @@
   {
    "id": "drift",
    "status": "PASS",
-   "detail": "no on-page drift vs baseline (intentional change? rerun with --baseline)"
+   "detail": "baseline captured → scripts/seo-baseline.json"
   },
   {
    "id": "geo:robots",
@@ -616,179 +616,5 @@
    "status": "PASS",
    "detail": "GSC/GA4/PSI via claude-seo need ~/.config/claude-seo/google-api.json"
   }
- ],
- "data": {
-  "pulled_at": "2026-09-11T12:12:10.218Z",
-  "gsc": {
-   "last7": {
-    "range": "2026-09-02..2026-09-08",
-    "clicks": 1,
-    "impressions": 101,
-    "ctr": 0.99,
-    "position": 50.4
-   },
-   "prev7": {
-    "range": "2026-08-26..2026-09-01",
-    "clicks": 1,
-    "impressions": 113,
-    "ctr": 0.88,
-    "position": 52
-   },
-   "impressions_wow_pct": -10.6,
-   "top10_queries": [
-    {
-     "query": "ai business automation dallas",
-     "impressions": 12,
-     "clicks": 0,
-     "position": 78.8
-    },
-    {
-     "query": "automation consulting dallas",
-     "impressions": 9,
-     "clicks": 0,
-     "position": 77.4
-    },
-    {
-     "query": "automation consulting frisco",
-     "impressions": 8,
-     "clicks": 0,
-     "position": 79.5
-    },
-    {
-     "query": "automation consulting fort worth",
-     "impressions": 7,
-     "clicks": 0,
-     "position": 78.7
-    },
-    {
-     "query": "automation consulting irving",
-     "impressions": 5,
-     "clicks": 0,
-     "position": 80.6
-    },
-    {
-     "query": "ai automations firm in dallas",
-     "impressions": 4,
-     "clicks": 0,
-     "position": 90.2
-    },
-    {
-     "query": "web hosting",
-     "impressions": 3,
-     "clicks": 0,
-     "position": 5
-    },
-    {
-     "query": "ai automation consultant dallas",
-     "impressions": 2,
-     "clicks": 0,
-     "position": 86
-    },
-    {
-     "query": "ai automation services dallas",
-     "impressions": 2,
-     "clicks": 0,
-     "position": 87.5
-    },
-    {
-     "query": "ai workflow dallas",
-     "impressions": 2,
-     "clicks": 0,
-     "position": 81.5
-    }
-   ],
-   "quick_wins_imp20_pos8to20": [],
-   "sitemap_submitted_count_per_gsc": 6,
-   "sitemap_last_read_by_gsc": "2026-09-02",
-   "sitemap_live_url_count": 40,
-   "indexed": 39,
-   "inspected": 40,
-   "not_indexed": [
-    {
-     "url": "https://aimanjack.com/industries/clinics/",
-     "state": "URL is unknown to Google"
-    }
-   ]
-  },
-  "ga4": {
-   "note": "GA4 tag live 2026-09-09; no data before that. HEALTH-CHECK.md names event cta_click, site actually fires header_call_click/demo_call_click/sms_click/book_demo_click/form_submit.",
-   "window": "2026-09-09..2026-09-11",
-   "sessions_by_day": {
-    "2026-09-09": 5,
-    "2026-09-10": 15,
-    "2026-09-11": 4
-   },
-   "sessions_total": 24,
-   "by_country_7d": {
-    "United States": 16,
-    "India": 3,
-    "Russia": 1
-   },
-   "by_region_city": {
-    "Texas/Melissa": 10,
-    "Texas/(unset)": 2,
-    "Texas/Dallas": 1,
-    "NewYork/NewYork": 2,
-    "Oregon/Boardman": 2,
-    "Punjab/SahibzadaAjitSinghNagar": 2,
-    "California/SantaClara": 1,
-    "Colorado/(unset)": 1,
-    "Florida/LandOLakes": 1,
-    "Haryana/Panipat": 1,
-    "Moscow/Moscow": 1
-   },
-   "dfw_sessions": 11,
-   "channels": {
-    "Direct": 20,
-    "Unassigned": 9,
-    "Cross-network": 1,
-    "Referral": 1
-   },
-   "cta_events": {
-    "header_call_click": 2,
-    "demo_call_click": 1,
-    "sms_click": 1,
-    "book_demo_click": 1,
-    "form_start": 2,
-    "form_submit": 2,
-    "book_view": 6
-   },
-   "cta_clicks_total": 5,
-   "conversion_wide_pct": 20.8,
-   "conversion_valid": false,
-   "conversion_invalid_reason": "100% of CTA/form events came from Texas/Melissa (Jack himself). Internal traffic filter not configured in GA4; real external conversions = 0."
-  },
-  "breakers": [
-   {
-    "id": "gsc_index_count",
-    "fired": true,
-    "stale_threshold": true,
-    "note": "HEALTH-CHECK.md §1 expects 4-8 indexed pages; site intentionally grew to 40 URLs and 39 are indexed. Threshold needs updating by Jack, not a site problem."
-   },
-   {
-    "id": "gsc_impressions_wow",
-    "fired": false,
-    "value": "-10.6%"
-   },
-   {
-    "id": "ga4_zero_sessions_3d",
-    "fired": false
-   },
-   {
-    "id": "ga4_zero_cta_3d",
-    "fired": false,
-    "note": "cta_click event does not exist; granular CTA events fired on all 3 days"
-   },
-   {
-    "id": "strict_conversion_14d",
-    "fired": false,
-    "note": "only 3 days of GA4 data, cannot evaluate"
-   },
-   {
-    "id": "site_fail_2d",
-    "fired": false,
-    "note": "0 FAIL on 09-09, 09-10, 09-11"
-   }
-  ]
- }
+ ]
 }
