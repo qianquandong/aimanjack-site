@@ -89,6 +89,9 @@ export function render(page, lang) {
   const t = T[lang];
   const url = SITE + L(lang, page.path);
   const og = page.og || {};
+  const twitterImage = page.path === '/' ? `<meta name="twitter:image" content="${SITE}${og.image || (lang === 'zh' ? '/img/og-receptionist-zh.jpg' : '/img/og-receptionist.jpg')}">
+<meta name="twitter:image:alt" content="${esc(og.alt || (lang === 'zh' ? 'AI Man Jack：24 小时 AI 客服，拨打 (469) 517-2968 试听' : 'AI Man Jack: 24/7 AI customer service for appointment businesses. Call the AI: (469) 517-2968'))}">
+` : '';
   const ld = page.jsonld?.length ? `<script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@graph': page.jsonld })}</script>` : '';
   return `<!DOCTYPE html>
 <html lang="${t.htmlLang}">
@@ -120,7 +123,7 @@ export function render(page, lang) {
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="${esc(og.title || page.title)}">
 <meta name="twitter:description" content="${esc(og.description || page.description)}">
-${ld}
+${twitterImage}${ld}
 <link rel="preload" href="/fonts/Satoshi-latin-2.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/style.css?v=0">
 </head>
