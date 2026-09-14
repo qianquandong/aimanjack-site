@@ -254,9 +254,10 @@ export const faqJsonLd = (items) => ({ '@type': 'FAQPage', mainEntity: items.map
 export const HOME_FAQ = FAQ;
 
 export function finalCta(lang, { h, sub } = {}) {
+  // Final CTA — explicit AI demo framing. Was: "Call Jessy, the AI receptionist, and ask her…"
   const d = lang === 'zh'
-    ? ['先试，再买。', '打个电话给 Jessy，让她给你约个时间。问问价格，约个时间，再改一次。']
-    : ['Try it before you buy it.', 'Call Jessy, the AI receptionist, and ask her to book an appointment. Ask about price. Ask for a time. Try changing it.'];
+    ? ['先试，再买。', '拨打 AI 演示线，让它帮你约个时间。问问价格，约个时间，再改一次。']
+    : ['Try it before you buy it.', 'Call our AI demo and ask it to book an appointment. Ask about price. Ask for a time. Try changing it.'];
   return `<section class="section final-cta" id="start"><div class="wrap narrow center"><h2>${h || d[0]}</h2><p class="lead">${sub || d[1]}</p>
 <div class="cta-row center">${callBtn(lang, { event: 'demo_call_click', pos: 'final', cls: 'btn-lg' })}${secondaryBtn(lang, { pos: 'final', cls: 'btn-lg' })}</div>
 <p class="final-number"><a href="tel:${DEMO_TEL}" data-event="demo_call_click" data-pos="final-number">${DEMO_DISPLAY}</a> · ${T[lang].cta.noSignup}</p></div></section>`;
