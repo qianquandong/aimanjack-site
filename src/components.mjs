@@ -44,10 +44,10 @@ export const CASES = [
   { slug: 'ai-man-jack',
     en: { name: 'AI Man Jack demo line', type: 'AI service provider · Dallas–Fort Worth', status: 'Pilot results coming soon',
       problem: 'Prospects should try the receptionist before a sales call, without signing up.',
-      summary: 'Our own phone line is answered by the product. It takes questions about the service and books the 15-minute call with Jack.' },
+      summary: 'Our own phone line is answered by the product. It takes questions about the service and books the 30-minute call with Jack.' },
     zh: { name: 'AI Man Jack 演示线', type: 'AI 服务商 · 达拉斯—沃斯堡', status: '试点数据整理中',
       problem: '想让潜在客户在销售通话之前，不用注册就先试一试。',
-      summary: '我们自己的电话就由这个产品来接。它回答关于服务的问题，并帮来电者约上和 Jack 的 15 分钟通话。' } },
+      summary: '我们自己的电话就由这个产品来接。它回答关于服务的问题，并帮来电者约上和 Jack 的 30 分钟通话。' } },
   { slug: 'car-dealership-sms',
     en: { name: 'Used-car dealership, SMS booking agent', type: 'Auto dealer · Dallas–Fort Worth', status: 'Live · metrics not yet published',
       problem: 'Inbound texts about test drives went unanswered while staff were on the lot.',
@@ -234,8 +234,8 @@ export function addonBlock(lang) {
 
 export function contactSales(lang) {
   const s = lang === 'zh'
-    ? ['多店、双语网站，或者要定制对接？', '约 15 分钟，聊范围和报价。']
-    : ['Need multiple locations, a bilingual website or custom integrations?', 'Book 15 minutes to talk scope and pricing.'];
+    ? ['多店、双语网站，或者要定制对接？', '约 30 分钟，聊范围和报价。']
+    : ['Need multiple locations, a bilingual website or custom integrations?', 'Book 30 minutes to talk scope and pricing.'];
   return `<div class="contact-sales"><div><h2 class="h3">${s[0]}</h2><p>${s[1]}</p></div>${secondaryBtn(lang, { pos: 'contact-sales' })}</div>`;
 }
 

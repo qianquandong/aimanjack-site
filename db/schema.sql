@@ -89,6 +89,23 @@ create table if not exists booking.events (
 );
 create index if not exists events_biz on booking.events (business_id, at);
 
+-- One durable coupon per normalized email. Codes are issued by the Pages Function and
+-- redeemed manually by Jack through the ADMIN_TOKEN-protected coupon endpoint.
+create table if not exists booking.coupons (
+  code text primary key,
+  email text not null,
+  email_normalized text not null unique,
+  amount_usd int not null default 25 check (amount_usd = 25),
+  issuance_status text not null default 'pending' check (issuance_status in ('pending', 'sent', 'failed')),
+  delivery_attempts int not null default 0,
+  delivered_at timestamptz,
+  last_error text,
+  redeemed_at timestamptz,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+create index if not exists coupons_status on booking.coupons (issuance_status, redeemed_at, created_at desc);
+
 -- Everything the API needs to render a booking, in one read.
 create or replace view booking.bookings_full as
   select b.*, s.name as service_name, s.duration_min, s.buffer_min, s.capacity, st.name as staff_name,
@@ -144,12 +161,14 @@ alter table booking.availability_rules enable row level security;
 alter table booking.blocks enable row level security;
 alter table booking.bookings enable row level security;
 alter table booking.events enable row level security;
+alter table booking.coupons enable row level security;
 
 -- Seed: AI Man Jack itself (W1). Hours mirror the SMS agent: Mon–Fri 7–9 PM, Sat 10 AM–6 PM, Sunday off.
 insert into booking.businesses (id, name, tz, min_lead_min, max_days_ahead, cancel_window_hours, owner_phone)
   values ('aimanjack', 'AI Man Jack', 'America/Chicago', 60, 30, 2, '+18328886016') on conflict do nothing;
 insert into booking.services (business_id, id, name, duration_min, buffer_min, capacity)
-  values ('aimanjack', 'demo-call', '15-minute demo call with Jack', 15, 0, 1) on conflict do nothing;
+  values ('aimanjack', 'demo-call', '30-minute demo call with Jack', 30, 0, 1)
+  on conflict (business_id, id) do update set name = excluded.name, duration_min = excluded.duration_min;
 insert into booking.staff (business_id, id, name) values ('aimanjack', 'jack', 'Jack Qian') on conflict do nothing;
 insert into booking.availability_rules (business_id, staff_id, weekday, start_hm, end_hm)
   select 'aimanjack', null, w, '19:00', '21:00' from generate_series(1, 5) w

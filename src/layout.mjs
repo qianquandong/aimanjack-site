@@ -22,8 +22,8 @@ function header(lang, path) {
   const t = T[lang], n = t.nav;
   const other = lang === 'zh' ? path : zhPath(path);
   const links = [
-    [L(lang, '/') + '#how', n.how], [L(lang, '/industries/'), n.useCases], [L(lang, '/pricing/'), n.pricing],
-    [L(lang, '/case-studies/'), n.cases], [L(lang, '/about/'), n.about],
+    [L(lang, '/') + '#curriculum', n.training], [L(lang, '/ai-receptionist/'), n.services],
+    [L(lang, '/industries/'), n.useCases], [L(lang, '/pricing/'), n.pricing], [L(lang, '/about/'), n.about],
   ].map(([h, l]) => `<a href="${h}">${l}</a>`).join('');
   return `<header class="site-header"><div class="wrap head-row">
 <a class="brand" href="${L(lang, '/')}" aria-label="${BRAND}">AI Man <span>Jack</span></a>
@@ -39,7 +39,7 @@ function footer(lang) {
   const col = (title, items) => `<div><h2 class="foot-h">${title}</h2><ul>${items.map(([h, l]) => `<li><a href="${h}">${l}</a></li>`).join('')}</ul></div>`;
   return `<footer class="site-footer"><div class="wrap">
 <div class="foot-grid">
-${col(f.product, [[L(lang, '/') + '#how', f.how], [L(lang, '/ai-receptionist/'), f.product_page], [L(lang, '/pricing/'), f.pricing], [L(lang, '/integrations/'), f.integrations], [L(lang, '/case-studies/'), f.cases]])}
+${col(f.product, [[L(lang, '/') + '#curriculum', f.training], [L(lang, '/ai-receptionist/'), f.product_page], [L(lang, '/pricing/'), f.pricing], [L(lang, '/integrations/'), f.integrations], [L(lang, '/case-studies/'), f.cases]])}
 ${col(f.solutions, [[L(lang, '/industries/salons/'), f.salon], [L(lang, '/industries/'), f.local], [L(lang, '/ai-training/'), f.training]])}
 ${col(f.company, [[L(lang, '/about/'), f.about], [L(lang, '/contact/'), f.contact], [L(lang, '/privacy'), f.privacy], [L(lang, '/terms'), f.terms], [L(lang, '/sms-terms'), f.sms]])}
 <div><h2 class="foot-h">${f.location}</h2><p class="foot-loc">${f.loc}</p><p class="foot-serves">${f.serves}</p></div>
@@ -87,7 +87,8 @@ addEventListener('load',function(){var s=D.createElement('script');s.async=true;
 // page: { path (EN path), title, description, og?:{title,description,image,alt}, jsonld:[], body, view?, noindex?, bodyClass? }
 export function render(page, lang) {
   const t = T[lang];
-  const url = SITE + L(lang, page.path);
+  const canonicalPath = page.canonicalPath ?? page.path;
+  const url = SITE + L(lang, canonicalPath);
   const og = page.og || {};
   const twitterImage = page.path === '/' ? `<meta name="twitter:image" content="${SITE}${og.image || (lang === 'zh' ? '/img/og-receptionist-zh.jpg' : '/img/og-receptionist.jpg')}">
 <meta name="twitter:image:alt" content="${esc(og.alt || (lang === 'zh' ? 'AI Man Jack：24 小时 AI 客服，拨打 (469) 517-2968 试听' : 'AI Man Jack: 24/7 AI customer service for appointment businesses. Call the AI: (469) 517-2968'))}">
@@ -106,9 +107,9 @@ export function render(page, lang) {
 <title>${esc(page.title)}</title>
 <meta name="description" content="${esc(page.description)}">
 <link rel="canonical" href="${url}">
-<link rel="alternate" hreflang="en" href="${SITE + page.path}">
-<link rel="alternate" hreflang="zh" href="${SITE + zhPath(page.path)}">
-<link rel="alternate" hreflang="x-default" href="${SITE + page.path}">
+<link rel="alternate" hreflang="en" href="${SITE + canonicalPath}">
+<link rel="alternate" hreflang="zh" href="${SITE + zhPath(canonicalPath)}">
+<link rel="alternate" hreflang="x-default" href="${SITE + canonicalPath}">
 <meta name="robots" content="${page.noindex ? 'noindex, follow' : 'index, follow, max-image-preview:large, max-snippet:-1'}">
 <meta property="og:type" content="${page.ogType || 'website'}">
 <meta property="og:url" content="${url}">

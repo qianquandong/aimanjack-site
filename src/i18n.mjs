@@ -3,9 +3,9 @@ export const T = {
   en: {
     htmlLang: 'en', ogLocale: 'en_US', otherLang: '中文', otherLangCode: 'zh',
     skip: 'Skip to content', menu: 'Menu', close: 'Close',
-    nav: { how: 'How it works', useCases: 'Use cases', pricing: 'Pricing', cases: 'Case studies', about: 'About' },
+    nav: { training: 'AI training', services: 'AI services', how: 'How it works', useCases: 'Use cases', pricing: 'Pricing', cases: 'Case studies', about: 'About' },
     cta: {
-      call: 'Call Jessy', callNow: 'Call now', email: 'Email Jack', book: 'Book a 15-min demo',
+      call: 'Call Jessy', callNow: 'Call now', email: 'Email Jack', book: 'Book a 30-minute call',
       seeHow: 'See how it works', viewPricing: 'View pricing', readCase: 'Read the case study', text: 'Text Jessy',
       noSignup: 'No signup. Just call.', callYourself: 'Call it yourself',
     },
@@ -21,7 +21,7 @@ export const T = {
     },
     sticky: 'Call Jessy',
     footer: {
-      product: 'Product', solutions: 'Solutions', company: 'Company', location: 'Location',
+      product: 'Services', solutions: 'Solutions', company: 'Company', location: 'Location',
       how: 'How it works', pricing: 'Pricing', integrations: 'Integrations', cases: 'Case studies', product_page: 'AI receptionist',
       salon: 'Salon & beauty', local: 'Local service businesses', training: 'Team training',
       about: 'About', contact: 'Contact', privacy: 'Privacy', terms: 'Terms', sms: 'SMS terms',
@@ -34,9 +34,9 @@ export const T = {
   zh: {
     htmlLang: 'zh', ogLocale: 'zh_CN', otherLang: 'EN', otherLangCode: 'en',
     skip: '跳到正文', menu: '菜单', close: '关闭',
-    nav: { how: '怎么运作', useCases: '适用行业', pricing: '价格', cases: '案例', about: '关于' },
+    nav: { training: 'AI 培训', services: 'AI 服务', how: '怎么运作', useCases: '适用行业', pricing: '价格', cases: '案例', about: '关于' },
     cta: {
-      call: '打给 Jessy', callNow: '现在就打', email: '给 Jack 发邮件', book: '预约 15 分钟演示',
+      call: '打给 Jessy', callNow: '现在就打', email: '给 Jack 发邮件', book: '预约 30 分钟通话',
       seeHow: '看看怎么运作', viewPricing: '看价格', readCase: '看完整案例', text: '给 Jessy 发短信',
       noSignup: '不用注册，拿起电话就能试。', callYourself: '你也打一个试试',
     },
@@ -52,7 +52,7 @@ export const T = {
     },
     sticky: '打给 Jessy',
     footer: {
-      product: '产品', solutions: '行业', company: '公司', location: '所在地',
+      product: '服务', solutions: '行业', company: '公司', location: '所在地',
       how: '怎么运作', pricing: '价格', integrations: '对接', cases: '案例', product_page: 'AI 前台',
       salon: '美发美容', local: '本地服务商家', training: '团队培训',
       about: '关于', contact: '联系', privacy: '隐私', terms: '服务条款', sms: '短信条款',

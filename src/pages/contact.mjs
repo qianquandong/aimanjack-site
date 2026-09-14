@@ -12,7 +12,7 @@ const copy = {
       ['Email Jack', 'Best for describing your business, your booking system and your call volume. Replies come from Jack, not a queue.', EMAIL, `mailto:${EMAIL}?subject=AI%20receptionist`, 'email_click', 'Email Jack', false],
       ['Text Jessy', 'Jessy answers around the clock and can book you a call. Include your business name and what you do.', SMS_DISPLAY, `sms:${SMS_TEL}`, 'sms_click', 'Text ' + SMS_DISPLAY, false],
     ],
-    nextH: 'What happens next', next: ['You get a reply from Jack, usually the same or next business day.', 'A 15-minute call to go through your hours, services, booking rules and current setup.', 'A plan recommendation and, if you want to proceed, a service agreement with the scope written down.'],
+    nextH: 'What happens next', next: ['You get a reply from Jack, usually the same or next business day.', 'A 30-minute call to discuss your team, workflows or current business setup.', 'A training format or service recommendation; if you proceed, the scope is written down.'],
     idH: 'Business identity', id: [['Company', 'AI Man Jack LLC'], ['Location', 'Dallas, Texas'], ['Service area', 'Dallas–Fort Worth metroplex; remote implementation where supported'], ['Languages', 'English, Spanish, Chinese'], ['Email', EMAIL], ['Phone / SMS', SMS_DISPLAY], ['AI demo line', DEMO_DISPLAY]],
   },
   zh: {
@@ -25,7 +25,7 @@ const copy = {
       ['给 Jack 发邮件', '适合说清楚你的店、你的预约系统和来电量。回信的是 Jack 本人，不是客服队列。', EMAIL, `mailto:${EMAIL}?subject=${encodeURIComponent('AI 前台咨询')}`, 'email_click', '给 Jack 发邮件', false],
       ['给 Jessy 发短信', 'Jessy 全天候回，也能直接帮你把通话约上。写上店名和你们做什么。', SMS_DISPLAY, `sms:${SMS_TEL}`, 'sms_click', '发短信到 ' + SMS_DISPLAY, false],
     ],
-    nextH: '接下来会怎样', next: ['Jack 回复你，通常当天或下一个工作日。', '一次 15 分钟通话，过一遍营业时间、服务、预约规则和现有设置。', '给你一个方案建议；想继续的话，签一份把范围写清楚的服务协议。'],
+    nextH: '接下来会怎样', next: ['Jack 回复你，通常当天或下一个工作日。', '一次 30 分钟通话，聊团队、工作流或你现在的业务设置。', '给你一个培训形式或服务建议；想继续的话，把范围写清楚。'],
     idH: '公司信息', id: [['公司', 'AI Man Jack LLC'], ['所在地', '德州达拉斯'], ['服务范围', '达拉斯—沃斯堡都会区；支持的情况下可远程实施'], ['语言', '英语、西班牙语、中文'], ['邮箱', EMAIL], ['电话 / 短信', SMS_DISPLAY], ['AI 演示线', DEMO_DISPLAY]],
   },
 };

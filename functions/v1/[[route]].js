@@ -134,7 +134,85 @@ async function sendMail(env, { to, subject, text, reply_to }) {
     method: 'POST', headers: { authorization: `Bearer ${env.CF_EMAIL_TOKEN}`, 'content-type': 'application/json' },
     body: JSON.stringify({ to, from: { address: env.EMAIL_FROM, name: 'AI Man Jack' }, reply_to, subject, text, html: `<pre style="font:15px/1.5 -apple-system,Segoe UI,sans-serif;white-space:pre-wrap;margin:0">${esc(text)}</pre>` }),
   });
-  if (!r.ok) throw new Error(`email ${r.status}: ${(await r.text()).slice(0, 300)}`);
+  const responseText = await r.text();
+  let result = null;
+  try { result = responseText ? JSON.parse(responseText) : null; } catch {}
+  if (!r.ok || result?.success === false) throw new Error(`email ${r.status}: ${responseText.slice(0, 300)}`);
+}
+
+// ── $25 coupon (one per normalized email; one manual redemption) ──
+const emailOk = (s) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(s) && s.length <= 254;
+const couponCode = () => {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789', bytes = crypto.getRandomValues(new Uint8Array(8));
+  return 'AMJ25-' + [...bytes].map((n) => chars[n % chars.length]).join('');
+};
+const couponByEmail = (env, email) => one(env, 'coupons?' + q({ email_normalized: 'eq.' + email, select: '*' }));
+const couponPatch = (env, code, body) => sb(env, 'coupons?' + q({ code: 'eq.' + code }), { method: 'PATCH', body: { ...body, updated_at: new Date().toISOString() }, headers: { prefer: 'return=minimal' } });
+const acquireFailedCoupon = async (env, coupon) => (await sb(env, 'coupons?' + q({ code: 'eq.' + coupon.code, issuance_status: 'eq.failed' }), {
+  method: 'PATCH', body: { issuance_status: 'pending', updated_at: new Date().toISOString() }, headers: { prefer: 'return=representation' },
+}))[0] ?? null;
+const adminOk = (env, req) => env.ADMIN_TOKEN && req.headers.get('authorization') === `Bearer ${env.ADMIN_TOKEN}`;
+
+async function claimCoupon(env, req, ctx) {
+  const origin = req.headers.get('origin');
+  const allowed = env.SITE_ORIGIN || 'https://aimanjack.com';
+  if (!origin || (origin !== allowed && !/^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin))) return fail(403, 'origin_not_allowed', 'Use the coupon form on aimanjack.com.');
+  const body = await req.json().catch(() => null);
+  if (!body) return fail(400, 'bad_json', 'Body must be JSON.');
+  if (clean(body.company_url, 200)) return json({ status: 'accepted' }, 201); // honeypot: do not send
+  const email = clean(body.email, 254), normalized = email.toLowerCase();
+  if (!emailOk(normalized)) return fail(400, 'email_invalid', 'Enter a valid email address.');
+  if (!env.CF_EMAIL_TOKEN || !env.EMAIL_FROM) return fail(503, 'email_unavailable', 'Coupon email is temporarily unavailable.');
+
+  let coupon = await couponByEmail(env, normalized);
+  if (coupon) {
+    if (coupon.issuance_status !== 'failed') return fail(409, 'already_claimed', 'A coupon has already been issued to this email.');
+    coupon = await acquireFailedCoupon(env, coupon);
+    if (!coupon) return fail(409, 'already_claimed', 'A coupon request is already in progress for this email.');
+  }
+  if (!coupon) {
+    const row = { code: couponCode(), email, email_normalized: normalized, amount_usd: 25, issuance_status: 'pending', delivery_attempts: 0 };
+    try { coupon = (await sb(env, 'coupons', { method: 'POST', body: row }))[0] || row; }
+    catch (e) {
+      if (e.code !== '23505') throw e;
+      coupon = await couponByEmail(env, normalized);
+      if (coupon?.issuance_status !== 'failed') return fail(409, 'already_claimed', 'A coupon has already been issued to this email.');
+      coupon = await acquireFailedCoupon(env, coupon);
+      if (!coupon) return fail(409, 'already_claimed', 'A coupon request is already in progress for this email.');
+    }
+  }
+
+  const text = `Your $25 coupon for any AI Man Jack service\n\nCoupon code: ${coupon.code}\n\nUse this coupon once on any AI Man Jack service. No minimum spend, expiration or new-customer restriction. Reply to this email when you are ready to use it.\n\nJack\nAI Man Jack`;
+  try {
+    await sendMail(env, { to: email, subject: `Your $25 AI Man Jack coupon: ${coupon.code}`, text, reply_to: env.OWNER_EMAIL });
+  } catch (e) {
+    await couponPatch(env, coupon.code, { issuance_status: 'failed', delivery_attempts: (coupon.delivery_attempts || 0) + 1, last_error: String(e.message || e).slice(0, 240) }).catch((dbError) => console.error('coupon failure persistence', dbError.message));
+    return fail(502, 'email_failed', 'The coupon email was not accepted by the email provider.');
+  }
+  await couponPatch(env, coupon.code, { issuance_status: 'sent', delivery_attempts: (coupon.delivery_attempts || 0) + 1, delivered_at: new Date().toISOString(), last_error: null }).catch((e) => console.error('coupon sent persistence', e.message));
+  if (env.OWNER_EMAIL && ctx.waitUntil) ctx.waitUntil(sendMail(env, { to: env.OWNER_EMAIL, subject: `[coupon] ${coupon.code} issued`, text: `${coupon.code} issued to ${email}. Manual redemption is still required.`, reply_to: email }).catch((e) => console.error('coupon owner email', e.message)));
+  return json({ status: 'accepted' }, 201);
+}
+
+async function listCoupons(env, req, url) {
+  if (!adminOk(env, req)) return fail(401, 'unauthorized', 'Bearer token required.');
+  const status = url.searchParams.get('status');
+  const rows = await sb(env, 'coupons?' + q({ ...(status ? { issuance_status: 'eq.' + status } : {}), order: 'created_at.desc', limit: '500' }));
+  return json({ count: rows.length, coupons: rows });
+}
+
+async function redeemCoupon(env, req, code) {
+  if (!adminOk(env, req)) return fail(401, 'unauthorized', 'Bearer token required.');
+  const coupon = await one(env, 'coupons?' + q({ code: 'eq.' + code, select: '*' }));
+  if (!coupon) return fail(404, 'coupon_not_found', 'No such coupon.');
+  if (coupon.issuance_status !== 'sent') return fail(409, 'coupon_not_issued', 'This coupon was not sent successfully.');
+  if (coupon.redeemed_at) return fail(409, 'coupon_already_redeemed', 'This coupon has already been redeemed.');
+  const redeemed_at = new Date().toISOString();
+  const updated = await sb(env, 'coupons?' + q({ code: 'eq.' + code, redeemed_at: 'is.null' }), {
+    method: 'PATCH', body: { redeemed_at, updated_at: redeemed_at }, headers: { prefer: 'return=representation' },
+  });
+  if (!updated.length) return fail(409, 'coupon_already_redeemed', 'This coupon has already been redeemed.');
+  return json({ code, redeemed_at });
 }
 
 // kind: created | rescheduled | cancelled. Customer gets a confirmation, the owner a one-line notice.
@@ -264,6 +342,11 @@ export async function onRequest(ctx) {
       if (req.method === 'PATCH') return await reschedule(env, req, b, origin, ctx);
       if (req.method === 'DELETE') return await cancel(env, req, b, origin, ctx);
     }
+    if (res === 'coupons' && !id) {
+      if (req.method === 'POST') return await claimCoupon(env, req, ctx);
+      if (req.method === 'GET') return await listCoupons(env, req, url);
+    }
+    if (res === 'coupons' && id && !extra && req.method === 'PATCH') return await redeemCoupon(env, req, id);
     return fail(404, 'not_found', 'No such route.');
   } catch (e) {
     console.error('booking api', e);

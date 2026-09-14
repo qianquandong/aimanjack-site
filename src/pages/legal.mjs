@@ -5,29 +5,33 @@ import { breadcrumb, BUSINESS_REF } from '../components.mjs';
 // Chinese versions are translations of the same text. /terms is new; Jack reviews before production.
 
 const privacy = {
-  en: { title: 'Privacy Policy | AI Man Jack', description: 'How AI Man Jack collects and uses information from calls and text messages, including SMS consent and opt-out.', crumb: 'Privacy', h1: 'Privacy Policy', body: `
-<p class="meta">Last updated: July 22, 2026</p>
+  en: { title: 'Privacy Policy | AI Man Jack', description: 'How AI Man Jack collects and uses information from calls, text messages, bookings, and coupon email requests.', crumb: 'Privacy', h1: 'Privacy Policy', body: `
+<p class="meta">Last updated: September 14, 2026</p>
 <p>AI Man Jack ("we", "us") provides AI education, websites, and workflow automation services, including a missed-call text-back service for local businesses. This policy explains what information we collect and how we use it.</p>
 <h2>Information we collect</h2>
 <p>When you call or text a business phone number powered by our service, we process your phone number and the content of your text messages solely to deliver the service: acknowledging missed calls and relaying conversations between you and the business.</p>
+<p>When you request a coupon, we collect the email address you enter and keep the coupon code, delivery status, and redemption status needed to issue one coupon per email and allow one use per coupon.</p>
 <h2>SMS/text messaging</h2>
 <p><strong>No mobile information will be shared with third parties or affiliates for marketing or promotional purposes.</strong> Text messaging originator opt-in data and consent will not be sold or shared with any third parties.</p>
 <p>Messages are sent from <strong>(469) 425-4142</strong> only to phone numbers that have called or texted us first. Message frequency: one message per missed call, plus any replies in a conversation you initiate. Message and data rates may apply. Reply STOP at any time to opt out of receiving messages, or reply HELP for help.</p>
 <h2>How we use information</h2>
-<p>We use your phone number only to send the messages described above on behalf of the business you contacted. We do not sell personal information, and we do not use it for advertising.</p>
+<p>We use your phone number to send the messages described above on behalf of the business you contacted. We use a coupon email only to deliver and administer that coupon, not to subscribe you to marketing. We do not sell personal information or use it for advertising.</p>
+<p>Service providers process data only to operate these features: Supabase stores booking and coupon records, and Cloudflare hosts the site and sends coupon and booking emails. We retain the coupon record as needed to prevent duplicate issuance and redemption. Contact us to request access, correction, or deletion where applicable; we may retain a minimal record when necessary to prevent fraud or comply with law.</p>
 <h2>Contact</h2>
 <p>Questions? Email <a href="mailto:${EMAIL}">${EMAIL}</a>.</p>
 <p><a href="/">&larr; Back to home</a> · <a href="/sms-terms">SMS Terms &amp; Conditions</a> · <a href="/terms">Terms of Service</a></p>` },
-  zh: { title: '隐私政策 | AI Man Jack', description: 'AI Man Jack 如何收集和使用来电与短信中的信息，包括短信同意与退订方式。', crumb: '隐私', h1: '隐私政策', body: `
-<p class="meta">最后更新：2026 年 7 月 22 日</p>
+  zh: { title: '隐私政策 | AI Man Jack', description: 'AI Man Jack 如何收集和使用来电、短信、预约及优惠券 email 请求中的信息。', crumb: '隐私', h1: '隐私政策', body: `
+<p class="meta">最后更新：2026 年 9 月 14 日</p>
 <p>AI Man Jack（「我们」）提供 AI 教育、网站和工作流自动化服务，包括面向本地商家的漏接来电短信回复服务。本政策说明我们收集哪些信息，以及如何使用。</p>
 <h2>我们收集的信息</h2>
 <p>当你拨打或发短信到由我们服务支持的商家号码时，我们只为提供服务而处理你的电话号码和短信内容：确认漏接的来电，并在你和商家之间传递对话。</p>
+<p>当你领取优惠券时，我们会收集你填写的 email，并保存优惠码、发送状态和核销状态，用来确保每个 email 只领取一张、每张只使用一次。</p>
 <h2>短信</h2>
 <p><strong>手机信息不会为营销或推广目的与第三方或关联方共享。</strong>短信发起方的同意数据不会出售或共享给任何第三方。</p>
 <p>短信仅从 <strong>(469) 425-4142</strong> 发给先拨打或发短信给我们的号码。发送频率：每次漏接一条，加上你发起的对话中的回复。可能产生短信和数据费用。随时回复 STOP 退订，回复 HELP 获取帮助。</p>
 <h2>我们如何使用信息</h2>
-<p>我们只用你的电话号码代表你联系的商家发送上述短信。我们不出售个人信息，也不用于广告。</p>
+<p>我们用你的电话号码代表你联系的商家发送上述短信。优惠券 email 只用于发送和管理这张优惠券，不会把你加入营销邮件。我们不出售个人信息，也不用于广告。</p>
+<p>服务商只为运行这些功能处理数据：Supabase 保存预约和优惠券记录；Cloudflare 托管网站，并发送优惠券和预约邮件。为防止重复领取和重复核销，我们会按需要保留优惠券记录。你可以联系我们申请查阅、更正或删除适用的信息；为防欺诈或遵守法律，我们可能保留必要的最少记录。</p>
 <h2>联系</h2>
 <p>有问题？发邮件到 <a href="mailto:${EMAIL}">${EMAIL}</a>。</p>
 <p><a href="/zh/">&larr; 返回首页</a> · <a href="/zh/sms-terms">短信条款</a> · <a href="/zh/terms">服务条款</a></p>` },

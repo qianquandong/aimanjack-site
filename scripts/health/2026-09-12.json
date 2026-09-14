@@ -4,82 +4,82 @@
   {
    "id": "up:/",
    "status": "PASS",
-   "detail": "HTTP 200 250ms"
+   "detail": "HTTP 200 586ms"
   },
   {
    "id": "perf:home-fetch",
    "status": "PASS",
-   "detail": "250ms full fetch (PSI weekly gives the real CWV)"
+   "detail": "586ms full fetch (PSI weekly gives the real CWV)"
   },
   {
    "id": "up:/ai-receptionist/",
    "status": "PASS",
-   "detail": "HTTP 200 38ms"
+   "detail": "HTTP 200 47ms"
   },
   {
    "id": "up:/pricing/",
    "status": "PASS",
-   "detail": "HTTP 200 41ms"
+   "detail": "HTTP 200 37ms"
   },
   {
    "id": "up:/industries/",
    "status": "PASS",
-   "detail": "HTTP 200 33ms"
+   "detail": "HTTP 200 35ms"
   },
   {
    "id": "up:/industries/salons/",
    "status": "PASS",
-   "detail": "HTTP 200 41ms"
+   "detail": "HTTP 200 38ms"
   },
   {
    "id": "up:/integrations/",
    "status": "PASS",
-   "detail": "HTTP 200 41ms"
+   "detail": "HTTP 200 34ms"
   },
   {
    "id": "up:/case-studies/",
    "status": "PASS",
-   "detail": "HTTP 200 41ms"
+   "detail": "HTTP 200 40ms"
   },
   {
    "id": "up:/case-studies/ai-man-jack/",
    "status": "PASS",
-   "detail": "HTTP 200 38ms"
+   "detail": "HTTP 200 35ms"
   },
   {
    "id": "up:/about/",
    "status": "PASS",
-   "detail": "HTTP 200 39ms"
+   "detail": "HTTP 200 38ms"
   },
   {
    "id": "up:/contact/",
    "status": "PASS",
-   "detail": "HTTP 200 36ms"
+   "detail": "HTTP 200 37ms"
   },
   {
    "id": "up:/ai-training/",
    "status": "PASS",
-   "detail": "HTTP 200 36ms"
+   "detail": "HTTP 200 41ms"
   },
   {
    "id": "up:/zh/",
    "status": "PASS",
-   "detail": "HTTP 200 34ms"
+   "detail": "HTTP 200 38ms"
   },
   {
    "id": "up:/zh/ai-receptionist/",
    "status": "PASS",
-   "detail": "HTTP 200 43ms"
+   "detail": "HTTP 200 46ms"
   },
   {
    "id": "up:/zh/pricing/",
    "status": "PASS",
-   "detail": "HTTP 200 39ms"
+   "detail": "HTTP 200 38ms"
   },
   {
    "id": "up:/zh/industries/",
    "status": "PASS",
-   "detail": "HTTP 200 36ms"
+   "detail": "HTTP 200 33ms"
   },
   {
    "id": "up:/zh/industries/salons/",
@@ -94,42 +94,42 @@
   {
    "id": "up:/zh/case-studies/",
    "status": "PASS",
-   "detail": "HTTP 200 35ms"
+   "detail": "HTTP 200 37ms"
   },
   {
    "id": "up:/zh/case-studies/ai-man-jack/",
    "status": "PASS",
-   "detail": "HTTP 200 40ms"
+   "detail": "HTTP 200 37ms"
   },
   {
    "id": "up:/zh/about/",
    "status": "PASS",
-   "detail": "HTTP 200 34ms"
+   "detail": "HTTP 200 35ms"
   },
   {
    "id": "up:/zh/contact/",
    "status": "PASS",
-   "detail": "HTTP 200 41ms"
+   "detail": "HTTP 200 40ms"
   },
   {
    "id": "up:/zh/ai-training/",
    "status": "PASS",
-   "detail": "HTTP 200 41ms"
+   "detail": "HTTP 200 37ms"
   },
   {
    "id": "up:/sitemap.xml",
    "status": "PASS",
-   "detail": "HTTP 200 28ms"
+   "detail": "HTTP 200 24ms"
   },
   {
    "id": "up:/robots.txt",
    "status": "PASS",
-   "detail": "HTTP 200 23ms"
+   "detail": "HTTP 200 36ms"
   },
   {
    "id": "up:/llms.txt",
    "status": "PASS",
-   "detail": "HTTP 200 26ms"
+   "detail": "HTTP 200 25ms"
   },
   {
    "id": "up:404",
@@ -599,7 +599,7 @@
   {
    "id": "drift",
    "status": "PASS",
-   "detail": "baseline captured → scripts/seo-baseline.json"
+   "detail": "no on-page drift vs baseline (intentional change? rerun with --baseline)"
   },
   {
    "id": "geo:robots",
@@ -616,5 +616,175 @@
    "status": "PASS",
    "detail": "GSC/GA4/PSI via claude-seo need ~/.config/claude-seo/google-api.json"
   }
- ]
+ ],
+ "data": {
+  "pulled_at": "2026-09-12T12:16:34.196Z",
+  "gsc": {
+   "last7": {
+    "range": "2026-09-03..2026-09-09",
+    "clicks": 1,
+    "impressions": 97,
+    "ctr": 1.03,
+    "position": 51.8
+   },
+   "prev7": {
+    "range": "2026-08-27..2026-09-02",
+    "clicks": 1,
+    "impressions": 123,
+    "ctr": 0.81,
+    "position": 49.9
+   },
+   "impressions_wow_pct": -21.1,
+   "top10_queries": [
+    {
+     "query": "ai business automation dallas",
+     "impressions": 12,
+     "clicks": 0,
+     "position": 79.6
+    },
+    {
+     "query": "automation consulting dallas",
+     "impressions": 9,
+     "clicks": 0,
+     "position": 79.2
+    },
+    {
+     "query": "web hosting",
+     "impressions": 9,
+     "clicks": 0,
+     "position": 5.7
+    },
+    {
+     "query": "automation consulting frisco",
+     "impressions": 8,
+     "clicks": 0,
+     "position": 79
+    },
+    {
+     "query": "automation consulting fort worth",
+     "impressions": 7,
+     "clicks": 0,
+     "position": 78.7
+    },
+    {
+     "query": "automation consulting irving",
+     "impressions": 5,
+     "clicks": 0,
+     "position": 80.4
+    },
+    {
+     "query": "ai automations firm in dallas",
+     "impressions": 4,
+     "clicks": 0,
+     "position": 90.2
+    },
+    {
+     "query": "ai automation consultant dallas",
+     "impressions": 2,
+     "clicks": 0,
+     "position": 86
+    },
+    {
+     "query": "ai automation services dallas",
+     "impressions": 2,
+     "clicks": 0,
+     "position": 87.5
+    },
+    {
+     "query": "ai workflow dallas",
+     "impressions": 2,
+     "clicks": 0,
+     "position": 81.5
+    }
+   ],
+   "quick_wins_imp20_pos8to20": [],
+   "sitemap_submitted_count_per_gsc": 6,
+   "sitemap_last_read_by_gsc": "2026-09-02",
+   "sitemap_live_url_count": 40,
+   "indexed": 39,
+   "inspected": 40,
+   "not_indexed": [
+    {
+     "url": "https://aimanjack.com/industries/clinics/",
+     "state": "URL is unknown to Google"
+    }
+   ]
+  },
+  "ga4": {
+   "note": "HEALTH-CHECK.md names event cta_click; site actually fires header_call_click/demo_call_click/sms_click/book_demo_click. Index-count breaker thresholds (<4/>8) are stale — site is 40 pages now.",
+   "window": "2026-09-05..2026-09-12 (tag live since 2026-09-09)",
+   "sessions_by_day": {
+    "20260909": 5,
+    "20260910": 15,
+    "20260911": 7
+   },
+   "sessions_total": 27,
+   "by_country_7d": {
+    "United States": 23,
+    "India": 3,
+    "Russia": 1
+   },
+   "by_region_city": {
+    "Texas/Melissa": 11,
+    "Oregon/Boardman": 3,
+    "New York/New York": 2,
+    "Punjab/Sahibzada Ajit Singh Nagar": 2,
+    "Texas/(not set)": 2,
+    "California/Santa Clara": 1,
+    "Colorado/(not set)": 1,
+    "Florida/Land O' Lakes": 1,
+    "Haryana/Panipat": 1,
+    "Iowa/Council Bluffs": 1,
+    "Moscow/Moscow": 1,
+    "Texas/Dallas": 1
+   },
+   "dfw_sessions": 14,
+   "channels": {
+    "Direct": 24,
+    "Unassigned": 6,
+    "Referral": 2
+   },
+   "cta_events": {
+    "page_view": 58,
+    "session_start": 26,
+    "user_engagement": 22,
+    "first_visit": 18,
+    "scroll": 9,
+    "book_view": 7,
+    "form_start": 3,
+    "form_submit": 3,
+    "header_call_click": 2,
+    "pricing_view": 2,
+    "book_demo_click": 1,
+    "case_study_view": 1,
+    "demo_call_click": 1,
+    "language_change": 1,
+    "sms_click": 1
+   },
+   "cta_clicks_total": 5,
+   "conversion_wide_pct": 18.5
+  },
+  "saturday": {
+   "psi_mobile": {
+    "/": {
+     "performance": 92,
+     "lcp": "1.1 s",
+     "inp_proxy_tbt": "350 ms",
+     "cls": 0
+    },
+    "/pricing/": {
+     "performance": 83,
+     "lcp": "4.2 s",
+     "inp_proxy_tbt": "90 ms",
+     "cls": 0
+    }
+   },
+   "crux": "no field data (insufficient Chrome traffic) — LCP/INP/CLS are lab only",
+   "notes": [
+    "/products/ 301 → / ; audited /pricing/ instead",
+    "/pricing/ meta description 170 chars (>160, will truncate)",
+    "content_quality: / = 82 (repetitive), /pricing/ = 85"
+   ]
+  }
+ }
 }

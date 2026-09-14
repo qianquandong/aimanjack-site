@@ -11,7 +11,7 @@ export const SMS_TEL = '+14694254142';           // main / SMS number — sms: C
 export const SMS_DISPLAY = '(469) 425-4142';
 
 // Secondary CTA. Empty = Jack's booking system is not live yet → CTA is "Email Jack" (mailto).
-// Set to the real booking page URL and the label switches to "Book a 15-min demo" everywhere.
+// Set to the real booking page URL and the label switches to "Book a 30-minute call" everywhere.
 export const BOOK_URL = '/book/';   // src/pages/book.mjs; a site-relative path is localised per language
 
 export const GA4_ID = 'G-H7EF9HVN02';

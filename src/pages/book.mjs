@@ -7,9 +7,9 @@ const BUSINESS = 'aimanjack', SERVICE = 'demo-call', TZ = 'America/Chicago';
 
 const copy = {
   en: {
-    title: 'Book a 15-Minute Demo Call with Jack | AI Man Jack',
-    description: 'Pick a time for a 15-minute call with Jack about an AI receptionist for your business. Times are US Central. Change or cancel from your confirmation link.',
-    crumb: 'Book a demo', eyebrow: 'Book a demo', h1: 'Book a 15-minute call with Jack.',
+    title: 'Book a 30-Minute AI Consultation with Jack | AI Man Jack',
+    description: 'Pick a time for a 30-minute call with Jack about AI training or AI services for your business. Times are US Central. Change or cancel from your confirmation link.',
+    crumb: 'Book a call', eyebrow: 'Book a call', h1: 'Book a 30-minute call with Jack.',
     sub: 'Pick a day and a time. You get a link you can use to change or cancel.',
     s: {
       day: 'Pick a day', time: 'Pick a time', you: 'Your details', tz: 'All times are US Central (Dallas).',
@@ -24,9 +24,9 @@ const copy = {
     },
   },
   zh: {
-    title: '预约和 Jack 的 15 分钟演示通话 | AI Man Jack',
-    description: '选一个时间，和 Jack 通 15 分钟电话，聊聊 AI 前台怎么用到你的店。时间为美国中部时间，确认链接里可以改期或取消。',
-    crumb: '预约演示', eyebrow: '预约演示', h1: '约 Jack 通 15 分钟电话。',
+    title: '预约和 Jack 的 30 分钟 AI 咨询 | AI Man Jack',
+    description: '选一个时间，和 Jack 通 30 分钟电话，聊团队 AI 培训或适合你业务的 AI 服务。时间为美国中部时间，确认链接里可以改期或取消。',
+    crumb: '预约通话', eyebrow: '预约通话', h1: '约 Jack 通 30 分钟电话。',
     sub: '选好日期和时间，会给你一个链接，改期、取消都从那里进。',
     s: {
       day: '选日期', time: '选时间', you: '你的信息', tz: '时间均为美国中部时间（达拉斯）。',
