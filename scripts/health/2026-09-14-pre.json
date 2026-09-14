@@ -618,7 +618,7 @@
     }
   ],
   "data": {
-    "pulled_at": "2026-09-14T16:22:47.955988Z",
+    "pulled_at": "2026-09-14T12:09:13.716358Z",
     "gsc": {
       "last7": {
         "range": "2026-09-05..2026-09-11",
@@ -697,7 +697,15 @@
           "position": 87.5
         }
       ],
-      "quick_wins_imp20_pos8to20": []
+      "quick_wins_imp20_pos8to20": [],
+      "inspected": 40,
+      "indexed": 39,
+      "not_indexed": [
+        {
+          "url": "https://aimanjack.com/industries/clinics/",
+          "state": "URL is unknown to Google"
+        }
+      ]
     },
     "ga4": {
       "window": "2026-09-07..2026-09-13",
