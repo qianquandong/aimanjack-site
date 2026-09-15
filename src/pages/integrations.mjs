@@ -3,8 +3,8 @@ import { pageHero, breadcrumb, integrationList, finalCta, STATUS, BUSINESS_REF, 
 
 const copy = {
   en: {
-    title: 'Integrations and Their Status | AI Man Jack',
-    description: 'Which booking systems, calendars, phone setups and CRMs the AI receptionist works with today, labeled Supported, Pilot or Ask us. Nothing is implied that has not been tested.',
+    title: 'Integrations & Status | AI Man Jack',
+    description: 'Supported, Pilot, or Ask: booking systems, calendars, phone setups and CRMs the AI receptionist uses today. Nothing claimed untested.',
     crumb: 'Integrations', h1: 'Works with the tools you already use.',
     sub: 'Every item below carries an honest label. Supported means it runs in production. Pilot means it is being tested. Ask us means we have not tested it yet and will check with your account before you pay.',
     howH: 'How a label changes', how: [
@@ -15,8 +15,8 @@ const copy = {
     askH: 'Using something not listed?', askSub: 'Email the name of your booking or phone system and we will tell you whether it is a quick connection, a pilot, or not possible yet.', ask: 'Email Jack about your setup',
   },
   zh: {
-    title: '对接及当前状态 | AI Man Jack',
-    description: 'AI 前台现在能接哪些预约系统、日历、电话设置和 CRM，分别标为已支持、测试中或请联系确认。没测过的，不暗示能用。',
+    title: '对接与状态 | AI Man Jack',
+    description: 'AI 前台已接的预约系统、日历、电话设置和 CRM：分别标为已支持、测试中或咨询确认。没测过的，不写。',
     crumb: '对接', h1: '接得上你已经在用的工具。',
     sub: '下面每一项都有如实的标签。「已支持」是已经在生产环境跑的；「测试中」是正在测的；「请联系确认」是还没测过，付款前会先用你的账户查清楚。',
     howH: '标签怎么变', how: [

@@ -10,17 +10,17 @@ const article = (lang, slug, headline, description) => ({
 
 // ── Index ──
 const index = {
-  en: { title: 'Case Studies: Measured, Not Invented | AI Man Jack', description: 'Two real deployments of AI Man Jack’s phone and SMS agents in Dallas–Fort Worth, with what was built, what is measured, and what still needs validation. No invented numbers.',
+  en: { title: 'Case Studies | AI Man Jack', description: 'Two real Dallas–Fort Worth deployments. Built, measured, validated. No invented numbers.',
     crumb: 'Case studies', h1: 'Proof, as it becomes available.', sub: 'Every case study lists the problem, the implementation, the measurement period and the failures. Numbers appear only once they have been counted.' },
-  zh: { title: '案例：只写测过的，不编 | AI Man Jack', description: 'AI Man Jack 在达拉斯—沃斯堡的两个真实项目：电话 agent 和短信 agent，写清楚做了什么、在测什么、还有什么没验证。不编数字。',
+  zh: { title: '案例 | AI Man Jack', description: '达拉斯—沃斯堡两个真实项目：电话和短信 agent。做了什么、在测什么、不编数字。',
     crumb: '案例', h1: '证据，有多少给多少。', sub: '每个案例都写问题、实现方式、测量周期和出过的错。数字数过了才发。' },
 };
 
 // ── Case pages ──
 const own = {
   en: {
-    title: 'Case Study: AI Man Jack’s Own Demo Line | AI Man Jack',
-    description: 'Our own phone line is answered by the product. What the demo line does today, what is measured, what still needs validation, and why the numbers are not published yet.',
+    title: 'Case Study: Our Demo Line | AI Man Jack',
+    description: 'Our demo line runs the product. What it does, what is measured, what is still unverified.',
     h1: 'The demo line: our own front desk, run by the product.',
     sub: 'Pilot results coming soon. This page is updated when the first full month has been counted.',
     kv: [['Business', 'AI Man Jack LLC, Dallas'], ['Business type', 'AI service provider'], ['Problem', 'Prospects should be able to try the receptionist before a sales call, with no signup and no form.'], ['Implementation', `The public line ${DEMO_DISPLAY} is answered by the AI receptionist, configured with our own hours, services and prices. It runs 24/7 in English, Spanish and Chinese.`], ['Measurement period', 'September 2026 onward'], ['Total relevant calls', 'Counted; published after the first full month'], ['Appointments booked', 'Booking the 30-minute call is being added; count published after it is live'], ['Show rate', 'Not measured yet'], ['Exceptions and failures', 'Reviewed call by call; summary published with the first month'], ['Customer quote', 'Not applicable: the customer is us']],
@@ -30,8 +30,8 @@ const own = {
     why: 'Why no numbers yet: the line went live in September 2026. Publishing a partial month would invite exactly the kind of inflated claim this site avoids.',
   },
   zh: {
-    title: '案例：AI Man Jack 自己的演示线 | AI Man Jack',
-    description: '我们自己的电话就由这个产品来接。演示线现在能做什么、在测什么、还有什么没验证，以及为什么数字还没发。',
+    title: '案例：我们的演示线 | AI Man Jack',
+    description: '演示线运行我们的产品。能做什么、在测什么、还没验证的，实话实说。',
     h1: '演示线：我们自己的前台，由产品来接。',
     sub: '试点数据整理中。第一个完整月份数完之后更新。',
     kv: [['商家', 'AI Man Jack LLC，达拉斯'], ['类型', 'AI 服务商'], ['问题', '潜在客户应该能在销售通话之前试一试 AI 前台，不用注册，不用填表。'], ['实现方式', `公开号码 ${DEMO_DISPLAY} 由 AI 前台接听，配的是我们自己的营业时间、服务和价格。24 小时运行，支持英语、西班牙语和中文。`], ['测量周期', '2026 年 9 月起'], ['相关来电总数', '在数；第一个完整月份后公布'], ['预约数', '把和 Jack 的 30 分钟通话写进日历的功能正在加。上线后公布数字。'], ['实际到场', '尚未测量'], ['异常和失败', '逐通记录；随第一个月的数据一起公布摘要'], ['客户评价', '不适用：客户就是我们自己']],
@@ -44,8 +44,8 @@ const own = {
 
 const dealer = {
   en: {
-    title: 'Case Study: SMS Booking Agent for a DFW Car Dealership | AI Man Jack',
-    description: 'A text-message booking agent built for a used-car dealership in Dallas–Fort Worth: it answers inbound texts, offers time slots, stores the booking and sends the dealer a summary. Live; metrics not yet published.',
+    title: 'Case Study: SMS Booking Agent | AI Man Jack',
+    description: 'A live SMS booking agent for a DFW used-car dealer. Answers, offers slots, saves bookings, sends summaries. Metrics pending.',
     h1: 'A used-car dealership that answers texts while the lot is busy.',
     sub: 'Live in production. Dealership name withheld at their request; numbers are published once the owner approves them.',
     kv: [['Business', 'Used-car dealership, Dallas–Fort Worth (name withheld)'], ['Business type', 'Auto dealer, appointment-based test drives'], ['Problem', 'Inbound texts asking about test drives went unanswered while staff were with customers on the lot. Some buyers moved on.'], ['Implementation', 'An SMS agent on the dealer’s number. It asks which vehicle the buyer is interested in and when they can come in, offers time slots inside the dealer’s open hours, records the confirmed booking, and texts the dealer a summary with the buyer’s name, phone, vehicle and time.'], ['Channel', 'SMS only. This deployment does not answer voice calls.'], ['Measurement period', 'Not yet published'], ['Total relevant conversations', 'Logged; published with the owner’s approval'], ['Bookings', 'Logged; published with the owner’s approval'], ['Attended appointments', 'Tracked by the dealer'], ['Exceptions and failures', 'Logged per conversation; summary to follow'], ['Customer quote', 'None published yet']],
@@ -53,8 +53,8 @@ const dealer = {
     openH: 'What still needs validation', open: ['Booking-to-attendance rate', 'How often buyers ask something the agent hands off', 'Whether a voice line would capture buyers who do not text'],
   },
   zh: {
-    title: '案例：DFW 二手车行的短信预约 agent | AI Man Jack',
-    description: '为达拉斯—沃斯堡一家二手车行做的短信预约 agent：回复来信、给出时段、存下预约，再给车行发摘要。已上线，数据待公布。',
+    title: '案例：短信预约 agent | AI Man Jack',
+    description: '为达拉斯—沃斯堡二手车行做的短信 agent：回复、给时段、存预约、发摘要。已上线，数据待发。',
     h1: '一家二手车行，场地再忙也能回短信。',
     sub: '已在生产环境运行。应车行要求不公开名字；数字经店主同意后公布。',
     kv: [['商家', '二手车行，达拉斯—沃斯堡（不公开名字）'], ['类型', '汽车经销商，预约制试驾'], ['问题', '员工在场地里陪客户的时候，问试驾的短信没人回。有些买家就走了。'], ['实现方式', '车行号码上的一个短信 agent。它问买家看中哪辆车、什么时候能来，在车行营业时间内给出时段，记下确认的预约，再给车行发一条摘要短信：买家姓名、电话、车辆和时间。'], ['渠道', '只有短信。这个项目不接语音电话。'], ['测量周期', '尚未公布'], ['相关对话总数', '已记录；经店主同意后公布'], ['预约数', '已记录；经店主同意后公布'], ['实际到场', '由车行跟踪'], ['异常和失败', '逐段对话记录；摘要随后公布'], ['客户评价', '尚未公布']],

@@ -4,8 +4,8 @@ import { eyebrow, pageHero, breadcrumb, phoneCard, howItWorks, transcript, capab
 
 const copy = {
   en: {
-    title: 'AI Receptionist That Answers Calls and Books | AI Man Jack',
-    description: 'How the AI Man Jack receptionist works: it answers approved questions, captures caller details, books appointments, and hands off when it should not answer. English, Spanish and Chinese.',
+    title: 'AI Receptionist Service | AI Man Jack',
+    description: 'How the receptionist works: approved answers, captured details, real bookings, clean handoffs. English, Spanish, Chinese.',
     crumb: 'AI receptionist', eyebrow: 'The product',
     h1: 'An AI receptionist that answers, books, and knows when to hand off.',
     sub: 'It picks up every time, answers from the details you approve, and turns the call into a booking or a clean handoff. Nothing improvised.',
@@ -31,8 +31,8 @@ const copy = {
     faqPick: [0, 2, 3, 4, 5],
   },
   zh: {
-    title: '接电话、约时间的 AI 前台 | AI Man Jack',
-    description: 'AI Man Jack 的 AI 前台怎么运作：只回答确认过的问题、记下来电信息、完成预约，不该答的时候交接给人。支持英语、西班牙语和中文。',
+    title: 'AI 前台服务 | AI Man Jack',
+    description: 'AI 前台怎么运作：只答确认过的、记下来电信息、完成预约、不该答时交接。英语、西语、中文。',
     crumb: 'AI 前台', eyebrow: '产品',
     h1: '会接电话、会预约，也知道什么时候该找人的 AI 前台。',
     sub: '电话次次接得起，只说你确认过的，要么约成一个预约，要么干净地交给人。不瞎编。',
