@@ -15,6 +15,22 @@ EMAIL_FROM = "bookings@aimanjack.com"
 OWNER_EMAIL = "jack@aimanjack.com"
 SITE_ORIGIN = "https://aimanjack.com"
 
+[[ratelimits]]
+name = "COUPON_IP_RATE_LIMITER"
+namespace_id = "25091401"
+
+  [ratelimits.simple]
+  limit = 5
+  period = 60
+
+[[ratelimits]]
+name = "COUPON_EMAIL_RATE_LIMITER"
+namespace_id = "25091402"
+
+  [ratelimits.simple]
+  limit = 5
+  period = 60
+
 # Secrets (not here) — set for production AND preview (`--env preview`):
 #   npx wrangler pages secret put SB_SECRET_KEY --project-name aimanjack   Supabase secret (service-role) key
 #   npx wrangler pages secret put ADMIN_TOKEN   --project-name aimanjack   bearer for GET /v1/bookings?business=…

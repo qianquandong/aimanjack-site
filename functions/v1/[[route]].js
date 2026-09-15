@@ -153,6 +153,24 @@ const acquireFailedCoupon = async (env, coupon) => (await sb(env, 'coupons?' + q
 }))[0] ?? null;
 const adminOk = (env, req) => env.ADMIN_TOKEN && req.headers.get('authorization') === `Bearer ${env.ADMIN_TOKEN}`;
 
+async function couponRateLimit(env, req, normalizedEmail) {
+  if (!env.COUPON_IP_RATE_LIMITER || !env.COUPON_EMAIL_RATE_LIMITER) {
+    return fail(503, 'rate_limit_unavailable', 'Coupon requests are temporarily unavailable.');
+  }
+  const ip = clean(req.headers.get('cf-connecting-ip'), 64);
+  if (!ip) return fail(503, 'rate_limit_unavailable', 'Coupon requests are temporarily unavailable.');
+  try {
+    const ipResult = await env.COUPON_IP_RATE_LIMITER.limit({ key: `coupon-ip:${ip}` });
+    if (!ipResult.success) return fail(429, 'rate_limited', 'Too many coupon requests. Try again in a minute.');
+    const emailResult = await env.COUPON_EMAIL_RATE_LIMITER.limit({ key: `coupon-email:${normalizedEmail}` });
+    if (!emailResult.success) return fail(429, 'rate_limited', 'Too many coupon requests. Try again in a minute.');
+  } catch (e) {
+    console.error('coupon rate limiter', e);
+    return fail(503, 'rate_limit_unavailable', 'Coupon requests are temporarily unavailable.');
+  }
+  return null;
+}
+
 async function claimCoupon(env, req, ctx) {
   const origin = req.headers.get('origin');
   const allowed = env.SITE_ORIGIN || 'https://aimanjack.com';
@@ -162,6 +180,8 @@ async function claimCoupon(env, req, ctx) {
   if (clean(body.company_url, 200)) return json({ status: 'accepted' }, 201); // honeypot: do not send
   const email = clean(body.email, 254), normalized = email.toLowerCase();
   if (!emailOk(normalized)) return fail(400, 'email_invalid', 'Enter a valid email address.');
+  const limited = await couponRateLimit(env, req, normalized);
+  if (limited) return limited;
   if (!env.CF_EMAIL_TOKEN || !env.EMAIL_FROM) return fail(503, 'email_unavailable', 'Coupon email is temporarily unavailable.');
 
   let coupon = await couponByEmail(env, normalized);

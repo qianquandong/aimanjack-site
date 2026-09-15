@@ -7,12 +7,94 @@ const env = {
   CF_ACCOUNT_ID: 'account', CF_EMAIL_TOKEN: 'email-token',
   EMAIL_FROM: 'offers@aimanjack.com', OWNER_EMAIL: 'jack@aimanjack.com',
   SITE_ORIGIN: 'https://aimanjack.com', ADMIN_TOKEN: 'admin-token',
+  COUPON_IP_RATE_LIMITER: { limit: async () => ({ success: true }) },
+  COUPON_EMAIL_RATE_LIMITER: { limit: async () => ({ success: true }) },
 };
 const response = (body, status = 200) => new Response(typeof body === 'string' ? body : JSON.stringify(body), { status });
 const request = (body) => new Request('https://aimanjack.com/v1/coupons', {
-  method: 'POST', headers: { 'content-type': 'application/json', origin: 'https://aimanjack.com' }, body: JSON.stringify(body),
+  method: 'POST', headers: { 'content-type': 'application/json', origin: 'https://aimanjack.com', 'cf-connecting-ip': '203.0.113.1' }, body: JSON.stringify(body),
 });
 const ctx = (body) => ({ request: request(body), env, params: { route: ['coupons'] }, waitUntil() {} });
+
+const countingLimiter = () => {
+  const counts = new Map();
+  return {
+    limit: async ({ key }) => {
+      const count = (counts.get(key) || 0) + 1;
+      counts.set(key, count);
+      return { success: count <= 5 };
+    },
+  };
+};
+
+test('coupon claim fails closed when rate-limit bindings are unavailable', async () => {
+  const { COUPON_IP_RATE_LIMITER, COUPON_EMAIL_RATE_LIMITER, ...unboundEnv } = env;
+  const r = await onRequest({ request: request({ email: 'team@example.com' }), env: unboundEnv, params: { route: ['coupons'] }, waitUntil() {} });
+  assert.equal(r.status, 503);
+  assert.equal((await r.json()).error, 'rate_limit_unavailable');
+});
+
+test('coupon claim fails closed when Cloudflare does not provide a client IP', async () => {
+  const req = new Request('https://aimanjack.com/v1/coupons', {
+    method: 'POST',
+    headers: { 'content-type': 'application/json', origin: 'https://aimanjack.com' },
+    body: JSON.stringify({ email: 'team@example.com' }),
+  });
+  const r = await onRequest({ request: req, env, params: { route: ['coupons'] }, waitUntil() {} });
+  assert.equal(r.status, 503);
+  assert.equal((await r.json()).error, 'rate_limit_unavailable');
+});
+
+test('coupon claim fails closed when a rate limiter errors', async (t) => {
+  t.mock.method(console, 'error', () => {});
+  const limiterErrorEnv = {
+    ...env,
+    COUPON_IP_RATE_LIMITER: { limit: async () => { throw new Error('limiter unavailable'); } },
+  };
+  const r = await onRequest({ request: request({ email: 'team@example.com' }), env: limiterErrorEnv, params: { route: ['coupons'] }, waitUntil() {} });
+  assert.equal(r.status, 503);
+  assert.equal((await r.json()).error, 'rate_limit_unavailable');
+});
+
+test('coupon claim rate limits the sixth request from one IP within a minute', async () => {
+  const limitedEnv = {
+    ...env,
+    CF_EMAIL_TOKEN: '',
+    COUPON_IP_RATE_LIMITER: countingLimiter(),
+    COUPON_EMAIL_RATE_LIMITER: { limit: async () => ({ success: true }) },
+  };
+  let result;
+  for (let i = 1; i <= 6; i += 1) {
+    const req = new Request('https://aimanjack.com/v1/coupons', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', origin: 'https://aimanjack.com', 'cf-connecting-ip': '203.0.113.10' },
+      body: JSON.stringify({ email: `ip-limit-${i}@example.com` }),
+    });
+    result = await onRequest({ request: req, env: limitedEnv, params: { route: ['coupons'] }, waitUntil() {} });
+  }
+  assert.equal(result.status, 429);
+  assert.equal((await result.json()).error, 'rate_limited');
+});
+
+test('coupon claim rate limits the sixth normalized-email request within a minute', async () => {
+  const limitedEnv = {
+    ...env,
+    CF_EMAIL_TOKEN: '',
+    COUPON_IP_RATE_LIMITER: { limit: async () => ({ success: true }) },
+    COUPON_EMAIL_RATE_LIMITER: countingLimiter(),
+  };
+  let result;
+  for (let i = 1; i <= 6; i += 1) {
+    const req = new Request('https://aimanjack.com/v1/coupons', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', origin: 'https://aimanjack.com', 'cf-connecting-ip': `203.0.113.${i}` },
+      body: JSON.stringify({ email: i % 2 ? ' Rate-Limit@Example.com ' : 'rate-limit@example.com' }),
+    });
+    result = await onRequest({ request: req, env: limitedEnv, params: { route: ['coupons'] }, waitUntil() {} });
+  }
+  assert.equal(result.status, 429);
+  assert.equal((await result.json()).error, 'rate_limited');
+});
 
 test('coupon claim rejects an invalid email without touching external services', async (t) => {
   const original = globalThis.fetch;
