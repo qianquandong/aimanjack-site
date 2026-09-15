@@ -152,18 +152,16 @@ const acquireFailedCoupon = async (env, coupon) => (await sb(env, 'coupons?' + q
   method: 'PATCH', body: { issuance_status: 'pending', updated_at: new Date().toISOString() }, headers: { prefer: 'return=representation' },
 }))[0] ?? null;
 const adminOk = (env, req) => env.ADMIN_TOKEN && req.headers.get('authorization') === `Bearer ${env.ADMIN_TOKEN}`;
+const sha256 = async (value) => [...new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(value)))].map((byte) => byte.toString(16).padStart(2, '0')).join('');
 
 async function couponRateLimit(env, req, normalizedEmail) {
-  if (!env.COUPON_IP_RATE_LIMITER || !env.COUPON_EMAIL_RATE_LIMITER) {
-    return fail(503, 'rate_limit_unavailable', 'Coupon requests are temporarily unavailable.');
-  }
   const ip = clean(req.headers.get('cf-connecting-ip'), 64);
   if (!ip) return fail(503, 'rate_limit_unavailable', 'Coupon requests are temporarily unavailable.');
   try {
-    const ipResult = await env.COUPON_IP_RATE_LIMITER.limit({ key: `coupon-ip:${ip}` });
-    if (!ipResult.success) return fail(429, 'rate_limited', 'Too many coupon requests. Try again in a minute.');
-    const emailResult = await env.COUPON_EMAIL_RATE_LIMITER.limit({ key: `coupon-email:${normalizedEmail}` });
-    if (!emailResult.success) return fail(429, 'rate_limited', 'Too many coupon requests. Try again in a minute.');
+    const ipAllowed = await sb(env, 'rpc/take_coupon_rate_limit', { method: 'POST', body: { p_key_hash: await sha256(`coupon-ip:${ip}`), p_limit: 5, p_window_seconds: 60 } });
+    if (ipAllowed !== true) return fail(429, 'rate_limited', 'Too many coupon requests. Try again in a minute.');
+    const emailAllowed = await sb(env, 'rpc/take_coupon_rate_limit', { method: 'POST', body: { p_key_hash: await sha256(`coupon-email:${normalizedEmail}`), p_limit: 5, p_window_seconds: 60 } });
+    if (emailAllowed !== true) return fail(429, 'rate_limited', 'Too many coupon requests. Try again in a minute.');
   } catch (e) {
     console.error('coupon rate limiter', e);
     return fail(503, 'rate_limit_unavailable', 'Coupon requests are temporarily unavailable.');
