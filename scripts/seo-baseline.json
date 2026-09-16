@@ -1,23 +1,23 @@
 {
- "capturedAt": "2026-09-12",
+ "capturedAt": "2026-09-16",
  "pages": {
   "/": {
-   "title": "AI Receptionist for DFW Appointment Businesses | AI Man Jack",
-   "description": "Your phone can answer itself. AI answers common questions, checks availability and books appointments. Call the AI demo: (469) 517-2968. Dallas–Fort Worth.",
+   "title": "AI Training for Dallas Teams, Hands-On | AI Man Jack",
+   "description": "Hands-on AI training for Dallas teams, in English or Chinese. People leave with one working workflow for a task they already do. 5.0 on Google, 10 reviews.",
    "canonical": "https://aimanjack.com/",
    "hreflang": "en,x-default,zh,zh,zh",
-   "h1": "Your phone can answer itself.",
+   "h1": "Hands-on AI training for Dallas teams,  in English or Chinese",
    "robots": "index, follow, max-image-preview:large, max-snippet:-1",
-   "schemaTypes": "AdministrativeArea,Answer,BusinessAudience,City,Country,FAQPage,Offer,PostalAddress,ProfessionalService,Question,Service,State,WebSite",
-   "ogImage": "https://aimanjack.com/img/og-receptionist.jpg",
-   "smsLinks": 1,
-   "telDemo": 9,
+   "schemaTypes": "AdministrativeArea,AggregateRating,Answer,City,Country,FAQPage,Offer,Organization,Person,PostalAddress,ProfessionalService,Question,Rating,Review,Service,State,WebSite",
+   "ogImage": "https://aimanjack.com/img/og-training.jpg",
+   "smsLinks": 4,
+   "telDemo": 3,
    "ga4": true,
    "h1Count": 1
   },
   "/ai-receptionist/": {
-   "title": "AI Receptionist That Answers Calls and Books | AI Man Jack",
-   "description": "How the AI Man Jack receptionist works: it answers approved questions, captures caller details, books appointments, and hands off when it should not answer. English, Spanish and Chinese.",
+   "title": "AI Receptionist Service | AI Man Jack",
+   "description": "How the receptionist works: approved answers, captured details, real bookings, clean handoffs. English, Spanish, Chinese.",
    "canonical": "https://aimanjack.com/ai-receptionist/",
    "hreflang": "en,x-default,zh,zh,zh",
    "h1": "An AI receptionist that answers, books, and knows when to hand off.",
@@ -44,8 +44,8 @@
    "h1Count": 1
   },
   "/industries/": {
-   "title": "AI Receptionist by Industry: Salons, Med Spas, Clinics | AI Man Jack",
-   "description": "How the AI receptionist handles calls for salons, med spas, clinics, home-service and repair businesses in Dallas–Fort Worth: real call scenarios, example transcripts and what each business needs to set up.",
+   "title": "AI Receptionist by Industry | AI Man Jack",
+   "description": "How the AI receptionist handles DFW salons, med spas, clinics, home-service and repair calls: real scenarios, transcripts, setup needs.",
    "canonical": "https://aimanjack.com/industries/",
    "hreflang": "en,x-default,zh,zh,zh",
    "h1": "Built for businesses that run on appointments.",
@@ -58,8 +58,8 @@
    "h1Count": 1
   },
   "/industries/salons/": {
-   "title": "AI Receptionist for Salons and Barbershops in DFW | AI Man Jack",
-   "description": "An AI receptionist for hair, nail and lash salons and barbershops in Dallas–Fort Worth: quotes approved prices, books with the right stylist, handles reschedules, and hands off when it should.",
+   "title": "AI Receptionist for Salons in DFW | AI Man Jack",
+   "description": "DFW hair, nail, lash salons and barbershops: approved prices, the right stylist, reschedules, and clean handoffs.",
    "canonical": "https://aimanjack.com/industries/salons/",
    "hreflang": "en,x-default,zh,zh,zh",
    "h1": "The phone rings while your hands are in someone’s hair.",
@@ -72,8 +72,8 @@
    "h1Count": 1
   },
   "/integrations/": {
-   "title": "Integrations and Their Status | AI Man Jack",
-   "description": "Which booking systems, calendars, phone setups and CRMs the AI receptionist works with today, labeled Supported, Pilot or Ask us. Nothing is implied that has not been tested.",
+   "title": "Integrations &amp; Status | AI Man Jack",
+   "description": "Supported, Pilot, or Ask: booking systems, calendars, phone setups and CRMs the AI receptionist uses today. Nothing claimed untested.",
    "canonical": "https://aimanjack.com/integrations/",
    "hreflang": "en,x-default,zh,zh,zh",
    "h1": "Works with the tools you already use.",
@@ -86,8 +86,8 @@
    "h1Count": 1
   },
   "/case-studies/": {
-   "title": "Case Studies: Measured, Not Invented | AI Man Jack",
-   "description": "Two real deployments of AI Man Jack’s phone and SMS agents in Dallas–Fort Worth, with what was built, what is measured, and what still needs validation. No invented numbers.",
+   "title": "Case Studies | AI Man Jack",
+   "description": "Two real Dallas–Fort Worth deployments. Built, measured, validated. No invented numbers.",
    "canonical": "https://aimanjack.com/case-studies/",
    "hreflang": "en,x-default,zh,zh,zh",
    "h1": "Proof, as it becomes available.",
@@ -100,8 +100,8 @@
    "h1Count": 1
   },
   "/case-studies/ai-man-jack/": {
-   "title": "Case Study: AI Man Jack’s Own Demo Line | AI Man Jack",
-   "description": "Our own phone line is answered by the product. What the demo line does today, what is measured, what still needs validation, and why the numbers are not published yet.",
+   "title": "Case Study: Our Demo Line | AI Man Jack",
+   "description": "Our demo line runs the product. What it does, what is measured, what is still unverified.",
    "canonical": "https://aimanjack.com/case-studies/ai-man-jack/",
    "hreflang": "en,x-default,zh,zh,zh",
    "h1": "The demo line: our own front desk, run by the product.",
@@ -115,7 +115,7 @@
   },
   "/about/": {
    "title": "About Jack Qian and AI Man Jack LLC, Dallas | AI Man Jack",
-   "description": "AI Man Jack LLC is Jack Qian’s Dallas company. He installs AI receptionists for appointment businesses in DFW, handles setup and support himself, and teaches AI to local teams.",
+   "description": "AI Man Jack LLC is Jack Qian’s Dallas company for hands-on AI training in English or Chinese, plus practical AI receptionist and workflow services.",
    "canonical": "https://aimanjack.com/about/",
    "hreflang": "en,x-default,zh,zh,zh",
    "h1": "Built locally. Supported by a real person.",
@@ -132,7 +132,7 @@
    "description": "Three ways to reach AI Man Jack in Dallas: call the AI demo line at (469) 517-2968, email jack@aimanjack.com, or text (469) 425-4142. No form, no wait.",
    "canonical": "https://aimanjack.com/contact/",
    "hreflang": "en,x-default,zh,zh,zh",
-   "h1": "Talk to Jessy first, then to Jack.",
+   "h1": "Talk to our AI demo first, then to Jack.",
    "robots": "index, follow, max-image-preview:large, max-snippet:-1",
    "schemaTypes": "BreadcrumbList,ContactPage,ListItem,ProfessionalService",
    "ogImage": "https://aimanjack.com/img/og-receptionist.jpg",
@@ -144,34 +144,34 @@
   "/ai-training/": {
    "title": "AI Training for Dallas Teams, Hands-On | AI Man Jack",
    "description": "Hands-on AI training for Dallas teams, in English or Chinese. People leave with one working workflow for a task they already do. 5.0 on Google, 10 reviews.",
-   "canonical": "https://aimanjack.com/ai-training/",
+   "canonical": "https://aimanjack.com/",
    "hreflang": "en,x-default,zh,zh,zh",
    "h1": "Hands-on AI training for Dallas teams,  in English or Chinese",
-   "robots": "index, follow, max-image-preview:large, max-snippet:-1",
+   "robots": "noindex, follow",
    "schemaTypes": "AdministrativeArea,AggregateRating,Answer,City,Country,FAQPage,Offer,Organization,Person,PostalAddress,ProfessionalService,Question,Rating,Review,Service,State,WebSite",
    "ogImage": "https://aimanjack.com/img/og-training.jpg",
-   "smsLinks": 6,
+   "smsLinks": 4,
    "telDemo": 3,
    "ga4": true,
    "h1Count": 1
   },
   "/zh/": {
-   "title": "达拉斯华人商家的 AI 前台，接电话帮预约 | AI Man Jack",
-   "description": "忙着服务客人也不漏电话。AI 帮你接电话、答常见问题、查时间、直接预约，中英西三语。拨 (469) 517-2968 试一下。服务达拉斯—沃斯堡。",
+   "title": "达拉斯团队 AI 实战培训 | AI Man Jack",
+   "description": "面向达拉斯团队的动手 AI 培训，中英文皆可。每个人带一个自己每周都在做的任务来，带着一条能跑的工作流走。Google 10 条评价，5.0 分。",
    "canonical": "https://aimanjack.com/zh/",
    "hreflang": "en,en,en,x-default,zh",
-   "h1": "忙着服务客人，也不用漏电话。",
+   "h1": "给达拉斯团队的 AI 实战培训， 中文或英文都行",
    "robots": "index, follow, max-image-preview:large, max-snippet:-1",
-   "schemaTypes": "AdministrativeArea,Answer,BusinessAudience,City,Country,FAQPage,Offer,PostalAddress,ProfessionalService,Question,Service,State,WebSite",
-   "ogImage": "https://aimanjack.com/img/og-receptionist-zh.jpg",
-   "smsLinks": 1,
-   "telDemo": 9,
+   "schemaTypes": "AdministrativeArea,AggregateRating,Answer,City,Country,FAQPage,Offer,Organization,Person,PostalAddress,ProfessionalService,Question,Rating,Review,Service,State,WebSite",
+   "ogImage": "https://aimanjack.com/img/og-training-zh.jpg",
+   "smsLinks": 4,
+   "telDemo": 3,
    "ga4": true,
    "h1Count": 1
   },
   "/zh/ai-receptionist/": {
-   "title": "接电话、约时间的 AI 前台 | AI Man Jack",
-   "description": "AI Man Jack 的 AI 前台怎么运作：只回答确认过的问题、记下来电信息、完成预约，不该答的时候交接给人。支持英语、西班牙语和中文。",
+   "title": "AI 前台服务 | AI Man Jack",
+   "description": "AI 前台怎么运作：只答确认过的、记下来电信息、完成预约、不该答时交接。英语、西语、中文。",
    "canonical": "https://aimanjack.com/zh/ai-receptionist/",
    "hreflang": "en,en,en,x-default,zh",
    "h1": "会接电话、会预约，也知道什么时候该找人的 AI 前台。",
@@ -198,8 +198,8 @@
    "h1Count": 1
   },
   "/zh/industries/": {
-   "title": "按行业看 AI 前台：美发、医美、诊所 | AI Man Jack",
-   "description": "AI 前台怎么接达拉斯—沃斯堡美发美容、医美 spa、诊所、上门服务和维修商家的电话：真实来电场景、示例对话，以及各行业需要准备什么。",
+   "title": "按行业看 AI 前台 | AI Man Jack",
+   "description": "AI 前台怎么接达拉斯—沃斯堡美发、医美、诊所、上门和维修的来电：真实场景、示例对话、准备清单。",
    "canonical": "https://aimanjack.com/zh/industries/",
    "hreflang": "en,en,en,x-default,zh",
    "h1": "为靠预约吃饭的生意而做。",
@@ -212,8 +212,8 @@
    "h1Count": 1
   },
   "/zh/industries/salons/": {
-   "title": "DFW 美发店和理发店的 AI 前台 | AI Man Jack",
-   "description": "面向达拉斯—沃斯堡美发、美甲、美睫店和理发店的 AI 前台：只报确认过的价格、约到对的发型师、处理改期，该交接的时候交接。",
+   "title": "DFW 美发和理发店的 AI 前台 | AI Man Jack",
+   "description": "面向达拉斯—沃斯堡美发、美甲、美睫和理发店：只报确认过的价格，约到对的发型师，处理改期，该交接就交接。",
    "canonical": "https://aimanjack.com/zh/industries/salons/",
    "hreflang": "en,en,en,x-default,zh",
    "h1": "你手还在客人头发上，电话响了。",
@@ -226,8 +226,8 @@
    "h1Count": 1
   },
   "/zh/integrations/": {
-   "title": "对接及当前状态 | AI Man Jack",
-   "description": "AI 前台现在能接哪些预约系统、日历、电话设置和 CRM，分别标为已支持、测试中或请联系确认。没测过的，不暗示能用。",
+   "title": "对接与状态 | AI Man Jack",
+   "description": "AI 前台已接的预约系统、日历、电话设置和 CRM：分别标为已支持、测试中或咨询确认。没测过的，不写。",
    "canonical": "https://aimanjack.com/zh/integrations/",
    "hreflang": "en,en,en,x-default,zh",
    "h1": "接得上你已经在用的工具。",
@@ -240,8 +240,8 @@
    "h1Count": 1
   },
   "/zh/case-studies/": {
-   "title": "案例：只写测过的，不编 | AI Man Jack",
-   "description": "AI Man Jack 在达拉斯—沃斯堡的两个真实项目：电话 agent 和短信 agent，写清楚做了什么、在测什么、还有什么没验证。不编数字。",
+   "title": "案例 | AI Man Jack",
+   "description": "达拉斯—沃斯堡两个真实项目：电话和短信 agent。做了什么、在测什么、不编数字。",
    "canonical": "https://aimanjack.com/zh/case-studies/",
    "hreflang": "en,en,en,x-default,zh",
    "h1": "证据，有多少给多少。",
@@ -254,8 +254,8 @@
    "h1Count": 1
   },
   "/zh/case-studies/ai-man-jack/": {
-   "title": "案例：AI Man Jack 自己的演示线 | AI Man Jack",
-   "description": "我们自己的电话就由这个产品来接。演示线现在能做什么、在测什么、还有什么没验证，以及为什么数字还没发。",
+   "title": "案例：我们的演示线 | AI Man Jack",
+   "description": "演示线运行我们的产品。能做什么、在测什么、还没验证的，实话实说。",
    "canonical": "https://aimanjack.com/zh/case-studies/ai-man-jack/",
    "hreflang": "en,en,en,x-default,zh",
    "h1": "演示线：我们自己的前台，由产品来接。",
@@ -269,7 +269,7 @@
   },
   "/zh/about/": {
    "title": "关于 Jack Qian 和 AI Man Jack LLC | AI Man Jack",
-   "description": "AI Man Jack LLC 是 Jack Qian 在达拉斯的公司。他为 DFW 的预约制商家安装 AI 前台，安装和支持都亲自负责，也给本地团队做 AI 培训。",
+   "description": "AI Man Jack LLC 是 Jack Qian 在达拉斯的公司，主要提供中英文 AI 实战培训，也为商家安装 AI 前台和实用工作流。",
    "canonical": "https://aimanjack.com/zh/about/",
    "hreflang": "en,en,en,x-default,zh",
    "h1": "本地搭建，真人负责。",
@@ -286,7 +286,7 @@
    "description": "联系达拉斯 AI Man Jack 的三种方式：拨打 AI 演示线 (469) 517-2968，发邮件到 jack@aimanjack.com，或发短信到 (469) 425-4142。不用填表，不用等。",
    "canonical": "https://aimanjack.com/zh/contact/",
    "hreflang": "en,en,en,x-default,zh",
-   "h1": "先跟 Jessy 聊，再跟 Jack 聊。",
+   "h1": "先和 AI 演示聊，再和 Jack 聊。",
    "robots": "index, follow, max-image-preview:large, max-snippet:-1",
    "schemaTypes": "BreadcrumbList,ContactPage,ListItem,ProfessionalService",
    "ogImage": "https://aimanjack.com/img/og-receptionist-zh.jpg",
@@ -298,13 +298,13 @@
   "/zh/ai-training/": {
    "title": "达拉斯团队 AI 实战培训 | AI Man Jack",
    "description": "面向达拉斯团队的动手 AI 培训，中英文皆可。每个人带一个自己每周都在做的任务来，带着一条能跑的工作流走。Google 10 条评价，5.0 分。",
-   "canonical": "https://aimanjack.com/zh/ai-training/",
+   "canonical": "https://aimanjack.com/zh/",
    "hreflang": "en,en,en,x-default,zh",
-   "h1": "给达拉斯团队的动手 AI 培训， 中文或英文都行",
-   "robots": "index, follow, max-image-preview:large, max-snippet:-1",
+   "h1": "给达拉斯团队的 AI 实战培训， 中文或英文都行",
+   "robots": "noindex, follow",
    "schemaTypes": "AdministrativeArea,AggregateRating,Answer,City,Country,FAQPage,Offer,Organization,Person,PostalAddress,ProfessionalService,Question,Rating,Review,Service,State,WebSite",
    "ogImage": "https://aimanjack.com/img/og-training-zh.jpg",
-   "smsLinks": 6,
+   "smsLinks": 4,
    "telDemo": 3,
    "ga4": true,
    "h1Count": 1

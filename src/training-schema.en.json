@@ -113,7 +113,7 @@
      "@type": "Service",
      "name": "Hands-On AI Training for Teams",
      "url": "https://aimanjack.com/ai-training/#formats",
-     "description": "In-person AI training for Dallas–Fort Worth teams, in English or Chinese. Three formats: a 90-minute lunch-and-learn, a half-day hands-on workshop, and a multi-week program. Each participant works on a task they already do and leaves with a working workflow and a verification checklist. Priced per engagement after a 30-minute call."
+     "description": "In-person AI training for Dallas–Fort Worth teams, in English or Chinese. Three formats: a 90-minute lunch-and-learn, a half-day hands-on workshop, and a multi-week program. Each participant works on a task they already do and leaves with a working workflow and a verification checklist. Half-day workshops from $1,500 for up to 10 people; 90-minute sessions and multi-week programs quoted after a 30-minute call."
     },
     "priceCurrency": "USD"
    },
@@ -280,7 +280,7 @@
     "name": "How much does AI training for a team cost?",
     "acceptedAnswer": {
      "@type": "Answer",
-     "text": "It is priced per engagement, by format and team size. Text TRAINING with your company name to (469) 425-4142 or email jack@aimanjack.com; after a 30-minute call you will have a recommended format and a quote."
+     "text": "Half-day workshops start at $1,500 for teams of up to 10, at your office. 90-minute lunch-and-learns and multi-week programs are quoted by team size. Book a 30-minute call; you will have a recommended format and a written quote within 24 hours, with no add-ons."
     }
    },
    {

@@ -2,7 +2,6 @@
 // Only the chrome changed, plus the product cross-promo text/offer, which had to match the new pricing.
 import { readFileSync } from 'node:fs';
 import { SITE, EMAIL, SMS_TEL, SMS_DISPLAY } from '../config.mjs';
-import { couponCta } from '../coupon.mjs';
 
 const schema = (lang, home = false) => {
   let g = JSON.parse(readFileSync(new URL(`../training-schema.${lang}.json`, import.meta.url), 'utf8'));
@@ -35,8 +34,10 @@ const en = {
 <div class="kicker">AI training · Dallas–Fort Worth · English or Chinese</div>
 <h1>Hands-on AI training for Dallas teams, <em>in English or Chinese</em></h1>
 <p class="sub">Each person brings one task they already do every week and leaves with a working workflow for it, plus the habit of checking the output before it goes out. Taught in person, at your office.</p>
-<div class="cta-row"><a class="btn btn-primary" href="${SMS}" data-event="sms_click" data-pos="training-hero">Text TRAINING to ${SMS_DISPLAY}</a><a class="btn btn-ghost" href="/book/" data-event="book_demo_click" data-pos="training-hero">Book a 30-minute call</a></div>
-<ul class="trust-strip"><li>5 community talks, 50+ people each</li><li>5.0 across 10 Google reviews</li><li>Taught in person across Dallas–Fort Worth</li></ul>
+<p class="sub price-anchor"><strong>Half-day workshops start at $1,500</strong> for teams of up to 10, taught at your office on your team&rsquo;s real work. 90-minute sessions and multi-week programs are quoted after one 30-minute call. Written quote within 24 hours, no add-ons.</p>
+<div class="cta-row"><a class="btn btn-primary" href="/book/" data-event="book_demo_click" data-pos="training-hero">Book a 30-minute call &mdash; quote in 24 hours</a></div>
+<p class="microcopy">Prefer to text? Send TRAINING to <a href="${SMS}" data-event="sms_click" data-pos="training-hero">${SMS_DISPLAY}</a></p>
+<ul class="trust-strip"><li>Built for Dallas businesses, not hobbyists: every session runs on your team&rsquo;s actual tasks, in your own tools</li><li>Next open session: Clinic AI Front Desk Workshop, Dallas, Sept 24</li><li>Rated 5.0 by the 10 people who attended our first workshops</li></ul>
 </div></div></section>
 <div class="wrap">
 <p class="lead" style="margin-top:44px">AI Man Jack is Jack Qian&rsquo;s Dallas, Texas practice: hands-on AI training for teams, and a done-for-you <a href="/ai-receptionist/">AI receptionist</a> for appointment businesses.</p>
@@ -53,11 +54,11 @@ const en = {
 <p class="section-note">Two weeks later we ask whether the workflow was tested, whether the result was accurate enough to use, and whether the task should continue, change, or stop. A small documented workflow that survives real use is the outcome &mdash; not a room full of people who enjoyed the demonstration.</p></section>
 <section class="section" id="formats"><div class="kicker">Formats</div><h2>Three ways to run it</h2><p class="lead">All three follow the same five parts. What changes is how much of it each person does with their own hands.</p>
 <div class="tiers">
-<div class="price-card"><div class="big">90 min <small>lunch-and-learn</small></div><div class="plus">One task &middot; one live build &middot; one checklist</div><ul><li>A live build on a task taken from your team, not a canned demo</li><li>The five-part instruction template everyone can reuse the same afternoon</li><li>A one-page verification checklist to take back to their desk</li></ul><a class="btn btn-ghost" href="${SMS}" data-event="sms_click" data-pos="training-format">Text about this format</a><p class="microcopy">Good for a first look across a whole department.</p></div>
-<div class="price-card"><div class="big">Half day <small>hands-on workshop</small></div><div class="plus">Everyone builds &middot; bring laptops and one real task each</div><ul><li>Each person leaves with a working workflow for a task they already do</li><li>A deliberately flawed output to catch, so verification becomes a habit</li><li>A pilot plan with an owner, a tool, and a first test date</li></ul><a class="btn btn-primary" href="/book/" data-event="book_demo_click" data-pos="training-format">Book a 30-minute call</a><p class="microcopy">This is the format the Google reviews below are about.</p></div>
-<div class="price-card"><div class="big">Multi-week <small>program</small></div><div class="plus">For a team that wants the workflows to stick</div><ul><li>Weekly sessions built on the team&rsquo;s own tasks, one workflow at a time</li><li>Review of what actually ran between sessions, and what broke</li><li>A written playbook the team keeps after I leave</li></ul><a class="btn btn-ghost" href="${SMS}" data-event="sms_click" data-pos="training-format">Text about this format</a><p class="microcopy">Scoped after the half-day, once we know which tasks are worth it.</p></div>
+<div class="price-card"><div class="big">90 min <small>lunch-and-learn</small></div><div class="plus">One task &middot; one live build &middot; one checklist</div><ul><li>A live build on a task taken from your team, not a canned demo</li><li>The five-part instruction template everyone can reuse the same afternoon</li><li>A one-page verification checklist to take back to their desk</li></ul><a class="btn btn-primary" href="/book/" data-event="book_demo_click" data-pos="training-format">Get a quote for this format</a><p class="microcopy">Good for a first look across a whole department.</p></div>
+<div class="price-card"><div class="big">Half day <small>hands-on workshop</small></div><div class="plus">Everyone builds &middot; bring laptops and one real task each</div><div class="plus price-line"><strong>From $1,500</strong> &middot; up to 10 people &middot; at your office</div><ul><li>Each person leaves with a working workflow for a task they already do</li><li>A deliberately flawed output to catch, so verification becomes a habit</li><li>A pilot plan with an owner, a tool, and a first test date</li></ul><a class="btn btn-primary" href="/book/" data-event="book_demo_click" data-pos="training-format">Get a quote for this format</a><p class="microcopy">This is the format the Google reviews below are about.</p></div>
+<div class="price-card"><div class="big">Multi-week <small>program</small></div><div class="plus">For a team that wants the workflows to stick</div><ul><li>Weekly sessions built on the team&rsquo;s own tasks, one workflow at a time</li><li>Review of what actually ran between sessions, and what broke</li><li>A written playbook the team keeps after I leave</li></ul><a class="btn btn-primary" href="/book/" data-event="book_demo_click" data-pos="training-format">Get a quote for this format</a><p class="microcopy">Scoped after the half-day, once we know which tasks are worth it.</p></div>
 </div>
-<p class="section-note">Priced per engagement, by format and team size. Tell me how many people and what they do; you&rsquo;ll have a recommended format and a quote after a 30-minute call.</p></section>
+<p class="section-note">Half-day workshops start at $1,500 for up to 10 people. 90-minute sessions and multi-week programs are quoted by team size. Book a 30-minute call; you&rsquo;ll have a recommended format and a written quote within 24 hours.</p></section>
 <section class="section" id="testimonials"><div class="kicker">Reviewed on Google</div><h2>What attendees say</h2><p class="lead">5.0 across 10 Google reviews. All ten are from people who came to one of the community AI workshops in Dallas.</p>
 <div class="quote-grid">
 <div class="quote"><div class="stars" aria-hidden="true">★★★★★</div><p>&ldquo;I had such a great experience at this AI workshop. It was practical, inspiring, and genuinely fun. Jack, the host, did an amazing job of breaking down complex AI concepts in a way that was easy to understand…&rdquo;</p><b>emily xu</b><span>Google review · Dallas AI workshop</span></div>
@@ -75,16 +76,16 @@ const en = {
 <details><summary>What do people actually build during the training?</summary><div class="faq-a"><p>One working workflow for a task they already do every week &mdash; a meeting brief from approved notes, a first-draft customer reply, a weekly report pulled from a spreadsheet, a research summary on an account. It runs by the end of the session, and each person leaves with a checklist for verifying the output before it goes out.</p></div></details>
 <details><summary>Is the training in English or Chinese?</summary><div class="faq-a"><p>Either. The community series in Dallas in 2026 ran in Chinese; company sessions run in whichever language the room works in, and the materials come in both.</p></div></details>
 <details><summary>Which AI tools does the training use?</summary><div class="faq-a"><p>Whatever your company has already approved &mdash; ChatGPT, Claude, Gemini, Copilot. The method is the same across tools. The first thing covered is which data may go into a tool and which may not.</p></div></details>
-<details><summary>How much does AI training for a team cost?</summary><div class="faq-a"><p>It&rsquo;s priced per engagement, by format and team size. Text TRAINING with your company name to ${SMS_DISPLAY}, or email <a href="mailto:${EMAIL}">${EMAIL}</a>. After a 30-minute call you&rsquo;ll have a recommended format and a quote.</p></div></details>
+<details><summary>How much does AI training for a team cost?</summary><div class="faq-a"><p>Half-day workshops start at $1,500 for teams of up to 10, at your office. 90-minute lunch-and-learns and multi-week programs are quoted by team size. <a href="/book/">Book a 30-minute call</a>; you&rsquo;ll have a recommended format and a written quote within 24 hours, with no add-ons.</p></div></details>
 <details><summary>How do you know whether the training worked?</summary><div class="faq-a"><p>Two weeks after the session, we check whether the workflow was tested on real work, whether the result was accurate enough to use, where review took too long, and whether the task should continue, change, or stop. Attendance and satisfaction scores are not the measure.</p></div></details>
 <details><summary>Can the training be run at our office?</summary><div class="faq-a"><p>Yes. Sessions are in person anywhere in the Dallas&ndash;Fort Worth metroplex &mdash; Dallas, Fort Worth, Plano, Richardson, Frisco, McKinney, Arlington, and everywhere between. Remote on request.</p></div></details>
 <details><summary>Do you also build things?</summary><div class="faq-a"><p>Yes: a done-for-you AI receptionist and booking system for appointment businesses, on the <a href="/ai-receptionist/">AI receptionist page</a>. Training is the same person, the same method &mdash; just taught instead of installed.</p></div></details>
 </div></section>
 <section class="section" id="about"><h2>One method, two ways to get it</h2><div class="bio" style="margin-top:22px"><img src="/img/jack-portrait-256.webp" width="128" height="128" loading="lazy" decoding="async" alt="Jack Qian"><div class="who"><h3>Jack Qian</h3><p>I run community AI workshops and hands-on build events here in Dallas because useful AI education should be accessible, and I teach companies the same way. I also build the AI receptionist service for businesses that would rather have it installed than taught. In both cases the work starts with one real task and an honest answer about whether AI belongs there.</p></div></div></section>
 </div>
-<section class="section final-cta" id="start"><div class="wrap narrow center"><h2>Bring one task. Leave with it running.</h2><p class="lead">Text TRAINING with your company name, email Jack, or book a 30-minute call. You&rsquo;ll have a format and a quote by the end of it.</p>
-<div class="cta-row center"><a class="btn btn-primary btn-lg" href="/book/" data-event="book_demo_click" data-pos="training-final">Book a 30-minute call</a><a class="btn btn-secondary btn-lg" href="${MAIL}" data-event="email_click" data-pos="training-final">Email Jack about training</a></div></div></section>
-${couponCta('en')}`,
+<section class="section final-cta" id="start"><div class="wrap narrow center"><h2>Bring one task. Leave with it running.</h2><p class="lead">Book a 30-minute call. You&rsquo;ll have a recommended format and a written quote within 24 hours.</p>
+<div class="cta-row center"><a class="btn btn-primary btn-lg" href="/book/" data-event="book_demo_click" data-pos="training-final">Book a 30-minute call</a></div></div></section>
+`,
 };
 
 const zh = {
@@ -98,8 +99,10 @@ const zh = {
 <div class="kicker">AI 培训 · 达拉斯—沃斯堡 · 中文或英文</div>
 <h1>给达拉斯团队的 AI 实战培训，<em>中文或英文都行</em></h1>
 <p class="sub">不是带你把 AI 产品逛一遍。每个人带一个自己每周都在做的任务来，走的时候手里有一条能跑的工作流 &mdash; 还有一个习惯：结果发出去之前，先核一遍。面对面教，到你办公室。</p>
-<div class="cta-row"><a class="btn btn-primary" href="${SMS}" data-event="sms_click" data-pos="training-hero">发 TRAINING 到 ${SMS_DISPLAY}</a><a class="btn btn-ghost" href="/zh/book/" data-event="book_demo_click" data-pos="training-hero">预约 30 分钟通话</a></div>
-<ul class="trust-strip"><li>5 场社区讲座，每场 50+ 人</li><li>Google 10 条评价，5.0 分</li><li>达拉斯—沃斯堡面对面授课</li></ul>
+<p class="sub price-anchor"><strong>半天工作坊 $1,500 起</strong>，10 人以内团队，到你公司现场，用你们手头的真实工作来教。90 分钟版和多周项目在一次 30 分钟通话后报价，24 小时内给书面报价，没有附加费。</p>
+<div class="cta-row"><a class="btn btn-primary" href="/zh/book/" data-event="book_demo_click" data-pos="training-hero">预约 30 分钟通话，24 小时内报价</a></div>
+<p class="microcopy">想发短信？发 TRAINING 到 <a href="${SMS}" data-event="sms_click" data-pos="training-hero">${SMS_DISPLAY}</a></p>
+<ul class="trust-strip"><li>给 Dallas 的公司做的，不是给爱好者的：每一场都用你们团队的真实任务、在你们自己的工具里上</li><li>下一场公开课：9 月 24 日，Dallas 诊所 AI 前台工作坊</li><li>前几场工作坊的 10 位学员打分 5.0</li></ul>
 </div></div></section>
 <div class="wrap">
 <p class="lead" style="margin-top:44px">AI Man Jack 是 Jack Qian 在德州达拉斯经营的工作室：给团队做动手 AI 培训，也给预约制商家装全包的 <a href="/zh/ai-receptionist/">AI 前台</a>。</p>
@@ -116,11 +119,11 @@ const zh = {
 <p class="section-note">课后两周，我们去问：那条工作流有没有试过，结果够不够拿来用，这个任务该继续、该改还是该停。一条小小的、写成文档、又经得起实际使用的工作流，才是结果 &mdash; 不是一屋子看演示看得很开心的人。</p></section>
 <section class="section" id="formats"><div class="kicker">形式</div><h2>三种上法</h2><p class="lead">三种形式走的都是同样五步。区别在于，每个人有多少是自己动手做完的。</p>
 <div class="tiers">
-<div class="price-card"><div class="big">90 分钟 <small>午间分享</small></div><div class="plus">一个任务 &middot; 一次现场搭建 &middot; 一份清单</div><ul><li>拿你们团队的一个真实任务现场搭，不是提前准备好的 demo</li><li>五步交办说明的模板，当天下午就能用上</li><li>一页纸的核对清单，带回工位</li></ul><a class="btn btn-ghost" href="${SMS}" data-event="sms_click" data-pos="training-format">发短信问这种形式</a><p class="microcopy">适合整个部门先摸个底。</p></div>
-<div class="price-card"><div class="big">半天 <small>动手 workshop</small></div><div class="plus">每个人都动手 &middot; 带上电脑和一个真实任务</div><ul><li>每个人带着一条能跑的工作流走，对应自己已经在做的事</li><li>一个故意做错的结果等着被找出来，核对从此成习惯</li><li>一份试点计划：负责人、工具、第一次测试的日期</li></ul><a class="btn btn-primary" href="/zh/book/" data-event="book_demo_click" data-pos="training-format">预约 30 分钟通话</a><p class="microcopy">下面那些 Google 评价，说的就是这种形式。</p></div>
-<div class="price-card"><div class="big">多周 <small>项目制</small></div><div class="plus">给想让工作流真正留下来的团队</div><ul><li>每周一次，围绕团队自己的任务，一次搭一条工作流</li><li>复盘两次课之间真正跑起来的东西，以及哪里坏了</li><li>一份写好的 playbook，我走了之后团队自己留着用</li></ul><a class="btn btn-ghost" href="${SMS}" data-event="sms_click" data-pos="training-format">发短信问这种形式</a><p class="microcopy">先上半天场，知道哪些任务值得做，再定这个范围。</p></div>
+<div class="price-card"><div class="big">90 分钟 <small>午间分享</small></div><div class="plus">一个任务 &middot; 一次现场搭建 &middot; 一份清单</div><ul><li>拿你们团队的一个真实任务现场搭，不是提前准备好的 demo</li><li>五步交办说明的模板，当天下午就能用上</li><li>一页纸的核对清单，带回工位</li></ul><a class="btn btn-primary" href="/zh/book/" data-event="book_demo_click" data-pos="training-format">为这种形式询价</a><p class="microcopy">适合整个部门先摸个底。</p></div>
+<div class="price-card"><div class="big">半天 <small>动手 workshop</small></div><div class="plus">每个人都动手 &middot; 带上电脑和一个真实任务</div><div class="plus price-line"><strong>$1,500 起</strong> &middot; 10 人以内 &middot; 上门</div><ul><li>每个人带着一条能跑的工作流走，对应自己已经在做的事</li><li>一个故意做错的结果等着被找出来，核对从此成习惯</li><li>一份试点计划：负责人、工具、第一次测试的日期</li></ul><a class="btn btn-primary" href="/zh/book/" data-event="book_demo_click" data-pos="training-format">为这种形式询价</a><p class="microcopy">下面那些 Google 评价，说的就是这种形式。</p></div>
+<div class="price-card"><div class="big">多周 <small>项目制</small></div><div class="plus">给想让工作流真正留下来的团队</div><ul><li>每周一次，围绕团队自己的任务，一次搭一条工作流</li><li>复盘两次课之间真正跑起来的东西，以及哪里坏了</li><li>一份写好的 playbook，我走了之后团队自己留着用</li></ul><a class="btn btn-primary" href="/zh/book/" data-event="book_demo_click" data-pos="training-format">为这种形式询价</a><p class="microcopy">先上半天场，知道哪些任务值得做，再定这个范围。</p></div>
 </div>
-<p class="section-note">按项目定价，看形式和人数。告诉我多少人、他们平时做什么，聊 30 分钟，你就会有一个推荐的形式和报价。</p></section>
+<p class="section-note">半天工作坊 $1,500 起，10 人以内。90 分钟版和多周项目按人数报价。预约 30 分钟通话，24 小时内给你推荐的形式和书面报价。</p></section>
 <section class="section" id="testimonials"><div class="kicker">Google 评价</div><h2>学员怎么说</h2><p class="lead">10 条 Google 评价，5.0 分。十条都来自参加过达拉斯社区 AI workshop 的人。原文是英文，在 Google 上。</p>
 <div class="quote-grid">
 <div class="quote"><div class="stars" aria-hidden="true">★★★★★</div><p>&ldquo;这次 AI workshop 我收获特别大。内容实用，也很有启发，而且是真的好玩。主讲 Jack 把复杂的 AI 概念拆得很清楚，听着一点不费劲……&rdquo;</p><b>emily xu</b><span>Google 评价 · 达拉斯 AI workshop</span></div>
@@ -138,16 +141,16 @@ const zh = {
 <details><summary>学员在培训里到底做出什么？</summary><div class="faq-a"><p>一条能跑的工作流，对应自己每周都在做的一件事 &mdash; 从批准过的笔记整理会议简报、客户回复的初稿、从表格里拉出来的周报、某个客户的调研摘要。课结束前它就已经在跑了，每个人还会带走一份核对清单，结果发出去之前先过一遍。</p></div></details>
 <details><summary>用中文还是英文？</summary><div class="faq-a"><p>都可以。2026 年达拉斯的社区系列是中文场；企业场用现场最顺的那种语言，材料两种语言都有。</p></div></details>
 <details><summary>培训用哪些 AI 工具？</summary><div class="faq-a"><p>你公司已经批准的那些 &mdash; ChatGPT、Claude、Gemini、Copilot 都行。方法跨工具通用。开头第一件事就是讲清楚：哪些数据可以放进工具，哪些不行。</p></div></details>
-<details><summary>团队 AI 培训多少钱？</summary><div class="faq-a"><p>按项目定价，看形式和人数。发 TRAINING 加公司名到 ${SMS_DISPLAY}，或者发邮件到 <a href="mailto:${EMAIL}">${EMAIL}</a>。聊 30 分钟，就会有一个推荐的形式和报价。</p></div></details>
+<details><summary>团队 AI 培训多少钱？</summary><div class="faq-a"><p>半天工作坊 $1,500 起，10 人以内，到你公司现场。90 分钟午间分享和多周项目按人数报价。<a href="/zh/book/">预约 30 分钟通话</a>，24 小时内给你推荐的形式和书面报价，没有附加费。</p></div></details>
 <details><summary>怎么知道培训有没有效果？</summary><div class="faq-a"><p>课后两周去看：那条工作流有没有拿真实工作试过、结果准不准、够不够拿来用、审核在哪一步花的时间太长，以及这个任务该继续、该改还是该停。出勤率和满意度不算数。</p></div></details>
 <details><summary>能到我们办公室来讲吗？</summary><div class="faq-a"><p>能。整个达拉斯&mdash;沃斯堡都会区都可以面对面 &mdash; Dallas、Fort Worth、Plano、Richardson、Frisco、McKinney、Arlington，中间的城市也都跑。有需要也可以远程。</p></div></details>
 <details><summary>你也帮人做东西吗？</summary><div class="faq-a"><p>做：给预约制商家的全包 AI 前台 + 预约系统，在<a href="/zh/ai-receptionist/">AI 前台页</a>。培训和产品是同一个人、同一套方法 &mdash; 一个是教给你，一个是装给你。</p></div></details>
 </div></section>
 <section class="section" id="about"><h2>一套方法，两种拿法</h2><div class="bio" style="margin-top:22px"><img src="/img/jack-portrait-256.webp" width="128" height="128" loading="lazy" decoding="async" alt="Jack Qian"><div class="who"><h3>Jack Qian</h3><p>我在达拉斯办社区 AI 工作坊和动手活动，因为有用的 AI 教育应该人人够得着；给公司上课，也是同一个教法。我也给不想学、只想装好的商家做 AI 前台服务。两件事都一样：从一个真实的任务开始，再诚实地判断 &mdash; AI 到底该不该用在这儿。</p></div></div></section>
 </div>
-<section class="section final-cta" id="start"><div class="wrap narrow center"><h2>带一个任务来，带着它跑起来走</h2><p class="lead">发 TRAINING 加上公司名、给 Jack 发邮件，或者预约 30 分钟通话。聊完你就有形式和报价了。</p>
-<div class="cta-row center"><a class="btn btn-primary btn-lg" href="/zh/book/" data-event="book_demo_click" data-pos="training-final">预约 30 分钟通话</a><a class="btn btn-secondary btn-lg" href="${MAIL}" data-event="email_click" data-pos="training-final">给 Jack 发邮件问培训</a></div></div></section>
-${couponCta('zh')}`,
+<section class="section final-cta" id="start"><div class="wrap narrow center"><h2>带一个任务来，带着它跑起来走</h2><p class="lead">预约 30 分钟通话，24 小时内给你推荐的形式和书面报价。</p>
+<div class="cta-row center"><a class="btn btn-primary btn-lg" href="/zh/book/" data-event="book_demo_click" data-pos="training-final">预约 30 分钟通话</a></div></div></section>
+`,
 };
 
 export const trainingPage = (lang, home = false) => ({ ...(lang === 'zh' ? zh : en), jsonld: schema(lang, home) });
