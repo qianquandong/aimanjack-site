@@ -40,7 +40,7 @@ function footer(lang) {
   return `<footer class="site-footer"><div class="wrap">
 <div class="foot-grid">
 ${col(f.product, [[L(lang, '/') + '#curriculum', f.training], [L(lang, '/ai-receptionist/'), f.product_page], [L(lang, '/pricing/'), f.pricing], [L(lang, '/integrations/'), f.integrations], [L(lang, '/case-studies/'), f.cases]])}
-${col(f.solutions, [[L(lang, '/industries/salons/'), f.salon], [L(lang, '/industries/'), f.local], [L(lang, '/ai-training/'), f.training]])}
+${col(f.solutions, [[L(lang, '/industries/salons/'), f.salon], [L(lang, '/industries/'), f.local], [L(lang, '/ai-training/'), f.training], [L(lang, '/tools/missed-call-calculator/'), f.calc]])}
 ${col(f.company, [[L(lang, '/about/'), f.about], [L(lang, '/blog/'), f.blog], [L(lang, '/contact/'), f.contact], [L(lang, '/privacy'), f.privacy], [L(lang, '/terms'), f.terms], [L(lang, '/sms-terms'), f.sms]])}
 <div><h2 class="foot-h">${f.location}</h2><p class="foot-loc">${f.loc}</p><p class="foot-serves">${f.serves}</p></div>
 </div>

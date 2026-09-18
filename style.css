@@ -466,3 +466,19 @@ html[lang=zh] .eyebrow{letter-spacing:.06em}
 .post-card .h3{margin:6px 0 8px;font-size:20px}
 .post-card p{font-size:15.5px}
 .post-card .post-meta{margin:0}
+
+/* ── Missed-call calculator (src/pages/tools.mjs) ────────────────────── */
+.calc-grid{display:grid;grid-template-columns:minmax(0,420px) minmax(0,1fr);gap:40px;align-items:start}
+.calc-form{max-width:none}
+.calc-form small{font-weight:400;color:var(--muted);font-size:13px;line-height:1.4}
+.calc-form input{max-width:220px}
+.calc-out{position:sticky;top:84px}
+.calc-results{display:grid;gap:0;margin:0 0 8px}
+.calc-row{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:12px 0;border-bottom:1px solid var(--line)}
+.calc-row dt{color:var(--muted);font-size:15.5px}
+.calc-row dd{margin:0;font-weight:600;font-size:20px;font-variant-numeric:tabular-nums}
+.calc-key dd{font-size:32px;color:var(--accent-ink)}
+.calc-out .callout{margin:20px 0 12px}
+.calc-compare{font-size:14.5px}
+.calc-next{margin-top:12px;font-size:15.5px}
+@media (max-width:860px){.calc-grid{grid-template-columns:1fr}.calc-out{position:static}}
