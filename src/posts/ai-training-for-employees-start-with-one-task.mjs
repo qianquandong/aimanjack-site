@@ -59,7 +59,7 @@ export const post = {
       ['Is the training available in Chinese?', 'Yes. Sessions run in English or Chinese, in person anywhere in the Dallas–Fort Worth metroplex (Dallas, Fort Worth, Plano, Richardson, Frisco, McKinney, Arlington and the rest of the metroplex).'],
     ],
     pillar: ['hands-on AI training for Dallas teams', '/ai-training/'],
-    related: [['How the AI receptionist works', '/ai-receptionist/'], ['Pricing and formats', '/pricing/'], ['Case studies', '/case-studies/']],
+    related: [['How the AI receptionist works', '/ai-receptionist/'], ['Pricing and formats', '/pricing/'], ['Case studies', '/case-studies/'], ['How much do missed calls cost?', '/blog/how-much-do-missed-calls-cost/']],
     sources: [],
   },
   zh: {
@@ -116,7 +116,7 @@ export const post = {
       ['有中文培训吗？', '有。培训可以用英文或中文，在达拉斯—沃斯堡都会区（达拉斯、沃斯堡、Plano、Richardson、Frisco、McKinney、Arlington 及周边地区）上门进行。'],
     ],
     pillar: ['达拉斯团队的动手 AI 培训', '/ai-training/'],
-    related: [['AI 前台怎么运作', '/ai-receptionist/'], ['价格与形式', '/pricing/'], ['案例', '/case-studies/']],
+    related: [['AI 前台怎么运作', '/ai-receptionist/'], ['价格与形式', '/pricing/'], ['案例', '/case-studies/'], ['漏接电话损失多少？', '/blog/how-much-do-missed-calls-cost/']],
     sources: [],
   },
 };
