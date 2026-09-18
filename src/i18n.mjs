@@ -4,10 +4,10 @@ export const T = {
   en: {
     htmlLang: 'en', ogLocale: 'en_US', otherLang: '中文', otherLangCode: 'zh',
     skip: 'Skip to content', menu: 'Menu', close: 'Close',
-    nav: { training: 'AI Training', workshops: 'Workshops', teams: 'Teams', cases: 'Case Studies', resources: 'Resources', about: 'About' , how: 'How it works', useCases: 'Use cases', pricing: 'Pricing' },   // last three: legacy pages only
+    nav: { training: 'Training', useCasesNav: 'Use Cases', tools: 'Free Tools', templates: 'Templates', resources: 'Resources', about: 'About', how: 'How it works', useCases: 'Use cases', pricing: 'Pricing' },   // last three: legacy pages only
     cta: {
-      plan: 'Plan a Team Workshop',
-      how: 'See How Training Works',
+      plan: 'Book a Workshop',
+      how: 'See How Training Works', tools: 'Explore Free Tools',
       email: 'Email Jack',
       book: 'Book a 30-minute call',
       text: 'Text Jack',
@@ -20,10 +20,11 @@ export const T = {
       live: 'Live call', role: 'AI demo · 24/7', customer: 'Customer', ai: 'AI', booked: 'Appointment booked',
       example: 'Example conversation',
     },
-    sticky: 'Plan a Team Workshop',
+    sticky: 'Book a Workshop',
     footer: {
-      training: 'AI Training', resources: 'Resources', company: 'Company', location: 'Location',
-      corporate: 'Corporate AI Training', formats: 'Workshop formats', teams: 'Who it’s for', method: 'How training works',
+      product: 'Product', useCases: 'Use Cases', resources: 'Resources', company: 'Company',
+      training: 'Training', tools: 'Free Tools', templates: 'Templates', workflows: 'AI Workflows',
+      sales: 'Sales', marketing: 'Marketing', operations: 'Operations', leadership: 'Leadership',
       guides: 'AI training guides', cases: 'Case studies', newsletter: 'Real Agent Use Cases ↗', integrations: 'Integrations',
       about: 'About Jack', contact: 'Contact', book: 'Book a workshop', privacy: 'Privacy', terms: 'Terms', sms: 'SMS terms',
       loc: 'Dallas–Fort Worth, Texas', serves: 'Onsite across Dallas, Fort Worth, Plano, Richardson, Frisco, McKinney and Arlington. Remote sessions anywhere.',
@@ -34,10 +35,10 @@ export const T = {
   zh: {
     htmlLang: 'zh', ogLocale: 'zh_CN', otherLang: 'EN', otherLangCode: 'en',
     skip: '跳到正文', menu: '菜单', close: '关闭',
-    nav: { training: 'AI 培训', workshops: '工作坊', teams: '团队场景', cases: '案例', resources: '资源', about: '关于' , how: '怎么运作', useCases: '适用行业', pricing: '价格' },
+    nav: { training: '培训', useCasesNav: '应用场景', tools: '免费工具', templates: '模板', resources: '资源', about: '关于', how: '怎么运作', useCases: '适用行业', pricing: '价格' },
     cta: {
-      plan: '聊聊团队培训',
-      how: '看看培训怎么上',
+      plan: '预约工作坊',
+      how: '看看培训怎么上', tools: '看看免费工具',
       email: '给 Jack 发邮件',
       book: '预约 30 分钟通话',
       text: '给 Jack 发短信',
@@ -49,10 +50,11 @@ export const T = {
       live: '通话中', role: 'AI 演示 · 24 小时', customer: '顾客', ai: 'AI', booked: '预约已确认',
       example: '示例对话',
     },
-    sticky: '聊聊团队培训',
+    sticky: '预约工作坊',
     footer: {
-      training: 'AI 培训', resources: '资源', company: '公司', location: '所在地',
-      corporate: '企业 AI 培训', formats: '工作坊形式', teams: '适合哪些团队', method: '培训怎么上',
+      product: '产品', useCases: '应用场景', resources: '资源', company: '公司',
+      training: '培训', tools: '免费工具', templates: '模板', workflows: 'AI 工作流',
+      sales: '销售', marketing: '市场', operations: '运营', leadership: '管理层',
       guides: 'AI 培训指南', cases: '案例', newsletter: 'Real Agent Use Cases ↗', integrations: '对接',
       about: '关于 Jack', contact: '联系', book: '预约工作坊', privacy: '隐私', terms: '服务条款', sms: '短信条款',
       loc: '德州达拉斯—沃斯堡', serves: 'Dallas、Fort Worth、Plano、Richardson、Frisco、McKinney、Arlington 均可上门；远程不限地区。',

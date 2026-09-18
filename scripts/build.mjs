@@ -6,7 +6,7 @@
 import { readdirSync, mkdirSync, writeFileSync, readFileSync, existsSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { render, pageOf } from '../src/layout.mjs';
+import { render, pageOf, langsOf } from '../src/layout.mjs';
 import { zhPath, SITE } from '../src/config.mjs';
 import { llms } from '../src/llms.mjs';
 
@@ -24,7 +24,7 @@ const urls = [];
 for (const file of readdirSync(join(ROOT, 'src/pages')).filter((f) => f.endsWith('.mjs')).sort()) {
   const { pages } = await import(`../src/pages/${file}`);
   for (const p of pages) {
-    for (const lang of ['en', 'zh']) {
+    for (const lang of langsOf(p)) {
       const page = pageOf(p, lang);
       const langPath = lang === 'zh' ? zhPath(p.path) : p.path;
       const rel = outFile(langPath).replace(/^\//, ''), html = render(page, lang), loc = SITE + langPath;

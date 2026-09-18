@@ -17,14 +17,18 @@ Key facts:
 
 ## Pages
 
-- [Home](${SITE}/): who AI Man Jack trains, what a team can do after training, formats, proof, FAQ
+- [Home](${SITE}/): what AI Man Jack helps teams do, entry points to tools, use cases, workflows and training
 - [Corporate AI training](${SITE}/ai-training/): the five-part curriculum, who it is for, formats and pricing, Google reviews, FAQ
+- [Free AI tools](${SITE}/tools/): the AI Readiness Assessment — 10 questions, deterministic score across people, usage, processes, knowledge, tools, governance, leadership and measurement; no email required
+- [AI use cases by team](${SITE}/use-cases/): sales, marketing, operations, leadership
+- [AI workflows](${SITE}/workflows/): step-by-step workflows, each with the prompt, an illustrative example, a human review checklist and when not to use it
+- [AI templates](${SITE}/templates/): copy-and-paste prompts and worksheets, including the four-question AI Use Case Discovery Worksheet
 - [Resources](${SITE}/blog/): field notes on training employees to use AI and on AI workflows
 - [About](${SITE}/about/): Jack Qian and ${LEGAL_NAME}
 - [Book a 30-minute call](${SITE}/book/): choose a US Central time to plan a team workshop
 - [Contact](${SITE}/contact/): book, email or text
 
-Chinese versions of every page live under ${SITE}/zh/ (for example ${SITE}/zh/ai-training/).
+Chinese versions of the home, training, resources, about, contact and booking pages live under ${SITE}/zh/. Tools, use cases, workflows and templates are English only.
 
 ## Optional
 

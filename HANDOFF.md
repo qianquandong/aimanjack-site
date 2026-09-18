@@ -12,6 +12,8 @@
 > - `[VERIFY]`：当前 HANDOFF 没有足够证据证明已完成，上线后必须核实。
 > - `[LEGACY]`：源码保留，但不属于当前对外业务和 SEO 主题。
 
+> **2026-09-18 晚：第二份 PRD（Frontend + SEO/GEO + Free Tools，"look like Notion, grow like Ahrefs"）已落地 MVP。** 先读 `docs/site-audit.md`（架构、与上午 PRD 的 11 处冲突及取舍）、`docs/implementation-report.md`（做了什么、已知局限、下一批 10 页）、`docs/analytics-events.md`。要点：CTA 改成 **Book a Workshop**；导航 = Training · Use Cases · Free Tools · Templates · Resources · About，每项都是独立页面；首页重建；新增英文资源库 `/tools/` `/use-cases/` `/workflows/` `/templates/`（内容是 `src/content/*.mjs` 里的数据对象，加一条 = 加一页）；`/tools/ai-readiness-assessment/` 上线；build 支持只有英文版的路由。下面第 1、1.1、5、8、9 节里关于导航、首页结构、CTA 文案、事件名的描述以这三份 docs 为准。
+
 ## 0. 当前状态（一句话）
 
 **P0 已完成并提交到本地 `production`（commit `3d692c9`），还没 push，还没 deploy。** 线上现在仍是 09-18 早上的旧版（首页 = 培训页 + AI 前台交叉推荐）。上线步骤见第 6 节，上线前检查清单见第 7 节。

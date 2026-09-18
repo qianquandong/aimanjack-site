@@ -36,10 +36,10 @@
 <a class="skip-link" href="#main">Skip to content</a>
 <header class="site-header"><div class="wrap head-row">
 <a class="brand" href="/" aria-label="AI Man Jack">AI Man <span>Jack</span></a>
-<nav class="nav" aria-label="Primary"><a href="/ai-training/">AI Training</a><a href="/ai-training/#formats">Workshops</a><a href="/ai-training/#teams">Teams</a><a href="/blog/">Resources</a><a href="/about/">About</a><a class="lang" href="/zh/book/" lang="zh" hreflang="zh" data-event="language_change">中文</a></nav>
+<nav class="nav" aria-label="Primary"><a href="/ai-training/">Training</a><a href="/use-cases/">Use Cases</a><a href="/tools/">Free Tools</a><a href="/templates/">Templates</a><a href="/blog/">Resources</a><a href="/about/">About</a><a class="lang" href="/zh/book/" lang="zh" hreflang="zh" data-event="language_change">中文</a></nav>
 <details class="menu"><summary aria-label="Menu"><span class="menu-icon" aria-hidden="true"></span><span class="menu-label">Menu</span></summary>
-<nav class="nav mobile-nav" aria-label="Primary, mobile"><a href="/ai-training/">AI Training</a><a href="/ai-training/#formats">Workshops</a><a href="/ai-training/#teams">Teams</a><a href="/blog/">Resources</a><a href="/about/">About</a><a class="lang" href="/zh/book/" lang="zh" hreflang="zh" data-event="language_change">中文</a></nav></details>
-<a class="btn btn-primary btn-sm head-call" href="/book/" data-event="workshop_cta_click" data-pos="header">Plan a Team Workshop</a>
+<nav class="nav mobile-nav" aria-label="Primary, mobile"><a href="/ai-training/">Training</a><a href="/use-cases/">Use Cases</a><a href="/tools/">Free Tools</a><a href="/templates/">Templates</a><a href="/blog/">Resources</a><a href="/about/">About</a><a class="lang" href="/zh/book/" lang="zh" hreflang="zh" data-event="language_change">中文</a></nav></details>
+<a class="btn btn-primary btn-sm head-call" href="/book/" data-event="workshop_cta_click" data-pos="header">Book a Workshop</a>
 </div></header>
 <main id="main">
 <div class="wrap"><nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="/">Home</a></li><li aria-current="page">Book a call</li></ol></nav></div><section class="page-hero"><div class="wrap narrow"><p class="eyebrow">Book a call</p><h1>Book a 30-minute call to plan your team’s workshop.</h1><p class="lead">Pick a day and a time. Jack calls you; you get a link to change or cancel.</p>
@@ -104,26 +104,29 @@ function manage(){api('GET','/v1/bookings/'+bookingId).then(function(b){booking=
   api('DELETE','/v1/bookings/'+bookingId).then(function(b){track('booking_cancel');done(b,S.s.cancelled,when)}).catch(function(e){msg(errText(e&&e.error))})})})
  }).catch(function(e){msg(errText(e&&e.error))})}
 function track(n){if(window.dataLayer)(function(){window.dataLayer.push(arguments)})('event',n,{page:location.pathname,language:S.lang})}
+var g=q.get('goal');if(g&&$('bk-goal'))$('bk-goal').value=g.slice(0,200);
 bookingId?manage():loadTimes();
 })();
 </script>
 </main>
 <footer class="site-footer"><div class="wrap">
 <div class="foot-grid">
-<div><h2 class="foot-h">AI Training</h2><ul><li><a href="/ai-training/">Corporate AI Training</a></li><li><a href="/ai-training/#formats">Workshop formats</a></li><li><a href="/ai-training/#teams">Who it’s for</a></li><li><a href="/ai-training/#curriculum">How training works</a></li></ul></div>
+<div><h2 class="foot-h">Product</h2><ul><li><a href="/ai-training/">Training</a></li><li><a href="/tools/">Free Tools</a></li><li><a href="/templates/">Templates</a></li><li><a href="/workflows/">AI Workflows</a></li></ul></div>
+<div><h2 class="foot-h">Use Cases</h2><ul><li><a href="/use-cases/sales/">Sales</a></li><li><a href="/use-cases/marketing/">Marketing</a></li><li><a href="/use-cases/operations/">Operations</a></li><li><a href="/use-cases/leadership/">Leadership</a></li></ul></div>
 <div><h2 class="foot-h">Resources</h2><ul><li><a href="/blog/">AI training guides</a></li><li><a href="https://realagentusecases.com/">Real Agent Use Cases ↗</a></li></ul></div>
 <div><h2 class="foot-h">Company</h2><ul><li><a href="/about/">About Jack</a></li><li><a href="/contact/">Contact</a></li><li><a href="/book/">Book a workshop</a></li><li><a href="/privacy">Privacy</a></li><li><a href="/terms">Terms</a></li><li><a href="/sms-terms">SMS terms</a></li></ul></div>
-<div><h2 class="foot-h">Location</h2><p class="foot-loc">Dallas–Fort Worth, Texas</p><p class="foot-serves">Onsite across Dallas, Fort Worth, Plano, Richardson, Frisco, McKinney and Arlington. Remote sessions anywhere.</p></div>
 </div>
+<p class="foot-serves">Dallas–Fort Worth, Texas · Onsite across Dallas, Fort Worth, Plano, Richardson, Frisco, McKinney and Arlington. Remote sessions anywhere.</p>
 <div class="foot-id"><span>© 2026 AI Man Jack LLC</span><a href="mailto:jack@aimanjack.com">jack@aimanjack.com</a><a href="sms:+14694254142" data-event="sms_training_click" data-pos="footer">(469) 425-4142</a></div>
 <p class="legal">By calling or texting (469) 425-4142, you agree to receive SMS messages from AI Man Jack, including an automated reply when we miss your call. Message frequency varies (typically one message per missed call). Message and data rates may apply. Reply STOP to opt out, HELP for help. See our <a href="/privacy">Privacy Policy</a> and <a href="/sms-terms">SMS Terms</a>.</p>
 </div></footer>
-<div class="sticky-call" id="sticky-cta" hidden><a href="/book/" data-event="workshop_cta_click" data-pos="sticky"><span>Plan a Team Workshop</span></a></div>
+<div class="sticky-call" id="sticky-cta" hidden><a href="/book/" data-event="workshop_cta_click" data-pos="sticky"><span>Book a Workshop</span></a></div>
 <script>
 (function(){var D=document;
 var desk=matchMedia('(hover:hover) and (pointer:fine)').matches&&navigator.maxTouchPoints===0;
 window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}
 function track(n,p){gtag('event',n,Object.assign({page:location.pathname,language:D.documentElement.lang,device:desk?'desktop':'mobile'},p||{}))}
+window.amjTrack=track;
 D.addEventListener('click',function(e){var l=e.target.closest('[data-event]');if(l)track(l.dataset.event,{cta_position:l.dataset.pos||''});
  var m=e.target.closest('.menu nav a');if(m)m.closest('details').open=false});
 var bar=D.getElementById('sticky-cta'),hero=D.getElementById('hero-cta');

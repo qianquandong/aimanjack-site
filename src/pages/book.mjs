@@ -85,6 +85,7 @@ function manage(){api('GET','/v1/bookings/'+bookingId).then(function(b){booking=
   api('DELETE','/v1/bookings/'+bookingId).then(function(b){track('booking_cancel');done(b,S.s.cancelled,when)}).catch(function(e){msg(errText(e&&e.error))})})})
  }).catch(function(e){msg(errText(e&&e.error))})}
 function track(n){if(window.dataLayer)(function(){window.dataLayer.push(arguments)})('event',n,{page:location.pathname,language:S.lang})}
+var g=q.get('goal');if(g&&$('bk-goal'))$('bk-goal').value=g.slice(0,200);
 bookingId?manage():loadTimes();
 })();
 </script>`;

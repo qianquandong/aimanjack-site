@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import { readdir, readFile } from 'node:fs/promises';
-import { render, pageOf } from '../src/layout.mjs';
+import { render, pageOf, langsOf } from '../src/layout.mjs';
 import { llms } from '../src/llms.mjs';
 
 async function allPages() {
@@ -9,7 +9,7 @@ async function allPages() {
   const out = [];
   for (const file of files) {
     const { pages } = await import(`../src/pages/${file}`);
-    for (const p of pages) for (const lang of ['en', 'zh']) { const page = pageOf(p, lang); out.push({ p, lang, page, html: render(page, lang) }); }
+    for (const p of pages) for (const lang of langsOf(p)) { const page = pageOf(p, lang); out.push({ p, lang, page, html: render(page, lang) }); }
   }
   return out;
 }
@@ -22,15 +22,16 @@ const ld = (html) => [...html.matchAll(/<script type="application\/ld\+json">([\
 const BANNED = [/AI receptionist/i, /Call our AI demo/i, /missed[- ]call calculator/i, /\$199/, /\$299/, /\$599/, /appointment businesses/i, /AI 前台/, /拨打 AI 演示/];
 const LEGAL = ['/privacy', '/terms', '/sms-terms'];
 
-test('home page is corporate AI training only, in both languages', async () => {
+test('home page positions AI Man Jack as practical AI training for teams, in both languages', async () => {
   const pages = await allPages();
-  for (const [lang, title, h1] of [['en', /Corporate AI Training in Dallas/, /Practical AI training for teams/], ['zh', /企业 AI 培训/, /AI 实战培训/]]) {
+  for (const [lang, title, h1] of [['en', /Practical AI Training for Teams/, /Make AI useful at work/], ['zh', /AI 实战培训/, /让 AI 在工作里真的有用/]]) {
     const home = find(pages, '/', lang);
     assert.ok(home, `missing ${lang} home`);
     assert.match(head(home.html), new RegExp(`<title>[^<]*${title.source}`));
     assert.match(home.html, new RegExp(`<h1[^>]*>[^<]*${h1.source}`));
     assert.match(home.html, /og-training(?:-zh)?\.jpg/);
-    assert.match(home.html, /Plan a Team Workshop|聊聊团队培训/);
+    assert.match(home.html, /Book a Workshop|预约工作坊/);
+    for (const p of ['/tools/', '/use-cases/', '/workflows/', '/ai-training/']) assert.match(home.html, new RegExp(`href="(?:/zh)?${p}`), `${lang} home links ${p}`);
     for (const re of BANNED) assert.doesNotMatch(body(home.html) + ld(home.html), re, `${lang} home contains ${re}`);
   }
 });
@@ -41,7 +42,7 @@ test('every indexable page carries complete technical SEO metadata and no recept
     assert.equal((html.match(/<h1[\s>]/g) || []).length, 1, `${route} H1 count`);
     assert.match(html, /<title>[^<]+<\/title>/, `${route} title`);
     assert.match(html, /<meta name="description" content="[^"]+">/, `${route} description`);
-    for (const hreflang of ['en', 'zh', 'x-default']) assert.match(html, new RegExp(`hreflang="${hreflang}"`), `${route} ${hreflang}`);
+    for (const hreflang of [...page.langs, 'x-default']) assert.match(html, new RegExp(`hreflang="${hreflang}"`), `${route} ${hreflang}`);
     assert.match(html, /<meta property="og:title" content="[^"]+">/, `${route} OG title`);
     assert.doesNotMatch(html, />undefined</, `${route} visible undefined copy`);
     if (page.noindex) { assert.match(html, /<meta name="robots" content="noindex, follow">/, `${route} noindex`); continue; }
@@ -91,8 +92,9 @@ test('global navigation links training and booking, never the receptionist clust
   const chrome = home.html.slice(home.html.indexOf('<header'), home.html.indexOf('<main')) + home.html.slice(home.html.indexOf('<footer'));
   assert.match(chrome, /href="\/ai-training\/"/);
   assert.match(chrome, /href="\/book\/"/);
-  assert.match(chrome, /Plan a Team Workshop/);
-  for (const bad of ['/ai-receptionist/', '/pricing/', '/industries/', '/integrations/', '/tools/missed-call-calculator/', 'tel:+14695172968']) assert.doesNotMatch(chrome, new RegExp(bad.replace(/[/+]/g, '\\$&')), `chrome links ${bad}`);
+  assert.match(chrome, /Book a Workshop/);
+  for (const p of ['/use-cases/', '/tools/', '/templates/', '/workflows/', '/blog/', '/about/']) assert.match(chrome, new RegExp(`href="${p}"`), `chrome links ${p}`);
+  for (const bad of ['/ai-receptionist/', '/pricing/', '/industries/', '/integrations/', '/tools/missed-call-calculator/', 'tel:+14695172968', '#formats"', '#teams"']) assert.doesNotMatch(chrome, new RegExp(bad.replace(/[/+]/g, '\\$&')), `chrome links ${bad}`);
   assert.doesNotMatch(home.html, /<dialog/, 'AI demo dialog is no longer injected');
 });
 
@@ -132,5 +134,57 @@ test('privacy policy discloses coupon email storage and delivery use in both lan
     assert.ok(privacy, `missing ${lang} privacy policy`);
     assert.match(privacy.html, /coupon|优惠券/i);
     assert.match(privacy.html, /email/i);
+  }
+});
+
+// PRD (Frontend + SEO/GEO + Free Tools) §33: the library must be internally linked, and the tool must score deterministically.
+test('every workflow links to its use case, a related workflow, a tool or template, and training; templates link back', async () => {
+  const pages = await allPages();
+  const { WORKFLOWS } = await import('../src/content/workflows.mjs');
+  const { TEMPLATES } = await import('../src/content/templates.mjs');
+  for (const w of WORKFLOWS) {
+    const html = body(find(pages, `/workflows/${w.slug}/`, 'en').html);
+    assert.match(html, new RegExp(`href="/use-cases/${w.department}/"`), `${w.slug} → use case`);
+    assert.ok(w.related.length >= 2 && w.related.every((r) => html.includes(`href="/workflows/${r}/"`)), `${w.slug} → related workflows`);
+    assert.match(html, /href="\/tools\/ai-readiness-assessment\/"/, `${w.slug} → tool`);
+    assert.match(html, /href="\/ai-training\/"/, `${w.slug} → training`);
+    if (w.template) assert.match(html, new RegExp(`href="/templates/${w.template}/"`), `${w.slug} → template`);
+    assert.doesNotMatch(html, /time saved|hours saved|\d+% faster/i, `${w.slug} makes an unmeasured time claim`);
+  }
+  for (const t of TEMPLATES) {
+    const html = body(find(pages, `/templates/${t.slug}/`, 'en').html);
+    assert.match(html, new RegExp(`href="/workflows/${t.workflows[0]}/"`), `${t.slug} → workflow`);
+    assert.match(html, new RegExp(`href="/use-cases/${t.category}/"`), `${t.slug} → use case`);
+  }
+  for (const x of pages.filter((x) => /^\/(tools|use-cases|workflows|templates)\//.test(x.p.path) && !x.page.noindex)) {
+    assert.deepEqual(x.page.langs, ['en'], `${x.p.path} is EN-only`);
+    assert.doesNotMatch(x.html, /hreflang="zh"/, `${x.p.path} must not advertise a zh version`);
+  }
+});
+
+test('AI readiness score is deterministic, bounded, and never gated behind email', async () => {
+  const { score, QUESTIONS, BANDS } = await import('../src/pages/freetools.mjs');
+  const n = QUESTIONS.length;
+  assert.equal(score(Array(n).fill(0), QUESTIONS).overall, 0);
+  assert.equal(score(Array(n).fill(4), QUESTIONS).overall, 100);
+  const mixed = QUESTIONS.map((_, i) => i % 5);
+  assert.deepEqual(score(mixed, QUESTIONS), score(mixed, QUESTIONS));
+  const r = score(QUESTIONS.map(([c]) => (c === 'governance' ? 0 : 4)), QUESTIONS);
+  assert.equal(r.cats.governance, 0); assert.equal(r.cats.people, 100); assert.equal(r.overall, 80);
+  assert.deepEqual(BANDS.map((b) => b[0]), [0, 26, 51, 76]);
+  const html = find(await allPages(), '/tools/ai-readiness-assessment/', 'en').html;
+  assert.equal((html.match(/class="ara-q"/g) || []).length, n, 'all questions are in the HTML (indexable, works as a sheet without JS)');
+  assert.doesNotMatch(html, /type="email"/, 'no email field anywhere on the tool');
+  assert.match(html, /not a validated benchmark/, 'the result screen says what the score is not');
+  assert.match(html, /Is the score scientifically validated\?<\/summary><div class="faq-a"><p>No\./, 'and the FAQ answers the validation question with No');
+  assert.match(html, /"@type":"WebApplication"/);
+});
+
+// Both of these shipped to preview once and overflowed a 375px screen: an inline grid beats every media query, and a bare table cannot scroll.
+test('no inline grid columns and no unwrapped tables on indexable pages (mobile overflow guards)', async () => {
+  for (const x of (await allPages()).filter((x) => !x.page.noindex)) {
+    assert.doesNotMatch(x.html, /style="[^"]*grid-template-columns/, `${x.lang}:${x.p.path} inline grid-template-columns`);
+    const tables = (x.html.match(/<table/g) || []).length, wrapped = (x.html.match(/class="table-wrap"><table/g) || []).length;
+    assert.equal(tables, wrapped, `${x.lang}:${x.p.path} has a table outside .table-wrap`);
   }
 });

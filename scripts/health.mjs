@@ -9,7 +9,9 @@ import { existsSync, readFileSync, writeFileSync } from "node:fs";
 const SITE = "https://aimanjack.com";
 // Indexable routes (PRD 2026-09-18 §77). Add /ai-training-dallas/, /ai-workflow-training/, /ai-workshops/ and the team pages as they ship.
 const EN = ["/", "/ai-training/", "/blog/", "/about/", "/contact/", "/book/"];
-const PAGES = [...EN, ...EN.map((p) => "/zh" + p)];
+// English-only resource library (docs/site-audit.md D4): hubs plus one detail page of each type as a canary.
+const EN_ONLY = ["/tools/", "/tools/ai-readiness-assessment/", "/use-cases/", "/use-cases/sales/", "/workflows/", "/workflows/prospect-research/", "/templates/", "/templates/sales-meeting-prep/"];
+const PAGES = [...EN, ...EN.map((p) => "/zh" + p), ...EN_ONLY];
 // Legacy receptionist routes: must still resolve (200) but carry noindex and stay out of the sitemap.
 const LEGACY = ["/ai-receptionist/", "/pricing/", "/industries/", "/integrations/", "/tools/missed-call-calculator/", "/case-studies/", "/blog/how-much-do-missed-calls-cost/"];
 // Receptionist-era marketing that must not appear on any indexable page (§79). Legal pages are the only exception.
@@ -72,9 +74,9 @@ for (const p of PAGES) {
   };
   const s = snap[p];
   add(`page:${p}:h1`, s.h1Count === 1 ? "PASS" : "FAIL", `${s.h1Count} h1`);
-  add(`page:${p}:meta`, s.title && s.description && s.canonical === self && s.hreflang === "en,x-default,zh" && /^index/.test(s.robots) ? "PASS" : "FAIL", `canonical=${s.canonical} robots=${s.robots} hreflang=${s.hreflang}`);
+  add(`page:${p}:meta`, s.title && s.description && s.canonical === self && s.hreflang === (EN_ONLY.includes(p) ? "en,x-default" : "en,x-default,zh") && /^index/.test(s.robots) ? "PASS" : "FAIL", `canonical=${s.canonical} robots=${s.robots} hreflang=${s.hreflang}`);
   add(`page:${p}:schema`, types !== "PARSE_ERROR" && types.includes("ProfessionalService") ? "PASS" : "FAIL", types.slice(0, 80));
-  add(`page:${p}:cta`, s.bookLinks >= 1 ? "PASS" : "FAIL", `${s.bookLinks} links to /book/ (Plan a Team Workshop)`);
+  add(`page:${p}:cta`, s.bookLinks >= 1 ? "PASS" : "FAIL", `${s.bookLinks} links to /book/ (Book a Workshop)`);
   // Label must say what the click does: "Call" → tel:, "Text" → sms:, "Email" → mailto:
   const mism = [...h.matchAll(/<a [^>]*href="(tel:|sms:|mailto:)[^"]*"[^>]*>([^<]*)<\/a>/g)].filter(([, proto, t]) =>
     (/\bCall\b|打|拨/.test(t) && proto !== "tel:") || (/\bText\b|短信/.test(t) && proto !== "sms:") || (/\bEmail\b|邮件/.test(t) && proto !== "mailto:")).map(([, proto, t]) => `${proto} "${t.trim()}"`);

@@ -10,6 +10,8 @@
   <url><loc>https://aimanjack.com/zh/book/</loc><lastmod>2026-09-18</lastmod><changefreq>yearly</changefreq><priority>0.6</priority></url>
   <url><loc>https://aimanjack.com/contact/</loc><lastmod>2026-09-18</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://aimanjack.com/zh/contact/</loc><lastmod>2026-09-18</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://aimanjack.com/tools/</loc><lastmod>2026-09-18</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://aimanjack.com/tools/ai-readiness-assessment/</loc><lastmod>2026-09-18</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
   <url><loc>https://aimanjack.com/</loc><lastmod>2026-09-18</lastmod><changefreq>weekly</changefreq><priority>1</priority></url>
   <url><loc>https://aimanjack.com/zh/</loc><lastmod>2026-09-18</lastmod><changefreq>weekly</changefreq><priority>1</priority></url>
   <url><loc>https://aimanjack.com/privacy</loc><lastmod>2026-09-18</lastmod><changefreq>yearly</changefreq><priority>0.3</priority></url>
@@ -18,6 +20,31 @@
   <url><loc>https://aimanjack.com/zh/sms-terms</loc><lastmod>2026-09-18</lastmod><changefreq>yearly</changefreq><priority>0.3</priority></url>
   <url><loc>https://aimanjack.com/terms</loc><lastmod>2026-09-18</lastmod><changefreq>yearly</changefreq><priority>0.3</priority></url>
   <url><loc>https://aimanjack.com/zh/terms</loc><lastmod>2026-09-18</lastmod><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://aimanjack.com/templates/</loc><lastmod>2026-09-18</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://aimanjack.com/templates/sales-meeting-prep/</loc><lastmod>2026-09-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://aimanjack.com/templates/prospect-research/</loc><lastmod>2026-09-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://aimanjack.com/templates/follow-up-email/</loc><lastmod>2026-09-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://aimanjack.com/templates/customer-interview-analysis/</loc><lastmod>2026-09-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://aimanjack.com/templates/weekly-executive-summary/</loc><lastmod>2026-09-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://aimanjack.com/templates/content-repurposing/</loc><lastmod>2026-09-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://aimanjack.com/templates/sop-builder/</loc><lastmod>2026-09-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://aimanjack.com/templates/ai-use-case-discovery-worksheet/</loc><lastmod>2026-09-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://aimanjack.com/ai-training/</loc><lastmod>2026-09-18</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
   <url><loc>https://aimanjack.com/zh/ai-training/</loc><lastmod>2026-09-18</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://aimanjack.com/use-cases/</loc><lastmod>2026-09-18</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://aimanjack.com/use-cases/sales/</loc><lastmod>2026-09-18</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://aimanjack.com/use-cases/marketing/</loc><lastmod>2026-09-18</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://aimanjack.com/use-cases/operations/</loc><lastmod>2026-09-18</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://aimanjack.com/use-cases/leadership/</loc><lastmod>2026-09-18</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://aimanjack.com/workflows/</loc><lastmod>2026-09-18</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://aimanjack.com/workflows/prospect-research/</loc><lastmod>2026-09-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://aimanjack.com/workflows/sales-meeting-preparation/</loc><lastmod>2026-09-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://aimanjack.com/workflows/sales-follow-up/</loc><lastmod>2026-09-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://aimanjack.com/workflows/content-repurposing/</loc><lastmod>2026-09-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://aimanjack.com/workflows/customer-research/</loc><lastmod>2026-09-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://aimanjack.com/workflows/competitive-research/</loc><lastmod>2026-09-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://aimanjack.com/workflows/meeting-notes-to-action-items/</loc><lastmod>2026-09-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://aimanjack.com/workflows/sop-creation/</loc><lastmod>2026-09-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://aimanjack.com/workflows/internal-document-summary/</loc><lastmod>2026-09-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://aimanjack.com/workflows/executive-brief/</loc><lastmod>2026-09-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
 </urlset>

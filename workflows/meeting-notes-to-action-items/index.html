@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#ffffff">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<title>Meeting Notes to Action Items with AI: Steps, Prompt and Checklist | AI Man Jack</title>
+<meta name="description" content="Turn a transcript or rough notes into decisions, action items with owners and dates, and open questions. Steps, prompt, example output and review checklist.">
+<link rel="canonical" href="https://aimanjack.com/workflows/meeting-notes-to-action-items/">
+<link rel="alternate" hreflang="en" href="https://aimanjack.com/workflows/meeting-notes-to-action-items/">
+<link rel="alternate" hreflang="x-default" href="https://aimanjack.com/workflows/meeting-notes-to-action-items/">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://aimanjack.com/workflows/meeting-notes-to-action-items/">
+<meta property="og:site_name" content="AI Man Jack">
+<meta property="og:title" content="Meeting Notes to Action Items with AI: Steps, Prompt and Checklist | AI Man Jack">
+<meta property="og:description" content="Turn a transcript or rough notes into decisions, action items with owners and dates, and open questions. Steps, prompt, example output and review checklist.">
+<meta property="og:image" content="https://aimanjack.com/img/og-training.jpg">
+<meta property="og:image:alt" content="AI Man Jack: corporate AI training and practical AI workflows for teams, Dallas">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Meeting Notes to Action Items with AI: Steps, Prompt and Checklist | AI Man Jack">
+<meta name="twitter:description" content="Turn a transcript or rough notes into decisions, action items with owners and dates, and open questions. Steps, prompt, example output and review checklist.">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"HowTo","@id":"https://aimanjack.com/workflows/meeting-notes-to-action-items/#howto","name":"Meeting Notes to Action Items with AI","description":"This workflow takes a meeting transcript or rough notes and returns three lists — decisions, actions with an owner and a date, and open questions — and marks every action where the owner or date was not actually said.","inLanguage":"en","author":{"@id":"https://aimanjack.com/#jack"},"publisher":{"@id":"https://aimanjack.com/#business"},"tool":[{"@type":"HowToTool","name":"Copilot"},{"@type":"HowToTool","name":"ChatGPT"},{"@type":"HowToTool","name":"Claude"}],"step":[{"@type":"HowToStep","position":1,"name":"Start from a transcript if you have one","text":"Teams, Zoom and Meet can all produce one. Rough typed notes also work; the output will only be as complete as the input."},{"@type":"HowToStep","position":2,"name":"Ask for three lists, nothing else","text":"Decisions. Actions (owner, task, date). Open questions. No narrative summary — nobody reads it."},{"@type":"HowToStep","position":3,"name":"Force it to mark the gaps","text":"If an owner or date was not stated, the model must write \"owner not stated\" rather than pick someone. This is the single most useful instruction."},{"@type":"HowToStep","position":4,"name":"Resolve the gaps in the room or right after","text":"Assign the unowned actions yourself. That takes two minutes and is the actual value of the exercise."},{"@type":"HowToStep","position":5,"name":"Send within the hour","text":"Paste into the channel or email where the team already works."}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://aimanjack.com/"},{"@type":"ListItem","position":2,"name":"Use Cases","item":"https://aimanjack.com/use-cases/"},{"@type":"ListItem","position":3,"name":"Operations","item":"https://aimanjack.com/use-cases/operations/"},{"@type":"ListItem","position":4,"name":"Meeting Notes to Action Items with AI","item":"https://aimanjack.com/workflows/meeting-notes-to-action-items/"}]},{"@type":"ProfessionalService","@id":"https://aimanjack.com/#business","name":"AI Man Jack","url":"https://aimanjack.com/","telephone":"+1-469-425-4142","email":"jack@aimanjack.com"}]}</script>
+<link rel="preload" href="/fonts/Satoshi-latin-2.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/style.css?v=0">
+</head>
+<body data-view="workflow_view">
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header"><div class="wrap head-row">
+<a class="brand" href="/" aria-label="AI Man Jack">AI Man <span>Jack</span></a>
+<nav class="nav" aria-label="Primary"><a href="/ai-training/">Training</a><a href="/use-cases/">Use Cases</a><a href="/tools/">Free Tools</a><a href="/templates/">Templates</a><a href="/blog/">Resources</a><a href="/about/">About</a></nav>
+<details class="menu"><summary aria-label="Menu"><span class="menu-icon" aria-hidden="true"></span><span class="menu-label">Menu</span></summary>
+<nav class="nav mobile-nav" aria-label="Primary, mobile"><a href="/ai-training/">Training</a><a href="/use-cases/">Use Cases</a><a href="/tools/">Free Tools</a><a href="/templates/">Templates</a><a href="/blog/">Resources</a><a href="/about/">About</a></nav></details>
+<a class="btn btn-primary btn-sm head-call" href="/book/" data-event="workshop_cta_click" data-pos="header">Book a Workshop</a>
+</div></header>
+<main id="main">
+<div class="wrap"><nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="/">Home</a></li><li><a href="/use-cases/">Use Cases</a></li><li><a href="/use-cases/operations/">Operations</a></li><li aria-current="page">Meeting Notes to Action Items with AI</li></ol></nav></div><section class="page-hero res-hero"><div class="wrap narrow"><p class="eyebrow">AI workflow · Operations</p><h1>Meeting Notes to Action Items with AI</h1><p class="lead">This workflow takes a meeting transcript or rough notes and returns three lists — decisions, actions with an owner and a date, and open questions — and marks every action where the owner or date was not actually said.</p><p class="tags" style="margin-top:18px"><span class="tag">Copilot</span><span class="tag">ChatGPT</span><span class="tag">Claude</span><span class="tag">beginner</span></p></div></section>
+<section class="wrap narrow prose res-body">
+<h2>How this usually goes today</h2><ul><li>Everyone leaves with a different memory of who is doing what.</li><li>Notes get sent two days later, or not at all.</li><li>The same topic returns next week.</li></ul>
+<h2>The AI-assisted workflow</h2></section>
+<section class="wrap"><ol class="steps"><li><span class="num">01</span><h3>Start from a transcript if you have one</h3><p>Teams, Zoom and Meet can all produce one. Rough typed notes also work; the output will only be as complete as the input.</p></li><li><span class="num">02</span><h3>Ask for three lists, nothing else</h3><p>Decisions. Actions (owner, task, date). Open questions. No narrative summary — nobody reads it.</p></li><li><span class="num">03</span><h3>Force it to mark the gaps</h3><p>If an owner or date was not stated, the model must write "owner not stated" rather than pick someone. This is the single most useful instruction.</p></li><li><span class="num">04</span><h3>Resolve the gaps in the room or right after</h3><p>Assign the unowned actions yourself. That takes two minutes and is the actual value of the exercise.</p></li><li><span class="num">05</span><h3>Send within the hour</h3><p>Paste into the channel or email where the team already works.</p></li></ol></section>
+<section class="wrap narrow prose res-body">
+<h2>The prompt</h2><p>The core instruction. Adapt the bracketed parts to your situation.</p>
+<div class="tpl"><div class="tpl-bar"><button type="button" class="btn btn-secondary btn-sm" data-copy="wf-prompt" data-event="template_copy" data-pos="wf-prompt">Copy prompt</button><span class="copy-status" role="status" aria-live="polite"></span></div><pre id="wf-prompt" tabindex="0"><code>From the meeting transcript below, produce exactly three lists.
+
+DECISIONS — what was agreed. One line each.
+ACTIONS — a table: Owner | Task | Due date.
+  If the owner or the date was not explicitly said, write &quot;not stated&quot;. Never guess an owner.
+OPEN QUESTIONS — raised but not resolved.
+
+No summary paragraph. No recommendations.
+
+TRANSCRIPT:
+[paste]</code></pre></div>
+<h2>Example output</h2><p class="muted">Illustrative. The company and people are fictional.</p><pre class="example"><code>DECISIONS
+- Pilot runs at Fort Worth only.
+
+ACTIONS
+| Owner | Task | Due |
+| Priya | Send security questionnaire to vendor | Fri 12th |
+| not stated | Draft pilot success criteria | not stated |
+
+OPEN QUESTIONS
+- Who approves the pilot budget?</code></pre>
+<h2>Human review checklist</h2><p>Before the output is used:</p><ul class="checks"><li>Every action with a named owner — that person actually agreed to it.</li><li>"Not stated" items have been assigned by a human.</li><li>Decisions are decisions, not topics discussed.</li><li>Nothing confidential (HR, legal) is going to a wider audience than the meeting had.</li></ul>
+<h2>When not to use this workflow</h2><ul><li>HR, legal or disciplinary meetings.</li><li>Meetings recorded without everyone’s knowledge — check your policy and local law first.</li><li>Replacing the person who owns the follow-up. Someone still has to chase.</li></ul>
+<p class="callout">Part of <a href="/use-cases/operations/">AI for Operations</a>. Not sure your team is ready for workflows like this? Take the <a href="/tools/ai-readiness-assessment/">AI Readiness Assessment</a> — 10 questions, no email required.</p>
+</section><script>document.addEventListener('click',function(e){var b=e.target.closest('[data-copy]');if(!b)return;var t=document.getElementById(b.dataset.copy).textContent,s=b.parentNode.querySelector('.copy-status');
+function ok(){s.textContent='Copied';setTimeout(function(){s.textContent=''},2000)}
+if(navigator.clipboard&&isSecureContext)navigator.clipboard.writeText(t).then(ok);else{var r=document.createRange();r.selectNodeContents(document.getElementById(b.dataset.copy));var sel=getSelection();sel.removeAllRanges();sel.addRange(r);s.textContent='Selected — press Ctrl/Cmd+C'}});</script>
+<section class="section soft"><div class="wrap"><h2 class="h2-sm">Related workflows</h2><div class="grid-3 res-grid"><a class="card link-card res-card" href="/workflows/sop-creation/" data-cat="operations" data-search="sop creation write a standard operating procedure from a recorded walkthrough or an expert’s spoken explanation, then test it on someone new. operations · process documentation chatgpt claude copilot process documentation" data-event="workflow_click">
+<p class="res-kicker">Operations · Process documentation</p><h3 class="h3">SOP Creation</h3><p>Write a standard operating procedure from a recorded walkthrough or an expert’s spoken explanation, then test it on someone new.</p><p class="tags"><span class="tag">ChatGPT</span><span class="tag">Claude</span><span class="tag">Copilot</span></p><span class="arrow" aria-hidden="true">&rarr;</span></a>
+<a class="card link-card res-card" href="/workflows/executive-brief/" data-cat="leadership" data-search="executive brief creation build a one-page weekly brief for leadership from team updates: what changed, what is at risk, what needs a decision. leadership · reporting copilot chatgpt claude reporting" data-event="workflow_click">
+<p class="res-kicker">Leadership · Reporting</p><h3 class="h3">Executive Brief Creation</h3><p>Build a one-page weekly brief for leadership from team updates: what changed, what is at risk, what needs a decision.</p><p class="tags"><span class="tag">Copilot</span><span class="tag">ChatGPT</span><span class="tag">Claude</span></p><span class="arrow" aria-hidden="true">&rarr;</span></a>
+<a class="card link-card res-card" href="/workflows/sales-follow-up/" data-cat="sales" data-search="sales follow-up emails draft the follow-up email from your call notes while the meeting is still fresh: decisions, owners, dates and the next step, in your own voice. sales · sales execution chatgpt claude copilot sales execution" data-event="workflow_click">
+<p class="res-kicker">Sales · Sales execution</p><h3 class="h3">Sales Follow-Up Emails</h3><p>Draft the follow-up email from your call notes while the meeting is still fresh: decisions, owners, dates and the next step, in your own voice.</p><p class="tags"><span class="tag">ChatGPT</span><span class="tag">Claude</span><span class="tag">Copilot</span></p><span class="arrow" aria-hidden="true">&rarr;</span></a></div></div></section>
+<section class="section final-cta"><div class="wrap narrow center"><h2>Want your team to build this on its own work?</h2><p class="lead">In a hands-on workshop each person builds one workflow like this on a task they already do, and learns to check the output before it is used.</p>
+<div class="cta-row center"><a class="btn btn-primary btn-lg" href="/book/" data-event="workshop_cta_click" data-pos="workflow-meeting-notes-to-action-items">Book a Workshop</a><a class="btn btn-secondary btn-lg" href="/ai-training/" data-event="training_page_click" data-pos="workflow-meeting-notes-to-action-items">See how training works</a></div></div></section>
+</main>
+<footer class="site-footer"><div class="wrap">
+<div class="foot-grid">
+<div><h2 class="foot-h">Product</h2><ul><li><a href="/ai-training/">Training</a></li><li><a href="/tools/">Free Tools</a></li><li><a href="/templates/">Templates</a></li><li><a href="/workflows/">AI Workflows</a></li></ul></div>
+<div><h2 class="foot-h">Use Cases</h2><ul><li><a href="/use-cases/sales/">Sales</a></li><li><a href="/use-cases/marketing/">Marketing</a></li><li><a href="/use-cases/operations/">Operations</a></li><li><a href="/use-cases/leadership/">Leadership</a></li></ul></div>
+<div><h2 class="foot-h">Resources</h2><ul><li><a href="/blog/">AI training guides</a></li><li><a href="https://realagentusecases.com/">Real Agent Use Cases ↗</a></li></ul></div>
+<div><h2 class="foot-h">Company</h2><ul><li><a href="/about/">About Jack</a></li><li><a href="/contact/">Contact</a></li><li><a href="/book/">Book a workshop</a></li><li><a href="/privacy">Privacy</a></li><li><a href="/terms">Terms</a></li><li><a href="/sms-terms">SMS terms</a></li></ul></div>
+</div>
+<p class="foot-serves">Dallas–Fort Worth, Texas · Onsite across Dallas, Fort Worth, Plano, Richardson, Frisco, McKinney and Arlington. Remote sessions anywhere.</p>
+<div class="foot-id"><span>© 2026 AI Man Jack LLC</span><a href="mailto:jack@aimanjack.com">jack@aimanjack.com</a><a href="sms:+14694254142" data-event="sms_training_click" data-pos="footer">(469) 425-4142</a></div>
+<p class="legal">By calling or texting (469) 425-4142, you agree to receive SMS messages from AI Man Jack, including an automated reply when we miss your call. Message frequency varies (typically one message per missed call). Message and data rates may apply. Reply STOP to opt out, HELP for help. See our <a href="/privacy">Privacy Policy</a> and <a href="/sms-terms">SMS Terms</a>.</p>
+</div></footer>
+<div class="sticky-call" id="sticky-cta" hidden><a href="/book/" data-event="workshop_cta_click" data-pos="sticky"><span>Book a Workshop</span></a></div>
+<script>
+(function(){var D=document;
+var desk=matchMedia('(hover:hover) and (pointer:fine)').matches&&navigator.maxTouchPoints===0;
+window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}
+function track(n,p){gtag('event',n,Object.assign({page:location.pathname,language:D.documentElement.lang,device:desk?'desktop':'mobile'},p||{}))}
+window.amjTrack=track;
+D.addEventListener('click',function(e){var l=e.target.closest('[data-event]');if(l)track(l.dataset.event,{cta_position:l.dataset.pos||''});
+ var m=e.target.closest('.menu nav a');if(m)m.closest('details').open=false});
+var bar=D.getElementById('sticky-cta'),hero=D.getElementById('hero-cta');
+if(bar&&hero&&'IntersectionObserver' in window)new IntersectionObserver(function(en){bar.hidden=en[0].isIntersecting||en[0].boundingClientRect.top>0}).observe(hero);
+if(!/(^|\.)aimanjack\.com$/.test(location.hostname))return;
+addEventListener('load',function(){var s=D.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-H7EF9HVN02';D.head.appendChild(s);
+ gtag('js',new Date());gtag('config','G-H7EF9HVN02');var v=D.body.dataset.view;if(v)track(v)});
+})();
+</script>
+</body>
+</html>
