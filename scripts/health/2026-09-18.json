@@ -1,797 +1,530 @@
 {
-  "date": "2026-09-18",
-  "checks": [
-    {
-      "id": "up:/",
-      "status": "PASS",
-      "detail": "HTTP 200 287ms"
-    },
-    {
-      "id": "perf:home-fetch",
-      "status": "PASS",
-      "detail": "287ms full fetch (PSI weekly gives the real CWV)"
-    },
-    {
-      "id": "up:/ai-receptionist/",
-      "status": "PASS",
-      "detail": "HTTP 200 49ms"
-    },
-    {
-      "id": "up:/pricing/",
-      "status": "PASS",
-      "detail": "HTTP 200 38ms"
-    },
-    {
-      "id": "up:/industries/",
-      "status": "PASS",
-      "detail": "HTTP 200 47ms"
-    },
-    {
-      "id": "up:/industries/salons/",
-      "status": "PASS",
-      "detail": "HTTP 200 42ms"
-    },
-    {
-      "id": "up:/integrations/",
-      "status": "PASS",
-      "detail": "HTTP 200 41ms"
-    },
-    {
-      "id": "up:/case-studies/",
-      "status": "PASS",
-      "detail": "HTTP 200 46ms"
-    },
-    {
-      "id": "up:/case-studies/ai-man-jack/",
-      "status": "PASS",
-      "detail": "HTTP 200 45ms"
-    },
-    {
-      "id": "up:/about/",
-      "status": "PASS",
-      "detail": "HTTP 200 49ms"
-    },
-    {
-      "id": "up:/contact/",
-      "status": "PASS",
-      "detail": "HTTP 200 43ms"
-    },
-    {
-      "id": "up:/ai-training/",
-      "status": "PASS",
-      "detail": "HTTP 200 47ms"
-    },
-    {
-      "id": "up:/zh/",
-      "status": "PASS",
-      "detail": "HTTP 200 47ms"
-    },
-    {
-      "id": "up:/zh/ai-receptionist/",
-      "status": "PASS",
-      "detail": "HTTP 200 56ms"
-    },
-    {
-      "id": "up:/zh/pricing/",
-      "status": "PASS",
-      "detail": "HTTP 200 48ms"
-    },
-    {
-      "id": "up:/zh/industries/",
-      "status": "PASS",
-      "detail": "HTTP 200 40ms"
-    },
-    {
-      "id": "up:/zh/industries/salons/",
-      "status": "PASS",
-      "detail": "HTTP 200 42ms"
-    },
-    {
-      "id": "up:/zh/integrations/",
-      "status": "PASS",
-      "detail": "HTTP 200 44ms"
-    },
-    {
-      "id": "up:/zh/case-studies/",
-      "status": "PASS",
-      "detail": "HTTP 200 42ms"
-    },
-    {
-      "id": "up:/zh/case-studies/ai-man-jack/",
-      "status": "PASS",
-      "detail": "HTTP 200 45ms"
-    },
-    {
-      "id": "up:/zh/about/",
-      "status": "PASS",
-      "detail": "HTTP 200 32ms"
-    },
-    {
-      "id": "up:/zh/contact/",
-      "status": "PASS",
-      "detail": "HTTP 200 35ms"
-    },
-    {
-      "id": "up:/zh/ai-training/",
-      "status": "PASS",
-      "detail": "HTTP 200 40ms"
-    },
-    {
-      "id": "up:/sitemap.xml",
-      "status": "PASS",
-      "detail": "HTTP 200 31ms"
-    },
-    {
-      "id": "up:/robots.txt",
-      "status": "PASS",
-      "detail": "HTTP 200 54ms"
-    },
-    {
-      "id": "up:/llms.txt",
-      "status": "PASS",
-      "detail": "HTTP 200 28ms"
-    },
-    {
-      "id": "up:404",
-      "status": "PASS",
-      "detail": "random path must 404, not soft-200"
-    },
-    {
-      "id": "redirects",
-      "status": "PASS",
-      "detail": "all _redirects rules hold"
-    },
-    {
-      "id": "sitemap:pages",
-      "status": "FAIL",
-      "detail": "missing /ai-training/,/zh/ai-training/"
-    },
-    {
-      "id": "page:/:h1",
-      "status": "PASS",
-      "detail": "1 h1"
-    },
-    {
-      "id": "page:/:schema",
-      "status": "PASS",
-      "detail": "AdministrativeArea,AggregateRating,Answer,City,Country,FAQPage,Offer,Organizatio"
-    },
-    {
-      "id": "page:/:cta",
-      "status": "PASS",
-      "detail": "3 tel: demo CTAs, 2 sms: CTAs to (469) 425-4142"
-    },
-    {
-      "id": "page:/:cta-labels",
-      "status": "PASS",
-      "detail": "every CTA label matches its protocol"
-    },
-    {
-      "id": "page:/:og-image",
-      "status": "PASS",
-      "detail": "https://aimanjack.com/img/og-training.jpg"
-    },
-    {
-      "id": "track:ga4",
-      "status": "PASS",
-      "detail": "no GA4 tag → visitors and conversion rate are unmeasurable"
-    },
-    {
-      "id": "page:/ai-receptionist/:h1",
-      "status": "PASS",
-      "detail": "1 h1"
-    },
-    {
-      "id": "page:/ai-receptionist/:schema",
-      "status": "PASS",
-      "detail": "AdministrativeArea,Answer,BreadcrumbList,BusinessAudience,City,Country,FAQPage,L"
-    },
-    {
-      "id": "page:/ai-receptionist/:cta",
-      "status": "PASS",
-      "detail": "9 tel: demo CTAs, 1 sms: CTAs to (469) 425-4142"
-    },
-    {
-      "id": "page:/ai-receptionist/:cta-labels",
-      "status": "PASS",
-      "detail": "every CTA label matches its protocol"
-    },
-    {
-      "id": "page:/pricing/:h1",
-      "status": "PASS",
-      "detail": "1 h1"
-    },
-    {
-      "id": "page:/pricing/:schema",
-      "status": "PASS",
-      "detail": "AdministrativeArea,Answer,BreadcrumbList,BusinessAudience,City,Country,FAQPage,L"
-    },
-    {
-      "id": "page:/pricing/:cta",
-      "status": "PASS",
-      "detail": "5 tel: demo CTAs, 1 sms: CTAs to (469) 425-4142"
-    },
-    {
-      "id": "page:/pricing/:cta-labels",
-      "status": "PASS",
-      "detail": "every CTA label matches its protocol"
-    },
-    {
-      "id": "page:/industries/:h1",
-      "status": "PASS",
-      "detail": "1 h1"
-    },
-    {
-      "id": "page:/industries/:schema",
-      "status": "PASS",
-      "detail": "BreadcrumbList,ListItem,ProfessionalService"
-    },
-    {
-      "id": "page:/industries/:cta",
-      "status": "PASS",
-      "detail": "5 tel: demo CTAs, 1 sms: CTAs to (469) 425-4142"
-    },
-    {
-      "id": "page:/industries/:cta-labels",
-      "status": "PASS",
-      "detail": "every CTA label matches its protocol"
-    },
-    {
-      "id": "page:/industries/salons/:h1",
-      "status": "PASS",
-      "detail": "1 h1"
-    },
-    {
-      "id": "page:/industries/salons/:schema",
-      "status": "PASS",
-      "detail": "AdministrativeArea,Answer,BreadcrumbList,BusinessAudience,City,Country,FAQPage,L"
-    },
-    {
-      "id": "page:/industries/salons/:cta",
-      "status": "PASS",
-      "detail": "7 tel: demo CTAs, 1 sms: CTAs to (469) 425-4142"
-    },
-    {
-      "id": "page:/industries/salons/:cta-labels",
-      "status": "PASS",
-      "detail": "every CTA label matches its protocol"
-    },
-    {
-      "id": "page:/integrations/:h1",
-      "status": "PASS",
-      "detail": "1 h1"
-    },
-    {
-      "id": "page:/integrations/:schema",
-      "status": "PASS",
-      "detail": "BreadcrumbList,ListItem,ProfessionalService"
-    },
-    {
-      "id": "page:/integrations/:cta",
-      "status": "PASS",
-      "detail": "5 tel: demo CTAs, 1 sms: CTAs to (469) 425-4142"
-    },
-    {
-      "id": "page:/integrations/:cta-labels",
-      "status": "PASS",
-      "detail": "every CTA label matches its protocol"
-    },
-    {
-      "id": "page:/case-studies/:h1",
-      "status": "PASS",
-      "detail": "1 h1"
-    },
-    {
-      "id": "page:/case-studies/:schema",
-      "status": "PASS",
-      "detail": "BreadcrumbList,ListItem,ProfessionalService"
-    },
-    {
-      "id": "page:/case-studies/:cta",
-      "status": "PASS",
-      "detail": "5 tel: demo CTAs, 1 sms: CTAs to (469) 425-4142"
-    },
-    {
-      "id": "page:/case-studies/:cta-labels",
-      "status": "PASS",
-      "detail": "every CTA label matches its protocol"
-    },
-    {
-      "id": "page:/case-studies/ai-man-jack/:h1",
-      "status": "PASS",
-      "detail": "1 h1"
-    },
-    {
-      "id": "page:/case-studies/ai-man-jack/:schema",
-      "status": "PASS",
-      "detail": "Article,BreadcrumbList,ListItem,ProfessionalService"
-    },
-    {
-      "id": "page:/case-studies/ai-man-jack/:cta",
-      "status": "PASS",
-      "detail": "5 tel: demo CTAs, 1 sms: CTAs to (469) 425-4142"
-    },
-    {
-      "id": "page:/case-studies/ai-man-jack/:cta-labels",
-      "status": "PASS",
-      "detail": "every CTA label matches its protocol"
-    },
-    {
-      "id": "page:/about/:h1",
-      "status": "PASS",
-      "detail": "1 h1"
-    },
-    {
-      "id": "page:/about/:schema",
-      "status": "PASS",
-      "detail": "AdministrativeArea,BreadcrumbList,City,Country,ListItem,Person,PostalAddress,Pro"
-    },
-    {
-      "id": "page:/about/:cta",
-      "status": "PASS",
-      "detail": "7 tel: demo CTAs, 2 sms: CTAs to (469) 425-4142"
-    },
-    {
-      "id": "page:/about/:cta-labels",
-      "status": "PASS",
-      "detail": "every CTA label matches its protocol"
-    },
-    {
-      "id": "page:/contact/:h1",
-      "status": "PASS",
-      "detail": "1 h1"
-    },
-    {
-      "id": "page:/contact/:schema",
-      "status": "PASS",
-      "detail": "BreadcrumbList,ContactPage,ListItem,ProfessionalService"
-    },
-    {
-      "id": "page:/contact/:cta",
-      "status": "PASS",
-      "detail": "4 tel: demo CTAs, 2 sms: CTAs to (469) 425-4142"
-    },
-    {
-      "id": "page:/contact/:cta-labels",
-      "status": "PASS",
-      "detail": "every CTA label matches its protocol"
-    },
-    {
-      "id": "page:/ai-training/:h1",
-      "status": "PASS",
-      "detail": "1 h1"
-    },
-    {
-      "id": "page:/ai-training/:schema",
-      "status": "PASS",
-      "detail": "AdministrativeArea,AggregateRating,Answer,City,Country,FAQPage,Offer,Organizatio"
-    },
-    {
-      "id": "page:/ai-training/:cta",
-      "status": "PASS",
-      "detail": "3 tel: demo CTAs, 2 sms: CTAs to (469) 425-4142"
-    },
-    {
-      "id": "page:/ai-training/:cta-labels",
-      "status": "PASS",
-      "detail": "every CTA label matches its protocol"
-    },
-    {
-      "id": "page:/zh/:h1",
-      "status": "PASS",
-      "detail": "1 h1"
-    },
-    {
-      "id": "page:/zh/:schema",
-      "status": "PASS",
-      "detail": "AdministrativeArea,AggregateRating,Answer,City,Country,FAQPage,Offer,Organizatio"
-    },
-    {
-      "id": "page:/zh/:cta",
-      "status": "PASS",
-      "detail": "3 tel: demo CTAs, 2 sms: CTAs to (469) 425-4142"
-    },
-    {
-      "id": "page:/zh/:cta-labels",
-      "status": "PASS",
-      "detail": "every CTA label matches its protocol"
-    },
-    {
-      "id": "page:/zh/ai-receptionist/:h1",
-      "status": "PASS",
-      "detail": "1 h1"
-    },
-    {
-      "id": "page:/zh/ai-receptionist/:schema",
-      "status": "PASS",
-      "detail": "AdministrativeArea,Answer,BreadcrumbList,BusinessAudience,City,Country,FAQPage,L"
-    },
-    {
-      "id": "page:/zh/ai-receptionist/:cta",
-      "status": "PASS",
-      "detail": "9 tel: demo CTAs, 1 sms: CTAs to (469) 425-4142"
-    },
-    {
-      "id": "page:/zh/ai-receptionist/:cta-labels",
-      "status": "PASS",
-      "detail": "every CTA label matches its protocol"
-    },
-    {
-      "id": "page:/zh/pricing/:h1",
-      "status": "PASS",
-      "detail": "1 h1"
-    },
-    {
-      "id": "page:/zh/pricing/:schema",
-      "status": "PASS",
-      "detail": "AdministrativeArea,Answer,BreadcrumbList,BusinessAudience,City,Country,FAQPage,L"
-    },
-    {
-      "id": "page:/zh/pricing/:cta",
-      "status": "PASS",
-      "detail": "5 tel: demo CTAs, 1 sms: CTAs to (469) 425-4142"
-    },
-    {
-      "id": "page:/zh/pricing/:cta-labels",
-      "status": "PASS",
-      "detail": "every CTA label matches its protocol"
-    },
-    {
-      "id": "page:/zh/industries/:h1",
-      "status": "PASS",
-      "detail": "1 h1"
-    },
-    {
-      "id": "page:/zh/industries/:schema",
-      "status": "PASS",
-      "detail": "BreadcrumbList,ListItem,ProfessionalService"
-    },
-    {
-      "id": "page:/zh/industries/:cta",
-      "status": "PASS",
-      "detail": "5 tel: demo CTAs, 1 sms: CTAs to (469) 425-4142"
-    },
-    {
-      "id": "page:/zh/industries/:cta-labels",
-      "status": "PASS",
-      "detail": "every CTA label matches its protocol"
-    },
-    {
-      "id": "page:/zh/industries/salons/:h1",
-      "status": "PASS",
-      "detail": "1 h1"
-    },
-    {
-      "id": "page:/zh/industries/salons/:schema",
-      "status": "PASS",
-      "detail": "AdministrativeArea,Answer,BreadcrumbList,BusinessAudience,City,Country,FAQPage,L"
-    },
-    {
-      "id": "page:/zh/industries/salons/:cta",
-      "status": "PASS",
-      "detail": "7 tel: demo CTAs, 1 sms: CTAs to (469) 425-4142"
-    },
-    {
-      "id": "page:/zh/industries/salons/:cta-labels",
-      "status": "PASS",
-      "detail": "every CTA label matches its protocol"
-    },
-    {
-      "id": "page:/zh/integrations/:h1",
-      "status": "PASS",
-      "detail": "1 h1"
-    },
-    {
-      "id": "page:/zh/integrations/:schema",
-      "status": "PASS",
-      "detail": "BreadcrumbList,ListItem,ProfessionalService"
-    },
-    {
-      "id": "page:/zh/integrations/:cta",
-      "status": "PASS",
-      "detail": "5 tel: demo CTAs, 1 sms: CTAs to (469) 425-4142"
-    },
-    {
-      "id": "page:/zh/integrations/:cta-labels",
-      "status": "PASS",
-      "detail": "every CTA label matches its protocol"
-    },
-    {
-      "id": "page:/zh/case-studies/:h1",
-      "status": "PASS",
-      "detail": "1 h1"
-    },
-    {
-      "id": "page:/zh/case-studies/:schema",
-      "status": "PASS",
-      "detail": "BreadcrumbList,ListItem,ProfessionalService"
-    },
-    {
-      "id": "page:/zh/case-studies/:cta",
-      "status": "PASS",
-      "detail": "5 tel: demo CTAs, 1 sms: CTAs to (469) 425-4142"
-    },
-    {
-      "id": "page:/zh/case-studies/:cta-labels",
-      "status": "PASS",
-      "detail": "every CTA label matches its protocol"
-    },
-    {
-      "id": "page:/zh/case-studies/ai-man-jack/:h1",
-      "status": "PASS",
-      "detail": "1 h1"
-    },
-    {
-      "id": "page:/zh/case-studies/ai-man-jack/:schema",
-      "status": "PASS",
-      "detail": "Article,BreadcrumbList,ListItem,ProfessionalService"
-    },
-    {
-      "id": "page:/zh/case-studies/ai-man-jack/:cta",
-      "status": "PASS",
-      "detail": "5 tel: demo CTAs, 1 sms: CTAs to (469) 425-4142"
-    },
-    {
-      "id": "page:/zh/case-studies/ai-man-jack/:cta-labels",
-      "status": "PASS",
-      "detail": "every CTA label matches its protocol"
-    },
-    {
-      "id": "page:/zh/about/:h1",
-      "status": "PASS",
-      "detail": "1 h1"
-    },
-    {
-      "id": "page:/zh/about/:schema",
-      "status": "PASS",
-      "detail": "AdministrativeArea,BreadcrumbList,City,Country,ListItem,Person,PostalAddress,Pro"
-    },
-    {
-      "id": "page:/zh/about/:cta",
-      "status": "PASS",
-      "detail": "7 tel: demo CTAs, 2 sms: CTAs to (469) 425-4142"
-    },
-    {
-      "id": "page:/zh/about/:cta-labels",
-      "status": "PASS",
-      "detail": "every CTA label matches its protocol"
-    },
-    {
-      "id": "page:/zh/contact/:h1",
-      "status": "PASS",
-      "detail": "1 h1"
-    },
-    {
-      "id": "page:/zh/contact/:schema",
-      "status": "PASS",
-      "detail": "BreadcrumbList,ContactPage,ListItem,ProfessionalService"
-    },
-    {
-      "id": "page:/zh/contact/:cta",
-      "status": "PASS",
-      "detail": "4 tel: demo CTAs, 2 sms: CTAs to (469) 425-4142"
-    },
-    {
-      "id": "page:/zh/contact/:cta-labels",
-      "status": "PASS",
-      "detail": "every CTA label matches its protocol"
-    },
-    {
-      "id": "page:/zh/ai-training/:h1",
-      "status": "PASS",
-      "detail": "1 h1"
-    },
-    {
-      "id": "page:/zh/ai-training/:schema",
-      "status": "PASS",
-      "detail": "AdministrativeArea,AggregateRating,Answer,City,Country,FAQPage,Offer,Organizatio"
-    },
-    {
-      "id": "page:/zh/ai-training/:cta",
-      "status": "PASS",
-      "detail": "3 tel: demo CTAs, 2 sms: CTAs to (469) 425-4142"
-    },
-    {
-      "id": "page:/zh/ai-training/:cta-labels",
-      "status": "PASS",
-      "detail": "every CTA label matches its protocol"
-    },
-    {
-      "id": "drift",
-      "status": "PASS",
-      "detail": "no on-page drift vs baseline (intentional change? rerun with --baseline)"
-    },
-    {
-      "id": "geo:robots",
-      "status": "PASS",
-      "detail": "AI crawlers (GPTBot/OAI-SearchBot/PerplexityBot/ClaudeBot) must not be blocked"
-    },
-    {
-      "id": "geo:llms-current",
-      "status": "FAIL",
-      "detail": "llms.txt must name training + $199 Starter plan + both phone numbers; stale copy misleads AI answers"
-    },
-    {
-      "id": "creds:google-api",
-      "status": "PASS",
-      "detail": "GSC/GA4/PSI via claude-seo need ~/.config/claude-seo/google-api.json"
-    }
-  ],
-  "data": {
-    "pulled_at": "2026-09-18T12:12:17.631696Z",
-    "gsc": {
-      "last7": {
-        "range": "2026-09-09..2026-09-15",
-        "clicks": 1,
-        "impressions": 91,
-        "ctr": 1.1,
-        "position": 39.7
-      },
-      "prev7": {
-        "range": "2026-09-02..2026-09-08",
-        "clicks": 1,
-        "impressions": 101,
-        "ctr": 0.99,
-        "position": 50.4
-      },
-      "impressions_wow_pct": -9.9,
-      "top10_queries": [
-        {
-          "query": "web hosting",
-          "impressions": 30,
-          "clicks": 0,
-          "position": 5.6
-        },
-        {
-          "query": "man and van",
-          "impressions": 8,
-          "clicks": 0,
-          "position": 1
-        },
-        {
-          "query": "ai business automation dallas",
-          "impressions": 4,
-          "clicks": 0,
-          "position": 81.5
-        },
-        {
-          "query": "jackie voice receptionist auxilis",
-          "impressions": 4,
-          "clicks": 0,
-          "position": 79.8
-        },
-        {
-          "query": "ai websites",
-          "impressions": 3,
-          "clicks": 0,
-          "position": 21
-        },
-        {
-          "query": "marketing agency near me",
-          "impressions": 2,
-          "clicks": 1,
-          "position": 21
-        },
-        {
-          "query": "ai75407",
-          "impressions": 2,
-          "clicks": 0,
-          "position": 3
-        },
-        {
-          "query": "automation consulting dallas",
-          "impressions": 2,
-          "clicks": 0,
-          "position": 78.5
-        },
-        {
-          "query": "automation consulting frisco",
-          "impressions": 2,
-          "clicks": 0,
-          "position": 78
-        },
-        {
-          "query": "automation consulting mckinney",
-          "impressions": 2,
-          "clicks": 0,
-          "position": 83
-        }
-      ],
-      "quick_wins_imp20_pos8to20": [],
-      "inspected": 46,
-      "indexed": 37,
-      "not_indexed": [
-        {
-          "url": "https://aimanjack.com/blog/",
-          "state": "URL is unknown to Google"
-        },
-        {
-          "url": "https://aimanjack.com/blog/how-much-do-missed-calls-cost/",
-          "state": "URL is unknown to Google"
-        },
-        {
-          "url": "https://aimanjack.com/zh/blog/how-much-do-missed-calls-cost/",
-          "state": "URL is unknown to Google"
-        },
-        {
-          "url": "https://aimanjack.com/blog/ai-training-for-employees-start-with-one-task/",
-          "state": "URL is unknown to Google"
-        },
-        {
-          "url": "https://aimanjack.com/zh/blog/ai-training-for-employees-start-with-one-task/",
-          "state": "URL is unknown to Google"
-        },
-        {
-          "url": "https://aimanjack.com/case-studies/ai-man-jack/",
-          "state": "error: TimeoutError"
-        },
-        {
-          "url": "https://aimanjack.com/case-studies/car-dealership-sms/",
-          "state": "error: TimeoutError"
-        },
-        {
-          "url": "https://aimanjack.com/industries/clinics/",
-          "state": "Discovered - currently not indexed"
-        },
-        {
-          "url": "https://aimanjack.com/tools/missed-call-calculator/",
-          "state": "URL is unknown to Google"
-        }
-      ]
-    },
-    "ga4": {
-      "window": "2026-09-11..2026-09-17",
-      "sessions_by_day": {
-        "20260911": 8,
-        "20260912": 18,
-        "20260913": 5,
-        "20260914": 6,
-        "20260915": 6,
-        "20260916": 8,
-        "20260917": 7
-      },
-      "sessions_total": 58,
-      "by_country": {
-        "United States": 46,
-        "China": 8,
-        "Finland": 2,
-        "India": 1
-      },
-      "by_region_city": {
-        "Texas/Melissa": 12,
-        "Oregon/Boardman": 7,
-        "Iowa/Council Bluffs": 6,
-        "Oregon/The Dalles": 5,
-        "/": 4,
-        "Texas/Dallas": 4,
-        "Texas/(not set)": 3,
-        "(not set)/(not set)": 2,
-        "Henan/Zhengzhou": 2,
-        "Texas/Spring": 2,
-        "California/San Jose": 1,
-        "Colorado/(not set)": 1,
-        "Hawaii/Honolulu": 1,
-        "Hubei/Wuhan": 1,
-        "Illinois/Glenview": 1,
-        "New York/New York": 1,
-        "Shanghai/Shanghai": 1,
-        "Texas/McKinney": 1,
-        "Texas/Plano": 1,
-        "Uttar Pradesh/Mathura": 1
-      },
-      "dfw_sessions": 23,
-      "jack_melissa_sessions": 12,
-      "cta_events": {
-        "form_submit": 4,
-        "book_demo_click": 3,
-        "header_call_click": 3,
-        "demo_call_click": 2,
-        "sms_click": 1
-      },
-      "cta_clicks_total": 13,
-      "cta_clicks_external": 8,
-      "conversion_wide_pct": 22.4,
-      "conversion_external_pct": 17.4
-    }
+ "date": "2026-09-18",
+ "checks": [
+  {
+   "id": "up:/",
+   "status": "PASS",
+   "detail": "HTTP 200 380ms"
+  },
+  {
+   "id": "perf:home-fetch",
+   "status": "PASS",
+   "detail": "380ms full fetch (PSI weekly gives the real CWV)"
+  },
+  {
+   "id": "up:/ai-training/",
+   "status": "PASS",
+   "detail": "HTTP 200 77ms"
+  },
+  {
+   "id": "up:/blog/",
+   "status": "PASS",
+   "detail": "HTTP 200 69ms"
+  },
+  {
+   "id": "up:/about/",
+   "status": "PASS",
+   "detail": "HTTP 200 70ms"
+  },
+  {
+   "id": "up:/contact/",
+   "status": "PASS",
+   "detail": "HTTP 200 78ms"
+  },
+  {
+   "id": "up:/book/",
+   "status": "PASS",
+   "detail": "HTTP 200 67ms"
+  },
+  {
+   "id": "up:/zh/",
+   "status": "PASS",
+   "detail": "HTTP 200 72ms"
+  },
+  {
+   "id": "up:/zh/ai-training/",
+   "status": "PASS",
+   "detail": "HTTP 200 75ms"
+  },
+  {
+   "id": "up:/zh/blog/",
+   "status": "PASS",
+   "detail": "HTTP 200 71ms"
+  },
+  {
+   "id": "up:/zh/about/",
+   "status": "PASS",
+   "detail": "HTTP 200 71ms"
+  },
+  {
+   "id": "up:/zh/contact/",
+   "status": "PASS",
+   "detail": "HTTP 200 67ms"
+  },
+  {
+   "id": "up:/zh/book/",
+   "status": "PASS",
+   "detail": "HTTP 200 64ms"
+  },
+  {
+   "id": "up:/sitemap.xml",
+   "status": "PASS",
+   "detail": "HTTP 200 62ms"
+  },
+  {
+   "id": "up:/robots.txt",
+   "status": "PASS",
+   "detail": "HTTP 200 57ms"
+  },
+  {
+   "id": "up:/llms.txt",
+   "status": "PASS",
+   "detail": "HTTP 200 61ms"
+  },
+  {
+   "id": "up:404",
+   "status": "PASS",
+   "detail": "random path must 404, not soft-200"
+  },
+  {
+   "id": "redirects",
+   "status": "PASS",
+   "detail": "all _redirects rules hold"
+  },
+  {
+   "id": "sitemap:pages",
+   "status": "PASS",
+   "detail": "20 urls"
+  },
+  {
+   "id": "sitemap:legacy-out",
+   "status": "PASS",
+   "detail": "no legacy receptionist routes in sitemap"
+  },
+  {
+   "id": "legacy:/ai-receptionist/",
+   "status": "PASS",
+   "detail": "HTTP 200, robots=\"noindex, follow\""
+  },
+  {
+   "id": "legacy:/pricing/",
+   "status": "PASS",
+   "detail": "HTTP 200, robots=\"noindex, follow\""
+  },
+  {
+   "id": "legacy:/industries/",
+   "status": "PASS",
+   "detail": "HTTP 200, robots=\"noindex, follow\""
+  },
+  {
+   "id": "legacy:/integrations/",
+   "status": "PASS",
+   "detail": "HTTP 200, robots=\"noindex, follow\""
+  },
+  {
+   "id": "legacy:/tools/missed-call-calculator/",
+   "status": "PASS",
+   "detail": "HTTP 200, robots=\"noindex, follow\""
+  },
+  {
+   "id": "legacy:/case-studies/",
+   "status": "PASS",
+   "detail": "HTTP 200, robots=\"noindex, follow\""
+  },
+  {
+   "id": "legacy:/blog/how-much-do-missed-calls-cost/",
+   "status": "PASS",
+   "detail": "HTTP 200, robots=\"noindex, follow\""
+  },
+  {
+   "id": "page:/:h1",
+   "status": "PASS",
+   "detail": "1 h1"
+  },
+  {
+   "id": "page:/:meta",
+   "status": "PASS",
+   "detail": "canonical=https://aimanjack.com/ robots=index, follow, max-image-preview:large, max-snippet:-1 hreflang=en,x-default,zh"
+  },
+  {
+   "id": "page:/:schema",
+   "status": "PASS",
+   "detail": "AdministrativeArea,AggregateRating,Answer,City,Country,FAQPage,Offer,Organizatio"
+  },
+  {
+   "id": "page:/:cta",
+   "status": "PASS",
+   "detail": "5 links to /book/ (Plan a Team Workshop)"
+  },
+  {
+   "id": "page:/:cta-labels",
+   "status": "PASS",
+   "detail": "every CTA label matches its protocol"
+  },
+  {
+   "id": "page:/:no-receptionist",
+   "status": "PASS",
+   "detail": "no receptionist marketing"
+  },
+  {
+   "id": "page:/:og-image",
+   "status": "PASS",
+   "detail": "https://aimanjack.com/img/og-training.jpg"
+  },
+  {
+   "id": "track:ga4",
+   "status": "PASS",
+   "detail": "GA4 present"
+  },
+  {
+   "id": "page:/ai-training/:h1",
+   "status": "PASS",
+   "detail": "1 h1"
+  },
+  {
+   "id": "page:/ai-training/:meta",
+   "status": "PASS",
+   "detail": "canonical=https://aimanjack.com/ai-training/ robots=index, follow, max-image-preview:large, max-snippet:-1 hreflang=en,x-default,zh"
+  },
+  {
+   "id": "page:/ai-training/:schema",
+   "status": "PASS",
+   "detail": "AdministrativeArea,AggregateRating,Answer,BreadcrumbList,City,Country,FAQPage,Li"
+  },
+  {
+   "id": "page:/ai-training/:cta",
+   "status": "PASS",
+   "detail": "9 links to /book/ (Plan a Team Workshop)"
+  },
+  {
+   "id": "page:/ai-training/:cta-labels",
+   "status": "PASS",
+   "detail": "every CTA label matches its protocol"
+  },
+  {
+   "id": "page:/ai-training/:no-receptionist",
+   "status": "PASS",
+   "detail": "no receptionist marketing"
+  },
+  {
+   "id": "page:/blog/:h1",
+   "status": "PASS",
+   "detail": "1 h1"
+  },
+  {
+   "id": "page:/blog/:meta",
+   "status": "PASS",
+   "detail": "canonical=https://aimanjack.com/blog/ robots=index, follow, max-image-preview:large, max-snippet:-1 hreflang=en,x-default,zh"
+  },
+  {
+   "id": "page:/blog/:schema",
+   "status": "PASS",
+   "detail": "BreadcrumbList,CollectionPage,ListItem,ProfessionalService"
+  },
+  {
+   "id": "page:/blog/:cta",
+   "status": "PASS",
+   "detail": "4 links to /book/ (Plan a Team Workshop)"
+  },
+  {
+   "id": "page:/blog/:cta-labels",
+   "status": "PASS",
+   "detail": "every CTA label matches its protocol"
+  },
+  {
+   "id": "page:/blog/:no-receptionist",
+   "status": "PASS",
+   "detail": "no receptionist marketing"
+  },
+  {
+   "id": "page:/about/:h1",
+   "status": "PASS",
+   "detail": "1 h1"
+  },
+  {
+   "id": "page:/about/:meta",
+   "status": "PASS",
+   "detail": "canonical=https://aimanjack.com/about/ robots=index, follow, max-image-preview:large, max-snippet:-1 hreflang=en,x-default,zh"
+  },
+  {
+   "id": "page:/about/:schema",
+   "status": "PASS",
+   "detail": "AdministrativeArea,BreadcrumbList,City,Country,ListItem,Offer,Person,PostalAddre"
+  },
+  {
+   "id": "page:/about/:cta",
+   "status": "PASS",
+   "detail": "6 links to /book/ (Plan a Team Workshop)"
+  },
+  {
+   "id": "page:/about/:cta-labels",
+   "status": "PASS",
+   "detail": "every CTA label matches its protocol"
+  },
+  {
+   "id": "page:/about/:no-receptionist",
+   "status": "PASS",
+   "detail": "no receptionist marketing"
+  },
+  {
+   "id": "page:/contact/:h1",
+   "status": "PASS",
+   "detail": "1 h1"
+  },
+  {
+   "id": "page:/contact/:meta",
+   "status": "PASS",
+   "detail": "canonical=https://aimanjack.com/contact/ robots=index, follow, max-image-preview:large, max-snippet:-1 hreflang=en,x-default,zh"
+  },
+  {
+   "id": "page:/contact/:schema",
+   "status": "PASS",
+   "detail": "BreadcrumbList,ContactPage,ListItem,ProfessionalService"
+  },
+  {
+   "id": "page:/contact/:cta",
+   "status": "PASS",
+   "detail": "4 links to /book/ (Plan a Team Workshop)"
+  },
+  {
+   "id": "page:/contact/:cta-labels",
+   "status": "PASS",
+   "detail": "every CTA label matches its protocol"
+  },
+  {
+   "id": "page:/contact/:no-receptionist",
+   "status": "PASS",
+   "detail": "no receptionist marketing"
+  },
+  {
+   "id": "page:/book/:h1",
+   "status": "PASS",
+   "detail": "1 h1"
+  },
+  {
+   "id": "page:/book/:meta",
+   "status": "PASS",
+   "detail": "canonical=https://aimanjack.com/book/ robots=index, follow, max-image-preview:large, max-snippet:-1 hreflang=en,x-default,zh"
+  },
+  {
+   "id": "page:/book/:schema",
+   "status": "PASS",
+   "detail": "BreadcrumbList,ListItem,ProfessionalService,WebPage"
+  },
+  {
+   "id": "page:/book/:cta",
+   "status": "PASS",
+   "detail": "7 links to /book/ (Plan a Team Workshop)"
+  },
+  {
+   "id": "page:/book/:cta-labels",
+   "status": "PASS",
+   "detail": "every CTA label matches its protocol"
+  },
+  {
+   "id": "page:/book/:no-receptionist",
+   "status": "PASS",
+   "detail": "no receptionist marketing"
+  },
+  {
+   "id": "page:/zh/:h1",
+   "status": "PASS",
+   "detail": "1 h1"
+  },
+  {
+   "id": "page:/zh/:meta",
+   "status": "PASS",
+   "detail": "canonical=https://aimanjack.com/zh/ robots=index, follow, max-image-preview:large, max-snippet:-1 hreflang=en,x-default,zh"
+  },
+  {
+   "id": "page:/zh/:schema",
+   "status": "PASS",
+   "detail": "AdministrativeArea,AggregateRating,Answer,City,Country,FAQPage,Offer,Organizatio"
+  },
+  {
+   "id": "page:/zh/:cta",
+   "status": "PASS",
+   "detail": "5 links to /book/ (Plan a Team Workshop)"
+  },
+  {
+   "id": "page:/zh/:cta-labels",
+   "status": "PASS",
+   "detail": "every CTA label matches its protocol"
+  },
+  {
+   "id": "page:/zh/:no-receptionist",
+   "status": "PASS",
+   "detail": "no receptionist marketing"
+  },
+  {
+   "id": "page:/zh/ai-training/:h1",
+   "status": "PASS",
+   "detail": "1 h1"
+  },
+  {
+   "id": "page:/zh/ai-training/:meta",
+   "status": "PASS",
+   "detail": "canonical=https://aimanjack.com/zh/ai-training/ robots=index, follow, max-image-preview:large, max-snippet:-1 hreflang=en,x-default,zh"
+  },
+  {
+   "id": "page:/zh/ai-training/:schema",
+   "status": "PASS",
+   "detail": "AdministrativeArea,AggregateRating,Answer,BreadcrumbList,City,Country,FAQPage,Li"
+  },
+  {
+   "id": "page:/zh/ai-training/:cta",
+   "status": "PASS",
+   "detail": "9 links to /book/ (Plan a Team Workshop)"
+  },
+  {
+   "id": "page:/zh/ai-training/:cta-labels",
+   "status": "PASS",
+   "detail": "every CTA label matches its protocol"
+  },
+  {
+   "id": "page:/zh/ai-training/:no-receptionist",
+   "status": "PASS",
+   "detail": "no receptionist marketing"
+  },
+  {
+   "id": "page:/zh/blog/:h1",
+   "status": "PASS",
+   "detail": "1 h1"
+  },
+  {
+   "id": "page:/zh/blog/:meta",
+   "status": "PASS",
+   "detail": "canonical=https://aimanjack.com/zh/blog/ robots=index, follow, max-image-preview:large, max-snippet:-1 hreflang=en,x-default,zh"
+  },
+  {
+   "id": "page:/zh/blog/:schema",
+   "status": "PASS",
+   "detail": "BreadcrumbList,CollectionPage,ListItem,ProfessionalService"
+  },
+  {
+   "id": "page:/zh/blog/:cta",
+   "status": "PASS",
+   "detail": "4 links to /book/ (Plan a Team Workshop)"
+  },
+  {
+   "id": "page:/zh/blog/:cta-labels",
+   "status": "PASS",
+   "detail": "every CTA label matches its protocol"
+  },
+  {
+   "id": "page:/zh/blog/:no-receptionist",
+   "status": "PASS",
+   "detail": "no receptionist marketing"
+  },
+  {
+   "id": "page:/zh/about/:h1",
+   "status": "PASS",
+   "detail": "1 h1"
+  },
+  {
+   "id": "page:/zh/about/:meta",
+   "status": "PASS",
+   "detail": "canonical=https://aimanjack.com/zh/about/ robots=index, follow, max-image-preview:large, max-snippet:-1 hreflang=en,x-default,zh"
+  },
+  {
+   "id": "page:/zh/about/:schema",
+   "status": "PASS",
+   "detail": "AdministrativeArea,BreadcrumbList,City,Country,ListItem,Offer,Person,PostalAddre"
+  },
+  {
+   "id": "page:/zh/about/:cta",
+   "status": "PASS",
+   "detail": "6 links to /book/ (Plan a Team Workshop)"
+  },
+  {
+   "id": "page:/zh/about/:cta-labels",
+   "status": "PASS",
+   "detail": "every CTA label matches its protocol"
+  },
+  {
+   "id": "page:/zh/about/:no-receptionist",
+   "status": "PASS",
+   "detail": "no receptionist marketing"
+  },
+  {
+   "id": "page:/zh/contact/:h1",
+   "status": "PASS",
+   "detail": "1 h1"
+  },
+  {
+   "id": "page:/zh/contact/:meta",
+   "status": "PASS",
+   "detail": "canonical=https://aimanjack.com/zh/contact/ robots=index, follow, max-image-preview:large, max-snippet:-1 hreflang=en,x-default,zh"
+  },
+  {
+   "id": "page:/zh/contact/:schema",
+   "status": "PASS",
+   "detail": "BreadcrumbList,ContactPage,ListItem,ProfessionalService"
+  },
+  {
+   "id": "page:/zh/contact/:cta",
+   "status": "PASS",
+   "detail": "4 links to /book/ (Plan a Team Workshop)"
+  },
+  {
+   "id": "page:/zh/contact/:cta-labels",
+   "status": "PASS",
+   "detail": "every CTA label matches its protocol"
+  },
+  {
+   "id": "page:/zh/contact/:no-receptionist",
+   "status": "PASS",
+   "detail": "no receptionist marketing"
+  },
+  {
+   "id": "page:/zh/book/:h1",
+   "status": "PASS",
+   "detail": "1 h1"
+  },
+  {
+   "id": "page:/zh/book/:meta",
+   "status": "PASS",
+   "detail": "canonical=https://aimanjack.com/zh/book/ robots=index, follow, max-image-preview:large, max-snippet:-1 hreflang=en,x-default,zh"
+  },
+  {
+   "id": "page:/zh/book/:schema",
+   "status": "PASS",
+   "detail": "BreadcrumbList,ListItem,ProfessionalService,WebPage"
+  },
+  {
+   "id": "page:/zh/book/:cta",
+   "status": "PASS",
+   "detail": "7 links to /book/ (Plan a Team Workshop)"
+  },
+  {
+   "id": "page:/zh/book/:cta-labels",
+   "status": "PASS",
+   "detail": "every CTA label matches its protocol"
+  },
+  {
+   "id": "page:/zh/book/:no-receptionist",
+   "status": "PASS",
+   "detail": "no receptionist marketing"
+  },
+  {
+   "id": "drift",
+   "status": "PASS",
+   "detail": "no on-page drift vs baseline (intentional change? rerun with --baseline)"
+  },
+  {
+   "id": "geo:robots",
+   "status": "PASS",
+   "detail": "AI crawlers (GPTBot/OAI-SearchBot/PerplexityBot/ClaudeBot) must not be blocked"
+  },
+  {
+   "id": "geo:llms-current",
+   "status": "PASS",
+   "detail": "llms.txt must describe corporate AI training + $1,500 half-day + SMS number, and nothing about the receptionist"
+  },
+  {
+   "id": "creds:google-api",
+   "status": "PASS",
+   "detail": "GSC/GA4/PSI via claude-seo need ~/.config/claude-seo/google-api.json"
   }
+ ]
 }

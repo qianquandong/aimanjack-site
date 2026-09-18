@@ -64,7 +64,8 @@ for (const p of PAGES) {
   const self = SITE + p;
   snap[p] = {
     title: m(h, /<title>([^<]*)<\/title>/), description: m(h, /<meta name="description" content="([^"]*)"/),
-    canonical: m(h, /<link rel="canonical" href="([^"]*)"/), hreflang: [...h.matchAll(/hreflang="([^"]+)"/g)].map((x) => x[1]).sort().join(","),
+    canonical: m(h, /<link rel="canonical" href="([^"]*)"/), hreflang: [...h.matchAll(/<link rel="alternate" hreflang="([^"]+)"/g)]   // <link> only: the header language switch also carries hreflang=
+     .map((x) => x[1]).sort().join(","),
     h1: m(h, /<h1[^>]*>([\s\S]*?)<\/h1>/).replace(/<[^>]+>|\s+/g, " ").trim(), robots: m(h, /<meta name="robots" content="([^"]*)"/),
     schemaTypes: types, ogImage: m(h, /property="og:image" content="([^"]*)"/), bookLinks: (h.match(/href="\/(?:zh\/)?book\/"/g) ?? []).length,
     ga4: /googletagmanager\.com\/gtag/.test(h), h1Count: (h.match(/<h1[\s>]/g) ?? []).length,
