@@ -1,5 +1,5 @@
 {
- "capturedAt": "2026-09-16",
+ "capturedAt": "2026-09-18",
  "pages": {
   "/": {
    "title": "AI Training for Dallas Teams, Hands-On | AI Man Jack",
@@ -10,7 +10,7 @@
    "robots": "index, follow, max-image-preview:large, max-snippet:-1",
    "schemaTypes": "AdministrativeArea,AggregateRating,Answer,City,Country,FAQPage,Offer,Organization,Person,PostalAddress,ProfessionalService,Question,Rating,Review,Service,State,WebSite",
    "ogImage": "https://aimanjack.com/img/og-training.jpg",
-   "smsLinks": 4,
+   "smsLinks": 2,
    "telDemo": 3,
    "ga4": true,
    "h1Count": 1
@@ -150,7 +150,7 @@
    "robots": "noindex, follow",
    "schemaTypes": "AdministrativeArea,AggregateRating,Answer,City,Country,FAQPage,Offer,Organization,Person,PostalAddress,ProfessionalService,Question,Rating,Review,Service,State,WebSite",
    "ogImage": "https://aimanjack.com/img/og-training.jpg",
-   "smsLinks": 4,
+   "smsLinks": 2,
    "telDemo": 3,
    "ga4": true,
    "h1Count": 1
@@ -164,7 +164,7 @@
    "robots": "index, follow, max-image-preview:large, max-snippet:-1",
    "schemaTypes": "AdministrativeArea,AggregateRating,Answer,City,Country,FAQPage,Offer,Organization,Person,PostalAddress,ProfessionalService,Question,Rating,Review,Service,State,WebSite",
    "ogImage": "https://aimanjack.com/img/og-training-zh.jpg",
-   "smsLinks": 4,
+   "smsLinks": 2,
    "telDemo": 3,
    "ga4": true,
    "h1Count": 1
@@ -304,7 +304,7 @@
    "robots": "noindex, follow",
    "schemaTypes": "AdministrativeArea,AggregateRating,Answer,City,Country,FAQPage,Offer,Organization,Person,PostalAddress,ProfessionalService,Question,Rating,Review,Service,State,WebSite",
    "ogImage": "https://aimanjack.com/img/og-training-zh.jpg",
-   "smsLinks": 4,
+   "smsLinks": 2,
    "telDemo": 3,
    "ga4": true,
    "h1Count": 1
