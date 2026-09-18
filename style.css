@@ -15,6 +15,7 @@ html{color-scheme:light;scroll-behavior:smooth;scroll-padding-top:84px}
 body{font-family:'Satoshi',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--ink);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
 html[lang=zh] body{font-family:'Satoshi','PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans SC',-apple-system,sans-serif}
 img,svg{display:block;max-width:100%}
+img{height:auto}
 a{color:var(--accent-ink);text-decoration:none}
 a:hover{text-decoration:underline;text-underline-offset:3px}
 p a,li a,dd a{text-decoration:underline;text-underline-offset:3px}

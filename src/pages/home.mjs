@@ -47,9 +47,9 @@ const METHOD = {
 };
 
 const PHOTOS = [
-  ['dallas-ai-hackathon-group', { en: 'The 37-person Dallas AI hackathon: three hours, live demos at the end.', zh: '37 人的达拉斯 AI hackathon：三小时，结尾现场 demo。' }],
-  ['dallas-ai-hackathon-live-demo', { en: 'A team demonstrating what it built.', zh: '一个小组在演示自己搭出来的东西。' }],
-  ['dallas-session3-hands-on', { en: 'Hands-on session: everyone working on their own task.', zh: '动手环节：每个人在做自己的任务。' }],
+  ['dallas-ai-hackathon-group', 1200, 910, { en: 'The 37-person Dallas AI hackathon: three hours, live demos at the end.', zh: '37 人的达拉斯 AI hackathon：三小时，结尾现场 demo。' }],
+  ['dallas-ai-hackathon-live-demo', 1200, 900, { en: 'A team demonstrating what it built.', zh: '一个小组在演示自己搭出来的东西。' }],
+  ['dallas-session3-hands-on', 1600, 1066, { en: 'Hands-on session: everyone working on their own task.', zh: '动手环节：每个人在做自己的任务。' }],
 ];
 
 const C = {
@@ -117,7 +117,7 @@ const page = (lang) => {
 <p class="section-note"><a href="${t('/ai-training/')}#curriculum">${c.methodMore} &rarr;</a></p></section>
 
 <section class="section" id="proof"><div class="kicker">${c.proofK}</div><h2>${c.proofH}</h2>
-<div class="grid-3" style="margin-top:26px">${PHOTOS.map(([f, cap]) => `<figure class="figure"><img src="/img/events/${f}.webp" width="1200" height="900" loading="lazy" decoding="async" alt="${cap[lang]}"><figcaption>${cap[lang]}</figcaption></figure>`).join('')}</div></section>
+<div class="grid-3" style="margin-top:26px">${PHOTOS.map(([f, w, h, cap]) => `<figure class="figure"><img src="/img/events/${f}.webp" width="${w}" height="${h}" loading="lazy" decoding="async" alt="${cap[lang]}"><figcaption>${cap[lang]}</figcaption></figure>`).join('')}</div></section>
 
 <section class="section" id="jack"><div class="kicker">${c.jackK}</div><h2>${c.jackH}</h2>
 <div class="bio" style="margin-top:22px"><img src="/img/jack-portrait-256.webp" width="128" height="128" loading="lazy" decoding="async" alt="Jack Qian"><div class="who"><h3>Jack Qian</h3><ul class="needs" style="columns:1;margin-top:8px">${c.jack.map((i) => `<li>${i}</li>`).join('')}</ul><p style="margin-top:12px"><a href="${t('/about/')}">${c.jackMore} &rarr;</a></p></div></div></section>
