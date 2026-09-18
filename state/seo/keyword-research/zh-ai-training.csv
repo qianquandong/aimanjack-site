@@ -1,0 +1,61 @@
+﻿keyword,KD,vol,intent,cluster_slug,target_url,kd_label,vol_band,vol_source,intent_confidence,role,cluster_name,target_status,sources,best_rank,modifier,demand,serp_top_domains,serp_features,ugc_count,lang,root
+ai 培训,-1,2900,informational,ai-peixun,/zh/ai-training/,n/a,1k-10k,root,0.6,pillar,ai 培训,existing,root|google_autocomplete|bing_suggest|baidu_suggest,0,,100.0,,,,zh,ai 培训
+ai培训班,-1,1590,informational,ai-peixun,/zh/ai-training/,n/a,1k-10k,heuristic,0.6,satellite,ai 培训,existing,google_autocomplete|bing_suggest|baidu_suggest,1,,76.0,,,,zh,ai 培训
+ai培训ppt,-1,1590,informational,ai-peixun-ppt,/zh/ai-training/,n/a,1k-10k,heuristic,0.6,pillar,ai培训ppt,existing,google_autocomplete|bing_suggest|baidu_suggest,1,,76.0,,,,zh,ai 培训
+ai培训师,-1,1410,informational,ai-peixun-2,/zh/ai-training/,n/a,1k-10k,heuristic,0.6,pillar,ai培训师,existing,google_autocomplete|bing_suggest|baidu_suggest,3,,72.0,,,,zh,ai 培训
+ai培训图片,-1,1160,informational,ai-peixun-tupian,/zh/ai-training/,n/a,1k-10k,heuristic,0.85,pillar,ai培训图片,existing,bing_suggest|baidu_suggest,0,,66.0,,,,zh,ai 培训
+ai 培训 课程,-1,1010,informational,ai-peixun-kecheng,/zh/ai-training/,n/a,1k-10k,heuristic,0.85,pillar,ai 培训 课程,existing,google_autocomplete|baidu_suggest,2,,62.0,,,,zh,ai 培训
+ai培训师证书有用吗,-1,1010,informational,ai-peixun-2,/zh/ai-training/,n/a,1k-10k,heuristic,0.85,satellite,ai培训师,existing,bing_suggest|baidu_suggest,2,,62.0,,,,zh,ai 培训
+ai 培训 机构,-1,870,informational,ai-peixun-3,/zh/ai-training/,n/a,100-1k,heuristic,0.6,pillar,ai 培训 机构,existing,google_autocomplete|baidu_suggest,4,,58.0,,,,zh,ai 培训
+ai培训心得,-1,810,informational,ai-peixun-4,/zh/ai-training/,n/a,100-1k,heuristic,0.6,pillar,ai培训心得,existing,bing_suggest|baidu_suggest,5,,56.0,,,,zh,ai 培训
+ai培训视频,-1,750,informational,ai-peixun-5,/zh/ai-training/,n/a,100-1k,heuristic,0.6,pillar,ai培训视频,existing,bing_suggest|baidu_suggest,6,,54.0,,,,zh,ai 培训
+ai培训班在哪里学,-1,750,informational,ai-peixun-6,/zh/about/,n/a,100-1k,heuristic,0.6,pillar,ai培训班在哪里学,existing,baidu_suggest,0,,54.0,,,,zh,ai 培训
+ai培训费用,-1,720,transactional,ai-peixun-feiyong,/zh/ai-training/,n/a,100-1k,heuristic,0.6,pillar,ai培训费用,existing,bing_suggest|baidu_suggest,0,费用,53.0,,,,zh,ai 培训
+ai培训软件,-1,720,informational,ai-peixun-ruanjian,/zh/ai-training/,n/a,100-1k,heuristic,0.6,pillar,ai培训软件,existing,bing_suggest|baidu_suggest,0,软件,53.0,,,,zh,ai 培训
+ai培训系统,-1,720,informational,ai-peixun-xitong,/zh/ai-training/,n/a,100-1k,heuristic,0.6,pillar,ai培训系统,existing,bing_suggest|baidu_suggest,0,系统,53.0,,,,zh,ai 培训
+ai 技术 培训,-1,720,informational,ai-peixun-7,/zh/ai-training/,n/a,100-1k,heuristic,0.6,pillar,ai 技术 培训,existing,google_autocomplete|baidu_suggest,0,培训,53.0,,,,zh,ai 培训
+ai培训是什么意思,-1,720,informational,ai-peixun-shi-shenme,/zh/about/,n/a,100-1k,heuristic,0.85,pillar,ai培训是什么意思,existing,bing_suggest|baidu_suggest,0,是什么,53.0,,,,zh,ai 培训
+ai培训班课程,-1,690,informational,ai-peixun-kecheng,/zh/ai-training/,n/a,100-1k,heuristic,0.85,satellite,ai 培训 课程,existing,baidu_suggest,1,,52.0,,,,zh,ai 培训
+ai 培训 平台,-1,660,informational,ai-peixun-8,/zh/ai-training/,n/a,100-1k,heuristic,0.6,pillar,ai 培训 平台,existing,google_autocomplete|baidu_suggest,1,软件,51.0,,,,zh,ai 培训
+ai培训一般多少钱,-1,660,transactional,ai-peixun-duoshaoqian,/zh/ai-training/,n/a,100-1k,heuristic,0.6,pillar,ai培训一般多少钱,existing,bing_suggest|baidu_suggest,1,多少钱,51.0,,,,zh,ai 培训
+ai培训课件,-1,630,informational,ai-peixun-9,/zh/ai-training/,n/a,100-1k,heuristic,0.6,pillar,ai培训课件,existing,bing_suggest,2,,50.0,,,,zh,ai 培训
+ai培训机构哪家最好,-1,630,commercial,ai-peixun-najia-zuihao,NEW /zh/ai-peixun-najia-zuihao/,n/a,100-1k,heuristic,0.85,pillar,ai培训机构哪家最好,new,baidu_suggest,2,,50.0,,,,zh,ai 培训
+ai 免费 培训,-1,600,transactional,ai-mianfei-peixun,/zh/ai-training/,n/a,100-1k,heuristic,0.6,pillar,ai 免费 培训,existing,google_autocomplete|baidu_suggest,2,软件,49.0,,,,zh,ai 培训
+ai培训机构排名,-1,580,commercial,ai-peixun-paiming,/zh/ai-training/,n/a,100-1k,heuristic,0.6,pillar,ai培训机构排名,existing,baidu_suggest,3,,48.0,,,,zh,ai 培训
+ai培训机构哪个好,-1,580,commercial,ai-peixun-najia-zuihao,NEW /zh/ai-peixun-najia-zuihao/,n/a,100-1k,heuristic,0.6,satellite,ai培训机构哪家最好,new,bing_suggest,3,,48.0,,,,zh,ai 培训
+ai培训学费一般是多少?,-1,530,informational,ai-peixun-shi,NEW /zh/ai-peixun-shi/,n/a,100-1k,heuristic,0.6,pillar,ai培训学费一般是多少?,new,baidu_suggest,4,,46.0,,,,zh,ai 培训
+ai 培训学院,-1,480,informational,ai-peixun-10,/zh/ai-training/,n/a,100-1k,heuristic,0.6,pillar,ai 培训学院,existing,google_autocomplete,5,,44.0,,,,zh,ai 培训
+ai培训师证书,-1,480,informational,ai-peixun-2,/zh/ai-training/,n/a,100-1k,heuristic,0.6,satellite,ai培训师,existing,bing_suggest,5,,44.0,,,,zh,ai 培训
+ai 培训 材料,-1,480,informational,ai-peixun-11,/zh/ai-training/,n/a,100-1k,heuristic,0.6,pillar,ai 培训 材料,existing,google_autocomplete|baidu_suggest,1,z,44.0,,,,zh,ai 培训
+ai培训师证书怎么考,-1,480,informational,ai-peixun-2,/zh/ai-training/,n/a,100-1k,heuristic,0.85,satellite,ai培训师,existing,baidu_suggest,5,,44.0,,,,zh,ai 培训
+ai培训班一般培训什么,-1,430,informational,ai-peixun-peixun-shenme,/zh/about/,n/a,100-1k,heuristic,0.85,pillar,ai培训班一般培训什么,existing,baidu_suggest,6,,42.0,,,,zh,ai 培训
+ai培训价格,-1,410,transactional,ai-peixun-jiage,/zh/ai-training/,n/a,100-1k,heuristic,0.6,pillar,ai培训价格,existing,bing_suggest,0,价格,41.0,,,,zh,ai 培训
+曙海培训电话,-1,410,informational,peixun-dianhua,NEW /zh/peixun-dianhua/,n/a,100-1k,heuristic,0.6,pillar,曙海培训电话,new,bing_suggest,0,电话,41.0,,,,zh,ai 培训
+美国机长培训,-1,410,informational,usa-peixun,NEW /zh/usa-peixun/,n/a,100-1k,heuristic,0.6,pillar,美国机长培训,new,bing_suggest,0,美国,41.0,,,,zh,ai 培训
+ai培训教程,-1,410,informational,ai-peixun-jiaocheng,/zh/ai-training/,n/a,100-1k,heuristic,0.85,pillar,ai培训教程,existing,baidu_suggest,0,怎么用,41.0,,,,zh,ai 培训
+ai培训电话,-1,410,informational,peixun-dianhua,/zh/book/,n/a,100-1k,heuristic,0.6,satellite,曙海培训电话,existing,baidu_suggest,0,电话,41.0,,,,zh,ai 培训
+ai培训预约,-1,410,transactional,ai-peixun-yuyue,/zh/book/,n/a,100-1k,heuristic,0.6,pillar,ai培训预约,existing,baidu_suggest,0,预约,41.0,,,,zh,ai 培训
+AI培训方案,-1,410,informational,ai-peixun-fangan,/zh/ai-training/,n/a,100-1k,heuristic,0.6,pillar,AI培训方案,existing,baidu_suggest,0,方案,41.0,,,,zh,ai 培训
+ai培训免费,-1,410,transactional,ai-mianfei-peixun,/zh/ai-training/,n/a,100-1k,heuristic,0.6,satellite,ai 免费 培训,existing,baidu_suggest,0,免费,41.0,,,,zh,ai 培训
+怎么培训AI,-1,410,informational,zenme-peixun-ai,/zh/ai-training/,n/a,100-1k,heuristic,0.85,pillar,怎么培训AI,existing,baidu_suggest,0,如何,41.0,,,,zh,ai 培训
+最好的专科培训,-1,410,commercial,zuihao-peixun,NEW /zh/zuihao-peixun/,n/a,100-1k,heuristic,0.6,pillar,最好的专科培训,new,bing_suggest,0,最好的,41.0,,,,zh,ai 培训
+ai培训多少钱,-1,410,transactional,ai-peixun-duoshaoqian,/zh/ai-training/,n/a,100-1k,heuristic,0.6,satellite,ai培训一般多少钱,existing,baidu_suggest,0,多少钱,41.0,,,,zh,ai 培训
+AI培训培训课,-1,410,informational,ai-peixun-9,/zh/ai-training/,n/a,100-1k,heuristic,0.85,satellite,ai培训课件,existing,baidu_suggest,0,培训,41.0,,,,zh,ai 培训
+什么是ai培训,-1,410,informational,shenme-shi-ai-peixun,/zh/about/,n/a,100-1k,heuristic,0.85,pillar,什么是ai培训,existing,baidu_suggest,0,什么是,41.0,,,,zh,ai 培训
+培训用英语怎么说,-1,410,informational,peixun-yong-zenme,/zh/ai-training/,n/a,100-1k,heuristic,0.85,pillar,培训用英语怎么说,existing,bing_suggest,0,怎么用,41.0,,,,zh,ai 培训
+培训学时如何计算,-1,410,informational,peixun-ruhe,NEW /zh/peixun-ruhe/,n/a,100-1k,heuristic,0.85,pillar,培训学时如何计算,new,bing_suggest,0,如何,41.0,,,,zh,ai 培训
+培训经历怎么填写,-1,410,informational,peixun-zenme,NEW /zh/peixun-zenme/,n/a,100-1k,heuristic,0.85,pillar,培训经历怎么填写,new,bing_suggest,0,怎么,41.0,,,,zh,ai 培训
+AI培训费用明细,-1,410,transactional,ai-peixun-feiyong,/zh/ai-training/,n/a,100-1k,heuristic,0.6,satellite,ai培训费用,existing,baidu_suggest,0,费用,41.0,,,,zh,ai 培训
+企业AI培训公司,-1,410,informational,qiye-ai-peixun-gongsi,/zh/ai-training/,n/a,100-1k,heuristic,0.6,pillar,企业AI培训公司,existing,baidu_suggest,0,小企业,41.0,,,,zh,ai 培训
+美容培训机构推荐,-1,410,commercial,meirong-peixun-tuijian,NEW /zh/meirong-peixun-tuijian/,n/a,100-1k,heuristic,0.6,pillar,美容培训机构推荐,new,baidu_suggest,0,美容院,41.0,,,,zh,ai 培训
+pmp培训机构推荐,-1,410,commercial,meirong-peixun-tuijian,NEW /zh/meirong-peixun-tuijian/,n/a,100-1k,heuristic,0.6,satellite,美容培训机构推荐,new,bing_suggest,0,推荐,41.0,,,,zh,ai 培训
+北京ai培训哪家好,-1,410,commercial,ai-peixun-najia-hao,/zh/ai-training/,n/a,100-1k,heuristic,0.6,pillar,北京ai培训哪家好,existing,baidu_suggest,0,哪家好,41.0,,,,zh,ai 培训
+国内最好的AI培训,-1,410,commercial,zuihao-ai-peixun,/zh/ai-training/,n/a,100-1k,heuristic,0.6,pillar,国内最好的AI培训,existing,baidu_suggest,0,最好的,41.0,,,,zh,ai 培训
+AI培训费用大概多少,-1,410,transactional,ai-peixun-feiyong,/zh/ai-training/,n/a,100-1k,heuristic,0.6,satellite,ai培训费用,existing,baidu_suggest,0,价格,41.0,,,,zh,ai 培训
+无人机驾驶证培训多少钱,-1,410,transactional,ai-peixun-duoshaoqian,/zh/ai-training/,n/a,100-1k,heuristic,0.6,satellite,ai培训一般多少钱,existing,bing_suggest,0,多少钱,41.0,,,,zh,ai 培训
+软考培训机构哪家好一点,-1,410,commercial,ai-peixun-najia-zuihao,NEW /zh/ai-peixun-najia-zuihao/,n/a,100-1k,heuristic,0.6,satellite,ai培训机构哪家最好,new,bing_suggest,0,哪家好,41.0,,,,zh,ai 培训
+AI 教育 美国 项目,-1,410,commercial,ai-usa,/zh/book/,n/a,100-1k,heuristic,0.3,pillar,AI 教育 美国 项目,existing,baidu_suggest,0,美国,41.0,,,,zh,ai 培训
+德州AI视频培训班哪家好,-1,410,commercial,texas-ai-peixun-najia-hao,NEW /zh/texas-ai-peixun-najia-hao/,n/a,100-1k,heuristic,0.6,pillar,德州AI视频培训班哪家好,new,baidu_suggest,0,德州,41.0,,,,zh,ai 培训
+ai培训骗局揭秘,-1,390,informational,ai-peixun-12,/zh/ai-training/,n/a,100-1k,heuristic,0.6,pillar,ai培训骗局揭秘,existing,baidu_suggest,7,,40.0,,,,zh,ai 培训
+ai培训导师 ar shek,-1,390,informational,ai-peixun-ar-shek,/zh/ai-training/,n/a,100-1k,heuristic,0.6,pillar,ai培训导师 ar shek,existing,google_autocomplete,7,,40.0,,,,zh,ai 培训
+德州培训班,-1,370,informational,texas-peixun,NEW /zh/texas-peixun/,n/a,100-1k,heuristic,0.6,pillar,德州培训班,new,baidu_suggest,1,德州,39.0,,,,zh,ai 培训

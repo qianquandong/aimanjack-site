@@ -1,0 +1,758 @@
+{
+  "date": "2026-09-15",
+  "checks": [
+    {
+      "id": "up:/",
+      "status": "PASS",
+      "detail": "HTTP 200 395ms"
+    },
+    {
+      "id": "perf:home-fetch",
+      "status": "PASS",
+      "detail": "395ms full fetch (PSI weekly gives the real CWV)"
+    },
+    {
+      "id": "up:/ai-receptionist/",
+      "status": "PASS",
+      "detail": "HTTP 200 76ms"
+    },
+    {
+      "id": "up:/pricing/",
+      "status": "PASS",
+      "detail": "HTTP 200 46ms"
+    },
+    {
+      "id": "up:/industries/",
+      "status": "PASS",
+      "detail": "HTTP 200 39ms"
+    },
+    {
+      "id": "up:/industries/salons/",
+      "status": "PASS",
+      "detail": "HTTP 200 48ms"
+    },
+    {
+      "id": "up:/integrations/",
+      "status": "PASS",
+      "detail": "HTTP 200 73ms"
+    },
+    {
+      "id": "up:/case-studies/",
+      "status": "PASS",
+      "detail": "HTTP 200 39ms"
+    },
+    {
+      "id": "up:/case-studies/ai-man-jack/",
+      "status": "PASS",
+      "detail": "HTTP 200 41ms"
+    },
+    {
+      "id": "up:/about/",
+      "status": "PASS",
+      "detail": "HTTP 200 39ms"
+    },
+    {
+      "id": "up:/contact/",
+      "status": "PASS",
+      "detail": "HTTP 200 42ms"
+    },
+    {
+      "id": "up:/ai-training/",
+      "status": "PASS",
+      "detail": "HTTP 200 43ms"
+    },
+    {
+      "id": "up:/zh/",
+      "status": "PASS",
+      "detail": "HTTP 200 38ms"
+    },
+    {
+      "id": "up:/zh/ai-receptionist/",
+      "status": "PASS",
+      "detail": "HTTP 200 172ms"
+    },
+    {
+      "id": "up:/zh/pricing/",
+      "status": "PASS",
+      "detail": "HTTP 200 96ms"
+    },
+    {
+      "id": "up:/zh/industries/",
+      "status": "PASS",
+      "detail": "HTTP 200 63ms"
+    },
+    {
+      "id": "up:/zh/industries/salons/",
+      "status": "PASS",
+      "detail": "HTTP 200 41ms"
+    },
+    {
+      "id": "up:/zh/integrations/",
+      "status": "PASS",
+      "detail": "HTTP 200 43ms"
+    },
+    {
+      "id": "up:/zh/case-studies/",
+      "status": "PASS",
+      "detail": "HTTP 200 41ms"
+    },
+    {
+      "id": "up:/zh/case-studies/ai-man-jack/",
+      "status": "PASS",
+      "detail": "HTTP 200 192ms"
+    },
+    {
+      "id": "up:/zh/about/",
+      "status": "PASS",
+      "detail": "HTTP 200 180ms"
+    },
+    {
+      "id": "up:/zh/contact/",
+      "status": "PASS",
+      "detail": "HTTP 200 39ms"
+    },
+    {
+      "id": "up:/zh/ai-training/",
+      "status": "PASS",
+      "detail": "HTTP 200 42ms"
+    },
+    {
+      "id": "up:/sitemap.xml",
+      "status": "PASS",
+      "detail": "HTTP 200 32ms"
+    },
+    {
+      "id": "up:/robots.txt",
+      "status": "PASS",
+      "detail": "HTTP 200 50ms"
+    },
+    {
+      "id": "up:/llms.txt",
+      "status": "PASS",
+      "detail": "HTTP 200 142ms"
+    },
+    {
+      "id": "up:404",
+      "status": "PASS",
+      "detail": "random path must 404, not soft-200"
+    },
+    {
+      "id": "redirects",
+      "status": "PASS",
+      "detail": "all _redirects rules hold"
+    },
+    {
+      "id": "sitemap:pages",
+      "status": "FAIL",
+      "detail": "missing /ai-training/,/zh/ai-training/"
+    },
+    {
+      "id": "page:/:h1",
+      "status": "PASS",
+      "detail": "1 h1"
+    },
+    {
+      "id": "page:/:schema",
+      "status": "PASS",
+      "detail": "AdministrativeArea,AggregateRating,Answer,City,Country,FAQPage,Offer,Organizatio"
+    },
+    {
+      "id": "page:/:cta",
+      "status": "PASS",
+      "detail": "3 tel: demo CTAs, 4 sms: CTAs to (469) 425-4142"
+    },
+    {
+      "id": "page:/:cta-labels",
+      "status": "PASS",
+      "detail": "every CTA label matches its protocol"
+    },
+    {
+      "id": "page:/:og-image",
+      "status": "PASS",
+      "detail": "https://aimanjack.com/img/og-training.jpg"
+    },
+    {
+      "id": "track:ga4",
+      "status": "PASS",
+      "detail": "no GA4 tag → visitors and conversion rate are unmeasurable"
+    },
+    {
+      "id": "page:/ai-receptionist/:h1",
+      "status": "PASS",
+      "detail": "1 h1"
+    },
+    {
+      "id": "page:/ai-receptionist/:schema",
+      "status": "PASS",
+      "detail": "AdministrativeArea,Answer,BreadcrumbList,BusinessAudience,City,Country,FAQPage,L"
+    },
+    {
+      "id": "page:/ai-receptionist/:cta",
+      "status": "PASS",
+      "detail": "9 tel: demo CTAs, 1 sms: CTAs to (469) 425-4142"
+    },
+    {
+      "id": "page:/ai-receptionist/:cta-labels",
+      "status": "PASS",
+      "detail": "every CTA label matches its protocol"
+    },
+    {
+      "id": "page:/pricing/:h1",
+      "status": "PASS",
+      "detail": "1 h1"
+    },
+    {
+      "id": "page:/pricing/:schema",
+      "status": "PASS",
+      "detail": "AdministrativeArea,Answer,BreadcrumbList,BusinessAudience,City,Country,FAQPage,L"
+    },
+    {
+      "id": "page:/pricing/:cta",
+      "status": "PASS",
+      "detail": "5 tel: demo CTAs, 1 sms: CTAs to (469) 425-4142"
+    },
+    {
+      "id": "page:/pricing/:cta-labels",
+      "status": "PASS",
+      "detail": "every CTA label matches its protocol"
+    },
+    {
+      "id": "page:/industries/:h1",
+      "status": "PASS",
+      "detail": "1 h1"
+    },
+    {
+      "id": "page:/industries/:schema",
+      "status": "PASS",
+      "detail": "BreadcrumbList,ListItem,ProfessionalService"
+    },
+    {
+      "id": "page:/industries/:cta",
+      "status": "PASS",
+      "detail": "5 tel: demo CTAs, 1 sms: CTAs to (469) 425-4142"
+    },
+    {
+      "id": "page:/industries/:cta-labels",
+      "status": "PASS",
+      "detail": "every CTA label matches its protocol"
+    },
+    {
+      "id": "page:/industries/salons/:h1",
+      "status": "PASS",
+      "detail": "1 h1"
+    },
+    {
+      "id": "page:/industries/salons/:schema",
+      "status": "PASS",
+      "detail": "AdministrativeArea,Answer,BreadcrumbList,BusinessAudience,City,Country,FAQPage,L"
+    },
+    {
+      "id": "page:/industries/salons/:cta",
+      "status": "PASS",
+      "detail": "7 tel: demo CTAs, 1 sms: CTAs to (469) 425-4142"
+    },
+    {
+      "id": "page:/industries/salons/:cta-labels",
+      "status": "PASS",
+      "detail": "every CTA label matches its protocol"
+    },
+    {
+      "id": "page:/integrations/:h1",
+      "status": "PASS",
+      "detail": "1 h1"
+    },
+    {
+      "id": "page:/integrations/:schema",
+      "status": "PASS",
+      "detail": "BreadcrumbList,ListItem,ProfessionalService"
+    },
+    {
+      "id": "page:/integrations/:cta",
+      "status": "PASS",
+      "detail": "5 tel: demo CTAs, 1 sms: CTAs to (469) 425-4142"
+    },
+    {
+      "id": "page:/integrations/:cta-labels",
+      "status": "PASS",
+      "detail": "every CTA label matches its protocol"
+    },
+    {
+      "id": "page:/case-studies/:h1",
+      "status": "PASS",
+      "detail": "1 h1"
+    },
+    {
+      "id": "page:/case-studies/:schema",
+      "status": "PASS",
+      "detail": "BreadcrumbList,ListItem,ProfessionalService"
+    },
+    {
+      "id": "page:/case-studies/:cta",
+      "status": "PASS",
+      "detail": "5 tel: demo CTAs, 1 sms: CTAs to (469) 425-4142"
+    },
+    {
+      "id": "page:/case-studies/:cta-labels",
+      "status": "PASS",
+      "detail": "every CTA label matches its protocol"
+    },
+    {
+      "id": "page:/case-studies/ai-man-jack/:h1",
+      "status": "PASS",
+      "detail": "1 h1"
+    },
+    {
+      "id": "page:/case-studies/ai-man-jack/:schema",
+      "status": "PASS",
+      "detail": "Article,BreadcrumbList,ListItem,ProfessionalService"
+    },
+    {
+      "id": "page:/case-studies/ai-man-jack/:cta",
+      "status": "PASS",
+      "detail": "5 tel: demo CTAs, 1 sms: CTAs to (469) 425-4142"
+    },
+    {
+      "id": "page:/case-studies/ai-man-jack/:cta-labels",
+      "status": "PASS",
+      "detail": "every CTA label matches its protocol"
+    },
+    {
+      "id": "page:/about/:h1",
+      "status": "PASS",
+      "detail": "1 h1"
+    },
+    {
+      "id": "page:/about/:schema",
+      "status": "PASS",
+      "detail": "AdministrativeArea,BreadcrumbList,City,Country,ListItem,Person,PostalAddress,Pro"
+    },
+    {
+      "id": "page:/about/:cta",
+      "status": "PASS",
+      "detail": "7 tel: demo CTAs, 2 sms: CTAs to (469) 425-4142"
+    },
+    {
+      "id": "page:/about/:cta-labels",
+      "status": "PASS",
+      "detail": "every CTA label matches its protocol"
+    },
+    {
+      "id": "page:/contact/:h1",
+      "status": "PASS",
+      "detail": "1 h1"
+    },
+    {
+      "id": "page:/contact/:schema",
+      "status": "PASS",
+      "detail": "BreadcrumbList,ContactPage,ListItem,ProfessionalService"
+    },
+    {
+      "id": "page:/contact/:cta",
+      "status": "PASS",
+      "detail": "4 tel: demo CTAs, 2 sms: CTAs to (469) 425-4142"
+    },
+    {
+      "id": "page:/contact/:cta-labels",
+      "status": "PASS",
+      "detail": "every CTA label matches its protocol"
+    },
+    {
+      "id": "page:/ai-training/:h1",
+      "status": "PASS",
+      "detail": "1 h1"
+    },
+    {
+      "id": "page:/ai-training/:schema",
+      "status": "PASS",
+      "detail": "AdministrativeArea,AggregateRating,Answer,City,Country,FAQPage,Offer,Organizatio"
+    },
+    {
+      "id": "page:/ai-training/:cta",
+      "status": "PASS",
+      "detail": "3 tel: demo CTAs, 4 sms: CTAs to (469) 425-4142"
+    },
+    {
+      "id": "page:/ai-training/:cta-labels",
+      "status": "PASS",
+      "detail": "every CTA label matches its protocol"
+    },
+    {
+      "id": "page:/zh/:h1",
+      "status": "PASS",
+      "detail": "1 h1"
+    },
+    {
+      "id": "page:/zh/:schema",
+      "status": "PASS",
+      "detail": "AdministrativeArea,AggregateRating,Answer,City,Country,FAQPage,Offer,Organizatio"
+    },
+    {
+      "id": "page:/zh/:cta",
+      "status": "PASS",
+      "detail": "3 tel: demo CTAs, 4 sms: CTAs to (469) 425-4142"
+    },
+    {
+      "id": "page:/zh/:cta-labels",
+      "status": "PASS",
+      "detail": "every CTA label matches its protocol"
+    },
+    {
+      "id": "page:/zh/ai-receptionist/:h1",
+      "status": "PASS",
+      "detail": "1 h1"
+    },
+    {
+      "id": "page:/zh/ai-receptionist/:schema",
+      "status": "PASS",
+      "detail": "AdministrativeArea,Answer,BreadcrumbList,BusinessAudience,City,Country,FAQPage,L"
+    },
+    {
+      "id": "page:/zh/ai-receptionist/:cta",
+      "status": "PASS",
+      "detail": "9 tel: demo CTAs, 1 sms: CTAs to (469) 425-4142"
+    },
+    {
+      "id": "page:/zh/ai-receptionist/:cta-labels",
+      "status": "PASS",
+      "detail": "every CTA label matches its protocol"
+    },
+    {
+      "id": "page:/zh/pricing/:h1",
+      "status": "PASS",
+      "detail": "1 h1"
+    },
+    {
+      "id": "page:/zh/pricing/:schema",
+      "status": "PASS",
+      "detail": "AdministrativeArea,Answer,BreadcrumbList,BusinessAudience,City,Country,FAQPage,L"
+    },
+    {
+      "id": "page:/zh/pricing/:cta",
+      "status": "PASS",
+      "detail": "5 tel: demo CTAs, 1 sms: CTAs to (469) 425-4142"
+    },
+    {
+      "id": "page:/zh/pricing/:cta-labels",
+      "status": "PASS",
+      "detail": "every CTA label matches its protocol"
+    },
+    {
+      "id": "page:/zh/industries/:h1",
+      "status": "PASS",
+      "detail": "1 h1"
+    },
+    {
+      "id": "page:/zh/industries/:schema",
+      "status": "PASS",
+      "detail": "BreadcrumbList,ListItem,ProfessionalService"
+    },
+    {
+      "id": "page:/zh/industries/:cta",
+      "status": "PASS",
+      "detail": "5 tel: demo CTAs, 1 sms: CTAs to (469) 425-4142"
+    },
+    {
+      "id": "page:/zh/industries/:cta-labels",
+      "status": "PASS",
+      "detail": "every CTA label matches its protocol"
+    },
+    {
+      "id": "page:/zh/industries/salons/:h1",
+      "status": "PASS",
+      "detail": "1 h1"
+    },
+    {
+      "id": "page:/zh/industries/salons/:schema",
+      "status": "PASS",
+      "detail": "AdministrativeArea,Answer,BreadcrumbList,BusinessAudience,City,Country,FAQPage,L"
+    },
+    {
+      "id": "page:/zh/industries/salons/:cta",
+      "status": "PASS",
+      "detail": "7 tel: demo CTAs, 1 sms: CTAs to (469) 425-4142"
+    },
+    {
+      "id": "page:/zh/industries/salons/:cta-labels",
+      "status": "PASS",
+      "detail": "every CTA label matches its protocol"
+    },
+    {
+      "id": "page:/zh/integrations/:h1",
+      "status": "PASS",
+      "detail": "1 h1"
+    },
+    {
+      "id": "page:/zh/integrations/:schema",
+      "status": "PASS",
+      "detail": "BreadcrumbList,ListItem,ProfessionalService"
+    },
+    {
+      "id": "page:/zh/integrations/:cta",
+      "status": "PASS",
+      "detail": "5 tel: demo CTAs, 1 sms: CTAs to (469) 425-4142"
+    },
+    {
+      "id": "page:/zh/integrations/:cta-labels",
+      "status": "PASS",
+      "detail": "every CTA label matches its protocol"
+    },
+    {
+      "id": "page:/zh/case-studies/:h1",
+      "status": "PASS",
+      "detail": "1 h1"
+    },
+    {
+      "id": "page:/zh/case-studies/:schema",
+      "status": "PASS",
+      "detail": "BreadcrumbList,ListItem,ProfessionalService"
+    },
+    {
+      "id": "page:/zh/case-studies/:cta",
+      "status": "PASS",
+      "detail": "5 tel: demo CTAs, 1 sms: CTAs to (469) 425-4142"
+    },
+    {
+      "id": "page:/zh/case-studies/:cta-labels",
+      "status": "PASS",
+      "detail": "every CTA label matches its protocol"
+    },
+    {
+      "id": "page:/zh/case-studies/ai-man-jack/:h1",
+      "status": "PASS",
+      "detail": "1 h1"
+    },
+    {
+      "id": "page:/zh/case-studies/ai-man-jack/:schema",
+      "status": "PASS",
+      "detail": "Article,BreadcrumbList,ListItem,ProfessionalService"
+    },
+    {
+      "id": "page:/zh/case-studies/ai-man-jack/:cta",
+      "status": "PASS",
+      "detail": "5 tel: demo CTAs, 1 sms: CTAs to (469) 425-4142"
+    },
+    {
+      "id": "page:/zh/case-studies/ai-man-jack/:cta-labels",
+      "status": "PASS",
+      "detail": "every CTA label matches its protocol"
+    },
+    {
+      "id": "page:/zh/about/:h1",
+      "status": "PASS",
+      "detail": "1 h1"
+    },
+    {
+      "id": "page:/zh/about/:schema",
+      "status": "PASS",
+      "detail": "AdministrativeArea,BreadcrumbList,City,Country,ListItem,Person,PostalAddress,Pro"
+    },
+    {
+      "id": "page:/zh/about/:cta",
+      "status": "PASS",
+      "detail": "7 tel: demo CTAs, 2 sms: CTAs to (469) 425-4142"
+    },
+    {
+      "id": "page:/zh/about/:cta-labels",
+      "status": "PASS",
+      "detail": "every CTA label matches its protocol"
+    },
+    {
+      "id": "page:/zh/contact/:h1",
+      "status": "PASS",
+      "detail": "1 h1"
+    },
+    {
+      "id": "page:/zh/contact/:schema",
+      "status": "PASS",
+      "detail": "BreadcrumbList,ContactPage,ListItem,ProfessionalService"
+    },
+    {
+      "id": "page:/zh/contact/:cta",
+      "status": "PASS",
+      "detail": "4 tel: demo CTAs, 2 sms: CTAs to (469) 425-4142"
+    },
+    {
+      "id": "page:/zh/contact/:cta-labels",
+      "status": "PASS",
+      "detail": "every CTA label matches its protocol"
+    },
+    {
+      "id": "page:/zh/ai-training/:h1",
+      "status": "PASS",
+      "detail": "1 h1"
+    },
+    {
+      "id": "page:/zh/ai-training/:schema",
+      "status": "PASS",
+      "detail": "AdministrativeArea,AggregateRating,Answer,City,Country,FAQPage,Offer,Organizatio"
+    },
+    {
+      "id": "page:/zh/ai-training/:cta",
+      "status": "PASS",
+      "detail": "3 tel: demo CTAs, 4 sms: CTAs to (469) 425-4142"
+    },
+    {
+      "id": "page:/zh/ai-training/:cta-labels",
+      "status": "PASS",
+      "detail": "every CTA label matches its protocol"
+    },
+    {
+      "id": "drift",
+      "status": "FAIL",
+      "detail": "/ title: \"AI Receptionist for DFW Appointment Businesses | AI Man Jack\" → \"AI Training for Dallas Teams, Hands-On | AI Man Jack\" | / description: \"Your phone can answer itself. AI answers common questions, checks availability and books appointments. Call the AI demo: (469) 517-2968. Dallas–Fort Worth.\" → \"Hands-on AI training for Dallas teams, in English or Chinese. People leave with one working workflow for a task they already do. 5.0 on Google, 10 reviews.\" | / h1: \"Your phone can answer itself.\" → \"Hands-on AI training for Dallas teams,  in English or Chinese\" | / schemaTypes: \"AdministrativeArea,Answer,BusinessAudience,City,Country,FAQPage,Offer,PostalAddress,ProfessionalService,Question,Service,State,WebSite\" → \"AdministrativeArea,AggregateRating,Answer,City,Country,FAQPage,Offer,Organization,Person,PostalAddress,ProfessionalService,Question,Rating,Review,Service,State,WebSite\" | / ogImage: \"https://aimanjack.com/img/og-receptionist.jpg\" → \"https://aimanjack.com/img/og-training.jpg\" | /about/ description: \"AI Man Jack LLC is Jack Qian’s Dallas company. He installs AI receptionists for appointment businesses in DFW, handles setup and support himself, and teaches AI to local teams.\" → \"AI Man Jack LLC is Jack Qian’s Dallas company for hands-on AI training in English or Chinese, plus practical AI receptionist and workflow services.\" | /contact/ h1: \"Talk to Jessy first, then to Jack.\" → \"Talk to our AI demo first, then to Jack.\" | /ai-training/ canonical: \"https://aimanjack.com/ai-training/\" → \"https://aimanjack.com/\" | /ai-training/ robots: \"index, follow, max-image-preview:large, max-snippet:-1\" → \"noindex, follow\" | /zh/ title: \"达拉斯华人商家的 AI 前台，接电话帮预约 | AI Man Jack\" → \"达拉斯团队 AI 实战培训 | AI Man Jack\" | /zh/ description: \"忙着服务客人也不漏电话。AI 帮你接电话、答常见问题、查时间、直接预约，中英西三语。拨 (469) 517-2968 试一下。服务达拉斯—沃斯堡。\" → \"面向达拉斯团队的动手 AI 培训，中英文皆可。每个人带一个自己每周都在做的任务来，带着一条能跑的工作流走。Google 10 条评价，5.0 分。\" | /zh/ h1: \"忙着服务客人，也不用漏电话。\" → \"给达拉斯团队的 AI 实战培训， 中文或英文都行\" | /zh/ schemaTypes: \"AdministrativeArea,Answer,BusinessAudience,City,Country,FAQPage,Offer,PostalAddress,ProfessionalService,Question,Service,State,WebSite\" → \"AdministrativeArea,AggregateRating,Answer,City,Country,FAQPage,Offer,Organization,Person,PostalAddress,ProfessionalService,Question,Rating,Review,Service,State,WebSite\" | /zh/ ogImage: \"https://aimanjack.com/img/og-receptionist-zh.jpg\" → \"https://aimanjack.com/img/og-training-zh.jpg\" | /zh/about/ description: \"AI Man Jack LLC 是 Jack Qian 在达拉斯的公司。他为 DFW 的预约制商家安装 AI 前台，安装和支持都亲自负责，也给本地团队做 AI 培训。\" → \"AI Man Jack LLC 是 Jack Qian 在达拉斯的公司，主要提供中英文 AI 实战培训，也为商家安装 AI 前台和实用工作流。\" | /zh/contact/ h1: \"先跟 Jessy 聊，再跟 Jack 聊。\" → \"先和 AI 演示聊，再和 Jack 聊。\" | /zh/ai-training/ canonical: \"https://aimanjack.com/zh/ai-training/\" → \"https://aimanjack.com/zh/\" | /zh/ai-training/ h1: \"给达拉斯团队的动手 AI 培训， 中文或英文都行\" → \"给达拉斯团队的 AI 实战培训， 中文或英文都行\" | /zh/ai-training/ robots: \"index, follow, max-image-preview:large, max-snippet:-1\" → \"noindex, follow\""
+    },
+    {
+      "id": "geo:robots",
+      "status": "PASS",
+      "detail": "AI crawlers (GPTBot/OAI-SearchBot/PerplexityBot/ClaudeBot) must not be blocked"
+    },
+    {
+      "id": "geo:llms-current",
+      "status": "FAIL",
+      "detail": "llms.txt must name training + $199 Starter plan + both phone numbers; stale copy misleads AI answers"
+    },
+    {
+      "id": "creds:google-api",
+      "status": "PASS",
+      "detail": "GSC/GA4/PSI via claude-seo need ~/.config/claude-seo/google-api.json"
+    }
+  ],
+  "data": {
+    "pulled_at": "2026-09-15T12:04:24.848232Z",
+    "gsc": {
+      "last7": {
+        "range": "2026-09-06..2026-09-12",
+        "clicks": 2,
+        "impressions": 104,
+        "ctr": 1.92,
+        "position": 49.5
+      },
+      "prev7": {
+        "range": "2026-08-30..2026-09-05",
+        "clicks": 0,
+        "impressions": 114,
+        "ctr": 0,
+        "position": 55.6
+      },
+      "impressions_wow_pct": -8.8,
+      "top10_queries": [
+        {
+          "query": "web hosting",
+          "impressions": 24,
+          "clicks": 0,
+          "position": 5.5
+        },
+        {
+          "query": "ai business automation dallas",
+          "impressions": 8,
+          "clicks": 0,
+          "position": 80.1
+        },
+        {
+          "query": "automation consulting dallas",
+          "impressions": 6,
+          "clicks": 0,
+          "position": 80.3
+        },
+        {
+          "query": "automation consulting frisco",
+          "impressions": 6,
+          "clicks": 0,
+          "position": 78.5
+        },
+        {
+          "query": "man and van",
+          "impressions": 5,
+          "clicks": 0,
+          "position": 1
+        },
+        {
+          "query": "ai automations firm in dallas",
+          "impressions": 4,
+          "clicks": 0,
+          "position": 90.2
+        },
+        {
+          "query": "automation consulting fort worth",
+          "impressions": 4,
+          "clicks": 0,
+          "position": 78.2
+        },
+        {
+          "query": "ai websites",
+          "impressions": 3,
+          "clicks": 0,
+          "position": 21
+        },
+        {
+          "query": "automation consulting irving",
+          "impressions": 3,
+          "clicks": 0,
+          "position": 80.3
+        },
+        {
+          "query": "automation consulting mckinney",
+          "impressions": 3,
+          "clicks": 0,
+          "position": 82.3
+        }
+      ],
+      "quick_wins_imp20_pos8to20": []
+    },
+    "ga4": {
+      "window": "2026-09-08..2026-09-14",
+      "sessions_by_day": {
+        "20260909": 5,
+        "20260910": 15,
+        "20260911": 8,
+        "20260912": 18,
+        "20260913": 5,
+        "20260914": 6
+      },
+      "sessions_total": 57,
+      "by_country": {
+        "United States": 49,
+        "India": 4,
+        "China": 3,
+        "Russia": 1
+      },
+      "by_region_city": {
+        "Texas/Melissa": 12,
+        "Oregon/Boardman": 6,
+        "Oregon/The Dalles": 5,
+        "Texas/(not set)": 5,
+        "Texas/Dallas": 5,
+        "Iowa/Council Bluffs": 4,
+        "Henan/Zhengzhou": 2,
+        "New York/New York": 2,
+        "Punjab/Sahibzada Ajit Singh Nagar": 2,
+        "Texas/Spring": 2,
+        "California/Santa Clara": 1,
+        "Colorado/": 1,
+        "Colorado/(not set)": 1,
+        "Florida/Land O' Lakes": 1,
+        "Haryana/Panipat": 1,
+        "Hawaii/Honolulu": 1,
+        "Illinois/Glenview": 1,
+        "Moscow/Moscow": 1,
+        "Shanghai/Shanghai": 1,
+        "Texas/McKinney": 1,
+        "Texas/Plano": 1,
+        "Uttar Pradesh/Mathura": 1
+      },
+      "dfw_sessions": 26,
+      "jack_melissa_sessions": 12,
+      "cta_events": {
+        "form_submit": 6,
+        "book_demo_click": 3,
+        "header_call_click": 5,
+        "demo_call_click": 2,
+        "sms_click": 1
+      },
+      "cta_clicks_total": 17,
+      "cta_clicks_external": 8,
+      "conversion_wide_pct": 29.8,
+      "conversion_external_pct": 17.8
+    }
+  }
+}

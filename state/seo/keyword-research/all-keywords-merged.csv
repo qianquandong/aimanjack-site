@@ -1,0 +1,474 @@
+keyword,KD,vol,intent,cluster_slug,target_url,kd_label,vol_band,vol_source,intent_confidence,role,cluster_name,target_status,sources,best_rank,modifier,demand,serp_top_domains,serp_features,ugc_count,lang,root
+ai 培训,-1,2900,informational,ai-peixun,/zh/ai-training/,n/a,1k-10k,root,0.6,pillar,ai 培训,existing,root|google_autocomplete|bing_suggest|baidu_suggest,0,,100.0,,,,zh,ai 培训
+ai培训班,-1,1590,informational,ai-peixun,/zh/ai-training/,n/a,1k-10k,heuristic,0.6,satellite,ai 培训,existing,google_autocomplete|bing_suggest|baidu_suggest,1,,76.0,,,,zh,ai 培训
+ai培训ppt,-1,1590,informational,ai-peixun-ppt,/zh/ai-training/,n/a,1k-10k,heuristic,0.6,pillar,ai培训ppt,existing,google_autocomplete|bing_suggest|baidu_suggest,1,,76.0,,,,zh,ai 培训
+ai培训师,-1,1410,informational,ai-peixun-2,/zh/ai-training/,n/a,1k-10k,heuristic,0.6,pillar,ai培训师,existing,google_autocomplete|bing_suggest|baidu_suggest,3,,72.0,,,,zh,ai 培训
+ai培训图片,-1,1160,informational,ai-peixun-tupian,/zh/ai-training/,n/a,1k-10k,heuristic,0.85,pillar,ai培训图片,existing,bing_suggest|baidu_suggest,0,,66.0,,,,zh,ai 培训
+ai 培训 课程,-1,1010,informational,ai-peixun-kecheng,/zh/ai-training/,n/a,1k-10k,heuristic,0.85,pillar,ai 培训 课程,existing,google_autocomplete|baidu_suggest,2,,62.0,,,,zh,ai 培训
+ai培训师证书有用吗,-1,1010,informational,ai-peixun-2,/zh/ai-training/,n/a,1k-10k,heuristic,0.85,satellite,ai培训师,existing,bing_suggest|baidu_suggest,2,,62.0,,,,zh,ai 培训
+ai 培训 机构,-1,870,informational,ai-peixun-3,/zh/ai-training/,n/a,100-1k,heuristic,0.6,pillar,ai 培训 机构,existing,google_autocomplete|baidu_suggest,4,,58.0,,,,zh,ai 培训
+ai培训心得,-1,810,informational,ai-peixun-4,/zh/ai-training/,n/a,100-1k,heuristic,0.6,pillar,ai培训心得,existing,bing_suggest|baidu_suggest,5,,56.0,,,,zh,ai 培训
+ai培训视频,-1,750,informational,ai-peixun-5,/zh/ai-training/,n/a,100-1k,heuristic,0.6,pillar,ai培训视频,existing,bing_suggest|baidu_suggest,6,,54.0,,,,zh,ai 培训
+ai培训班在哪里学,-1,750,informational,ai-peixun-6,/zh/about/,n/a,100-1k,heuristic,0.6,pillar,ai培训班在哪里学,existing,baidu_suggest,0,,54.0,,,,zh,ai 培训
+ai培训费用,-1,720,transactional,ai-peixun-feiyong,/zh/ai-training/,n/a,100-1k,heuristic,0.6,pillar,ai培训费用,existing,bing_suggest|baidu_suggest,0,费用,53.0,,,,zh,ai 培训
+ai培训软件,-1,720,informational,ai-peixun-ruanjian,/zh/ai-training/,n/a,100-1k,heuristic,0.6,pillar,ai培训软件,existing,bing_suggest|baidu_suggest,0,软件,53.0,,,,zh,ai 培训
+ai培训系统,-1,720,informational,ai-peixun-xitong,/zh/ai-training/,n/a,100-1k,heuristic,0.6,pillar,ai培训系统,existing,bing_suggest|baidu_suggest,0,系统,53.0,,,,zh,ai 培训
+ai 技术 培训,-1,720,informational,ai-peixun-7,/zh/ai-training/,n/a,100-1k,heuristic,0.6,pillar,ai 技术 培训,existing,google_autocomplete|baidu_suggest,0,培训,53.0,,,,zh,ai 培训
+ai培训是什么意思,-1,720,informational,ai-peixun-shi-shenme,/zh/about/,n/a,100-1k,heuristic,0.85,pillar,ai培训是什么意思,existing,bing_suggest|baidu_suggest,0,是什么,53.0,,,,zh,ai 培训
+ai培训班课程,-1,690,informational,ai-peixun-kecheng,/zh/ai-training/,n/a,100-1k,heuristic,0.85,satellite,ai 培训 课程,existing,baidu_suggest,1,,52.0,,,,zh,ai 培训
+ai 培训 平台,-1,660,informational,ai-peixun-8,/zh/ai-training/,n/a,100-1k,heuristic,0.6,pillar,ai 培训 平台,existing,google_autocomplete|baidu_suggest,1,软件,51.0,,,,zh,ai 培训
+ai培训一般多少钱,-1,660,transactional,ai-peixun-duoshaoqian,/zh/ai-training/,n/a,100-1k,heuristic,0.6,pillar,ai培训一般多少钱,existing,bing_suggest|baidu_suggest,1,多少钱,51.0,,,,zh,ai 培训
+ai培训课件,-1,630,informational,ai-peixun-9,/zh/ai-training/,n/a,100-1k,heuristic,0.6,pillar,ai培训课件,existing,bing_suggest,2,,50.0,,,,zh,ai 培训
+ai培训机构哪家最好,-1,630,commercial,ai-peixun-najia-zuihao,NEW /zh/ai-peixun-najia-zuihao/,n/a,100-1k,heuristic,0.85,pillar,ai培训机构哪家最好,new,baidu_suggest,2,,50.0,,,,zh,ai 培训
+ai 免费 培训,-1,600,transactional,ai-mianfei-peixun,/zh/ai-training/,n/a,100-1k,heuristic,0.6,pillar,ai 免费 培训,existing,google_autocomplete|baidu_suggest,2,软件,49.0,,,,zh,ai 培训
+ai培训机构排名,-1,580,commercial,ai-peixun-paiming,/zh/ai-training/,n/a,100-1k,heuristic,0.6,pillar,ai培训机构排名,existing,baidu_suggest,3,,48.0,,,,zh,ai 培训
+ai培训机构哪个好,-1,580,commercial,ai-peixun-najia-zuihao,NEW /zh/ai-peixun-najia-zuihao/,n/a,100-1k,heuristic,0.6,satellite,ai培训机构哪家最好,new,bing_suggest,3,,48.0,,,,zh,ai 培训
+ai培训学费一般是多少?,-1,530,informational,ai-peixun-shi,NEW /zh/ai-peixun-shi/,n/a,100-1k,heuristic,0.6,pillar,ai培训学费一般是多少?,new,baidu_suggest,4,,46.0,,,,zh,ai 培训
+ai 培训学院,-1,480,informational,ai-peixun-10,/zh/ai-training/,n/a,100-1k,heuristic,0.6,pillar,ai 培训学院,existing,google_autocomplete,5,,44.0,,,,zh,ai 培训
+ai培训师证书,-1,480,informational,ai-peixun-2,/zh/ai-training/,n/a,100-1k,heuristic,0.6,satellite,ai培训师,existing,bing_suggest,5,,44.0,,,,zh,ai 培训
+ai 培训 材料,-1,480,informational,ai-peixun-11,/zh/ai-training/,n/a,100-1k,heuristic,0.6,pillar,ai 培训 材料,existing,google_autocomplete|baidu_suggest,1,z,44.0,,,,zh,ai 培训
+ai培训师证书怎么考,-1,480,informational,ai-peixun-2,/zh/ai-training/,n/a,100-1k,heuristic,0.85,satellite,ai培训师,existing,baidu_suggest,5,,44.0,,,,zh,ai 培训
+ai培训班一般培训什么,-1,430,informational,ai-peixun-peixun-shenme,/zh/about/,n/a,100-1k,heuristic,0.85,pillar,ai培训班一般培训什么,existing,baidu_suggest,6,,42.0,,,,zh,ai 培训
+ai培训价格,-1,410,transactional,ai-peixun-jiage,/zh/ai-training/,n/a,100-1k,heuristic,0.6,pillar,ai培训价格,existing,bing_suggest,0,价格,41.0,,,,zh,ai 培训
+曙海培训电话,-1,410,informational,peixun-dianhua,NEW /zh/peixun-dianhua/,n/a,100-1k,heuristic,0.6,pillar,曙海培训电话,new,bing_suggest,0,电话,41.0,,,,zh,ai 培训
+美国机长培训,-1,410,informational,usa-peixun,NEW /zh/usa-peixun/,n/a,100-1k,heuristic,0.6,pillar,美国机长培训,new,bing_suggest,0,美国,41.0,,,,zh,ai 培训
+ai培训教程,-1,410,informational,ai-peixun-jiaocheng,/zh/ai-training/,n/a,100-1k,heuristic,0.85,pillar,ai培训教程,existing,baidu_suggest,0,怎么用,41.0,,,,zh,ai 培训
+ai培训电话,-1,410,informational,peixun-dianhua,/zh/book/,n/a,100-1k,heuristic,0.6,satellite,曙海培训电话,existing,baidu_suggest,0,电话,41.0,,,,zh,ai 培训
+ai培训预约,-1,410,transactional,ai-peixun-yuyue,/zh/book/,n/a,100-1k,heuristic,0.6,pillar,ai培训预约,existing,baidu_suggest,0,预约,41.0,,,,zh,ai 培训
+AI培训方案,-1,410,informational,ai-peixun-fangan,/zh/ai-training/,n/a,100-1k,heuristic,0.6,pillar,AI培训方案,existing,baidu_suggest,0,方案,41.0,,,,zh,ai 培训
+ai培训免费,-1,410,transactional,ai-mianfei-peixun,/zh/ai-training/,n/a,100-1k,heuristic,0.6,satellite,ai 免费 培训,existing,baidu_suggest,0,免费,41.0,,,,zh,ai 培训
+怎么培训AI,-1,410,informational,zenme-peixun-ai,/zh/ai-training/,n/a,100-1k,heuristic,0.85,pillar,怎么培训AI,existing,baidu_suggest,0,如何,41.0,,,,zh,ai 培训
+最好的专科培训,-1,410,commercial,zuihao-peixun,NEW /zh/zuihao-peixun/,n/a,100-1k,heuristic,0.6,pillar,最好的专科培训,new,bing_suggest,0,最好的,41.0,,,,zh,ai 培训
+ai培训多少钱,-1,410,transactional,ai-peixun-duoshaoqian,/zh/ai-training/,n/a,100-1k,heuristic,0.6,satellite,ai培训一般多少钱,existing,baidu_suggest,0,多少钱,41.0,,,,zh,ai 培训
+AI培训培训课,-1,410,informational,ai-peixun-9,/zh/ai-training/,n/a,100-1k,heuristic,0.85,satellite,ai培训课件,existing,baidu_suggest,0,培训,41.0,,,,zh,ai 培训
+什么是ai培训,-1,410,informational,shenme-shi-ai-peixun,/zh/about/,n/a,100-1k,heuristic,0.85,pillar,什么是ai培训,existing,baidu_suggest,0,什么是,41.0,,,,zh,ai 培训
+培训用英语怎么说,-1,410,informational,peixun-yong-zenme,/zh/ai-training/,n/a,100-1k,heuristic,0.85,pillar,培训用英语怎么说,existing,bing_suggest,0,怎么用,41.0,,,,zh,ai 培训
+培训学时如何计算,-1,410,informational,peixun-ruhe,NEW /zh/peixun-ruhe/,n/a,100-1k,heuristic,0.85,pillar,培训学时如何计算,new,bing_suggest,0,如何,41.0,,,,zh,ai 培训
+培训经历怎么填写,-1,410,informational,peixun-zenme,NEW /zh/peixun-zenme/,n/a,100-1k,heuristic,0.85,pillar,培训经历怎么填写,new,bing_suggest,0,怎么,41.0,,,,zh,ai 培训
+AI培训费用明细,-1,410,transactional,ai-peixun-feiyong,/zh/ai-training/,n/a,100-1k,heuristic,0.6,satellite,ai培训费用,existing,baidu_suggest,0,费用,41.0,,,,zh,ai 培训
+企业AI培训公司,-1,410,informational,qiye-ai-peixun-gongsi,/zh/ai-training/,n/a,100-1k,heuristic,0.6,pillar,企业AI培训公司,existing,baidu_suggest,0,小企业,41.0,,,,zh,ai 培训
+美容培训机构推荐,-1,410,commercial,meirong-peixun-tuijian,NEW /zh/meirong-peixun-tuijian/,n/a,100-1k,heuristic,0.6,pillar,美容培训机构推荐,new,baidu_suggest,0,美容院,41.0,,,,zh,ai 培训
+pmp培训机构推荐,-1,410,commercial,meirong-peixun-tuijian,NEW /zh/meirong-peixun-tuijian/,n/a,100-1k,heuristic,0.6,satellite,美容培训机构推荐,new,bing_suggest,0,推荐,41.0,,,,zh,ai 培训
+北京ai培训哪家好,-1,410,commercial,ai-peixun-najia-hao,/zh/ai-training/,n/a,100-1k,heuristic,0.6,pillar,北京ai培训哪家好,existing,baidu_suggest,0,哪家好,41.0,,,,zh,ai 培训
+国内最好的AI培训,-1,410,commercial,zuihao-ai-peixun,/zh/ai-training/,n/a,100-1k,heuristic,0.6,pillar,国内最好的AI培训,existing,baidu_suggest,0,最好的,41.0,,,,zh,ai 培训
+AI培训费用大概多少,-1,410,transactional,ai-peixun-feiyong,/zh/ai-training/,n/a,100-1k,heuristic,0.6,satellite,ai培训费用,existing,baidu_suggest,0,价格,41.0,,,,zh,ai 培训
+无人机驾驶证培训多少钱,-1,410,transactional,ai-peixun-duoshaoqian,/zh/ai-training/,n/a,100-1k,heuristic,0.6,satellite,ai培训一般多少钱,existing,bing_suggest,0,多少钱,41.0,,,,zh,ai 培训
+软考培训机构哪家好一点,-1,410,commercial,ai-peixun-najia-zuihao,NEW /zh/ai-peixun-najia-zuihao/,n/a,100-1k,heuristic,0.6,satellite,ai培训机构哪家最好,new,bing_suggest,0,哪家好,41.0,,,,zh,ai 培训
+AI 教育 美国 项目,-1,410,commercial,ai-usa,/zh/book/,n/a,100-1k,heuristic,0.3,pillar,AI 教育 美国 项目,existing,baidu_suggest,0,美国,41.0,,,,zh,ai 培训
+德州AI视频培训班哪家好,-1,410,commercial,texas-ai-peixun-najia-hao,NEW /zh/texas-ai-peixun-najia-hao/,n/a,100-1k,heuristic,0.6,pillar,德州AI视频培训班哪家好,new,baidu_suggest,0,德州,41.0,,,,zh,ai 培训
+ai培训骗局揭秘,-1,390,informational,ai-peixun-12,/zh/ai-training/,n/a,100-1k,heuristic,0.6,pillar,ai培训骗局揭秘,existing,baidu_suggest,7,,40.0,,,,zh,ai 培训
+ai培训导师 ar shek,-1,390,informational,ai-peixun-ar-shek,/zh/ai-training/,n/a,100-1k,heuristic,0.6,pillar,ai培训导师 ar shek,existing,google_autocomplete,7,,40.0,,,,zh,ai 培训
+德州培训班,-1,370,informational,texas-peixun,NEW /zh/texas-peixun/,n/a,100-1k,heuristic,0.6,pillar,德州培训班,new,baidu_suggest,1,德州,39.0,,,,zh,ai 培训
+ai 工作流,-1,300,commercial,ai,/zh/ai-training/,n/a,100-1k,root,0.3,pillar,ai 工作流,existing,root|google_autocomplete|bing_suggest|baidu_suggest,0,,100.0,,,,zh,ai 工作流
+ai工作流软件,-1,170,commercial,ai-ruanjian,/zh/ai-training/,n/a,100-1k,heuristic,0.3,pillar,ai工作流软件,existing,google_autocomplete|bing_suggest|baidu_suggest,0,,78.0,,,,zh,ai 工作流
+ai工作流是什么,-1,170,informational,ai-shi-shenme,/zh/about/,n/a,100-1k,heuristic,0.6,pillar,ai工作流是什么,existing,google_autocomplete|bing_suggest|baidu_suggest,0,,78.0,,,,zh,ai 工作流
+ai工作流程,-1,160,informational,ai,/zh/ai-training/,n/a,100-1k,heuristic,0.6,satellite,ai 工作流,existing,google_autocomplete|bing_suggest|baidu_suggest,1,,76.0,,,,zh,ai 工作流
+ai工作流搭建,-1,160,transactional,ai-dajian,/zh/about/,n/a,100-1k,heuristic,0.6,pillar,ai工作流搭建,existing,google_autocomplete|bing_suggest|baidu_suggest,1,,76.0,,,,zh,ai 工作流
+ai工作流平台,-1,160,commercial,ai-2,/zh/ai-training/,n/a,100-1k,heuristic,0.3,pillar,ai工作流平台,existing,google_autocomplete|bing_suggest|baidu_suggest,1,,76.0,,,,zh,ai 工作流
+ai 工作 流 工具,-1,160,commercial,ai-gongju,/zh/ai-training/,n/a,100-1k,heuristic,0.3,pillar,ai 工作 流 工具,existing,google_autocomplete|bing_suggest|baidu_suggest,1,,76.0,,,,zh,ai 工作流
+ai工作流网站,-1,140,commercial,ai-3,/zh/ai-training/,n/a,100-1k,heuristic,0.3,pillar,ai工作流网站,existing,google_autocomplete|bing_suggest|baidu_suggest,4,,70.0,,,,zh,ai 工作流
+ai工作流课程,-1,120,informational,ai-kecheng,/zh/ai-training/,n/a,100-1k,heuristic,0.6,pillar,ai工作流课程,existing,google_autocomplete|baidu_suggest,0,,66.0,,,,zh,ai 工作流
+什么是ai工作流,-1,120,informational,shenme-shi-ai,/zh/about/,n/a,100-1k,heuristic,0.6,pillar,什么是ai工作流,existing,google_autocomplete|bing_suggest|baidu_suggest,0,什么是,65.0,,,,zh,ai 工作流
+ai 工作 流 推荐,-1,120,commercial,ai-gongju,/zh/ai-training/,n/a,100-1k,heuristic,0.6,satellite,ai 工作 流 工具,existing,google_autocomplete|bing_suggest|baidu_suggest,0,推荐,65.0,,,,zh,ai 工作流
+ai工作流框架,-1,100,commercial,ai-4,/zh/ai-training/,n/a,100-1k,heuristic,0.3,pillar,ai工作流框架,existing,google_autocomplete|baidu_suggest,2,,62.0,,,,zh,ai 工作流
+ai 工作流 改名,-1,77,commercial,ai-5,/zh/ai-training/,n/a,10-100,heuristic,0.3,pillar,ai 工作流 改名,existing,baidu_suggest,0,,54.0,,,,zh,ai 工作流
+ai工作流是什么意思,-1,77,informational,ai-shi-shenme,/zh/about/,n/a,10-100,heuristic,0.85,satellite,ai工作流是什么,existing,bing_suggest|baidu_suggest,6,,54.0,,,,zh,ai 工作流
+ai工作流平台有哪些,-1,77,commercial,ai-2,/zh/ai-training/,n/a,10-100,heuristic,0.6,satellite,ai工作流平台,existing,bing_suggest|baidu_suggest,6,,54.0,,,,zh,ai 工作流
+ai工作流怎么用,-1,74,informational,ai-zenme-yong,/zh/ai-training/,n/a,10-100,heuristic,0.6,pillar,ai工作流怎么用,existing,bing_suggest|baidu_suggest,0,怎么用,53.0,,,,zh,ai 工作流
+ai 工作流 技术栈,-1,71,commercial,ai-6,/zh/ai-training/,n/a,10-100,heuristic,0.3,pillar,ai 工作流 技术栈,existing,baidu_suggest,1,,52.0,,,,zh,ai 工作流
+ai工作流软件哪个好,-1,68,commercial,ai-ruanjian,/zh/ai-training/,n/a,10-100,heuristic,0.6,satellite,ai工作流软件,existing,bing_suggest|baidu_suggest,1,软件,51.0,,,,zh,ai 工作流
+ai 工作流 培训,-1,60,informational,ai,/zh/ai-training/,n/a,10-100,heuristic,0.6,satellite,ai 工作流,existing,baidu_suggest,3,,48.0,,,,zh,ai 工作流
+ai 工作流编排,-1,54,commercial,ai-7,/zh/ai-training/,n/a,10-100,heuristic,0.3,pillar,ai 工作流编排,existing,google_autocomplete|baidu_suggest,0,b,46.0,,,,zh,ai 工作流
+ai 工作流 英文,-1,54,commercial,ai-8,/zh/ai-training/,n/a,10-100,heuristic,0.3,pillar,ai 工作流 英文,existing,google_autocomplete|baidu_suggest,0,e,46.0,,,,zh,ai 工作流
+ai 工作流 n8n,-1,54,commercial,ai-n8n,/zh/ai-training/,n/a,10-100,heuristic,0.3,pillar,ai 工作流 n8n,existing,google_autocomplete|baidu_suggest,0,n,46.0,,,,zh,ai 工作流
+ai 工作流diff,-1,49,commercial,ai-diff,/zh/ai-training/,n/a,10-100,heuristic,0.3,pillar,ai 工作流diff,existing,baidu_suggest,5,,44.0,,,,zh,ai 工作流
+ai 工作 流 github,-1,44,commercial,ai-gongju,/zh/ai-training/,n/a,10-100,heuristic,0.3,satellite,ai 工作 流 工具,existing,google_autocomplete,6,,42.0,,,,zh,ai 工作流
+AI工作小流,-1,42,commercial,ai-9,/zh/ai-training/,n/a,10-100,heuristic,0.3,pillar,AI工作小流,existing,baidu_suggest,0,小企业,41.0,,,,zh,ai 工作流
+扣子工作流费用,-1,42,transactional,feiyong,NEW /zh/feiyong/,n/a,10-100,heuristic,0.6,pillar,扣子工作流费用,new,bing_suggest,0,费用,41.0,,,,zh,ai 工作流
+ai工作流系统,-1,42,commercial,ai-xitong,/zh/ai-training/,n/a,10-100,heuristic,0.3,pillar,ai工作流系统,existing,bing_suggest,0,系统,41.0,,,,zh,ai 工作流
+ai工作流公司,-1,42,commercial,ai-gongsi,/zh/about/,n/a,10-100,heuristic,0.3,pillar,ai工作流公司,existing,baidu_suggest,0,公司,41.0,,,,zh,ai 工作流
+ai工作流教程,-1,42,informational,ai-jiaocheng,/zh/ai-training/,n/a,10-100,heuristic,0.6,pillar,ai工作流教程,existing,baidu_suggest,0,教程,41.0,,,,zh,ai 工作流
+AI工作流免费吗,-1,42,transactional,ai-mianfei,/zh/ai-training/,n/a,10-100,heuristic,0.6,pillar,AI工作流免费吗,existing,baidu_suggest,0,免费,41.0,,,,zh,ai 工作流
+ai工作流怎么做,-1,42,informational,ai-zenme-yong,/zh/ai-training/,n/a,10-100,heuristic,0.6,satellite,ai工作流怎么用,existing,baidu_suggest,0,怎么做,41.0,,,,zh,ai 工作流
+美国AI公司工作,-1,42,commercial,usa-ai-gongsi,/zh/about/,n/a,10-100,heuristic,0.3,pillar,美国AI公司工作,existing,baidu_suggest,0,美国,41.0,,,,zh,ai 工作流
+coze工作流价格,-1,42,transactional,coze-jiage,NEW /zh/coze-jiage/,n/a,10-100,heuristic,0.6,pillar,coze工作流价格,new,bing_suggest,0,价格,41.0,,,,zh,ai 工作流
+扣子工作流怎么使用,-1,42,informational,feiyong,NEW /zh/feiyong/,n/a,10-100,heuristic,0.6,satellite,扣子工作流费用,new,bing_suggest,0,怎么,41.0,,,,zh,ai 工作流
+达拉斯ai 工作流程图,-1,42,informational,dallas-ai,/zh/ai-training/,n/a,10-100,heuristic,0.6,pillar,达拉斯ai 工作流程图,existing,baidu_suggest,0,达拉斯,41.0,,,,zh,ai 工作流
+AI工作流搭建需要多少钱,-1,42,transactional,ai-dajian,/zh/about/,n/a,10-100,heuristic,0.85,satellite,ai工作流搭建,existing,baidu_suggest,0,多少钱,41.0,,,,zh,ai 工作流
+最好的ai 工作流程是什么,-1,42,informational,zuihao-ai-shi-shenme,/zh/about/,n/a,10-100,heuristic,0.85,pillar,最好的ai 工作流程是什么,existing,baidu_suggest,0,最好的,41.0,,,,zh,ai 工作流
+comfyui如何导入工作流,-1,42,informational,comfyui-ruhe,NEW /zh/comfyui-ruhe/,n/a,10-100,heuristic,0.6,pillar,comfyui如何导入工作流,new,bing_suggest,0,如何,41.0,,,,zh,ai 工作流
+ai工作流培训班一般学费多少,-1,42,informational,ai-peixun,/zh/ai-training/,n/a,10-100,heuristic,0.6,pillar,ai工作流培训班一般学费多少,existing,baidu_suggest,0,培训,41.0,,,,zh,ai 工作流
+ai 工作流程自动化,-1,40,informational,ai-zidong,/zh/ai-training/,n/a,10-100,heuristic,0.6,pillar,ai 工作流程自动化,existing,google_autocomplete,7,,40.0,,,,zh,ai 工作流
+工作流推荐,-1,38,commercial,tuijian,/zh/about/,n/a,10-100,heuristic,0.6,pillar,工作流推荐,existing,bing_suggest,1,推荐,39.0,,,,zh,ai 工作流
+工作流系统,-1,38,commercial,ai-xitong,/zh/ai-training/,n/a,10-100,heuristic,0.3,satellite,ai工作流系统,existing,bing_suggest,1,系统,39.0,,,,zh,ai 工作流
+工作流怎么用,-1,38,informational,ai-zenme-yong,/zh/ai-training/,n/a,10-100,heuristic,0.6,satellite,ai工作流怎么用,existing,bing_suggest,1,怎么用,39.0,,,,zh,ai 工作流
+如何搭建工作流,-1,38,transactional,ruhe-dajian,/zh/about/,n/a,10-100,heuristic,0.6,pillar,如何搭建工作流,existing,bing_suggest,1,如何,39.0,,,,zh,ai 工作流
+最好用的工作流,-1,38,commercial,zuihao-yong,/zh/ai-training/,n/a,10-100,heuristic,0.6,pillar,最好用的工作流,existing,bing_suggest,1,最好的,39.0,,,,zh,ai 工作流
+ai工作流怎么写,-1,38,informational,ai-zenme-yong,/zh/ai-training/,n/a,10-100,heuristic,0.6,satellite,ai工作流怎么用,existing,baidu_suggest,1,电话,39.0,,,,zh,ai 工作流
+ai工作流培训班,-1,38,informational,ai-peixun,/zh/ai-training/,n/a,10-100,heuristic,0.6,satellite,ai工作流培训班一般学费多少,existing,baidu_suggest,1,培训,39.0,,,,zh,ai 工作流
+ai工作流到底是什么,-1,38,informational,ai-shi-shenme-2,/zh/about/,n/a,10-100,heuristic,0.6,pillar,ai工作流到底是什么,existing,baidu_suggest,1,价格,39.0,,,,zh,ai 工作流
+AI工作流软件免费推荐,-1,38,transactional,ai-ruanjian,/zh/ai-training/,n/a,10-100,heuristic,0.6,satellite,ai工作流软件,existing,baidu_suggest,1,免费,39.0,,,,zh,ai 工作流
+最好的ai 工作流量卡,-1,38,commercial,zuihao-ai-shi-shenme,/zh/about/,n/a,10-100,heuristic,0.6,satellite,最好的ai 工作流程是什么,existing,baidu_suggest,1,最好的,39.0,,,,zh,ai 工作流
+comfyui怎么导入工作流,-1,38,informational,comfyui-ruhe,NEW /zh/comfyui-ruhe/,n/a,10-100,heuristic,0.6,satellite,comfyui如何导入工作流,new,bing_suggest,1,怎么,39.0,,,,zh,ai 工作流
+ai工作流搭建平台,-1,36,transactional,ai-dajian,/zh/about/,n/a,10-100,heuristic,0.6,satellite,ai工作流搭建,existing,bing_suggest,8,,38.0,,,,zh,ai 工作流
+ai工作流怎么搭建,-1,36,transactional,ai-zenme-yong,/zh/ai-training/,n/a,10-100,heuristic,0.6,satellite,ai工作流怎么用,existing,baidu_suggest,8,,38.0,,,,zh,ai 工作流
+工作流软件,-1,34,commercial,ai-ruanjian,/zh/ai-training/,n/a,10-100,heuristic,0.3,satellite,ai工作流软件,existing,bing_suggest,2,软件,37.0,,,,zh,ai 工作流
+AI工作流师,-1,34,commercial,ai-10,/zh/ai-training/,n/a,10-100,heuristic,0.3,pillar,AI工作流师,existing,baidu_suggest,2,培训,37.0,,,,zh,ai 工作流
+工作流管理系统,-1,34,commercial,xitong,NEW /zh/xitong/,n/a,10-100,heuristic,0.3,pillar,工作流管理系统,new,bing_suggest,2,系统,37.0,,,,zh,ai 工作流
+飞书工作流怎么用,-1,34,navigational,ai-zenme-yong,/zh/ai-training/,n/a,10-100,heuristic,0.8,satellite,ai工作流怎么用,existing,bing_suggest,2,怎么用,37.0,,,,zh,ai 工作流
+扣子怎么创建工作流,-1,34,informational,zenme,NEW /zh/zenme/,n/a,10-100,heuristic,0.6,pillar,扣子怎么创建工作流,new,bing_suggest,2,怎么,37.0,,,,zh,ai 工作流
+最好用的工作流引擎,-1,34,commercial,zuihao-yong,/zh/ai-training/,n/a,10-100,heuristic,0.6,satellite,最好用的工作流,existing,bing_suggest,2,最好的,37.0,,,,zh,ai 工作流
+ai工作流是干嘛的,-1,34,commercial,ai-shi,/zh/ai-training/,n/a,10-100,heuristic,0.3,pillar,ai工作流是干嘛的,existing,baidu_suggest,2,价格,37.0,,,,zh,ai 工作流
+企业 ai 培训,-1,480,informational,qiye-ai-peixun,/zh/ai-training/,n/a,100-1k,root,0.6,pillar,企业 ai 培训,existing,root|google_autocomplete|bing_suggest|baidu_suggest,0,,100.0,,,,zh,企业 ai 培训
+企业ai培训ppt,-1,180,informational,qiye-ai-peixun,/zh/ai-training/,n/a,100-1k,heuristic,0.6,satellite,企业 ai 培训,existing,bing_suggest|baidu_suggest,1,,64.0,,,,zh,企业 ai 培训
+企业ai培训公司,-1,140,informational,qiye-ai-peixun-gongsi,/zh/ai-training/,n/a,100-1k,heuristic,0.6,pillar,企业ai培训公司,existing,bing_suggest|baidu_suggest,4,,58.0,,,,zh,企业 ai 培训
+企业ai培训课程,-1,110,informational,qiye-ai-peixun-kecheng,/zh/ai-training/,n/a,100-1k,heuristic,0.85,pillar,企业ai培训课程,existing,bing_suggest,1,,52.0,,,,zh,企业 ai 培训
+企业ai培训师,-1,100,informational,qiye-ai-peixun-2,/zh/ai-training/,n/a,100-1k,heuristic,0.6,pillar,企业ai培训师,existing,bing_suggest,2,,50.0,,,,zh,企业 ai 培训
+企业ai培训应用,-1,100,informational,qiye-ai-peixun-yingyong,/zh/ai-training/,n/a,100-1k,heuristic,0.85,pillar,企业ai培训应用,existing,baidu_suggest,2,,50.0,,,,zh,企业 ai 培训
+企业ai培训讲师,-1,95,informational,qiye-ai-peixun-3,/zh/ai-training/,n/a,10-100,heuristic,0.6,pillar,企业ai培训讲师,existing,bing_suggest,3,,48.0,,,,zh,企业 ai 培训
+企业ai培训材料,-1,95,informational,qiye-ai-peixun-4,/zh/ai-training/,n/a,10-100,heuristic,0.6,pillar,企业ai培训材料,existing,baidu_suggest,3,,48.0,,,,zh,企业 ai 培训
+企业ai培训 全员办公类,-1,87,informational,qiye-ai-peixun-5,/zh/ai-training/,n/a,10-100,heuristic,0.6,pillar,企业ai培训 全员办公类,existing,baidu_suggest,4,,46.0,,,,zh,企业 ai 培训
+企业ai培训是什么,-1,79,informational,qiye-ai-peixun-shi-shenme,/zh/about/,n/a,10-100,heuristic,0.85,pillar,企业ai培训是什么,existing,baidu_suggest,5,,44.0,,,,zh,企业 ai 培训
+企业培训平台,-1,71,informational,qiye-peixun,NEW /zh/qiye-peixun/,n/a,10-100,heuristic,0.6,pillar,企业培训平台,new,bing_suggest,6,,42.0,,,,zh,企业 ai 培训
+企业ai培训体系化,-1,71,informational,qiye-ai-peixun-6,/zh/ai-training/,n/a,10-100,heuristic,0.6,pillar,企业ai培训体系化,existing,baidu_suggest,6,,42.0,,,,zh,企业 ai 培训
+美国AI企业,-1,68,commercial,usa-ai-qiye,/zh/book/,n/a,10-100,heuristic,0.3,pillar,美国AI企业,existing,baidu_suggest,0,美国,41.0,,,,zh,企业 ai 培训
+Ai人才培训,-1,68,informational,ai-peixun,/zh/ai-training/,n/a,10-100,heuristic,0.6,pillar,Ai人才培训,existing,baidu_suggest,0,华人,41.0,,,,zh,企业 ai 培训
+企业外语培训费用,-1,68,transactional,qiye-peixun-feiyong,NEW /zh/qiye-peixun-feiyong/,n/a,10-100,heuristic,0.6,pillar,企业外语培训费用,new,bing_suggest,0,费用,41.0,,,,zh,企业 ai 培训
+企业培训平台推荐,-1,68,commercial,qiye-peixun,NEW /zh/qiye-peixun/,n/a,10-100,heuristic,0.6,satellite,企业培训平台,new,bing_suggest,0,推荐,41.0,,,,zh,企业 ai 培训
+企业培训软件下载,-1,68,transactional,qiye-peixun-ruanjian-xiazai,NEW /zh/qiye-peixun-ruanjian-xiazai/,n/a,10-100,heuristic,0.6,pillar,企业培训软件下载,new,bing_suggest,0,软件,41.0,,,,zh,企业 ai 培训
+企业培训机构哪家好,-1,68,commercial,qiye-peixun-najia-hao,NEW /zh/qiye-peixun-najia-hao/,n/a,10-100,heuristic,0.6,pillar,企业培训机构哪家好,new,bing_suggest,0,哪家好,41.0,,,,zh,企业 ai 培训
+企业一般培训是什么,-1,68,informational,qiye-ai-peixun-shi-shenme,/zh/about/,n/a,10-100,heuristic,0.85,satellite,企业ai培训是什么,existing,bing_suggest,0,是什么,41.0,,,,zh,企业 ai 培训
+如何开展企业危机培训,-1,68,informational,ruhe-qiye-peixun,NEW /zh/ruhe-qiye-peixun/,n/a,10-100,heuristic,0.85,pillar,如何开展企业危机培训,new,bing_suggest,0,如何,41.0,,,,zh,企业 ai 培训
+企业微信客服电话人工培训,-1,68,navigational,qiye-kefu-dianhua-peixun,NEW /zh/qiye-kefu-dianhua-peixun/,n/a,10-100,heuristic,0.8,pillar,企业微信客服电话人工培训,new,bing_suggest,0,电话,41.0,,,,zh,企业 ai 培训
+企业 ai 培训怎么做的,-1,68,informational,qiye-ai-peixun-zenme-zuo,/zh/ai-training/,n/a,10-100,heuristic,0.85,pillar,企业 ai 培训怎么做的,existing,baidu_suggest,0,怎么做,41.0,,,,zh,企业 ai 培训
+培训是企业给员工最好的福利,-1,68,commercial,peixun-shi-qiye-yuangong-zuihao,NEW /zh/peixun-shi-qiye-yuangong-zuihao/,n/a,10-100,heuristic,0.6,pillar,培训是企业给员工最好的福利,new,bing_suggest,0,最好的,41.0,,,,zh,企业 ai 培训
+企业 ai 培训哪家好一点,-1,68,commercial,qiye-ai-peixun-najia-hao,NEW /zh/qiye-ai-peixun-najia-hao/,n/a,10-100,heuristic,0.6,pillar,企业 ai 培训哪家好一点,new,baidu_suggest,0,哪家好,41.0,,,,zh,企业 ai 培训
+企业 ai 培训好用吗知乎,-1,68,commercial,qiye-ai-peixun-hao-yong,NEW /zh/qiye-ai-peixun-hao-yong/,n/a,10-100,heuristic,0.6,pillar,企业 ai 培训好用吗知乎,new,baidu_suggest,0,好用吗,41.0,,,,zh,企业 ai 培训
+什么是企业 ai 培训机构,-1,68,informational,shenme-shi-qiye-ai-peixun,/zh/about/,n/a,10-100,heuristic,0.85,pillar,什么是企业 ai 培训机构,existing,baidu_suggest,0,什么是,41.0,,,,zh,企业 ai 培训
+最好的企业 ai 培训机构,-1,68,commercial,shenme-shi-qiye-ai-peixun,/zh/about/,n/a,10-100,heuristic,0.6,satellite,什么是企业 ai 培训机构,existing,baidu_suggest,0,最好的,41.0,,,,zh,企业 ai 培训
+企业 ai 培训多少钱一个月,-1,68,transactional,qiye-ai-peixun-duoshaoqian,/zh/ai-training/,n/a,10-100,heuristic,0.6,pillar,企业 ai 培训多少钱一个月,existing,baidu_suggest,0,多少钱,41.0,,,,zh,企业 ai 培训
+企业 ai 培训小企业有哪些,-1,68,commercial,qiye-ai-peixun-xiaoqiye,NEW /zh/qiye-ai-peixun-xiaoqiye/,n/a,10-100,heuristic,0.6,pillar,企业 ai 培训小企业有哪些,new,baidu_suggest,0,小企业,41.0,,,,zh,企业 ai 培训
+企业 ai 培训美容院怎么样,-1,68,informational,qiye-ai-peixun-meirong-zenme,/zh/ai-training/,n/a,10-100,heuristic,0.85,pillar,企业 ai 培训美容院怎么样,existing,baidu_suggest,0,美容院,41.0,,,,zh,企业 ai 培训
+达拉斯企业 ai 培训怎么样,-1,68,informational,qiye-ai-peixun-zenme-zuo,/zh/ai-training/,n/a,10-100,heuristic,0.85,satellite,企业 ai 培训怎么做的,existing,baidu_suggest,0,达拉斯,41.0,,,,zh,企业 ai 培训
+企业培训师,-1,64,informational,qiye-ai-peixun-2,/zh/ai-training/,n/a,10-100,heuristic,0.6,satellite,企业ai培训师,existing,bing_suggest,7,,40.0,,,,zh,企业 ai 培训
+企业AI培训方案,-1,64,informational,qiye-ai-peixun-fangan,/zh/ai-training/,n/a,10-100,heuristic,0.6,pillar,企业AI培训方案,existing,baidu_suggest,7,,40.0,,,,zh,企业 ai 培训
+软件工程企业培训,-1,60,informational,ruanjian-qiye-peixun,NEW /zh/ruanjian-qiye-peixun/,n/a,10-100,heuristic,0.6,pillar,软件工程企业培训,new,bing_suggest,1,软件,39.0,,,,zh,企业 ai 培训
+企业联络员怎么培训,-1,60,informational,qiye-zenme-peixun,/zh/ai-training/,n/a,10-100,heuristic,0.85,pillar,企业联络员怎么培训,existing,bing_suggest,1,怎么,39.0,,,,zh,企业 ai 培训
+英语企业培训班的费用,-1,60,transactional,qiye-peixun-feiyong-2,NEW /zh/qiye-peixun-feiyong-2/,n/a,10-100,heuristic,0.6,pillar,英语企业培训班的费用,new,bing_suggest,1,费用,39.0,,,,zh,企业 ai 培训
+企业管理培训课程推荐,-1,60,informational,qiye-ai-peixun-kecheng,/zh/ai-training/,n/a,10-100,heuristic,0.85,satellite,企业ai培训课程,existing,bing_suggest,1,推荐,39.0,,,,zh,企业 ai 培训
+其他企业是如何培训的,-1,60,informational,qiye-shi-ruhe-peixun,NEW /zh/qiye-shi-ruhe-peixun/,n/a,10-100,heuristic,0.85,pillar,其他企业是如何培训的,new,bing_suggest,1,如何,39.0,,,,zh,企业 ai 培训
+企业管理培训课程哪家好,-1,60,informational,qiye-ai-peixun-kecheng,/zh/ai-training/,n/a,10-100,heuristic,0.85,satellite,企业ai培训课程,existing,bing_suggest,1,哪家好,39.0,,,,zh,企业 ai 培训
+绚星云学习企业培训系统,-1,60,informational,xuexi-qiye-peixun-xitong,NEW /zh/xuexi-qiye-peixun-xitong/,n/a,10-100,heuristic,0.85,pillar,绚星云学习企业培训系统,new,bing_suggest,1,系统,39.0,,,,zh,企业 ai 培训
+企业微信客服电话人员培训,-1,60,navigational,qiye-kefu-dianhua-peixun,NEW /zh/qiye-kefu-dianhua-peixun/,n/a,10-100,heuristic,0.8,satellite,企业微信客服电话人工培训,new,bing_suggest,1,电话,39.0,,,,zh,企业 ai 培训
+ethan美国培训企业的,-1,60,informational,ethan-usa-peixun-qiye,NEW /zh/ethan-usa-peixun-qiye/,n/a,10-100,heuristic,0.6,pillar,ethan美国培训企业的,new,baidu_suggest,1,美国,39.0,,,,zh,企业 ai 培训
+企业一般培训是有什么作用的,-1,60,informational,qiye-ai-peixun-shi-shenme,/zh/about/,n/a,10-100,heuristic,0.85,satellite,企业ai培训是什么,existing,bing_suggest,1,是什么,39.0,,,,zh,企业 ai 培训
+企业 ai 培训多少钱一年,-1,60,transactional,qiye-ai-peixun-duoshaoqian,/zh/ai-training/,n/a,10-100,heuristic,0.6,satellite,企业 ai 培训多少钱一个月,existing,baidu_suggest,1,多少钱,39.0,,,,zh,企业 ai 培训
+企业 ai 培训是什么意思,-1,60,informational,qiye-ai-peixun-shi-shenme,/zh/about/,n/a,10-100,heuristic,0.85,satellite,企业ai培训是什么,existing,baidu_suggest,1,是什么,39.0,,,,zh,企业 ai 培训
+什么是企业 ai 培训课程,-1,60,informational,qiye-ai-peixun-kecheng,/zh/ai-training/,n/a,10-100,heuristic,0.85,satellite,企业ai培训课程,existing,baidu_suggest,1,什么是,39.0,,,,zh,企业 ai 培训
+最好的企业 ai 培训学校,-1,60,commercial,shenme-shi-qiye-ai-peixun,/zh/about/,n/a,10-100,heuristic,0.6,satellite,什么是企业 ai 培训机构,existing,baidu_suggest,1,最好的,39.0,,,,zh,企业 ai 培训
+达拉斯企业 ai 培训机构,-1,60,informational,qiye-ai-peixun-zenme-zuo,/zh/ai-training/,n/a,10-100,heuristic,0.6,satellite,企业 ai 培训怎么做的,existing,baidu_suggest,1,达拉斯,39.0,,,,zh,企业 ai 培训
+企业 ai 培训小企业怎么样,-1,60,informational,qiye-ai-peixun-xiaoqiye,NEW /zh/qiye-ai-peixun-xiaoqiye/,n/a,10-100,heuristic,0.85,satellite,企业 ai 培训小企业有哪些,new,baidu_suggest,1,小企业,39.0,,,,zh,企业 ai 培训
+企业 ai 培训美容院有哪些,-1,60,commercial,qiye-ai-peixun-meirong-zenme,/zh/ai-training/,n/a,10-100,heuristic,0.6,satellite,企业 ai 培训美容院怎么样,existing,baidu_suggest,1,美容院,39.0,,,,zh,企业 ai 培训
+企业AI培训学什么,-1,57,informational,qiye-ai-peixun-shenme,/zh/about/,n/a,10-100,heuristic,0.6,pillar,企业AI培训学什么,existing,baidu_suggest,8,,38.0,,,,zh,企业 ai 培训
+企业百万员工安全大培训,-1,57,informational,qiye-yuangong-peixun,NEW /zh/qiye-yuangong-peixun/,n/a,10-100,heuristic,0.6,pillar,企业百万员工安全大培训,new,bing_suggest,8,,38.0,,,,zh,企业 ai 培训
+培训用AI工具,-1,54,informational,peixun-yong-ai-gongju,/zh/ai-training/,n/a,10-100,heuristic,0.6,pillar,培训用AI工具,existing,baidu_suggest,2,软件,37.0,,,,zh,企业 ai 培训
+美国企业员工培训,-1,54,informational,usa-qiye-yuangong-peixun,NEW /zh/usa-qiye-yuangong-peixun/,n/a,10-100,heuristic,0.6,pillar,美国企业员工培训,new,baidu_suggest,2,美国,37.0,,,,zh,企业 ai 培训
+企业英语培训机构推荐,-1,54,commercial,qiye-peixun-tuijian,NEW /zh/qiye-peixun-tuijian/,n/a,10-100,heuristic,0.6,pillar,企业英语培训机构推荐,new,bing_suggest,2,推荐,37.0,,,,zh,企业 ai 培训
+企业软件工程能力培训,-1,54,informational,ruanjian-qiye-peixun,NEW /zh/ruanjian-qiye-peixun/,n/a,10-100,heuristic,0.6,satellite,软件工程企业培训,new,bing_suggest,2,软件,37.0,,,,zh,企业 ai 培训
+在企业中如何培训新员工,-1,54,informational,qiye-ruhe-peixun-yuangong,NEW /zh/qiye-ruhe-peixun-yuangong/,n/a,10-100,heuristic,0.85,pillar,在企业中如何培训新员工,new,bing_suggest,2,如何,37.0,,,,zh,企业 ai 培训
+企业一般培训是怎么样的,-1,54,informational,qiye-peixun-shi-zenme,NEW /zh/qiye-peixun-shi-zenme/,n/a,10-100,heuristic,0.85,pillar,企业一般培训是怎么样的,new,bing_suggest,2,怎么,37.0,,,,zh,企业 ai 培训
+企业提供的培训场所的费用,-1,54,transactional,qiye-peixun-feiyong-3,NEW /zh/qiye-peixun-feiyong-3/,n/a,10-100,heuristic,0.6,pillar,企业提供的培训场所的费用,new,bing_suggest,2,费用,37.0,,,,zh,企业 ai 培训
+ai 前台,-1,260,commercial,ai-qiantai,/zh/ai-receptionist/,n/a,100-1k,root,0.3,pillar,ai 前台,existing,root|google_autocomplete|baidu_suggest,0,,100.0,,,,zh,ai 前台
+AI前台周报300字,-1,67,informational,ai-qiantai-zhoubao-300,/zh/ai-receptionist/,n/a,10-100,heuristic,0.6,pillar,AI前台周报300字,existing,baidu_suggest,0,,54.0,,,,zh,ai 前台
+企业前台,-1,37,commercial,qiye-qiantai,NEW /zh/qiye-qiantai/,n/a,10-100,heuristic,0.3,pillar,企业前台,new,baidu_suggest,0,公司,41.0,,,,zh,ai 前台
+AI试用,-1,37,transactional,ai-qiantai,/zh/ai-receptionist/,n/a,10-100,heuristic,0.6,satellite,ai 前台,existing,baidu_suggest,0,试用,41.0,,,,zh,ai 前台
+什么叫前台,-1,37,commercial,shenme-qiantai,/zh/ai-receptionist/,n/a,10-100,heuristic,0.3,pillar,什么叫前台,existing,baidu_suggest,0,什么是,41.0,,,,zh,ai 前台
+ai技术培训,-1,37,informational,ai-peixun,/zh/ai-training/,n/a,10-100,heuristic,0.6,pillar,ai技术培训,existing,baidu_suggest,0,培训,41.0,,,,zh,ai 前台
+诊所前台图片,-1,37,informational,zhensuo-qiantai-tupian,NEW /zh/zhensuo-qiantai-tupian/,n/a,10-100,heuristic,0.6,pillar,诊所前台图片,new,baidu_suggest,0,诊所,41.0,,,,zh,ai 前台
+餐厅前台实拍图,-1,37,commercial,canting-qiantai,NEW /zh/canting-qiantai/,n/a,10-100,heuristic,0.3,pillar,餐厅前台实拍图,new,baidu_suggest,0,餐厅,41.0,,,,zh,ai 前台
+什么优秀的前台,-1,37,commercial,shenme-qiantai-2,/zh/case-studies/ai-man-jack/,n/a,10-100,heuristic,0.3,pillar,什么优秀的前台,existing,baidu_suggest,0,最好的,41.0,,,,zh,ai 前台
+前台价是什么意思,-1,37,informational,qiantai-shi-shenme,/zh/pricing/,n/a,10-100,heuristic,0.85,pillar,前台价是什么意思,existing,baidu_suggest,0,价格,41.0,,,,zh,ai 前台
+ai对话前端页面,-1,37,commercial,ai,NEW /zh/ai/,n/a,10-100,heuristic,0.3,pillar,ai对话前端页面,new,baidu_suggest,0,怎么用,41.0,,,,zh,ai 前台
+智能前台管理系统,-1,37,commercial,zhineng-qiantai-xitong,NEW /zh/zhineng-qiantai-xitong/,n/a,10-100,heuristic,0.3,pillar,智能前台管理系统,new,baidu_suggest,0,系统,41.0,,,,zh,ai 前台
+AI智能电话前台,-1,37,commercial,ai-zhineng-dianhua-qiantai,/zh/ai-receptionist/,n/a,10-100,heuristic,0.3,pillar,AI智能电话前台,existing,baidu_suggest,0,电话,41.0,,,,zh,ai 前台
+前台怎么联系前台,-1,37,informational,qiantai-zenme-qiantai,/zh/ai-receptionist/,n/a,10-100,heuristic,0.6,pillar,前台怎么联系前台,existing,baidu_suggest,0,怎么,41.0,,,,zh,ai 前台
+ai公司前台背景墙,-1,37,commercial,ai-gongsi-qiantai,/zh/ai-receptionist/,n/a,10-100,heuristic,0.3,pillar,ai公司前台背景墙,existing,baidu_suggest,0,推荐,41.0,,,,zh,ai 前台
+前台用心做事小案例,-1,37,informational,qiantai-yong-zuo-anli,NEW /zh/qiantai-yong-zuo-anli/,n/a,10-100,heuristic,0.6,pillar,前台用心做事小案例,new,baidu_suggest,0,案例,41.0,,,,zh,ai 前台
+前台售价,-1,33,commercial,qiantai,NEW /zh/qiantai/,n/a,10-100,heuristic,0.3,pillar,前台售价,new,baidu_suggest,1,价格,39.0,,,,zh,ai 前台
+Ai前端,-1,33,commercial,ai-qiantai,/zh/ai-receptionist/,n/a,10-100,heuristic,0.3,satellite,ai 前台,existing,baidu_suggest,1,怎么用,39.0,,,,zh,ai 前台
+AI培训,-1,33,informational,ai-peixun,/zh/ai-training/,n/a,10-100,heuristic,0.6,satellite,ai技术培训,existing,baidu_suggest,1,培训,39.0,,,,zh,ai 前台
+前台流程,-1,33,informational,qiantai-2,NEW /zh/qiantai-2/,n/a,10-100,heuristic,0.6,pillar,前台流程,new,baidu_suggest,1,如何,39.0,,,,zh,ai 前台
+ai与前端,-1,33,commercial,ai-yu,/zh/ai-receptionist/,n/a,10-100,heuristic,0.3,pillar,ai与前端,existing,baidu_suggest,1,对比,39.0,,,,zh,ai 前台
+AI後台系統,-1,33,commercial,ai-2,NEW /zh/ai-2/,n/a,10-100,heuristic,0.3,pillar,AI後台系統,new,baidu_suggest,1,系统,39.0,,,,zh,ai 前台
+创意前台设计,-1,33,informational,qiantai-sheji,NEW /zh/qiantai-sheji/,n/a,10-100,heuristic,0.6,pillar,创意前台设计,new,baidu_suggest,1,方案,39.0,,,,zh,ai 前台
+前台电话在哪里,-1,33,commercial,qiantai-dianhua,NEW /zh/qiantai-dianhua/,n/a,10-100,heuristic,0.3,pillar,前台电话在哪里,new,baidu_suggest,1,电话,39.0,,,,zh,ai 前台
+前台是做什么的,-1,33,commercial,qiantai-shi-zuo-shenme,/zh/ai-receptionist/,n/a,10-100,heuristic,0.3,pillar,前台是做什么的,existing,baidu_suggest,1,什么是,39.0,,,,zh,ai 前台
+prompt 培训,-1,300,informational,prompt-peixun,/zh/ai-training/,n/a,100-1k,root,0.6,pillar,prompt 培训,existing,root|bing_suggest|baidu_suggest,0,,100.0,,,,zh,prompt 培训
+PRI培训,-1,71,informational,pri-peixun,/zh/ai-training/,n/a,10-100,heuristic,0.6,pillar,PRI培训,existing,baidu_suggest,1,,52.0,,,,zh,prompt 培训
+培训课程大纲生成prompt,-1,71,informational,peixun-kecheng-prompt,NEW /zh/peixun-kecheng-prompt/,n/a,10-100,heuristic,0.85,pillar,培训课程大纲生成prompt,new,bing_suggest,1,,52.0,,,,zh,prompt 培训
+PT培训,-1,65,informational,pt-peixun,/zh/ai-training/,n/a,10-100,heuristic,0.6,pillar,PT培训,existing,baidu_suggest,2,,50.0,,,,zh,prompt 培训
+prompt工程师的培训课程,-1,65,informational,prompt-peixun-kecheng,NEW /zh/prompt-peixun-kecheng/,n/a,10-100,heuristic,0.85,pillar,prompt工程师的培训课程,new,bing_suggest,2,,50.0,,,,zh,prompt 培训
+prompt课程,-1,60,informational,prompt-peixun,/zh/ai-training/,n/a,10-100,heuristic,0.6,satellite,prompt 培训,existing,baidu_suggest,3,,48.0,,,,zh,prompt 培训
+prompt工程师培训,-1,60,informational,prompt-peixun-kecheng,NEW /zh/prompt-peixun-kecheng/,n/a,10-100,heuristic,0.6,satellite,prompt工程师的培训课程,new,bing_suggest,3,,48.0,,,,zh,prompt 培训
+prp培训班2026年,-1,54,informational,prp-peixun-2026,NEW /zh/prp-peixun-2026/,n/a,10-100,heuristic,0.6,pillar,prp培训班2026年,new,baidu_suggest,4,,46.0,,,,zh,prompt 培训
+prc培训,-1,49,informational,prc-peixun,/zh/ai-training/,n/a,10-100,heuristic,0.6,pillar,prc培训,existing,baidu_suggest,5,,44.0,,,,zh,prompt 培训
+prc培训班一般多少钱,-1,44,transactional,prc-peixun-duoshaoqian,NEW /zh/prc-peixun-duoshaoqian/,n/a,10-100,heuristic,0.6,pillar,prc培训班一般多少钱,new,baidu_suggest,6,,42.0,,,,zh,prompt 培训
+培训报名预约,-1,42,transactional,peixun-yuyue,NEW /zh/peixun-yuyue/,n/a,10-100,heuristic,0.85,pillar,培训报名预约,new,baidu_suggest,0,预约,41.0,,,,zh,prompt 培训
+培训基地餐厅,-1,42,informational,peixun-canting,NEW /zh/peixun-canting/,n/a,10-100,heuristic,0.6,pillar,培训基地餐厅,new,baidu_suggest,0,餐厅,41.0,,,,zh,prompt 培训
+opl培训案例,-1,42,informational,opl-peixun-anli,NEW /zh/opl-peixun-anli/,n/a,10-100,heuristic,0.85,pillar,opl培训案例,new,baidu_suggest,0,案例,41.0,,,,zh,prompt 培训
+培训系统管理系统,-1,42,informational,peixun-xitong-xitong,NEW /zh/peixun-xitong-xitong/,n/a,10-100,heuristic,0.6,pillar,培训系统管理系统,new,baidu_suggest,0,系统,41.0,,,,zh,prompt 培训
+prompt培训班,-1,42,informational,prp-peixun-2026,NEW /zh/prp-peixun-2026/,n/a,10-100,heuristic,0.6,satellite,prp培训班2026年,new,baidu_suggest,0,怎么用,41.0,,,,zh,prompt 培训
+美容培训学校是怎么培训的,-1,42,informational,meirong-peixun-shi-zenme-peixun,NEW /zh/meirong-peixun-shi-zenme-peixun/,n/a,10-100,heuristic,0.85,pillar,美容培训学校是怎么培训的,new,baidu_suggest,0,美容院,41.0,,,,zh,prompt 培训
+在美国PMP培训机构有哪些,-1,42,commercial,usa-pmp-peixun,NEW /zh/usa-pmp-peixun/,n/a,10-100,heuristic,0.6,pillar,在美国PMP培训机构有哪些,new,baidu_suggest,0,美国,41.0,,,,zh,prompt 培训
+培训室预约,-1,38,transactional,peixun-yuyue-2,NEW /zh/peixun-yuyue-2/,n/a,10-100,heuristic,0.6,pillar,培训室预约,new,baidu_suggest,1,预约,39.0,,,,zh,prompt 培训
+美国培训机构,-1,38,informational,usa-pmp-peixun,NEW /zh/usa-pmp-peixun/,n/a,10-100,heuristic,0.6,satellite,在美国PMP培训机构有哪些,new,baidu_suggest,1,美国,39.0,,,,zh,prompt 培训
+德州培训学校,-1,38,informational,texas-peixun,NEW /zh/texas-peixun/,n/a,10-100,heuristic,0.6,satellite,德州培训班,new,baidu_suggest,1,德州,39.0,,,,zh,prompt 培训
+pa培训计划表,-1,38,informational,pa-peixun,NEW /zh/pa-peixun/,n/a,10-100,heuristic,0.6,pillar,pa培训计划表,new,baidu_suggest,1,方案,39.0,,,,zh,prompt 培训
+诊所经营培训机构,-1,38,informational,zhensuo-peixun,NEW /zh/zhensuo-peixun/,n/a,10-100,heuristic,0.6,pillar,诊所经营培训机构,new,baidu_suggest,1,诊所,39.0,,,,zh,prompt 培训
+美容机构培训学校,-1,38,informational,meirong-peixun,NEW /zh/meirong-peixun/,n/a,10-100,heuristic,0.6,pillar,美容机构培训学校,new,baidu_suggest,1,美容院,39.0,,,,zh,prompt 培训
+小企业培训时间管理,-1,38,informational,xiaoqiye-peixun,NEW /zh/xiaoqiye-peixun/,n/a,10-100,heuristic,0.6,pillar,小企业培训时间管理,new,baidu_suggest,1,小企业,39.0,,,,zh,prompt 培训
+餐厅培训项目有哪些,-1,38,commercial,canting-peixun,NEW /zh/canting-peixun/,n/a,10-100,heuristic,0.6,pillar,餐厅培训项目有哪些,new,baidu_suggest,1,餐厅,39.0,,,,zh,prompt 培训
+什么叫prompt,-1,38,commercial,shenme-prompt,NEW /zh/shenme-prompt/,n/a,10-100,heuristic,0.3,pillar,什么叫prompt,new,baidu_suggest,1,什么是,39.0,,,,zh,prompt 培训
+pgmp培训官网入口,-1,38,navigational,pgmp-peixun-guanwang,NEW /zh/pgmp-peixun-guanwang/,n/a,10-100,heuristic,0.6,pillar,pgmp培训官网入口,new,baidu_suggest,1,系统,39.0,,,,zh,prompt 培训
+pmp培训机构差别大吗,-1,38,informational,pmp-peixun,NEW /zh/pmp-peixun/,n/a,10-100,heuristic,0.85,pillar,pmp培训机构差别大吗,new,baidu_suggest,1,对比,39.0,,,,zh,prompt 培训
+powerinspect培训,-1,36,informational,powerinspect-peixun,/zh/ai-training/,n/a,10-100,heuristic,0.6,pillar,powerinspect培训,existing,baidu_suggest,8,,38.0,,,,zh,prompt 培训
+培训网站系统,-1,34,informational,peixun-xitong,NEW /zh/peixun-xitong/,n/a,10-100,heuristic,0.6,pillar,培训网站系统,new,baidu_suggest,2,系统,37.0,,,,zh,prompt 培训
+预约课程培训,-1,34,transactional,yuyue-kecheng-peixun,NEW /zh/yuyue-kecheng-peixun/,n/a,10-100,heuristic,0.65,pillar,预约课程培训,new,baidu_suggest,2,预约,37.0,,,,zh,prompt 培训
+培训案例分析,-1,34,informational,opl-peixun-anli,NEW /zh/opl-peixun-anli/,n/a,10-100,heuristic,0.85,satellite,opl培训案例,new,baidu_suggest,2,案例,37.0,,,,zh,prompt 培训
+培训餐饮哪里,-1,34,informational,peixun,NEW /zh/peixun/,n/a,10-100,heuristic,0.6,pillar,培训餐饮哪里,new,baidu_suggest,2,餐厅,37.0,,,,zh,prompt 培训
+pr培训班学费,-1,34,informational,pr-peixun,NEW /zh/pr-peixun/,n/a,10-100,heuristic,0.6,pillar,pr培训班学费,new,baidu_suggest,2,价格,37.0,,,,zh,prompt 培训
+培训班电话入口,-1,34,informational,peixun-dianhua,NEW /zh/peixun-dianhua/,n/a,10-100,heuristic,0.6,pillar,培训班电话入口,new,baidu_suggest,2,电话,37.0,,,,zh,prompt 培训
+prompt技巧,-1,34,commercial,prompt-peixun,/zh/ai-training/,n/a,10-100,heuristic,0.3,satellite,prompt 培训,existing,baidu_suggest,2,怎么用,37.0,,,,zh,prompt 培训
+比较好的美容培训,-1,34,commercial,hao-meirong-peixun,NEW /zh/hao-meirong-peixun/,n/a,10-100,heuristic,0.6,pillar,比较好的美容培训,new,baidu_suggest,2,美容院,37.0,,,,zh,prompt 培训
+诊所培训内容100篇,-1,34,informational,zhensuo-peixun-100,NEW /zh/zhensuo-peixun-100/,n/a,10-100,heuristic,0.6,pillar,诊所培训内容100篇,new,baidu_suggest,2,诊所,37.0,,,,zh,prompt 培训
+德州免费培训项目课程,-1,34,transactional,texas-mianfei-peixun-kecheng,NEW /zh/texas-mianfei-peixun-kecheng/,n/a,10-100,heuristic,0.65,pillar,德州免费培训项目课程,new,baidu_suggest,2,德州,37.0,,,,zh,prompt 培训
+preply企业培训服务,-1,34,informational,preply-qiye-peixun-fuwu,NEW /zh/preply-qiye-peixun-fuwu/,n/a,10-100,heuristic,0.6,pillar,preply企业培训服务,new,baidu_suggest,2,公司,37.0,,,,zh,prompt 培训
+小型企业如何选择培训咨询服务,-1,34,informational,qiye-ruhe-peixun-fuwu,NEW /zh/qiye-ruhe-peixun-fuwu/,n/a,10-100,heuristic,0.85,pillar,小型企业如何选择培训咨询服务,new,baidu_suggest,2,小企业,37.0,,,,zh,prompt 培训
+AACTP 美国培训认证协会,-1,34,informational,aactp-usa-peixun,NEW /zh/aactp-usa-peixun/,n/a,10-100,heuristic,0.6,pillar,AACTP 美国培训认证协会,new,baidu_suggest,2,美国,37.0,,,,zh,prompt 培训
+培训programme怎么写,-1,32,informational,peixun-programme-zenme,/zh/ai-training/,n/a,10-100,heuristic,0.85,pillar,培训programme怎么写,existing,baidu_suggest,9,,36.0,,,,zh,prompt 培训
+HTTP培训,-1,30,informational,http-peixun,/zh/ai-training/,n/a,10-100,heuristic,0.6,pillar,HTTP培训,existing,baidu_suggest,3,系统,35.0,,,,zh,prompt 培训
+教育培训预约,-1,30,transactional,peixun-yuyue-3,NEW /zh/peixun-yuyue-3/,n/a,10-100,heuristic,0.6,pillar,教育培训预约,new,baidu_suggest,3,预约,35.0,,,,zh,prompt 培训
+美国教育培训,-1,30,informational,peixun-yuyue-3,NEW /zh/peixun-yuyue-3/,n/a,10-100,heuristic,0.6,satellite,教育培训预约,new,baidu_suggest,3,美国,35.0,,,,zh,prompt 培训
+npdp培训费用,-1,30,transactional,npdp-peixun-feiyong,NEW /zh/npdp-peixun-feiyong/,n/a,10-100,heuristic,0.6,pillar,npdp培训费用,new,baidu_suggest,3,价格,35.0,,,,zh,prompt 培训
+RT培训内容大全,-1,30,informational,zhensuo-peixun-100,NEW /zh/zhensuo-peixun-100/,n/a,10-100,heuristic,0.6,satellite,诊所培训内容100篇,new,baidu_suggest,3,方案,35.0,,,,zh,prompt 培训
+中小企业培训机构,-1,30,informational,xiaoqiye-peixun,NEW /zh/xiaoqiye-peixun/,n/a,10-100,heuristic,0.6,satellite,小企业培训时间管理,new,baidu_suggest,3,小企业,35.0,,,,zh,prompt 培训
+诊所培训主要内容,-1,30,informational,zhensuo-peixun-2,NEW /zh/zhensuo-peixun-2/,n/a,10-100,heuristic,0.6,pillar,诊所培训主要内容,new,baidu_suggest,3,诊所,35.0,,,,zh,prompt 培训
+餐厅培训图片大全,-1,30,informational,canting-peixun-tupian,NEW /zh/canting-peixun-tupian/,n/a,10-100,heuristic,0.85,pillar,餐厅培训图片大全,new,baidu_suggest,3,餐厅,35.0,,,,zh,prompt 培训
+德州技术培训机构排名,-1,30,commercial,texas-peixun-paiming,NEW /zh/texas-peixun-paiming/,n/a,10-100,heuristic,0.6,pillar,德州技术培训机构排名,new,baidu_suggest,3,德州,35.0,,,,zh,prompt 培训
+prompt专家2.0,-1,30,commercial,prompt2-0,NEW /zh/prompt2-0/,n/a,10-100,heuristic,0.3,pillar,prompt专家2.0,new,bing_suggest,3,价格,35.0,,,,zh,prompt 培训
+prompt证书怎么考,-1,30,informational,prompt-zenme,NEW /zh/prompt-zenme/,n/a,10-100,heuristic,0.6,pillar,prompt证书怎么考,new,baidu_suggest,3,多少钱,35.0,,,,zh,prompt 培训
+美容培训班一般要多少钱,-1,30,transactional,prc-peixun-duoshaoqian,NEW /zh/prc-peixun-duoshaoqian/,n/a,10-100,heuristic,0.6,satellite,prc培训班一般多少钱,new,baidu_suggest,3,美容院,35.0,,,,zh,prompt 培训
+prompt通俗入门讲解,-1,30,informational,prompt-rumen,NEW /zh/prompt-rumen/,n/a,10-100,heuristic,0.6,pillar,prompt通俗入门讲解,new,baidu_suggest,3,怎么用,35.0,,,,zh,prompt 培训
+prompt训练有什么特征,-1,30,commercial,prompt-shenme,NEW /zh/prompt-shenme/,n/a,10-100,heuristic,0.3,pillar,prompt训练有什么特征,new,baidu_suggest,3,是什么,35.0,,,,zh,prompt 培训
+project软件培训教程,-1,30,informational,project-ruanjian-peixun-jiaocheng,NEW /zh/project-ruanjian-peixun-jiaocheng/,n/a,10-100,heuristic,0.85,pillar,project软件培训教程,new,baidu_suggest,3,软件,35.0,,,,zh,prompt 培训
+英语培训预约,-1,26,transactional,peixun-yuyue-4,NEW /zh/peixun-yuyue-4/,n/a,10-100,heuristic,0.6,pillar,英语培训预约,new,baidu_suggest,4,预约,33.0,,,,zh,prompt 培训
+门诊前台应该怎么做,-1,33,informational,qiantai-zenme-zuo,NEW /zh/qiantai-zenme-zuo/,n/a,10-100,heuristic,0.6,pillar,门诊前台应该怎么做,new,baidu_suggest,1,诊所,39.0,,,,zh,ai 前台
+餐厅前台的工作职责,-1,33,commercial,canting-qiantai-2,NEW /zh/canting-qiantai-2/,n/a,10-100,heuristic,0.3,pillar,餐厅前台的工作职责,new,baidu_suggest,1,餐厅,39.0,,,,zh,ai 前台
+AI前端最厉害三个软件,-1,33,commercial,ai-ruanjian,NEW /zh/ai-ruanjian/,n/a,10-100,heuristic,0.3,pillar,AI前端最厉害三个软件,new,baidu_suggest,1,软件,39.0,,,,zh,ai 前台
+做前台,-1,29,commercial,zuo-qiantai,/zh/ai-receptionist/,n/a,10-100,heuristic,0.3,pillar,做前台,existing,baidu_suggest,2,多少钱,37.0,,,,zh,ai 前台
+Ai试装,-1,29,commercial,ai-3,/zh/ai-receptionist/,n/a,10-100,heuristic,0.3,pillar,Ai试装,existing,baidu_suggest,2,试用,37.0,,,,zh,ai 前台
+ai training for sales,-1,800,informational,ai-training-for-sales,/ai-training/,n/a,100-1k,root,0.6,pillar,ai training for sales,existing,root|google_autocomplete,0,,100.0,,,,en,ai training for sales
+ai training for sales professionals,-1,210,informational,ai-training-for-sales,/ai-training/,n/a,100-1k,heuristic,0.6,satellite,ai training for sales,existing,google_autocomplete,0,,54.0,,,,en,ai training for sales
+ai training for sales people,-1,170,informational,ai-training-for-sales,/ai-training/,n/a,100-1k,heuristic,0.6,satellite,ai training for sales,existing,google_autocomplete,2,,50.0,,,,en,ai training for sales
+ai training for sales teams,-1,160,informational,ai-training-for-sales,/ai-training/,n/a,100-1k,heuristic,0.6,satellite,ai training for sales,existing,google_autocomplete,3,,48.0,,,,en,ai training for sales
+ai training for sales and marketing,-1,140,informational,ai-training-for-sales,/ai-training/,n/a,100-1k,heuristic,0.6,satellite,ai training for sales,existing,google_autocomplete,4,,46.0,,,,en,ai training for sales
+ai training for sales reps,-1,130,informational,ai-training-for-sales,/ai-training/,n/a,100-1k,heuristic,0.6,satellite,ai training for sales,existing,google_autocomplete,5,,44.0,,,,en,ai training for sales
+ai training for sales managers,-1,120,informational,ai-training-for-sales,/ai-training/,n/a,100-1k,heuristic,0.6,satellite,ai training for sales,existing,google_autocomplete,6,,42.0,,,,en,ai training for sales
+free ai training for sales,-1,110,informational,ai-training-for-sales,/ai-training/,n/a,100-1k,heuristic,0.6,satellite,ai training for sales,existing,google_autocomplete,0,free,41.0,,,,en,ai training for sales
+best ai training for sales,-1,110,commercial,ai-training-for-sales,/ai-training/,n/a,100-1k,heuristic,0.6,satellite,ai training for sales,existing,google_autocomplete,0,best,41.0,,,,en,ai training for sales
+ai training course for sales,-1,110,informational,ai-training-for-sales,/ai-training/,n/a,100-1k,heuristic,0.85,satellite,ai training for sales,existing,google_autocomplete,0,course,41.0,,,,en,ai training for sales
+ai training for salesforce,-1,110,informational,ai-training-for-salesforce,/ai-training/,n/a,100-1k,heuristic,0.6,pillar,ai training for salesforce,existing,google_autocomplete,7,,40.0,,,,en,ai training for sales
+best ai courses for sales professionals,-1,100,commercial,ai-training-for-sales,/ai-training/,n/a,100-1k,heuristic,0.6,satellite,ai training for sales,existing,google_autocomplete,1,best,39.0,,,,en,ai training for sales
+free ai courses for sales professionals,-1,100,commercial,ai-training-for-sales,/ai-training/,n/a,100-1k,heuristic,0.3,satellite,ai training for sales,existing,google_autocomplete,1,free,39.0,,,,en,ai training for sales
+ai training for sales leaders,-1,95,informational,ai-training-for-sales,/ai-training/,n/a,10-100,heuristic,0.6,satellite,ai training for sales,existing,google_autocomplete,8,,38.0,,,,en,ai training for sales
+how to use ai in sales,-1,90,informational,how-to-use-ai-in-sales,/integrations/,n/a,10-100,heuristic,0.6,pillar,how to use ai in sales,existing,google_autocomplete,2,best,37.0,,,,en,ai training for sales
+ai courses for sales professionals,-1,85,commercial,ai-training-for-sales,/ai-training/,n/a,10-100,heuristic,0.3,satellite,ai training for sales,existing,google_autocomplete,9,,36.0,,,,en,ai training for sales
+free ai courses for sales,-1,79,commercial,ai-training-for-sales,/ai-training/,n/a,10-100,heuristic,0.3,satellite,ai training for sales,existing,google_autocomplete,3,free,35.0,,,,en,ai training for sales
+using ai to increase sales,-1,79,commercial,using-ai-to-increase-sales,/integrations/,n/a,10-100,heuristic,0.3,pillar,using ai to increase sales,existing,google_autocomplete,3,best,35.0,,,,en,ai training for sales
+ai courses in sales,-1,75,commercial,ai-training-for-sales,/ai-training/,n/a,10-100,heuristic,0.3,satellite,ai training for sales,existing,google_autocomplete,0,i,34.0,,,,en,ai training for sales
+ai training voor sales,-1,75,informational,ai-training-voor-sales,/ai-training/,n/a,10-100,heuristic,0.6,pillar,ai training voor sales,existing,google_autocomplete,0,v,34.0,,,,en,ai training for sales
+ai training data for sale,-1,75,informational,ai-training-data-for-sale,/ai-training/,n/a,10-100,heuristic,0.6,pillar,ai training data for sale,existing,google_autocomplete,0,d,34.0,,,,en,ai training for sales
+using ai for sales training,-1,75,informational,using-ai-to-increase-sales,/ai-training/,n/a,10-100,heuristic,0.6,satellite,using ai to increase sales,existing,google_autocomplete,0,u,34.0,,,,en,ai training for sales
+ai courses for sales operations,-1,75,commercial,ai-training-for-sales,/ai-training/,n/a,10-100,heuristic,0.3,satellite,ai training for sales,existing,google_autocomplete,0,o,34.0,,,,en,ai training for sales
+ai enabled sales training for franchisees,-1,75,informational,ai-enabled-sales-training-for-franchisees,/ai-training/,n/a,10-100,heuristic,0.6,pillar,ai enabled sales training for franchisees,existing,google_autocomplete,0,e,34.0,,,,en,ai training for sales
+best ai courses for sales,-1,70,commercial,ai-training-for-sales,/ai-training/,n/a,10-100,heuristic,0.6,satellite,ai training for sales,existing,google_autocomplete,4,best,33.0,,,,en,ai training for sales
+ai training data sell,-1,65,informational,ai-training-data-for-sale,/ai-training/,n/a,10-100,heuristic,0.6,satellite,ai training data for sale,existing,google_autocomplete,1,d,32.0,,,,en,ai training for sales
+ai courses for sales leaders,-1,65,commercial,ai-training-for-sales,/ai-training/,n/a,10-100,heuristic,0.3,satellite,ai training for sales,existing,google_autocomplete,1,l,32.0,,,,en,ai training for sales
+ai chatbot for sales training,-1,65,informational,ai-chatbot-for-sales-training,/ai-training/,n/a,10-100,heuristic,0.6,pillar,ai chatbot for sales training,existing,google_autocomplete,1,c,32.0,,,,en,ai training for sales
+ai course for sales and marketing,-1,65,informational,ai-training-for-sales,/ai-training/,n/a,10-100,heuristic,0.6,satellite,ai training for sales,existing,google_autocomplete,1,a,32.0,,,,en,ai training for sales
+ai courses in sales and marketing,-1,65,commercial,ai-training-for-sales,/ai-training/,n/a,10-100,heuristic,0.3,satellite,ai training for sales,existing,google_autocomplete,1,i,32.0,,,,en,ai training for sales
+ai training for marketing & sales,-1,65,informational,ai-training-for-sales,/ai-training/,n/a,10-100,heuristic,0.6,satellite,ai training for sales,existing,google_autocomplete,1,m,32.0,,,,en,ai training for sales
+ai roleplay for sales training paradiso,-1,65,informational,ai-roleplay-for-sales-training-paradiso,/ai-training/,n/a,10-100,heuristic,0.6,pillar,ai roleplay for sales training paradiso,existing,google_autocomplete,1,r,32.0,,,,en,ai training for sales
+best ai courses for sales leaders,-1,61,commercial,ai-training-for-sales,/ai-training/,n/a,10-100,heuristic,0.6,satellite,ai training for sales,existing,google_autocomplete,5,best,31.0,,,,en,ai training for sales
+ai courses for sales managers,-1,57,commercial,ai-training-for-sales,/ai-training/,n/a,10-100,heuristic,0.3,satellite,ai training for sales,existing,google_autocomplete,2,m,30.0,,,,en,ai training for sales
+how to use ai in sales training,-1,53,informational,how-to-use-ai-in-sales,/integrations/,n/a,10-100,heuristic,0.85,satellite,how to use ai in sales,existing,google_autocomplete,0,how to,29.0,,,,en,ai training for sales
+ai courses for sales people,-1,49,commercial,ai-training-for-sales,/ai-training/,n/a,10-100,heuristic,0.3,satellite,ai training for sales,existing,google_autocomplete,3,p,28.0,,,,en,ai training for sales
+who has the best sales training program,-1,45,informational,who-has-the-best-sales-training-program,NEW /who-has-the-best-sales-training-program/,n/a,10-100,heuristic,0.85,pillar,who has the best sales training program,new,google_autocomplete,1,best,27.0,,,,en,ai training for sales
+best ai course for sales and marketing,-1,38,commercial,ai-training-for-sales,/ai-training/,n/a,10-100,heuristic,0.6,satellite,ai training for sales,existing,google_autocomplete,2,best,25.0,,,,en,ai training for sales
+free ai course for sales and marketing,-1,38,informational,ai-training-for-sales,/ai-training/,n/a,10-100,heuristic,0.6,satellite,ai training for sales,existing,google_autocomplete,2,free,25.0,,,,en,ai training for sales
+best ai courses for sales professionals online,-1,32,commercial,ai-training-for-sales,/ai-training/,n/a,10-100,heuristic,0.6,satellite,ai training for sales,existing,google_autocomplete,3,best,23.0,,,,en,ai training for sales
+ai training programs,-1,29,informational,ai-training-programs,/ai-training/,n/a,10-100,heuristic,0.6,pillar,ai training programs,existing,google_autocomplete,6,i,22.0,,,,en,ai training for sales
+ai certification course for sales professionals,-1,29,informational,ai-certification-course-for-sales-professionals,NEW /ai-certification-course-for-sales-professionals/,n/a,10-100,heuristic,0.6,pillar,ai certification course for sales professionals,new,google_autocomplete,6,p,22.0,,,,en,ai training for sales
+ai courses online for sales professionals,-1,23,commercial,ai-training-for-sales,/ai-training/,n/a,10-100,heuristic,0.3,satellite,ai training for sales,existing,google_autocomplete,7,p,20.0,,,,en,ai training for sales
+ai training companies,-1,18,commercial,ai-training-companies,/ai-training/,n/a,10-100,heuristic,0.6,pillar,ai training companies,existing,google_autocomplete,8,a,18.0,,,,en,ai training for sales
+ai course for sales and marketing professionals,-1,18,informational,ai-training-for-sales,/ai-training/,n/a,10-100,heuristic,0.6,satellite,ai training for sales,existing,google_autocomplete,2,a,18.0,,,,en,ai training for sales
+ai use cases in sales,-1,14,commercial,how-to-use-ai-in-sales,/integrations/,n/a,10-100,heuristic,0.3,satellite,how to use ai in sales,existing,google_autocomplete,9,a,16.0,,,,en,ai training for sales
+ai course for sales and marketing online,-1,14,informational,ai-training-for-sales,/ai-training/,n/a,10-100,heuristic,0.6,satellite,ai training for sales,existing,google_autocomplete,3,a,16.0,,,,en,ai training for sales
+generative ai course for marketing sales and campaigns,-1,5,informational,ai-training-for-sales,/ai-training/,n/a,0-10,heuristic,0.6,satellite,ai training for sales,existing,google_autocomplete,6,m,10.0,,,,en,ai training for sales
+ai training for teams,-1,800,informational,ai-training-for-teams,/ai-training/,n/a,100-1k,root,0.6,pillar,ai training for teams,existing,root|google_autocomplete|bing_suggest,0,,100.0,,,,en,ai training for teams
+ai training for companies,-1,320,commercial,ai-training-for-companies,/ai-training/,n/a,100-1k,heuristic,0.6,pillar,ai training for companies,existing,google_autocomplete|bing_suggest,0,,66.0,,,,en,ai training for teams
+ai training for employees,-1,320,informational,ai-training-for-employees,/ai-training/,n/a,100-1k,heuristic,0.6,pillar,ai training for employees,existing,google_autocomplete|bing_suggest,0,,66.0,,,,en,ai training for teams
+ai training for professionals,-1,280,informational,ai-training-for-professionals,/ai-training/,n/a,100-1k,heuristic,0.6,pillar,ai training for professionals,existing,google_autocomplete|bing_suggest,2,,62.0,,,,en,ai training for teams
+ai training for staff,-1,260,informational,ai-training-for-staff,/ai-training/,n/a,100-1k,heuristic,0.6,pillar,ai training for staff,existing,google_autocomplete|bing_suggest,3,,60.0,,,,en,ai training for teams
+ai training for schools,-1,240,informational,ai-training-for-schools,/ai-training/,n/a,100-1k,heuristic,0.6,pillar,ai training for schools,existing,google_autocomplete|bing_suggest,4,,58.0,,,,en,ai training for teams
+ai training near me,-1,200,transactional,ai-training-near-me,/ai-training/,n/a,100-1k,heuristic,0.6,pillar,ai training near me,existing,google_autocomplete|bing_suggest,0,near me,53.0,,,,en,ai training for teams
+ai training for free,-1,200,informational,ai-training-for-teams,/ai-training/,n/a,100-1k,heuristic,0.6,satellite,ai training for teams,existing,google_autocomplete|bing_suggest,0,free,53.0,,,,en,ai training for teams
+ai training for nurses,-1,200,informational,ai-training-for-nurses,/ai-training/,n/a,100-1k,heuristic,0.6,pillar,ai training for nurses,existing,google_autocomplete|bing_suggest,0,for clinic,53.0,,,,en,ai training for teams
+ai training for lawyers,-1,200,informational,ai-training-for-lawyers,/ai-training/,n/a,100-1k,heuristic,0.6,pillar,ai training for lawyers,existing,google_autocomplete|bing_suggest,0,for salon,53.0,,,,en,ai training for teams
+ai training for software developers,-1,200,commercial,ai-training-for-software-developers,/ai-training/,n/a,100-1k,heuristic,0.6,pillar,ai training for software developers,existing,google_autocomplete|bing_suggest,0,software,53.0,,,,en,ai training for teams
+ai training for small business owners,-1,200,commercial,ai-training-for-small-business-owners,/ai-training/,n/a,100-1k,heuristic,0.6,pillar,ai training for small business owners,existing,google_autocomplete|bing_suggest,0,for small business,53.0,,,,en,ai training for teams
+ai training for teens,-1,190,informational,ai-training-for-teens,/ai-training/,n/a,100-1k,heuristic,0.6,pillar,ai training for teens,existing,bing_suggest,1,,52.0,,,,en,ai training for teams
+ai training for marketing teams,-1,190,informational,ai-training-for-teams,/ai-training/,n/a,100-1k,heuristic,0.6,satellite,ai training for teams,existing,google_autocomplete,1,,52.0,,,,en,ai training for teams
+ai training for money,-1,180,informational,ai-training-for-money,/ai-training/,n/a,100-1k,heuristic,0.6,pillar,ai training for money,existing,google_autocomplete|bing_suggest,1,pricing,51.0,,,,en,ai training for teams
+ai training for doctors,-1,180,informational,ai-training-for-doctors,/ai-training/,n/a,100-1k,heuristic,0.6,pillar,ai training for doctors,existing,google_autocomplete|bing_suggest,1,for dental office,51.0,,,,en,ai training for teams
+ai training for business,-1,180,informational,ai-training-for-small-business-owners,/ai-training/,n/a,100-1k,heuristic,0.6,satellite,ai training for small business owners,existing,google_autocomplete|bing_suggest,1,for small business,51.0,,,,en,ai training for teams
+copilot teams ai training,-1,170,informational,ai-training-for-teams,/ai-training/,n/a,100-1k,heuristic,0.6,satellite,ai training for teams,existing,bing_suggest,2,,50.0,,,,en,ai training for teams
+ai training for designers,-1,170,informational,ai-training-for-designers,/ai-training/,n/a,100-1k,heuristic,0.6,pillar,ai training for designers,existing,google_autocomplete|bing_suggest,2,for salon,49.0,,,,en,ai training for teams
+ai training for workplace,-1,170,informational,ai-training-for-workplace,/ai-training/,n/a,100-1k,heuristic,0.6,pillar,ai training for workplace,existing,google_autocomplete|bing_suggest,2,for salon,49.0,,,,en,ai training for teams
+ai training for business leaders,-1,170,informational,ai-training-for-small-business-owners,/ai-training/,n/a,100-1k,heuristic,0.6,satellite,ai training for small business owners,existing,google_autocomplete|bing_suggest,2,for small business,49.0,,,,en,ai training for teams
+ai training for healthcare professionals,-1,170,informational,ai-training-for-professionals,/ai-training/,n/a,100-1k,heuristic,0.6,satellite,ai training for professionals,existing,google_autocomplete|bing_suggest,2,for dental office,49.0,,,,en,ai training for teams
+ai training for finance teams,-1,160,informational,ai-training-for-teams,/ai-training/,n/a,100-1k,heuristic,0.6,satellite,ai training for teams,existing,google_autocomplete,3,,48.0,,,,en,ai training for teams
+ai training for physicians,-1,150,informational,ai-training-for-physicians,/ai-training/,n/a,100-1k,heuristic,0.6,pillar,ai training for physicians,existing,google_autocomplete|bing_suggest,3,for clinic,47.0,,,,en,ai training for teams
+ai training for legal professionals,-1,150,informational,ai-training-for-professionals,/ai-training/,n/a,100-1k,heuristic,0.6,satellite,ai training for professionals,existing,google_autocomplete|bing_suggest,3,for salon,47.0,,,,en,ai training for teams
+ai training for business professionals,-1,150,informational,ai-training-for-professionals,/ai-training/,n/a,100-1k,heuristic,0.6,satellite,ai training for professionals,existing,google_autocomplete|bing_suggest,3,for small business,47.0,,,,en,ai training for teams
+ai training for hr teams,-1,140,informational,ai-training-for-teams,/ai-training/,n/a,100-1k,heuristic,0.6,satellite,ai training for teams,existing,google_autocomplete,4,,46.0,,,,en,ai training for teams
+ai training for teachers,-1,140,informational,ai-training-for-teachers,/ai-training/,n/a,100-1k,heuristic,0.6,pillar,ai training for teachers,existing,google_autocomplete|bing_suggest,0,t,46.0,,,,en,ai training for teams
+ai training for veterans,-1,140,informational,ai-training-for-veterans,/ai-training/,n/a,100-1k,heuristic,0.6,pillar,ai training for veterans,existing,google_autocomplete|bing_suggest,0,v,46.0,,,,en,ai training for teams
+ai training for developers,-1,140,informational,ai-training-for-software-developers,/ai-training/,n/a,100-1k,heuristic,0.6,satellite,ai training for software developers,existing,google_autocomplete|bing_suggest,0,d,46.0,,,,en,ai training for teams
+free ai training tools for teams,-1,140,commercial,ai-training-for-teams,/ai-training/,n/a,100-1k,heuristic,0.6,satellite,ai training for teams,existing,bing_suggest,4,,46.0,,,,en,ai training for teams
+ai training for government employees,-1,140,informational,ai-training-for-employees,/ai-training/,n/a,100-1k,heuristic,0.6,satellite,ai training for employees,existing,google_autocomplete|bing_suggest,0,g,46.0,,,,en,ai training for teams
+ai training for leaders,-1,130,informational,ai-training-for-small-business-owners,/ai-training/,n/a,100-1k,heuristic,0.6,satellite,ai training for small business owners,existing,google_autocomplete|bing_suggest,1,l,44.0,,,,en,ai training for teams
+ai training for recruiters,-1,130,informational,ai-training-for-recruiters,/ai-training/,n/a,100-1k,heuristic,0.6,pillar,ai training for recruiters,existing,google_autocomplete|bing_suggest,1,r,44.0,,,,en,ai training for teams
+ai training for creative teams,-1,130,informational,ai-training-for-teams,/ai-training/,n/a,100-1k,heuristic,0.6,satellite,ai training for teams,existing,google_autocomplete,5,,44.0,,,,en,ai training for teams
+ai training for managers,-1,120,informational,ai-training-for-managers,/ai-training/,n/a,100-1k,heuristic,0.6,pillar,ai training for managers,existing,google_autocomplete|bing_suggest,2,m,42.0,,,,en,ai training for teams
+ai training for corporates,-1,120,informational,ai-training-for-corporates,/ai-training/,n/a,100-1k,heuristic,0.6,pillar,ai training for corporates,existing,google_autocomplete|bing_suggest,2,c,42.0,,,,en,ai training for teams
+ai training for leadership,-1,120,informational,ai-training-for-leadership,/ai-training/,n/a,100-1k,heuristic,0.6,pillar,ai training for leadership,existing,google_autocomplete|bing_suggest,2,l,42.0,,,,en,ai training for teams
+ai training for legal teams,-1,120,informational,ai-training-for-teams,/ai-training/,n/a,100-1k,heuristic,0.6,satellite,ai training for teams,existing,google_autocomplete,6,,42.0,,,,en,ai training for teams
+ai tools for teams,-1,110,commercial,ai-training-for-teams,/ai-training/,n/a,100-1k,heuristic,0.6,satellite,ai training for teams,existing,bing_suggest,0,software,41.0,,,,en,ai training for teams
+cost of ai training,-1,110,transactional,cost-of-ai-training,/ai-training/,n/a,100-1k,heuristic,0.6,pillar,cost of ai training,existing,bing_suggest,0,pricing,41.0,,,,en,ai training for teams
+ai training in texas,-1,110,informational,ai-training-in-texas,/ai-training/,n/a,100-1k,heuristic,0.6,pillar,ai training in texas,existing,google_autocomplete,0,texas,41.0,,,,en,ai training for teams
+best training for ai,-1,110,commercial,best-training-for-ai,/ai-training/,n/a,100-1k,heuristic,0.6,pillar,best training for ai,existing,bing_suggest,0,best,41.0,,,,en,ai training for teams
+ai online training reviews,-1,110,commercial,ai-online-training-reviews,/ai-training/,n/a,100-1k,heuristic,0.6,pillar,ai online training reviews,existing,bing_suggest,0,reviews,41.0,,,,en,ai training for teams
+ai training for kids near me,-1,110,transactional,ai-training-near-me,/ai-training/,n/a,100-1k,heuristic,0.6,satellite,ai training near me,existing,google_autocomplete,0,near me,41.0,,,,en,ai training for teams
+ai training for small business,-1,110,commercial,ai-training-for-small-business-owners,/ai-training/,n/a,100-1k,heuristic,0.6,satellite,ai training for small business owners,existing,google_autocomplete,0,for small business,41.0,,,,en,ai training for teams
+ai training for my team,-1,110,informational,ai-training-for-my-team,/ai-training/,n/a,100-1k,heuristic,0.6,pillar,ai training for my team,existing,google_autocomplete,7,,40.0,,,,en,ai training for teams
+ai training for educators,-1,110,informational,ai-training-for-educators,/ai-training/,n/a,100-1k,heuristic,0.6,pillar,ai training for educators,existing,google_autocomplete|bing_suggest,3,e,40.0,,,,en,ai training for teams
+teams ai training,-1,100,informational,ai-training-for-teams,/ai-training/,n/a,100-1k,heuristic,0.6,satellite,ai training for teams,existing,bing_suggest,1,how to,39.0,,,,en,ai training for teams
+best ai for work teams,-1,100,commercial,best-training-for-ai,/ai-training/,n/a,100-1k,heuristic,0.6,satellite,best training for ai,existing,bing_suggest,1,reviews,39.0,,,,en,ai training for teams
+ai training for free online,-1,100,informational,ai-online-training-reviews,/ai-training/,n/a,100-1k,heuristic,0.6,satellite,ai online training reviews,existing,google_autocomplete,1,free,39.0,,,,en,ai training for teams
+ai training vs ai inference,-1,100,commercial,ai-training-vs-ai-inference,/ai-training/,n/a,100-1k,heuristic,0.6,pillar,ai training vs ai inference,existing,bing_suggest,1,vs,39.0,,,,en,ai training for teams
+ai training courses near me,-1,100,transactional,ai-training-near-me,/ai-training/,n/a,100-1k,heuristic,0.6,satellite,ai training near me,existing,bing_suggest,1,near me,39.0,,,,en,ai training for teams
+how much does ai training cost,-1,100,transactional,cost-of-ai-training,/ai-training/,n/a,100-1k,heuristic,0.65,satellite,cost of ai training,existing,bing_suggest,1,pricing,39.0,,,,en,ai training for teams
+ai training for seniors near me,-1,100,transactional,ai-training-near-me,/ai-training/,n/a,100-1k,heuristic,0.6,satellite,ai training near me,existing,google_autocomplete,1,near me,39.0,,,,en,ai training for teams
+ai training for business owners,-1,100,informational,ai-training-for-small-business-owners,/ai-training/,n/a,100-1k,heuristic,0.6,satellite,ai training for small business owners,existing,google_autocomplete|bing_suggest,7,for small business,39.0,,,,en,ai training for teams
+ai training for software engineer,-1,100,commercial,ai-training-for-software-engineer,/ai-training/,n/a,100-1k,heuristic,0.6,pillar,ai training for software engineer,existing,google_autocomplete,1,software,39.0,,,,en,ai training for teams
+ai training for medical professionals,-1,100,commercial,ai-training-for-professionals,/ai-training/,n/a,100-1k,heuristic,0.6,satellite,ai training for professionals,existing,google_autocomplete|bing_suggest,7,for dental office,39.0,,,,en,ai training for teams
+ai workshop dallas,-1,800,commercial,ai-workshop-dallas,/ai-training/,n/a,100-1k,root,0.3,pillar,ai workshop dallas,existing,root|google_autocomplete,0,,100.0,,,,en,ai workshop dallas
+ai training in dallas,-1,200,informational,ai-workshop-dallas,/ai-training/,n/a,100-1k,heuristic,0.6,satellite,ai workshop dallas,existing,google_autocomplete|bing_suggest,0,pricing,53.0,,,,en,ai workshop dallas
+ai classes dallas,-1,190,commercial,ai-classes-dallas,/ai-training/,n/a,100-1k,heuristic,0.3,pillar,ai classes dallas,existing,google_autocomplete,1,,52.0,,,,en,ai workshop dallas
+ai classes in dallas,-1,180,commercial,ai-classes-dallas,/ai-training/,n/a,100-1k,heuristic,0.3,satellite,ai classes dallas,existing,google_autocomplete|bing_suggest,1,pricing,51.0,,,,en,ai workshop dallas
+ai training dallas,-1,170,informational,ai-workshop-dallas,/ai-training/,n/a,100-1k,heuristic,0.6,satellite,ai workshop dallas,existing,google_autocomplete,2,,50.0,,,,en,ai workshop dallas
+ai classes dallas college,-1,160,commercial,ai-classes-dallas,/ai-training/,n/a,100-1k,heuristic,0.3,satellite,ai classes dallas,existing,google_autocomplete,3,,48.0,,,,en,ai workshop dallas
+ai conference dallas texas,-1,110,commercial,ai-conference-dallas-texas,/ai-training/,n/a,100-1k,heuristic,0.3,pillar,ai conference dallas texas,existing,google_autocomplete,0,texas,41.0,,,,en,ai workshop dallas
+ai workshop near me,-1,90,transactional,ai-workshop-near-me,/ai-receptionist/,n/a,10-100,heuristic,0.6,pillar,ai workshop near me,existing,bing_suggest,2,pricing,37.0,,,,en,ai workshop dallas
+what is ai workshop,-1,79,informational,ai-workshop-dallas,/ai-training/,n/a,10-100,heuristic,0.85,satellite,ai workshop dallas,existing,bing_suggest,3,software,35.0,,,,en,ai workshop dallas
+ai conference in dallas,-1,79,commercial,ai-conference-dallas-texas,/ai-training/,n/a,10-100,heuristic,0.3,satellite,ai conference dallas texas,existing,bing_suggest,3,pricing,35.0,,,,en,ai workshop dallas
+ut dallas ai workshop,-1,75,commercial,ai-workshop-dallas,/ai-training/,n/a,10-100,heuristic,0.3,satellite,ai workshop dallas,existing,google_autocomplete,0,u,34.0,,,,en,ai workshop dallas
+ai workshops in dallas,-1,75,commercial,ai-workshops-in-dallas,/ai-training/,n/a,10-100,heuristic,0.3,pillar,ai workshops in dallas,existing,google_autocomplete,0,i,34.0,,,,en,ai workshop dallas
+what is an ai workshop,-1,70,informational,ai-workshop-dallas,/ai-training/,n/a,10-100,heuristic,0.85,satellite,ai workshop dallas,existing,bing_suggest,4,pricing,33.0,,,,en,ai workshop dallas
+ai marketing world dallas,-1,61,commercial,ai-marketing-world-dallas,/ai-training/,n/a,10-100,heuristic,0.3,pillar,ai marketing world dallas,existing,bing_suggest,5,pricing,31.0,,,,en,ai workshop dallas
+ai tools workshop free,-1,53,commercial,ai-tools-workshop-free,/integrations/,n/a,10-100,heuristic,0.6,pillar,ai tools workshop free,existing,bing_suggest,6,software,29.0,,,,en,ai workshop dallas
+healthcare ai jobs dallas texas,-1,53,commercial,healthcare-ai-jobs-dallas-texas,/ai-training/,n/a,10-100,heuristic,0.3,pillar,healthcare ai jobs dallas texas,existing,bing_suggest,6,for clinic,29.0,,,,en,ai workshop dallas
+ai with deep learning workshop,-1,38,commercial,ai-with-deep-learning-workshop,/ai-receptionist/,n/a,10-100,heuristic,0.3,pillar,ai with deep learning workshop,existing,bing_suggest,8,pricing,25.0,,,,en,ai workshop dallas
+ai for instructional design workshop,-1,38,commercial,ai-for-instructional-design-workshop,/ai-receptionist/,n/a,10-100,heuristic,0.3,pillar,ai for instructional design workshop,existing,bing_suggest,8,software,25.0,,,,en,ai workshop dallas
+ai conferences 2026 dallas,-1,32,commercial,ai-conferences-2026-dallas,/ai-training/,n/a,10-100,heuristic,0.3,pillar,ai conferences 2026 dallas,existing,bing_suggest,9,pricing,23.0,,,,en,ai workshop dallas
+dallas college ai essentials,-1,32,commercial,dallas-college-ai-essentials,/ai-training/,n/a,10-100,heuristic,0.3,pillar,dallas college ai essentials,existing,bing_suggest,9,for dental office,23.0,,,,en,ai workshop dallas
+ai jobs in dallas,-1,26,commercial,healthcare-ai-jobs-dallas-texas,/ai-training/,n/a,10-100,heuristic,0.3,satellite,healthcare ai jobs dallas texas,existing,bing_suggest,11,pricing,21.0,,,,en,ai workshop dallas
+ai jobs in dallas tx,-1,26,commercial,healthcare-ai-jobs-dallas-texas,/ai-training/,n/a,10-100,heuristic,0.3,satellite,healthcare ai jobs dallas texas,existing,bing_suggest,13,pricing,21.0,,,,en,ai workshop dallas
+ai workshop for free,-1,26,commercial,ai-tools-workshop-free,/integrations/,n/a,10-100,heuristic,0.3,satellite,ai tools workshop free,existing,bing_suggest,17,pricing,21.0,,,,en,ai workshop dallas
+workshop on ai tools,-1,26,commercial,ai-tools-workshop-free,/integrations/,n/a,10-100,heuristic,0.6,satellite,ai tools workshop free,existing,bing_suggest,16,software,21.0,,,,en,ai workshop dallas
+poster on ai workshop,-1,26,commercial,poster-on-ai-workshop,/ai-receptionist/,n/a,10-100,heuristic,0.3,pillar,poster on ai workshop,existing,bing_suggest,21,free,21.0,,,,en,ai workshop dallas
+ai workshop in chennai,-1,26,commercial,ai-workshop-in-chennai,/ai-receptionist/,n/a,10-100,heuristic,0.3,pillar,ai workshop in chennai,existing,bing_suggest,20,pricing,21.0,,,,en,ai workshop dallas
+top ai firms in dallas,-1,26,commercial,top-ai-firms-in-dallas,/ai-training/,n/a,10-100,heuristic,0.6,pillar,top ai firms in dallas,existing,bing_suggest,13,for small business,21.0,,,,en,ai workshop dallas
+ai workshop for artists,-1,26,commercial,ai-workshop-for-artists,/ai-receptionist/,n/a,10-100,heuristic,0.3,pillar,ai workshop for artists,existing,bing_suggest,19,pricing,21.0,,,,en,ai workshop dallas
+ai for science workshop,-1,26,commercial,ai-for-science-workshop,/ai-receptionist/,n/a,10-100,heuristic,0.3,pillar,ai for science workshop,existing,bing_suggest,10,software,21.0,,,,en,ai workshop dallas
+learn ai tools workshop,-1,26,commercial,ai-tools-workshop-free,/integrations/,n/a,10-100,heuristic,0.6,satellite,ai tools workshop free,existing,bing_suggest,21,software,21.0,,,,en,ai workshop dallas
+ai workshop for students,-1,26,commercial,ai-workshop-for-students,/ai-receptionist/,n/a,10-100,heuristic,0.3,pillar,ai workshop for students,existing,bing_suggest,18,pricing,21.0,,,,en,ai workshop dallas
+ai conference dallas 2026,-1,26,commercial,ai-conference-dallas-texas,/ai-training/,n/a,10-100,heuristic,0.3,satellite,ai conference dallas texas,existing,bing_suggest,10,pricing,21.0,,,,en,ai workshop dallas
+what is ai tools workshop,-1,26,informational,ai-tools-workshop-free,/integrations/,n/a,10-100,heuristic,0.85,satellite,ai tools workshop free,existing,bing_suggest,18,software,21.0,,,,en,ai workshop dallas
+dallas college intro to ai,-1,26,commercial,dallas-college-ai-essentials,/ai-training/,n/a,10-100,heuristic,0.3,satellite,dallas college ai essentials,existing,bing_suggest,13,vs,21.0,,,,en,ai workshop dallas
+free ai workshop for students,-1,26,commercial,ai-workshop-for-students,/ai-receptionist/,n/a,10-100,heuristic,0.3,satellite,ai workshop for students,existing,bing_suggest,21,pricing,21.0,,,,en,ai workshop dallas
+ai for tech professionals workshop,-1,26,commercial,ai-for-tech-professionals-workshop,/ai-receptionist/,n/a,10-100,heuristic,0.3,pillar,ai for tech professionals workshop,existing,bing_suggest,12,pricing,21.0,,,,en,ai workshop dallas
+global ai community dallas,-1,23,commercial,global-ai-community-dallas,/ai-training/,n/a,10-100,heuristic,0.3,pillar,global ai community dallas,existing,bing_suggest,7,g,20.0,,,,en,ai workshop dallas
+ar workshop in dallas,-1,14,commercial,ar-workshop-in-dallas,/ai-training/,n/a,10-100,heuristic,0.3,pillar,ar workshop in dallas,existing,bing_suggest,9,k,16.0,,,,en,ai workshop dallas
+growth school ai workshop,-1,14,commercial,growth-school-ai-workshop,/pricing/,n/a,10-100,heuristic,0.3,pillar,growth school ai workshop,existing,bing_suggest,9,g,16.0,,,,en,ai workshop dallas
+dallas ai forum adobe,-1,11,commercial,dallas-ai-forum-adobe,/ai-training/,n/a,10-100,heuristic,0.3,pillar,dallas ai forum adobe,existing,bing_suggest,14,f,14.0,,,,en,ai workshop dallas
+ai community day dallas,-1,11,commercial,global-ai-community-dallas,/ai-training/,n/a,10-100,heuristic,0.3,satellite,global ai community dallas,existing,bing_suggest,12,c,14.0,,,,en,ai workshop dallas
+ai for techies workshop,-1,11,commercial,ai-for-techies-workshop,/ai-receptionist/,n/a,10-100,heuristic,0.3,pillar,ai for techies workshop,existing,bing_suggest,21,t,14.0,,,,en,ai workshop dallas
+ai workshop in bangalore,-1,11,commercial,ai-workshop-in-bangalore,/ai-receptionist/,n/a,10-100,heuristic,0.3,pillar,ai workshop in bangalore,existing,bing_suggest,21,b,14.0,,,,en,ai workshop dallas
+google ai agent workshop,-1,11,commercial,google-ai-agent-workshop,/ai-training/,n/a,10-100,heuristic,0.3,pillar,google ai agent workshop,existing,bing_suggest,22,g,14.0,,,,en,ai workshop dallas
+ai workshop in singapore,-1,11,commercial,ai-workshop-in-singapore,/ai-receptionist/,n/a,10-100,heuristic,0.3,pillar,ai workshop in singapore,existing,bing_suggest,21,h,14.0,,,,en,ai workshop dallas
+bring ai to work workshop,-1,11,commercial,bring-ai-to-work-workshop,/ai-training/,n/a,10-100,heuristic,0.3,pillar,bring ai to work workshop,existing,bing_suggest,13,b,14.0,,,,en,ai workshop dallas
+ai workshop poster design,-1,11,commercial,poster-on-ai-workshop,/ai-receptionist/,n/a,10-100,heuristic,0.3,satellite,poster on ai workshop,existing,bing_suggest,10,p,14.0,,,,en,ai workshop dallas
+ai digital marketing workshop,-1,11,commercial,ai-marketing-world-dallas,/ai-training/,n/a,10-100,heuristic,0.3,satellite,ai marketing world dallas,existing,bing_suggest,14,e,14.0,,,,en,ai workshop dallas
+growth school ai workshop free,-1,11,commercial,growth-school-ai-workshop,/pricing/,n/a,10-100,heuristic,0.3,satellite,growth school ai workshop,existing,bing_suggest,12,g,14.0,,,,en,ai workshop dallas
+corporate ai training,-1,800,informational,corporate-ai-training,/ai-training/,n/a,100-1k,root,0.6,pillar,corporate ai training,existing,root|google_autocomplete|bing_suggest,0,,100.0,,,,en,corporate ai training
+corporate ai training courses,-1,300,informational,corporate-ai-training,/ai-training/,n/a,100-1k,heuristic,0.6,satellite,corporate ai training,existing,google_autocomplete|bing_suggest,1,,64.0,,,,en,corporate ai training
+corporate ai training uae,-1,170,informational,corporate-ai-training,/ai-training/,n/a,100-1k,heuristic,0.6,satellite,corporate ai training,existing,google_autocomplete,2,,50.0,,,,en,corporate ai training
+corporate ai training dubai uae,-1,170,informational,corporate-ai-training,/ai-training/,n/a,100-1k,heuristic,0.6,satellite,corporate ai training,existing,bing_suggest,2,,50.0,,,,en,corporate ai training
+corporate ai training companies,-1,160,commercial,corporate-ai-training,/ai-training/,n/a,100-1k,heuristic,0.6,satellite,corporate ai training,existing,google_autocomplete,3,,48.0,,,,en,corporate ai training
+corporate ai training toronto,-1,140,informational,corporate-ai-training,/ai-training/,n/a,100-1k,heuristic,0.6,satellite,corporate ai training,existing,google_autocomplete,4,,46.0,,,,en,corporate ai training
+ai training for corporate employees,-1,140,informational,corporate-ai-training,/ai-training/,n/a,100-1k,heuristic,0.6,satellite,corporate ai training,existing,bing_suggest,4,,46.0,,,,en,corporate ai training
+corporate ai training singapore,-1,130,informational,corporate-ai-training,/ai-training/,n/a,100-1k,heuristic,0.6,satellite,corporate ai training,existing,google_autocomplete,5,,44.0,,,,en,corporate ai training
+ai training for corporate finance,-1,130,informational,corporate-ai-training,/ai-training/,n/a,100-1k,heuristic,0.6,satellite,corporate ai training,existing,bing_suggest,5,,44.0,,,,en,corporate ai training
+ai corporate training videos,-1,120,informational,corporate-ai-training,/ai-training/,n/a,100-1k,heuristic,0.6,satellite,corporate ai training,existing,google_autocomplete,6,,42.0,,,,en,corporate ai training
+ai corporate training,-1,110,informational,corporate-ai-training,/ai-training/,n/a,100-1k,heuristic,0.6,satellite,corporate ai training,existing,bing_suggest,0,how to,41.0,,,,en,corporate ai training
+ai in corporate training,-1,110,informational,corporate-ai-training,/ai-training/,n/a,100-1k,heuristic,0.6,satellite,corporate ai training,existing,bing_suggest,0,free,41.0,,,,en,corporate ai training
+free corporate trainings,-1,110,commercial,ai-training-for-small-business-owners,/ai-training/,n/a,100-1k,heuristic,0.3,satellite,ai training for small business owners,existing,bing_suggest,0,free,41.0,,,,en,corporate ai training
+ai business training free,-1,110,informational,ai-training-for-small-business-owners,/ai-training/,n/a,100-1k,heuristic,0.6,satellite,ai training for small business owners,existing,google_autocomplete,0,free,41.0,,,,en,corporate ai training
+best ai business training,-1,110,commercial,ai-training-for-small-business-owners,/ai-training/,n/a,100-1k,heuristic,0.6,satellite,ai training for small business owners,existing,google_autocomplete,0,best,41.0,,,,en,corporate ai training
+free ai business training,-1,110,informational,ai-training-for-small-business-owners,/ai-training/,n/a,100-1k,heuristic,0.6,satellite,ai training for small business owners,existing,google_autocomplete,0,free,41.0,,,,en,corporate ai training
+ai for corporate training,-1,110,informational,corporate-ai-training,/ai-training/,n/a,100-1k,heuristic,0.6,satellite,corporate ai training,existing,bing_suggest,0,pricing,41.0,,,,en,corporate ai training
+ai training for clinicians,-1,110,informational,ai-training-for-clinicians,/ai-training/,n/a,100-1k,heuristic,0.6,pillar,ai training for clinicians,existing,google_autocomplete,0,for clinic,41.0,,,,en,corporate ai training
+best corporate ai training,-1,110,commercial,corporate-ai-training,/ai-training/,n/a,100-1k,heuristic,0.6,satellite,corporate ai training,existing,google_autocomplete,0,top,41.0,,,,en,corporate ai training
+what is corporate training,-1,110,informational,corporate-ai-training,/ai-training/,n/a,100-1k,heuristic,0.85,satellite,corporate ai training,existing,bing_suggest,0,what is,41.0,,,,en,corporate ai training
+how to incorporate ai into training,-1,110,informational,how-to-incorporate-ai-into-training,/ai-training/,n/a,100-1k,heuristic,0.85,pillar,how to incorporate ai into training,existing,google_autocomplete,0,how to,41.0,,,,en,corporate ai training
+ai corporate training jobs,-1,110,informational,corporate-ai-training,/ai-training/,n/a,100-1k,heuristic,0.6,satellite,corporate ai training,existing,google_autocomplete,7,,40.0,,,,en,corporate ai training
+best ai training companies,-1,100,commercial,corporate-ai-training,/ai-training/,n/a,100-1k,heuristic,0.85,satellite,corporate ai training,existing,bing_suggest,1,best,39.0,,,,en,corporate ai training
+ai business training course,-1,100,informational,ai-training-for-small-business-owners,/ai-training/,n/a,100-1k,heuristic,0.85,satellite,ai training for small business owners,existing,google_autocomplete,1,course,39.0,,,,en,corporate ai training
+ai training for clinical medicine,-1,100,informational,ai-training-for-clinical-medicine,/ai-training/,n/a,100-1k,heuristic,0.6,pillar,ai training for clinical medicine,existing,google_autocomplete,1,for clinic,39.0,,,,en,corporate ai training
+free corporate training resources,-1,100,informational,ai-training-for-small-business-owners,/ai-training/,n/a,100-1k,heuristic,0.6,satellite,ai training for small business owners,existing,bing_suggest,1,free,39.0,,,,en,corporate ai training
+ai corporate training program,-1,95,informational,corporate-ai-training,/ai-training/,n/a,10-100,heuristic,0.6,satellite,corporate ai training,existing,google_autocomplete,8,,38.0,,,,en,corporate ai training
+ai training costs,-1,90,transactional,ai-training-costs,/ai-training/,n/a,10-100,heuristic,0.6,pillar,ai training costs,existing,google_autocomplete,2,free,37.0,,,,en,corporate ai training
+ai training clinical research,-1,90,informational,ai-training-for-clinical-medicine,/ai-training/,n/a,10-100,heuristic,0.6,satellite,ai training for clinical medicine,existing,google_autocomplete,2,for clinic,37.0,,,,en,corporate ai training
+top corporate training companies,-1,90,commercial,corporate-ai-training,/ai-training/,n/a,10-100,heuristic,0.85,satellite,corporate ai training,existing,google_autocomplete,2,reviews,37.0,,,,en,corporate ai training
+best companies for ai training jobs,-1,90,commercial,corporate-ai-training,/ai-training/,n/a,10-100,heuristic,0.85,satellite,corporate ai training,existing,google_autocomplete,2,best,37.0,,,,en,corporate ai training
+google's ai training for small businesses,-1,90,informational,google-s-ai-training-for-small-businesses,/ai-training/,n/a,10-100,heuristic,0.6,pillar,google's ai training for small businesses,existing,google_autocomplete,2,for small business,37.0,,,,en,corporate ai training
+business ai training,-1,85,informational,ai-training-for-small-business-owners,/ai-training/,n/a,10-100,heuristic,0.6,satellite,ai training for small business owners,existing,google_autocomplete,9,,36.0,,,,en,corporate ai training
+ai training for corporate employees in pune,-1,85,informational,ai-training-for-corporate-employees-in-pune,/ai-training/,n/a,10-100,heuristic,0.6,pillar,ai training for corporate employees in pune,existing,bing_suggest,3,,36.0,,,,en,corporate ai training
+the best ai training,-1,79,commercial,corporate-ai-training,/ai-training/,n/a,10-100,heuristic,0.6,satellite,corporate ai training,existing,bing_suggest,3,best,35.0,,,,en,corporate ai training
+best companies for ai training,-1,79,commercial,corporate-ai-training,/ai-training/,n/a,10-100,heuristic,0.85,satellite,corporate ai training,existing,google_autocomplete,3,best,35.0,,,,en,corporate ai training
+free ai training for small business,-1,79,commercial,ai-training-for-small-business-owners,/ai-training/,n/a,10-100,heuristic,0.6,satellite,ai training for small business owners,existing,google_autocomplete,3,for small business,35.0,,,,en,corporate ai training
+free ai training for small businesses,-1,79,informational,google-s-ai-training-for-small-businesses,/ai-training/,n/a,10-100,heuristic,0.6,satellite,google's ai training for small businesses,existing,bing_suggest,3,for small business,35.0,,,,en,corporate ai training
+corporate training on ai,-1,75,informational,corporate-ai-training,/ai-training/,n/a,10-100,heuristic,0.6,satellite,corporate ai training,existing,google_autocomplete,0,o,34.0,,,,en,corporate ai training
+ai business analyst training,-1,75,informational,ai-training-for-small-business-owners,/ai-training/,n/a,10-100,heuristic,0.6,satellite,ai training for small business owners,existing,google_autocomplete,0,a,34.0,,,,en,corporate ai training
+artificial intelligence corporate training institute,-1,75,informational,artificial-intelligence-corporate-training-insti,NEW /artificial-intelligence-corporate-training-insti/,n/a,10-100,heuristic,0.6,pillar,artificial intelligence corporate training institute,new,google_autocomplete,0,i,34.0,,,,en,corporate ai training
+ai training in healthcare,-1,70,informational,ai-training-in-healthcare,/ai-training/,n/a,10-100,heuristic,0.6,pillar,ai training in healthcare,existing,bing_suggest,4,for clinic,33.0,,,,en,corporate ai training
+ai training near me online,-1,70,transactional,ai-training-near-me,/ai-training/,n/a,10-100,heuristic,0.6,satellite,ai training near me,existing,bing_suggest,4,near me,33.0,,,,en,corporate ai training
+ai training for employees free,-1,70,informational,ai-training-for-corporate-employees-in-pune,/ai-training/,n/a,10-100,heuristic,0.6,satellite,ai training for corporate employees in pune,existing,bing_suggest,4,free,33.0,,,,en,corporate ai training
+list of corporate training courses,-1,70,informational,list-of-corporate-training-courses,NEW /list-of-corporate-training-courses/,n/a,10-100,heuristic,0.6,pillar,list of corporate training courses,new,google_autocomplete,4,free,33.0,,,,en,corporate ai training
+ai employee training corporate case study,-1,70,informational,ai-employee-training-corporate-case-study,/case-studies/ai-man-jack/,n/a,10-100,heuristic,0.6,pillar,ai employee training corporate case study,existing,bing_suggest,4,how to,33.0,,,,en,corporate ai training
+corporate training companies,-1,65,commercial,corporate-ai-training,/ai-training/,n/a,10-100,heuristic,0.6,satellite,corporate ai training,existing,google_autocomplete,1,c,32.0,,,,en,corporate ai training
+small business ai training act,-1,65,informational,ai-training-for-small-business-owners,/ai-training/,n/a,10-100,heuristic,0.6,satellite,ai training for small business owners,existing,google_autocomplete,1,a,32.0,,,,en,corporate ai training
+ai business intelligence training,-1,65,informational,artificial-intelligence-corporate-training-insti,/ai-training/,n/a,10-100,heuristic,0.6,satellite,artificial intelligence corporate training institute,existing,google_autocomplete,1,i,32.0,,,,en,corporate ai training
+free ai software training,-1,61,commercial,ai-training-for-small-business-owners,/ai-training/,n/a,10-100,heuristic,0.6,satellite,ai training for small business owners,existing,bing_suggest,5,software,31.0,,,,en,corporate ai training

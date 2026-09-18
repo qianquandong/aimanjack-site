@@ -1,0 +1,61 @@
+{
+ "query": "ai training workshop",
+ "slug": "ai-training-workshop",
+ "locale": "zh-CN",
+ "page": 1,
+ "count": 3,
+ "total_results": 4305,
+ "ratelimit": {
+  "x-ratelimit-limit": "25000",
+  "x-ratelimit-remaining": "24998",
+  "x-ratelimit-reset": "1792186871"
+ },
+ "generated": "2026-09-16T16:55:50",
+ "images": [
+  {
+   "file": "ai-training-workshop-1.webp",
+   "web_path": "/img/pexels-cache/ai-training-workshop-1.webp",
+   "image_url": "https://images.pexels.com/photos/7988792/pexels-photo-7988792.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+   "alt": "一名男子在办公室里检查他的智能手机，屏幕上显示着AI图形。",
+   "photographer": "Mikhail Nilov",
+   "photographer_url": "https://www.pexels.com/zh-cn/@mikhail-nilov",
+   "page_url": "https://www.pexels.com/zh-cn/photo/7988792/",
+   "pexels_id": 7988792,
+   "width": 868,
+   "height": 1300,
+   "avg_color": "#8E999F",
+   "credit": "Photo by Mikhail Nilov on Pexels",
+   "bytes": 76734
+  },
+  {
+   "file": "ai-training-workshop-2.webp",
+   "web_path": "/img/pexels-cache/ai-training-workshop-2.webp",
+   "image_url": "https://images.pexels.com/photos/36522032/pexels-photo-36522032.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+   "alt": "在展示自动化和创新技术的科技博览会上，近距离拍摄了先进的机械臂。",
+   "photographer": "Peter Xie",
+   "photographer_url": "https://www.pexels.com/zh-cn/@peter-xie-371876898",
+   "page_url": "https://www.pexels.com/zh-cn/photo/36522032/",
+   "pexels_id": 36522032,
+   "width": 867,
+   "height": 1300,
+   "avg_color": "#404E68",
+   "credit": "Photo by Peter Xie on Pexels",
+   "bytes": 95700
+  },
+  {
+   "file": "ai-training-workshop-3.webp",
+   "web_path": "/img/pexels-cache/ai-training-workshop-3.webp",
+   "image_url": "https://images.pexels.com/photos/30319116/pexels-photo-30319116.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+   "alt": "在现代办公环境中参加商业演示的观众。",
+   "photographer": "Mehmet BALCI",
+   "photographer_url": "https://www.pexels.com/zh-cn/@mehmet-balci-166052147",
+   "page_url": "https://www.pexels.com/zh-cn/photo/30319116/",
+   "pexels_id": 30319116,
+   "width": 1600,
+   "height": 1066,
+   "avg_color": "#898995",
+   "credit": "Photo by Mehmet BALCI on Pexels",
+   "bytes": 84186
+  }
+ ]
+}

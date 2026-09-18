@@ -1,0 +1,61 @@
+﻿keyword,KD,vol,intent,cluster_slug,target_url,kd_label,vol_band,vol_source,intent_confidence,role,cluster_name,target_status,sources,best_rank,modifier,demand,serp_top_domains,serp_features,ugc_count,lang,root
+ai 工作流,-1,300,commercial,ai,/zh/ai-training/,n/a,100-1k,root,0.3,pillar,ai 工作流,existing,root|google_autocomplete|bing_suggest|baidu_suggest,0,,100.0,,,,zh,ai 工作流
+ai工作流软件,-1,170,commercial,ai-ruanjian,/zh/ai-training/,n/a,100-1k,heuristic,0.3,pillar,ai工作流软件,existing,google_autocomplete|bing_suggest|baidu_suggest,0,,78.0,,,,zh,ai 工作流
+ai工作流是什么,-1,170,informational,ai-shi-shenme,/zh/about/,n/a,100-1k,heuristic,0.6,pillar,ai工作流是什么,existing,google_autocomplete|bing_suggest|baidu_suggest,0,,78.0,,,,zh,ai 工作流
+ai工作流程,-1,160,informational,ai,/zh/ai-training/,n/a,100-1k,heuristic,0.6,satellite,ai 工作流,existing,google_autocomplete|bing_suggest|baidu_suggest,1,,76.0,,,,zh,ai 工作流
+ai工作流搭建,-1,160,transactional,ai-dajian,/zh/about/,n/a,100-1k,heuristic,0.6,pillar,ai工作流搭建,existing,google_autocomplete|bing_suggest|baidu_suggest,1,,76.0,,,,zh,ai 工作流
+ai工作流平台,-1,160,commercial,ai-2,/zh/ai-training/,n/a,100-1k,heuristic,0.3,pillar,ai工作流平台,existing,google_autocomplete|bing_suggest|baidu_suggest,1,,76.0,,,,zh,ai 工作流
+ai 工作 流 工具,-1,160,commercial,ai-gongju,/zh/ai-training/,n/a,100-1k,heuristic,0.3,pillar,ai 工作 流 工具,existing,google_autocomplete|bing_suggest|baidu_suggest,1,,76.0,,,,zh,ai 工作流
+ai工作流网站,-1,140,commercial,ai-3,/zh/ai-training/,n/a,100-1k,heuristic,0.3,pillar,ai工作流网站,existing,google_autocomplete|bing_suggest|baidu_suggest,4,,70.0,,,,zh,ai 工作流
+ai工作流课程,-1,120,informational,ai-kecheng,/zh/ai-training/,n/a,100-1k,heuristic,0.6,pillar,ai工作流课程,existing,google_autocomplete|baidu_suggest,0,,66.0,,,,zh,ai 工作流
+什么是ai工作流,-1,120,informational,shenme-shi-ai,/zh/about/,n/a,100-1k,heuristic,0.6,pillar,什么是ai工作流,existing,google_autocomplete|bing_suggest|baidu_suggest,0,什么是,65.0,,,,zh,ai 工作流
+ai 工作 流 推荐,-1,120,commercial,ai-gongju,/zh/ai-training/,n/a,100-1k,heuristic,0.6,satellite,ai 工作 流 工具,existing,google_autocomplete|bing_suggest|baidu_suggest,0,推荐,65.0,,,,zh,ai 工作流
+ai工作流框架,-1,100,commercial,ai-4,/zh/ai-training/,n/a,100-1k,heuristic,0.3,pillar,ai工作流框架,existing,google_autocomplete|baidu_suggest,2,,62.0,,,,zh,ai 工作流
+ai 工作流 改名,-1,77,commercial,ai-5,/zh/ai-training/,n/a,10-100,heuristic,0.3,pillar,ai 工作流 改名,existing,baidu_suggest,0,,54.0,,,,zh,ai 工作流
+ai工作流是什么意思,-1,77,informational,ai-shi-shenme,/zh/about/,n/a,10-100,heuristic,0.85,satellite,ai工作流是什么,existing,bing_suggest|baidu_suggest,6,,54.0,,,,zh,ai 工作流
+ai工作流平台有哪些,-1,77,commercial,ai-2,/zh/ai-training/,n/a,10-100,heuristic,0.6,satellite,ai工作流平台,existing,bing_suggest|baidu_suggest,6,,54.0,,,,zh,ai 工作流
+ai工作流怎么用,-1,74,informational,ai-zenme-yong,/zh/ai-training/,n/a,10-100,heuristic,0.6,pillar,ai工作流怎么用,existing,bing_suggest|baidu_suggest,0,怎么用,53.0,,,,zh,ai 工作流
+ai 工作流 技术栈,-1,71,commercial,ai-6,/zh/ai-training/,n/a,10-100,heuristic,0.3,pillar,ai 工作流 技术栈,existing,baidu_suggest,1,,52.0,,,,zh,ai 工作流
+ai工作流软件哪个好,-1,68,commercial,ai-ruanjian,/zh/ai-training/,n/a,10-100,heuristic,0.6,satellite,ai工作流软件,existing,bing_suggest|baidu_suggest,1,软件,51.0,,,,zh,ai 工作流
+ai 工作流 培训,-1,60,informational,ai,/zh/ai-training/,n/a,10-100,heuristic,0.6,satellite,ai 工作流,existing,baidu_suggest,3,,48.0,,,,zh,ai 工作流
+ai 工作流编排,-1,54,commercial,ai-7,/zh/ai-training/,n/a,10-100,heuristic,0.3,pillar,ai 工作流编排,existing,google_autocomplete|baidu_suggest,0,b,46.0,,,,zh,ai 工作流
+ai 工作流 英文,-1,54,commercial,ai-8,/zh/ai-training/,n/a,10-100,heuristic,0.3,pillar,ai 工作流 英文,existing,google_autocomplete|baidu_suggest,0,e,46.0,,,,zh,ai 工作流
+ai 工作流 n8n,-1,54,commercial,ai-n8n,/zh/ai-training/,n/a,10-100,heuristic,0.3,pillar,ai 工作流 n8n,existing,google_autocomplete|baidu_suggest,0,n,46.0,,,,zh,ai 工作流
+ai 工作流diff,-1,49,commercial,ai-diff,/zh/ai-training/,n/a,10-100,heuristic,0.3,pillar,ai 工作流diff,existing,baidu_suggest,5,,44.0,,,,zh,ai 工作流
+ai 工作 流 github,-1,44,commercial,ai-gongju,/zh/ai-training/,n/a,10-100,heuristic,0.3,satellite,ai 工作 流 工具,existing,google_autocomplete,6,,42.0,,,,zh,ai 工作流
+AI工作小流,-1,42,commercial,ai-9,/zh/ai-training/,n/a,10-100,heuristic,0.3,pillar,AI工作小流,existing,baidu_suggest,0,小企业,41.0,,,,zh,ai 工作流
+扣子工作流费用,-1,42,transactional,feiyong,NEW /zh/feiyong/,n/a,10-100,heuristic,0.6,pillar,扣子工作流费用,new,bing_suggest,0,费用,41.0,,,,zh,ai 工作流
+ai工作流系统,-1,42,commercial,ai-xitong,/zh/ai-training/,n/a,10-100,heuristic,0.3,pillar,ai工作流系统,existing,bing_suggest,0,系统,41.0,,,,zh,ai 工作流
+ai工作流公司,-1,42,commercial,ai-gongsi,/zh/about/,n/a,10-100,heuristic,0.3,pillar,ai工作流公司,existing,baidu_suggest,0,公司,41.0,,,,zh,ai 工作流
+ai工作流教程,-1,42,informational,ai-jiaocheng,/zh/ai-training/,n/a,10-100,heuristic,0.6,pillar,ai工作流教程,existing,baidu_suggest,0,教程,41.0,,,,zh,ai 工作流
+AI工作流免费吗,-1,42,transactional,ai-mianfei,/zh/ai-training/,n/a,10-100,heuristic,0.6,pillar,AI工作流免费吗,existing,baidu_suggest,0,免费,41.0,,,,zh,ai 工作流
+ai工作流怎么做,-1,42,informational,ai-zenme-yong,/zh/ai-training/,n/a,10-100,heuristic,0.6,satellite,ai工作流怎么用,existing,baidu_suggest,0,怎么做,41.0,,,,zh,ai 工作流
+美国AI公司工作,-1,42,commercial,usa-ai-gongsi,/zh/about/,n/a,10-100,heuristic,0.3,pillar,美国AI公司工作,existing,baidu_suggest,0,美国,41.0,,,,zh,ai 工作流
+coze工作流价格,-1,42,transactional,coze-jiage,NEW /zh/coze-jiage/,n/a,10-100,heuristic,0.6,pillar,coze工作流价格,new,bing_suggest,0,价格,41.0,,,,zh,ai 工作流
+扣子工作流怎么使用,-1,42,informational,feiyong,NEW /zh/feiyong/,n/a,10-100,heuristic,0.6,satellite,扣子工作流费用,new,bing_suggest,0,怎么,41.0,,,,zh,ai 工作流
+达拉斯ai 工作流程图,-1,42,informational,dallas-ai,/zh/ai-training/,n/a,10-100,heuristic,0.6,pillar,达拉斯ai 工作流程图,existing,baidu_suggest,0,达拉斯,41.0,,,,zh,ai 工作流
+AI工作流搭建需要多少钱,-1,42,transactional,ai-dajian,/zh/about/,n/a,10-100,heuristic,0.85,satellite,ai工作流搭建,existing,baidu_suggest,0,多少钱,41.0,,,,zh,ai 工作流
+最好的ai 工作流程是什么,-1,42,informational,zuihao-ai-shi-shenme,/zh/about/,n/a,10-100,heuristic,0.85,pillar,最好的ai 工作流程是什么,existing,baidu_suggest,0,最好的,41.0,,,,zh,ai 工作流
+comfyui如何导入工作流,-1,42,informational,comfyui-ruhe,NEW /zh/comfyui-ruhe/,n/a,10-100,heuristic,0.6,pillar,comfyui如何导入工作流,new,bing_suggest,0,如何,41.0,,,,zh,ai 工作流
+ai工作流培训班一般学费多少,-1,42,informational,ai-peixun,/zh/ai-training/,n/a,10-100,heuristic,0.6,pillar,ai工作流培训班一般学费多少,existing,baidu_suggest,0,培训,41.0,,,,zh,ai 工作流
+ai 工作流程自动化,-1,40,informational,ai-zidong,/zh/ai-training/,n/a,10-100,heuristic,0.6,pillar,ai 工作流程自动化,existing,google_autocomplete,7,,40.0,,,,zh,ai 工作流
+工作流推荐,-1,38,commercial,tuijian,/zh/about/,n/a,10-100,heuristic,0.6,pillar,工作流推荐,existing,bing_suggest,1,推荐,39.0,,,,zh,ai 工作流
+工作流系统,-1,38,commercial,ai-xitong,/zh/ai-training/,n/a,10-100,heuristic,0.3,satellite,ai工作流系统,existing,bing_suggest,1,系统,39.0,,,,zh,ai 工作流
+工作流怎么用,-1,38,informational,ai-zenme-yong,/zh/ai-training/,n/a,10-100,heuristic,0.6,satellite,ai工作流怎么用,existing,bing_suggest,1,怎么用,39.0,,,,zh,ai 工作流
+如何搭建工作流,-1,38,transactional,ruhe-dajian,/zh/about/,n/a,10-100,heuristic,0.6,pillar,如何搭建工作流,existing,bing_suggest,1,如何,39.0,,,,zh,ai 工作流
+最好用的工作流,-1,38,commercial,zuihao-yong,/zh/ai-training/,n/a,10-100,heuristic,0.6,pillar,最好用的工作流,existing,bing_suggest,1,最好的,39.0,,,,zh,ai 工作流
+ai工作流怎么写,-1,38,informational,ai-zenme-yong,/zh/ai-training/,n/a,10-100,heuristic,0.6,satellite,ai工作流怎么用,existing,baidu_suggest,1,电话,39.0,,,,zh,ai 工作流
+ai工作流培训班,-1,38,informational,ai-peixun,/zh/ai-training/,n/a,10-100,heuristic,0.6,satellite,ai工作流培训班一般学费多少,existing,baidu_suggest,1,培训,39.0,,,,zh,ai 工作流
+ai工作流到底是什么,-1,38,informational,ai-shi-shenme-2,/zh/about/,n/a,10-100,heuristic,0.6,pillar,ai工作流到底是什么,existing,baidu_suggest,1,价格,39.0,,,,zh,ai 工作流
+AI工作流软件免费推荐,-1,38,transactional,ai-ruanjian,/zh/ai-training/,n/a,10-100,heuristic,0.6,satellite,ai工作流软件,existing,baidu_suggest,1,免费,39.0,,,,zh,ai 工作流
+最好的ai 工作流量卡,-1,38,commercial,zuihao-ai-shi-shenme,/zh/about/,n/a,10-100,heuristic,0.6,satellite,最好的ai 工作流程是什么,existing,baidu_suggest,1,最好的,39.0,,,,zh,ai 工作流
+comfyui怎么导入工作流,-1,38,informational,comfyui-ruhe,NEW /zh/comfyui-ruhe/,n/a,10-100,heuristic,0.6,satellite,comfyui如何导入工作流,new,bing_suggest,1,怎么,39.0,,,,zh,ai 工作流
+ai工作流搭建平台,-1,36,transactional,ai-dajian,/zh/about/,n/a,10-100,heuristic,0.6,satellite,ai工作流搭建,existing,bing_suggest,8,,38.0,,,,zh,ai 工作流
+ai工作流怎么搭建,-1,36,transactional,ai-zenme-yong,/zh/ai-training/,n/a,10-100,heuristic,0.6,satellite,ai工作流怎么用,existing,baidu_suggest,8,,38.0,,,,zh,ai 工作流
+工作流软件,-1,34,commercial,ai-ruanjian,/zh/ai-training/,n/a,10-100,heuristic,0.3,satellite,ai工作流软件,existing,bing_suggest,2,软件,37.0,,,,zh,ai 工作流
+AI工作流师,-1,34,commercial,ai-10,/zh/ai-training/,n/a,10-100,heuristic,0.3,pillar,AI工作流师,existing,baidu_suggest,2,培训,37.0,,,,zh,ai 工作流
+工作流管理系统,-1,34,commercial,xitong,NEW /zh/xitong/,n/a,10-100,heuristic,0.3,pillar,工作流管理系统,new,bing_suggest,2,系统,37.0,,,,zh,ai 工作流
+飞书工作流怎么用,-1,34,navigational,ai-zenme-yong,/zh/ai-training/,n/a,10-100,heuristic,0.8,satellite,ai工作流怎么用,existing,bing_suggest,2,怎么用,37.0,,,,zh,ai 工作流
+扣子怎么创建工作流,-1,34,informational,zenme,NEW /zh/zenme/,n/a,10-100,heuristic,0.6,pillar,扣子怎么创建工作流,new,bing_suggest,2,怎么,37.0,,,,zh,ai 工作流
+最好用的工作流引擎,-1,34,commercial,zuihao-yong,/zh/ai-training/,n/a,10-100,heuristic,0.6,satellite,最好用的工作流,existing,bing_suggest,2,最好的,37.0,,,,zh,ai 工作流
+ai工作流是干嘛的,-1,34,commercial,ai-shi,/zh/ai-training/,n/a,10-100,heuristic,0.3,pillar,ai工作流是干嘛的,existing,baidu_suggest,2,价格,37.0,,,,zh,ai 工作流

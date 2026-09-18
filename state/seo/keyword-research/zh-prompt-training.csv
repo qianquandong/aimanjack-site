@@ -1,0 +1,61 @@
+﻿keyword,KD,vol,intent,cluster_slug,target_url,kd_label,vol_band,vol_source,intent_confidence,role,cluster_name,target_status,sources,best_rank,modifier,demand,serp_top_domains,serp_features,ugc_count,lang,root
+prompt 培训,-1,300,informational,prompt-peixun,/zh/ai-training/,n/a,100-1k,root,0.6,pillar,prompt 培训,existing,root|bing_suggest|baidu_suggest,0,,100.0,,,,zh,prompt 培训
+PRI培训,-1,71,informational,pri-peixun,/zh/ai-training/,n/a,10-100,heuristic,0.6,pillar,PRI培训,existing,baidu_suggest,1,,52.0,,,,zh,prompt 培训
+培训课程大纲生成prompt,-1,71,informational,peixun-kecheng-prompt,NEW /zh/peixun-kecheng-prompt/,n/a,10-100,heuristic,0.85,pillar,培训课程大纲生成prompt,new,bing_suggest,1,,52.0,,,,zh,prompt 培训
+PT培训,-1,65,informational,pt-peixun,/zh/ai-training/,n/a,10-100,heuristic,0.6,pillar,PT培训,existing,baidu_suggest,2,,50.0,,,,zh,prompt 培训
+prompt工程师的培训课程,-1,65,informational,prompt-peixun-kecheng,NEW /zh/prompt-peixun-kecheng/,n/a,10-100,heuristic,0.85,pillar,prompt工程师的培训课程,new,bing_suggest,2,,50.0,,,,zh,prompt 培训
+prompt课程,-1,60,informational,prompt-peixun,/zh/ai-training/,n/a,10-100,heuristic,0.6,satellite,prompt 培训,existing,baidu_suggest,3,,48.0,,,,zh,prompt 培训
+prompt工程师培训,-1,60,informational,prompt-peixun-kecheng,NEW /zh/prompt-peixun-kecheng/,n/a,10-100,heuristic,0.6,satellite,prompt工程师的培训课程,new,bing_suggest,3,,48.0,,,,zh,prompt 培训
+prp培训班2026年,-1,54,informational,prp-peixun-2026,NEW /zh/prp-peixun-2026/,n/a,10-100,heuristic,0.6,pillar,prp培训班2026年,new,baidu_suggest,4,,46.0,,,,zh,prompt 培训
+prc培训,-1,49,informational,prc-peixun,/zh/ai-training/,n/a,10-100,heuristic,0.6,pillar,prc培训,existing,baidu_suggest,5,,44.0,,,,zh,prompt 培训
+prc培训班一般多少钱,-1,44,transactional,prc-peixun-duoshaoqian,NEW /zh/prc-peixun-duoshaoqian/,n/a,10-100,heuristic,0.6,pillar,prc培训班一般多少钱,new,baidu_suggest,6,,42.0,,,,zh,prompt 培训
+德州培训班,-1,42,informational,texas-peixun,NEW /zh/texas-peixun/,n/a,10-100,heuristic,0.6,pillar,德州培训班,new,baidu_suggest,0,德州,41.0,,,,zh,prompt 培训
+培训报名预约,-1,42,transactional,peixun-yuyue,NEW /zh/peixun-yuyue/,n/a,10-100,heuristic,0.85,pillar,培训报名预约,new,baidu_suggest,0,预约,41.0,,,,zh,prompt 培训
+培训基地餐厅,-1,42,informational,peixun-canting,NEW /zh/peixun-canting/,n/a,10-100,heuristic,0.6,pillar,培训基地餐厅,new,baidu_suggest,0,餐厅,41.0,,,,zh,prompt 培训
+opl培训案例,-1,42,informational,opl-peixun-anli,NEW /zh/opl-peixun-anli/,n/a,10-100,heuristic,0.85,pillar,opl培训案例,new,baidu_suggest,0,案例,41.0,,,,zh,prompt 培训
+培训系统管理系统,-1,42,informational,peixun-xitong-xitong,NEW /zh/peixun-xitong-xitong/,n/a,10-100,heuristic,0.6,pillar,培训系统管理系统,new,baidu_suggest,0,系统,41.0,,,,zh,prompt 培训
+prompt培训班,-1,42,informational,prp-peixun-2026,NEW /zh/prp-peixun-2026/,n/a,10-100,heuristic,0.6,satellite,prp培训班2026年,new,baidu_suggest,0,怎么用,41.0,,,,zh,prompt 培训
+美容培训学校是怎么培训的,-1,42,informational,meirong-peixun-shi-zenme-peixun,NEW /zh/meirong-peixun-shi-zenme-peixun/,n/a,10-100,heuristic,0.85,pillar,美容培训学校是怎么培训的,new,baidu_suggest,0,美容院,41.0,,,,zh,prompt 培训
+在美国PMP培训机构有哪些,-1,42,commercial,usa-pmp-peixun,NEW /zh/usa-pmp-peixun/,n/a,10-100,heuristic,0.6,pillar,在美国PMP培训机构有哪些,new,baidu_suggest,0,美国,41.0,,,,zh,prompt 培训
+培训室预约,-1,38,transactional,peixun-yuyue-2,NEW /zh/peixun-yuyue-2/,n/a,10-100,heuristic,0.6,pillar,培训室预约,new,baidu_suggest,1,预约,39.0,,,,zh,prompt 培训
+美国培训机构,-1,38,informational,usa-pmp-peixun,NEW /zh/usa-pmp-peixun/,n/a,10-100,heuristic,0.6,satellite,在美国PMP培训机构有哪些,new,baidu_suggest,1,美国,39.0,,,,zh,prompt 培训
+德州培训学校,-1,38,informational,texas-peixun,NEW /zh/texas-peixun/,n/a,10-100,heuristic,0.6,satellite,德州培训班,new,baidu_suggest,1,德州,39.0,,,,zh,prompt 培训
+pa培训计划表,-1,38,informational,pa-peixun,NEW /zh/pa-peixun/,n/a,10-100,heuristic,0.6,pillar,pa培训计划表,new,baidu_suggest,1,方案,39.0,,,,zh,prompt 培训
+诊所经营培训机构,-1,38,informational,zhensuo-peixun,NEW /zh/zhensuo-peixun/,n/a,10-100,heuristic,0.6,pillar,诊所经营培训机构,new,baidu_suggest,1,诊所,39.0,,,,zh,prompt 培训
+美容机构培训学校,-1,38,informational,meirong-peixun,NEW /zh/meirong-peixun/,n/a,10-100,heuristic,0.6,pillar,美容机构培训学校,new,baidu_suggest,1,美容院,39.0,,,,zh,prompt 培训
+小企业培训时间管理,-1,38,informational,xiaoqiye-peixun,NEW /zh/xiaoqiye-peixun/,n/a,10-100,heuristic,0.6,pillar,小企业培训时间管理,new,baidu_suggest,1,小企业,39.0,,,,zh,prompt 培训
+餐厅培训项目有哪些,-1,38,commercial,canting-peixun,NEW /zh/canting-peixun/,n/a,10-100,heuristic,0.6,pillar,餐厅培训项目有哪些,new,baidu_suggest,1,餐厅,39.0,,,,zh,prompt 培训
+什么叫prompt,-1,38,commercial,shenme-prompt,NEW /zh/shenme-prompt/,n/a,10-100,heuristic,0.3,pillar,什么叫prompt,new,baidu_suggest,1,什么是,39.0,,,,zh,prompt 培训
+pgmp培训官网入口,-1,38,navigational,pgmp-peixun-guanwang,NEW /zh/pgmp-peixun-guanwang/,n/a,10-100,heuristic,0.6,pillar,pgmp培训官网入口,new,baidu_suggest,1,系统,39.0,,,,zh,prompt 培训
+pmp培训机构差别大吗,-1,38,informational,pmp-peixun,NEW /zh/pmp-peixun/,n/a,10-100,heuristic,0.85,pillar,pmp培训机构差别大吗,new,baidu_suggest,1,对比,39.0,,,,zh,prompt 培训
+powerinspect培训,-1,36,informational,powerinspect-peixun,/zh/ai-training/,n/a,10-100,heuristic,0.6,pillar,powerinspect培训,existing,baidu_suggest,8,,38.0,,,,zh,prompt 培训
+培训网站系统,-1,34,informational,peixun-xitong,NEW /zh/peixun-xitong/,n/a,10-100,heuristic,0.6,pillar,培训网站系统,new,baidu_suggest,2,系统,37.0,,,,zh,prompt 培训
+预约课程培训,-1,34,transactional,yuyue-kecheng-peixun,NEW /zh/yuyue-kecheng-peixun/,n/a,10-100,heuristic,0.65,pillar,预约课程培训,new,baidu_suggest,2,预约,37.0,,,,zh,prompt 培训
+培训案例分析,-1,34,informational,opl-peixun-anli,NEW /zh/opl-peixun-anli/,n/a,10-100,heuristic,0.85,satellite,opl培训案例,new,baidu_suggest,2,案例,37.0,,,,zh,prompt 培训
+培训餐饮哪里,-1,34,informational,peixun,NEW /zh/peixun/,n/a,10-100,heuristic,0.6,pillar,培训餐饮哪里,new,baidu_suggest,2,餐厅,37.0,,,,zh,prompt 培训
+pr培训班学费,-1,34,informational,pr-peixun,NEW /zh/pr-peixun/,n/a,10-100,heuristic,0.6,pillar,pr培训班学费,new,baidu_suggest,2,价格,37.0,,,,zh,prompt 培训
+培训班电话入口,-1,34,informational,peixun-dianhua,NEW /zh/peixun-dianhua/,n/a,10-100,heuristic,0.6,pillar,培训班电话入口,new,baidu_suggest,2,电话,37.0,,,,zh,prompt 培训
+prompt技巧,-1,34,commercial,prompt-peixun,/zh/ai-training/,n/a,10-100,heuristic,0.3,satellite,prompt 培训,existing,baidu_suggest,2,怎么用,37.0,,,,zh,prompt 培训
+比较好的美容培训,-1,34,commercial,hao-meirong-peixun,NEW /zh/hao-meirong-peixun/,n/a,10-100,heuristic,0.6,pillar,比较好的美容培训,new,baidu_suggest,2,美容院,37.0,,,,zh,prompt 培训
+诊所培训内容100篇,-1,34,informational,zhensuo-peixun-100,NEW /zh/zhensuo-peixun-100/,n/a,10-100,heuristic,0.6,pillar,诊所培训内容100篇,new,baidu_suggest,2,诊所,37.0,,,,zh,prompt 培训
+德州免费培训项目课程,-1,34,transactional,texas-mianfei-peixun-kecheng,NEW /zh/texas-mianfei-peixun-kecheng/,n/a,10-100,heuristic,0.65,pillar,德州免费培训项目课程,new,baidu_suggest,2,德州,37.0,,,,zh,prompt 培训
+preply企业培训服务,-1,34,informational,preply-qiye-peixun-fuwu,NEW /zh/preply-qiye-peixun-fuwu/,n/a,10-100,heuristic,0.6,pillar,preply企业培训服务,new,baidu_suggest,2,公司,37.0,,,,zh,prompt 培训
+小型企业如何选择培训咨询服务,-1,34,informational,qiye-ruhe-peixun-fuwu,NEW /zh/qiye-ruhe-peixun-fuwu/,n/a,10-100,heuristic,0.85,pillar,小型企业如何选择培训咨询服务,new,baidu_suggest,2,小企业,37.0,,,,zh,prompt 培训
+AACTP 美国培训认证协会,-1,34,informational,aactp-usa-peixun,NEW /zh/aactp-usa-peixun/,n/a,10-100,heuristic,0.6,pillar,AACTP 美国培训认证协会,new,baidu_suggest,2,美国,37.0,,,,zh,prompt 培训
+培训programme怎么写,-1,32,informational,peixun-programme-zenme,/zh/ai-training/,n/a,10-100,heuristic,0.85,pillar,培训programme怎么写,existing,baidu_suggest,9,,36.0,,,,zh,prompt 培训
+HTTP培训,-1,30,informational,http-peixun,/zh/ai-training/,n/a,10-100,heuristic,0.6,pillar,HTTP培训,existing,baidu_suggest,3,系统,35.0,,,,zh,prompt 培训
+教育培训预约,-1,30,transactional,peixun-yuyue-3,NEW /zh/peixun-yuyue-3/,n/a,10-100,heuristic,0.6,pillar,教育培训预约,new,baidu_suggest,3,预约,35.0,,,,zh,prompt 培训
+美国教育培训,-1,30,informational,peixun-yuyue-3,NEW /zh/peixun-yuyue-3/,n/a,10-100,heuristic,0.6,satellite,教育培训预约,new,baidu_suggest,3,美国,35.0,,,,zh,prompt 培训
+npdp培训费用,-1,30,transactional,npdp-peixun-feiyong,NEW /zh/npdp-peixun-feiyong/,n/a,10-100,heuristic,0.6,pillar,npdp培训费用,new,baidu_suggest,3,价格,35.0,,,,zh,prompt 培训
+RT培训内容大全,-1,30,informational,zhensuo-peixun-100,NEW /zh/zhensuo-peixun-100/,n/a,10-100,heuristic,0.6,satellite,诊所培训内容100篇,new,baidu_suggest,3,方案,35.0,,,,zh,prompt 培训
+中小企业培训机构,-1,30,informational,xiaoqiye-peixun,NEW /zh/xiaoqiye-peixun/,n/a,10-100,heuristic,0.6,satellite,小企业培训时间管理,new,baidu_suggest,3,小企业,35.0,,,,zh,prompt 培训
+诊所培训主要内容,-1,30,informational,zhensuo-peixun-2,NEW /zh/zhensuo-peixun-2/,n/a,10-100,heuristic,0.6,pillar,诊所培训主要内容,new,baidu_suggest,3,诊所,35.0,,,,zh,prompt 培训
+餐厅培训图片大全,-1,30,informational,canting-peixun-tupian,NEW /zh/canting-peixun-tupian/,n/a,10-100,heuristic,0.85,pillar,餐厅培训图片大全,new,baidu_suggest,3,餐厅,35.0,,,,zh,prompt 培训
+德州技术培训机构排名,-1,30,commercial,texas-peixun-paiming,NEW /zh/texas-peixun-paiming/,n/a,10-100,heuristic,0.6,pillar,德州技术培训机构排名,new,baidu_suggest,3,德州,35.0,,,,zh,prompt 培训
+prompt专家2.0,-1,30,commercial,prompt2-0,NEW /zh/prompt2-0/,n/a,10-100,heuristic,0.3,pillar,prompt专家2.0,new,bing_suggest,3,价格,35.0,,,,zh,prompt 培训
+prompt证书怎么考,-1,30,informational,prompt-zenme,NEW /zh/prompt-zenme/,n/a,10-100,heuristic,0.6,pillar,prompt证书怎么考,new,baidu_suggest,3,多少钱,35.0,,,,zh,prompt 培训
+美容培训班一般要多少钱,-1,30,transactional,prc-peixun-duoshaoqian,NEW /zh/prc-peixun-duoshaoqian/,n/a,10-100,heuristic,0.6,satellite,prc培训班一般多少钱,new,baidu_suggest,3,美容院,35.0,,,,zh,prompt 培训
+prompt通俗入门讲解,-1,30,informational,prompt-rumen,NEW /zh/prompt-rumen/,n/a,10-100,heuristic,0.6,pillar,prompt通俗入门讲解,new,baidu_suggest,3,怎么用,35.0,,,,zh,prompt 培训
+prompt训练有什么特征,-1,30,commercial,prompt-shenme,NEW /zh/prompt-shenme/,n/a,10-100,heuristic,0.3,pillar,prompt训练有什么特征,new,baidu_suggest,3,是什么,35.0,,,,zh,prompt 培训
+project软件培训教程,-1,30,informational,project-ruanjian-peixun-jiaocheng,NEW /zh/project-ruanjian-peixun-jiaocheng/,n/a,10-100,heuristic,0.85,pillar,project软件培训教程,new,baidu_suggest,3,软件,35.0,,,,zh,prompt 培训
+英语培训预约,-1,26,transactional,peixun-yuyue-4,NEW /zh/peixun-yuyue-4/,n/a,10-100,heuristic,0.6,pillar,英语培训预约,new,baidu_suggest,4,预约,33.0,,,,zh,prompt 培训

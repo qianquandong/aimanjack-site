@@ -1,0 +1,50 @@
+﻿keyword,KD,vol,intent,cluster_slug,target_url,kd_label,vol_band,vol_source,intent_confidence,role,cluster_name,target_status,sources,best_rank,modifier,demand,serp_top_domains,serp_features,ugc_count,lang,root
+ai workshop dallas,-1,800,commercial,ai-workshop-dallas,/ai-training/,n/a,100-1k,root,0.3,pillar,ai workshop dallas,existing,root|google_autocomplete,0,,100.0,,,,en,ai workshop dallas
+ai training in dallas,-1,200,informational,ai-workshop-dallas,/ai-training/,n/a,100-1k,heuristic,0.6,satellite,ai workshop dallas,existing,google_autocomplete|bing_suggest,0,pricing,53.0,,,,en,ai workshop dallas
+ai classes dallas,-1,190,commercial,ai-classes-dallas,/ai-training/,n/a,100-1k,heuristic,0.3,pillar,ai classes dallas,existing,google_autocomplete,1,,52.0,,,,en,ai workshop dallas
+ai classes in dallas,-1,180,commercial,ai-classes-dallas,/ai-training/,n/a,100-1k,heuristic,0.3,satellite,ai classes dallas,existing,google_autocomplete|bing_suggest,1,pricing,51.0,,,,en,ai workshop dallas
+ai training dallas,-1,170,informational,ai-workshop-dallas,/ai-training/,n/a,100-1k,heuristic,0.6,satellite,ai workshop dallas,existing,google_autocomplete,2,,50.0,,,,en,ai workshop dallas
+ai classes dallas college,-1,160,commercial,ai-classes-dallas,/ai-training/,n/a,100-1k,heuristic,0.3,satellite,ai classes dallas,existing,google_autocomplete,3,,48.0,,,,en,ai workshop dallas
+ai conference dallas texas,-1,110,commercial,ai-conference-dallas-texas,/ai-training/,n/a,100-1k,heuristic,0.3,pillar,ai conference dallas texas,existing,google_autocomplete,0,texas,41.0,,,,en,ai workshop dallas
+ai workshop near me,-1,90,transactional,ai-workshop-near-me,/ai-receptionist/,n/a,10-100,heuristic,0.6,pillar,ai workshop near me,existing,bing_suggest,2,pricing,37.0,,,,en,ai workshop dallas
+what is ai workshop,-1,79,informational,ai-workshop-dallas,/ai-training/,n/a,10-100,heuristic,0.85,satellite,ai workshop dallas,existing,bing_suggest,3,software,35.0,,,,en,ai workshop dallas
+ai conference in dallas,-1,79,commercial,ai-conference-dallas-texas,/ai-training/,n/a,10-100,heuristic,0.3,satellite,ai conference dallas texas,existing,bing_suggest,3,pricing,35.0,,,,en,ai workshop dallas
+ut dallas ai workshop,-1,75,commercial,ai-workshop-dallas,/ai-training/,n/a,10-100,heuristic,0.3,satellite,ai workshop dallas,existing,google_autocomplete,0,u,34.0,,,,en,ai workshop dallas
+ai workshops in dallas,-1,75,commercial,ai-workshops-in-dallas,/ai-training/,n/a,10-100,heuristic,0.3,pillar,ai workshops in dallas,existing,google_autocomplete,0,i,34.0,,,,en,ai workshop dallas
+what is an ai workshop,-1,70,informational,ai-workshop-dallas,/ai-training/,n/a,10-100,heuristic,0.85,satellite,ai workshop dallas,existing,bing_suggest,4,pricing,33.0,,,,en,ai workshop dallas
+ai marketing world dallas,-1,61,commercial,ai-marketing-world-dallas,/ai-training/,n/a,10-100,heuristic,0.3,pillar,ai marketing world dallas,existing,bing_suggest,5,pricing,31.0,,,,en,ai workshop dallas
+ai tools workshop free,-1,53,commercial,ai-tools-workshop-free,/integrations/,n/a,10-100,heuristic,0.6,pillar,ai tools workshop free,existing,bing_suggest,6,software,29.0,,,,en,ai workshop dallas
+healthcare ai jobs dallas texas,-1,53,commercial,healthcare-ai-jobs-dallas-texas,/ai-training/,n/a,10-100,heuristic,0.3,pillar,healthcare ai jobs dallas texas,existing,bing_suggest,6,for clinic,29.0,,,,en,ai workshop dallas
+ai with deep learning workshop,-1,38,commercial,ai-with-deep-learning-workshop,/ai-receptionist/,n/a,10-100,heuristic,0.3,pillar,ai with deep learning workshop,existing,bing_suggest,8,pricing,25.0,,,,en,ai workshop dallas
+ai for instructional design workshop,-1,38,commercial,ai-for-instructional-design-workshop,/ai-receptionist/,n/a,10-100,heuristic,0.3,pillar,ai for instructional design workshop,existing,bing_suggest,8,software,25.0,,,,en,ai workshop dallas
+ai conferences 2026 dallas,-1,32,commercial,ai-conferences-2026-dallas,/ai-training/,n/a,10-100,heuristic,0.3,pillar,ai conferences 2026 dallas,existing,bing_suggest,9,pricing,23.0,,,,en,ai workshop dallas
+dallas college ai essentials,-1,32,commercial,dallas-college-ai-essentials,/ai-training/,n/a,10-100,heuristic,0.3,pillar,dallas college ai essentials,existing,bing_suggest,9,for dental office,23.0,,,,en,ai workshop dallas
+ai jobs in dallas,-1,26,commercial,healthcare-ai-jobs-dallas-texas,/ai-training/,n/a,10-100,heuristic,0.3,satellite,healthcare ai jobs dallas texas,existing,bing_suggest,11,pricing,21.0,,,,en,ai workshop dallas
+ai jobs in dallas tx,-1,26,commercial,healthcare-ai-jobs-dallas-texas,/ai-training/,n/a,10-100,heuristic,0.3,satellite,healthcare ai jobs dallas texas,existing,bing_suggest,13,pricing,21.0,,,,en,ai workshop dallas
+ai workshop for free,-1,26,commercial,ai-tools-workshop-free,/integrations/,n/a,10-100,heuristic,0.3,satellite,ai tools workshop free,existing,bing_suggest,17,pricing,21.0,,,,en,ai workshop dallas
+workshop on ai tools,-1,26,commercial,ai-tools-workshop-free,/integrations/,n/a,10-100,heuristic,0.6,satellite,ai tools workshop free,existing,bing_suggest,16,software,21.0,,,,en,ai workshop dallas
+poster on ai workshop,-1,26,commercial,poster-on-ai-workshop,/ai-receptionist/,n/a,10-100,heuristic,0.3,pillar,poster on ai workshop,existing,bing_suggest,21,free,21.0,,,,en,ai workshop dallas
+ai workshop in chennai,-1,26,commercial,ai-workshop-in-chennai,/ai-receptionist/,n/a,10-100,heuristic,0.3,pillar,ai workshop in chennai,existing,bing_suggest,20,pricing,21.0,,,,en,ai workshop dallas
+top ai firms in dallas,-1,26,commercial,top-ai-firms-in-dallas,/ai-training/,n/a,10-100,heuristic,0.6,pillar,top ai firms in dallas,existing,bing_suggest,13,for small business,21.0,,,,en,ai workshop dallas
+ai workshop for artists,-1,26,commercial,ai-workshop-for-artists,/ai-receptionist/,n/a,10-100,heuristic,0.3,pillar,ai workshop for artists,existing,bing_suggest,19,pricing,21.0,,,,en,ai workshop dallas
+ai for science workshop,-1,26,commercial,ai-for-science-workshop,/ai-receptionist/,n/a,10-100,heuristic,0.3,pillar,ai for science workshop,existing,bing_suggest,10,software,21.0,,,,en,ai workshop dallas
+learn ai tools workshop,-1,26,commercial,ai-tools-workshop-free,/integrations/,n/a,10-100,heuristic,0.6,satellite,ai tools workshop free,existing,bing_suggest,21,software,21.0,,,,en,ai workshop dallas
+ai workshop for students,-1,26,commercial,ai-workshop-for-students,/ai-receptionist/,n/a,10-100,heuristic,0.3,pillar,ai workshop for students,existing,bing_suggest,18,pricing,21.0,,,,en,ai workshop dallas
+ai conference dallas 2026,-1,26,commercial,ai-conference-dallas-texas,/ai-training/,n/a,10-100,heuristic,0.3,satellite,ai conference dallas texas,existing,bing_suggest,10,pricing,21.0,,,,en,ai workshop dallas
+what is ai tools workshop,-1,26,informational,ai-tools-workshop-free,/integrations/,n/a,10-100,heuristic,0.85,satellite,ai tools workshop free,existing,bing_suggest,18,software,21.0,,,,en,ai workshop dallas
+dallas college intro to ai,-1,26,commercial,dallas-college-ai-essentials,/ai-training/,n/a,10-100,heuristic,0.3,satellite,dallas college ai essentials,existing,bing_suggest,13,vs,21.0,,,,en,ai workshop dallas
+free ai workshop for students,-1,26,commercial,ai-workshop-for-students,/ai-receptionist/,n/a,10-100,heuristic,0.3,satellite,ai workshop for students,existing,bing_suggest,21,pricing,21.0,,,,en,ai workshop dallas
+ai for tech professionals workshop,-1,26,commercial,ai-for-tech-professionals-workshop,/ai-receptionist/,n/a,10-100,heuristic,0.3,pillar,ai for tech professionals workshop,existing,bing_suggest,12,pricing,21.0,,,,en,ai workshop dallas
+global ai community dallas,-1,23,commercial,global-ai-community-dallas,/ai-training/,n/a,10-100,heuristic,0.3,pillar,global ai community dallas,existing,bing_suggest,7,g,20.0,,,,en,ai workshop dallas
+ar workshop in dallas,-1,14,commercial,ar-workshop-in-dallas,/ai-training/,n/a,10-100,heuristic,0.3,pillar,ar workshop in dallas,existing,bing_suggest,9,k,16.0,,,,en,ai workshop dallas
+growth school ai workshop,-1,14,commercial,growth-school-ai-workshop,/pricing/,n/a,10-100,heuristic,0.3,pillar,growth school ai workshop,existing,bing_suggest,9,g,16.0,,,,en,ai workshop dallas
+dallas ai forum adobe,-1,11,commercial,dallas-ai-forum-adobe,/ai-training/,n/a,10-100,heuristic,0.3,pillar,dallas ai forum adobe,existing,bing_suggest,14,f,14.0,,,,en,ai workshop dallas
+ai community day dallas,-1,11,commercial,global-ai-community-dallas,/ai-training/,n/a,10-100,heuristic,0.3,satellite,global ai community dallas,existing,bing_suggest,12,c,14.0,,,,en,ai workshop dallas
+ai for techies workshop,-1,11,commercial,ai-for-techies-workshop,/ai-receptionist/,n/a,10-100,heuristic,0.3,pillar,ai for techies workshop,existing,bing_suggest,21,t,14.0,,,,en,ai workshop dallas
+ai workshop in bangalore,-1,11,commercial,ai-workshop-in-bangalore,/ai-receptionist/,n/a,10-100,heuristic,0.3,pillar,ai workshop in bangalore,existing,bing_suggest,21,b,14.0,,,,en,ai workshop dallas
+google ai agent workshop,-1,11,commercial,google-ai-agent-workshop,/ai-training/,n/a,10-100,heuristic,0.3,pillar,google ai agent workshop,existing,bing_suggest,22,g,14.0,,,,en,ai workshop dallas
+ai workshop in singapore,-1,11,commercial,ai-workshop-in-singapore,/ai-receptionist/,n/a,10-100,heuristic,0.3,pillar,ai workshop in singapore,existing,bing_suggest,21,h,14.0,,,,en,ai workshop dallas
+bring ai to work workshop,-1,11,commercial,bring-ai-to-work-workshop,/ai-training/,n/a,10-100,heuristic,0.3,pillar,bring ai to work workshop,existing,bing_suggest,13,b,14.0,,,,en,ai workshop dallas
+ai workshop poster design,-1,11,commercial,poster-on-ai-workshop,/ai-receptionist/,n/a,10-100,heuristic,0.3,satellite,poster on ai workshop,existing,bing_suggest,10,p,14.0,,,,en,ai workshop dallas
+ai digital marketing workshop,-1,11,commercial,ai-marketing-world-dallas,/ai-training/,n/a,10-100,heuristic,0.3,satellite,ai marketing world dallas,existing,bing_suggest,14,e,14.0,,,,en,ai workshop dallas
+growth school ai workshop free,-1,11,commercial,growth-school-ai-workshop,/pricing/,n/a,10-100,heuristic,0.3,satellite,growth school ai workshop,existing,bing_suggest,12,g,14.0,,,,en,ai workshop dallas

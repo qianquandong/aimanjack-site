@@ -41,7 +41,7 @@ function footer(lang) {
 <div class="foot-grid">
 ${col(f.product, [[L(lang, '/') + '#curriculum', f.training], [L(lang, '/ai-receptionist/'), f.product_page], [L(lang, '/pricing/'), f.pricing], [L(lang, '/integrations/'), f.integrations], [L(lang, '/case-studies/'), f.cases]])}
 ${col(f.solutions, [[L(lang, '/industries/salons/'), f.salon], [L(lang, '/industries/'), f.local], [L(lang, '/ai-training/'), f.training]])}
-${col(f.company, [[L(lang, '/about/'), f.about], [L(lang, '/contact/'), f.contact], [L(lang, '/privacy'), f.privacy], [L(lang, '/terms'), f.terms], [L(lang, '/sms-terms'), f.sms]])}
+${col(f.company, [[L(lang, '/about/'), f.about], [L(lang, '/blog/'), f.blog], [L(lang, '/contact/'), f.contact], [L(lang, '/privacy'), f.privacy], [L(lang, '/terms'), f.terms], [L(lang, '/sms-terms'), f.sms]])}
 <div><h2 class="foot-h">${f.location}</h2><p class="foot-loc">${f.loc}</p><p class="foot-serves">${f.serves}</p></div>
 </div>
 <div class="foot-id"><span>© 2026 AI Man Jack LLC</span><a href="mailto:${EMAIL}">${EMAIL}</a><a href="sms:${SMS_TEL}" data-event="sms_click" data-pos="footer">${SMS_DISPLAY}</a><a href="https://realagentusecases.com/" rel="noopener">${f.newsletter}</a></div>

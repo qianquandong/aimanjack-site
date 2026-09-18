@@ -1,0 +1,9 @@
+# seo-keyword-tool + scripts/pexels-search.py
+#
+# The CLI itself is stdlib-only (Python >= 3.10). Everything below is OPTIONAL and
+# improves quality; each module falls back gracefully when the package is missing.
+#
+#   pip3 install -r scripts/seo-keyword-tool/requirements.txt
+
+jieba>=0.42.1        # better Chinese tokenisation for clustering / target-url matching (fallback: char n-grams)
+Pillow>=10.0         # pexels-search.py: convert downloads to .webp + resize (fallback: keeps .jpg)

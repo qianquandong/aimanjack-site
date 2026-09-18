@@ -1,0 +1,26 @@
+﻿keyword,KD,vol,intent,cluster_slug,target_url,kd_label,vol_band,vol_source,intent_confidence,role,cluster_name,target_status,sources,best_rank,modifier,demand,serp_top_domains,serp_features,ugc_count,lang,root
+ai 前台,-1,260,commercial,ai-qiantai,/zh/ai-receptionist/,n/a,100-1k,root,0.3,pillar,ai 前台,existing,root|google_autocomplete|baidu_suggest,0,,100.0,,,,zh,ai 前台
+AI前台周报300字,-1,67,informational,ai-qiantai-zhoubao-300,/zh/ai-receptionist/,n/a,10-100,heuristic,0.6,pillar,AI前台周报300字,existing,baidu_suggest,0,,54.0,,,,zh,ai 前台
+企业前台,-1,37,commercial,qiye-qiantai,NEW /zh/qiye-qiantai/,n/a,10-100,heuristic,0.3,pillar,企业前台,new,baidu_suggest,0,公司,41.0,,,,zh,ai 前台
+AI试用,-1,37,transactional,ai-qiantai,/zh/ai-receptionist/,n/a,10-100,heuristic,0.6,satellite,ai 前台,existing,baidu_suggest,0,试用,41.0,,,,zh,ai 前台
+什么叫前台,-1,37,commercial,shenme-qiantai,/zh/ai-receptionist/,n/a,10-100,heuristic,0.3,pillar,什么叫前台,existing,baidu_suggest,0,什么是,41.0,,,,zh,ai 前台
+ai技术培训,-1,37,informational,ai-peixun,/zh/ai-training/,n/a,10-100,heuristic,0.6,pillar,ai技术培训,existing,baidu_suggest,0,培训,41.0,,,,zh,ai 前台
+诊所前台图片,-1,37,informational,zhensuo-qiantai-tupian,NEW /zh/zhensuo-qiantai-tupian/,n/a,10-100,heuristic,0.6,pillar,诊所前台图片,new,baidu_suggest,0,诊所,41.0,,,,zh,ai 前台
+餐厅前台实拍图,-1,37,commercial,canting-qiantai,NEW /zh/canting-qiantai/,n/a,10-100,heuristic,0.3,pillar,餐厅前台实拍图,new,baidu_suggest,0,餐厅,41.0,,,,zh,ai 前台
+什么优秀的前台,-1,37,commercial,shenme-qiantai-2,/zh/case-studies/ai-man-jack/,n/a,10-100,heuristic,0.3,pillar,什么优秀的前台,existing,baidu_suggest,0,最好的,41.0,,,,zh,ai 前台
+前台价是什么意思,-1,37,informational,qiantai-shi-shenme,/zh/pricing/,n/a,10-100,heuristic,0.85,pillar,前台价是什么意思,existing,baidu_suggest,0,价格,41.0,,,,zh,ai 前台
+ai对话前端页面,-1,37,commercial,ai,NEW /zh/ai/,n/a,10-100,heuristic,0.3,pillar,ai对话前端页面,new,baidu_suggest,0,怎么用,41.0,,,,zh,ai 前台
+智能前台管理系统,-1,37,commercial,zhineng-qiantai-xitong,NEW /zh/zhineng-qiantai-xitong/,n/a,10-100,heuristic,0.3,pillar,智能前台管理系统,new,baidu_suggest,0,系统,41.0,,,,zh,ai 前台
+AI智能电话前台,-1,37,commercial,ai-zhineng-dianhua-qiantai,/zh/ai-receptionist/,n/a,10-100,heuristic,0.3,pillar,AI智能电话前台,existing,baidu_suggest,0,电话,41.0,,,,zh,ai 前台
+前台怎么联系前台,-1,37,informational,qiantai-zenme-qiantai,/zh/ai-receptionist/,n/a,10-100,heuristic,0.6,pillar,前台怎么联系前台,existing,baidu_suggest,0,怎么,41.0,,,,zh,ai 前台
+ai公司前台背景墙,-1,37,commercial,ai-gongsi-qiantai,/zh/ai-receptionist/,n/a,10-100,heuristic,0.3,pillar,ai公司前台背景墙,existing,baidu_suggest,0,推荐,41.0,,,,zh,ai 前台
+前台用心做事小案例,-1,37,informational,qiantai-yong-zuo-anli,NEW /zh/qiantai-yong-zuo-anli/,n/a,10-100,heuristic,0.6,pillar,前台用心做事小案例,new,baidu_suggest,0,案例,41.0,,,,zh,ai 前台
+前台售价,-1,33,commercial,qiantai,NEW /zh/qiantai/,n/a,10-100,heuristic,0.3,pillar,前台售价,new,baidu_suggest,1,价格,39.0,,,,zh,ai 前台
+Ai前端,-1,33,commercial,ai-qiantai,/zh/ai-receptionist/,n/a,10-100,heuristic,0.3,satellite,ai 前台,existing,baidu_suggest,1,怎么用,39.0,,,,zh,ai 前台
+AI培训,-1,33,informational,ai-peixun,/zh/ai-training/,n/a,10-100,heuristic,0.6,satellite,ai技术培训,existing,baidu_suggest,1,培训,39.0,,,,zh,ai 前台
+前台流程,-1,33,informational,qiantai-2,NEW /zh/qiantai-2/,n/a,10-100,heuristic,0.6,pillar,前台流程,new,baidu_suggest,1,如何,39.0,,,,zh,ai 前台
+ai与前端,-1,33,commercial,ai-yu,/zh/ai-receptionist/,n/a,10-100,heuristic,0.3,pillar,ai与前端,existing,baidu_suggest,1,对比,39.0,,,,zh,ai 前台
+AI後台系統,-1,33,commercial,ai-2,NEW /zh/ai-2/,n/a,10-100,heuristic,0.3,pillar,AI後台系統,new,baidu_suggest,1,系统,39.0,,,,zh,ai 前台
+创意前台设计,-1,33,informational,qiantai-sheji,NEW /zh/qiantai-sheji/,n/a,10-100,heuristic,0.6,pillar,创意前台设计,new,baidu_suggest,1,方案,39.0,,,,zh,ai 前台
+前台电话在哪里,-1,33,commercial,qiantai-dianhua,NEW /zh/qiantai-dianhua/,n/a,10-100,heuristic,0.3,pillar,前台电话在哪里,new,baidu_suggest,1,电话,39.0,,,,zh,ai 前台
+前台是做什么的,-1,33,commercial,qiantai-shi-zuo-shenme,/zh/ai-receptionist/,n/a,10-100,heuristic,0.3,pillar,前台是做什么的,existing,baidu_suggest,1,什么是,39.0,,,,zh,ai 前台

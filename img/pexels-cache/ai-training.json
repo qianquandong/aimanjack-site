@@ -1,0 +1,31 @@
+{
+ "query": "ai training",
+ "slug": "ai-training",
+ "locale": null,
+ "page": 1,
+ "count": 1,
+ "total_results": 8000,
+ "ratelimit": {
+  "x-ratelimit-limit": "25000",
+  "x-ratelimit-remaining": "24999",
+  "x-ratelimit-reset": "1792186871"
+ },
+ "generated": "2026-09-16T16:41:12",
+ "images": [
+  {
+   "file": "ai-training-1.webp",
+   "web_path": "/img/pexels-cache/ai-training-1.webp",
+   "image_url": "https://images.pexels.com/photos/6476783/pexels-photo-6476783.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+   "alt": "Young woman presenting on digital evolution concepts like AI and big data in a seminar.",
+   "photographer": "Mikael Blomkvist",
+   "photographer_url": "https://www.pexels.com/@mikael-blomkvist",
+   "page_url": "https://www.pexels.com/photo/a-woman-in-red-long-sleeve-shirt-6476783/",
+   "pexels_id": 6476783,
+   "width": 1600,
+   "height": 1068,
+   "avg_color": "#A87F6A",
+   "credit": "Photo by Mikael Blomkvist on Pexels",
+   "bytes": 62208
+  }
+ ]
+}
