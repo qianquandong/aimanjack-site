@@ -56,6 +56,19 @@ test('every indexable page carries complete technical SEO metadata and no recept
   }
 });
 
+// HANDOFF §4.1: unique title + description, no orphan pages, every <img> sized (no CLS).
+test('indexable pages have unique titles and descriptions, are reachable by an internal link, and size their images', async () => {
+  const pages = (await allPages()).filter((x) => !x.page.noindex);
+  const url = (x) => (x.lang === 'zh' ? (x.p.path === '/' ? '/zh/' : '/zh' + x.p.path) : x.p.path);
+  for (const [name, re] of [['title', /<title>([^<]+)<\/title>/], ['description', /<meta name="description" content="([^"]+)">/]]) {
+    const seen = new Map();
+    for (const x of pages) { const v = x.html.match(re)[1]; assert.ok(!seen.has(v), `duplicate ${name}: ${url(x)} and ${seen.get(v)}`); seen.set(v, url(x)); }
+  }
+  const linked = new Set(pages.flatMap((x) => [...x.html.matchAll(/<a [^>]*href="(\/[^"#?]*)/g)].map((m) => m[1]).filter((h) => h !== url(x))));
+  for (const x of pages) assert.ok(linked.has(url(x)), `orphan: nothing links to ${url(x)}`);
+  for (const x of pages) for (const [img] of x.html.matchAll(/<img [^>]*>/g)) assert.match(img, /width="\d+"[^>]*height="\d+"|height="\d+"[^>]*width="\d+"/, `${url(x)} unsized image: ${img.slice(0, 80)}`);
+});
+
 test('/ai-training/ is the indexable, self-canonical pillar and is in the sitemap', async () => {
   const pages = await allPages();
   const sitemap = await readFile(new URL('../sitemap.xml', import.meta.url), 'utf8');
