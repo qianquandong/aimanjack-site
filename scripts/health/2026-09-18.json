@@ -4,132 +4,132 @@
   {
    "id": "up:/",
    "status": "PASS",
-   "detail": "HTTP 200 924ms"
+   "detail": "HTTP 200 282ms"
   },
   {
    "id": "perf:home-fetch",
-   "status": "WARN",
-   "detail": "924ms full fetch (PSI weekly gives the real CWV)"
+   "status": "PASS",
+   "detail": "282ms full fetch (PSI weekly gives the real CWV)"
   },
   {
    "id": "up:/ai-receptionist/",
    "status": "PASS",
-   "detail": "HTTP 200 72ms"
+   "detail": "HTTP 200 46ms"
   },
   {
    "id": "up:/pricing/",
    "status": "PASS",
-   "detail": "HTTP 200 47ms"
+   "detail": "HTTP 200 45ms"
   },
   {
    "id": "up:/industries/",
    "status": "PASS",
-   "detail": "HTTP 200 48ms"
+   "detail": "HTTP 200 38ms"
   },
   {
    "id": "up:/industries/salons/",
    "status": "PASS",
-   "detail": "HTTP 200 78ms"
+   "detail": "HTTP 200 37ms"
   },
   {
    "id": "up:/integrations/",
    "status": "PASS",
-   "detail": "HTTP 200 90ms"
+   "detail": "HTTP 200 40ms"
   },
   {
    "id": "up:/case-studies/",
    "status": "PASS",
-   "detail": "HTTP 200 90ms"
+   "detail": "HTTP 200 42ms"
   },
   {
    "id": "up:/case-studies/ai-man-jack/",
    "status": "PASS",
-   "detail": "HTTP 200 160ms"
+   "detail": "HTTP 200 41ms"
   },
   {
    "id": "up:/about/",
    "status": "PASS",
-   "detail": "HTTP 200 67ms"
+   "detail": "HTTP 200 42ms"
   },
   {
    "id": "up:/contact/",
    "status": "PASS",
-   "detail": "HTTP 200 42ms"
+   "detail": "HTTP 200 153ms"
   },
   {
    "id": "up:/ai-training/",
    "status": "PASS",
-   "detail": "HTTP 200 52ms"
+   "detail": "HTTP 200 130ms"
   },
   {
    "id": "up:/zh/",
    "status": "PASS",
-   "detail": "HTTP 200 71ms"
+   "detail": "HTTP 200 43ms"
   },
   {
    "id": "up:/zh/ai-receptionist/",
    "status": "PASS",
-   "detail": "HTTP 200 41ms"
+   "detail": "HTTP 200 39ms"
   },
   {
    "id": "up:/zh/pricing/",
    "status": "PASS",
-   "detail": "HTTP 200 50ms"
+   "detail": "HTTP 200 103ms"
   },
   {
    "id": "up:/zh/industries/",
    "status": "PASS",
-   "detail": "HTTP 200 72ms"
+   "detail": "HTTP 200 45ms"
   },
   {
    "id": "up:/zh/industries/salons/",
    "status": "PASS",
-   "detail": "HTTP 200 68ms"
+   "detail": "HTTP 200 41ms"
   },
   {
    "id": "up:/zh/integrations/",
    "status": "PASS",
-   "detail": "HTTP 200 70ms"
+   "detail": "HTTP 200 36ms"
   },
   {
    "id": "up:/zh/case-studies/",
    "status": "PASS",
-   "detail": "HTTP 200 40ms"
+   "detail": "HTTP 200 105ms"
   },
   {
    "id": "up:/zh/case-studies/ai-man-jack/",
    "status": "PASS",
-   "detail": "HTTP 200 75ms"
+   "detail": "HTTP 200 38ms"
   },
   {
    "id": "up:/zh/about/",
    "status": "PASS",
-   "detail": "HTTP 200 77ms"
+   "detail": "HTTP 200 42ms"
   },
   {
    "id": "up:/zh/contact/",
    "status": "PASS",
-   "detail": "HTTP 200 36ms"
+   "detail": "HTTP 200 98ms"
   },
   {
    "id": "up:/zh/ai-training/",
    "status": "PASS",
-   "detail": "HTTP 200 71ms"
+   "detail": "HTTP 200 42ms"
   },
   {
    "id": "up:/sitemap.xml",
    "status": "PASS",
-   "detail": "HTTP 200 68ms"
+   "detail": "HTTP 200 107ms"
   },
   {
    "id": "up:/robots.txt",
    "status": "PASS",
-   "detail": "HTTP 200 118ms"
+   "detail": "HTTP 200 43ms"
   },
   {
    "id": "up:/llms.txt",
    "status": "PASS",
-   "detail": "HTTP 200 30ms"
+   "detail": "HTTP 200 31ms"
   },
   {
    "id": "up:404",
