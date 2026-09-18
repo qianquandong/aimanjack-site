@@ -1,5 +1,7 @@
 # HANDOFF — aimanjack.com（2026-09-09，PRD 改版）
 
+> **2026-09-18 定位收口（读这个先）**：站点已按 `PRD.md`（2026-09-18 版）改为 **Corporate AI Training + AI Workflow Training 单一定位**。AI 前台 / 价格 / 行业 / 对接 / 计算器 / 两个案例的源码都还在，但路由标了 `indexable:false`（noindex + 不进 sitemap + 不再被任何导航或内链指到）。全站 CTA = Plan a Team Workshop → `/book/`；`llms.txt` 由 `src/llms.mjs` 在 build 时生成；schema 统一在 `src/schema.mjs`；`scripts/health.mjs` 和 `tests/site.test.mjs` 已按新定位重写。下面第 1 节的页面表描述的是 09-09 的旧站，只对 legacy 路由仍然成立。
+
 给下一个接手的人（或下一个会话）。读完这一页就能接着干，不用翻聊天记录。
 
 ## 1. 这个站是什么

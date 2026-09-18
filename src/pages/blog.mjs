@@ -1,5 +1,6 @@
 // Blog index + one page pair per published post. Posts live in src/posts/<slug>.mjs (files starting with "_" are ignored).
-// A post with status 'draft' is skipped by the build, so it can sit in the repo while Jack reviews it.
+// status: 'draft' → not built; 'published' → built + sitemap + index; 'hidden' → built with noindex, out of the sitemap and index
+// (legacy posts whose URL should keep resolving while their topic is off the site).
 import { readdirSync } from 'node:fs';
 import { postPage, indexPage, postPath, BLOG_PATH } from '../blog.mjs';
 
@@ -13,7 +14,10 @@ for (const f of files) {
 }
 export const published = all.filter((p) => p.status === 'published').sort((a, b) => (b.date < a.date ? -1 : 1));
 
+const hidden = all.filter((p) => p.status === 'hidden');
+
 export const pages = [
   { path: BLOG_PATH, priority: 0.7, changefreq: 'weekly', en: indexPage(published, 'en'), zh: indexPage(published, 'zh') },
   ...published.map((p) => ({ path: postPath(p.slug), priority: 0.6, changefreq: 'monthly', en: postPage(p, 'en'), zh: postPage(p, 'zh') })),
+  ...hidden.map((p) => ({ path: postPath(p.slug), indexable: false, en: postPage(p, 'en'), zh: postPage(p, 'zh') })),
 ];

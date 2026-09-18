@@ -2,8 +2,8 @@ import { L } from '../layout.mjs';
 import { finalCta } from '../components.mjs';
 
 const c = {
-  en: { title: 'Page Not Found | AI Man Jack', description: 'This page is not available. Go to the AI receptionist, pricing, or call the AI demo line.', h1: 'This page is gone, but the AI still answers.', sub: 'The link may point to an older version of the site. Try the pages below, or call the demo line.', links: [['/', 'Home'], ['/ai-receptionist/', 'AI receptionist'], ['/pricing/', 'Pricing'], ['/ai-training/', 'AI training'], ['/contact/', 'Contact']] },
-  zh: { title: '页面不存在 | AI Man Jack', description: '这个页面不存在。去看看 AI 前台、价格，或者拨打 AI 演示线。', h1: '这页没了，AI 照样接电话。', sub: '链接可能指向旧版网站。试试下面的页面，或者拨打演示线。', links: [['/', '首页'], ['/ai-receptionist/', 'AI 前台'], ['/pricing/', '价格'], ['/ai-training/', 'AI 培训'], ['/contact/', '联系']] },
+  en: { title: 'Page Not Found | AI Man Jack', description: 'This page is not available. See corporate AI training, resources, or book a call with Jack.', h1: 'This page has moved on.', sub: 'The link may point to an older version of the site. Try the pages below.', links: [['/', 'Home'], ['/ai-training/', 'AI training'], ['/blog/', 'Resources'], ['/about/', 'About'], ['/book/', 'Book a call']] },
+  zh: { title: '页面不存在 | AI Man Jack', description: '这个页面不存在。去看看企业 AI 培训、资源，或者约 Jack 通话。', h1: '这页已经不在了。', sub: '链接可能指向旧版网站。试试下面的页面。', links: [['/', '首页'], ['/ai-training/', 'AI 培训'], ['/blog/', '资源'], ['/about/', '关于'], ['/book/', '预约通话']] },
 };
 const page = (lang) => ({
   title: c[lang].title, description: c[lang].description, noindex: true,

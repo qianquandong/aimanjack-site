@@ -133,6 +133,6 @@ const indexPage = (lang) => {
 };
 
 export const pages = [
-  { path: '/industries/', priority: 0.7, en: indexPage('en'), zh: indexPage('zh') },
-  ...INDUSTRIES.map((i) => ({ path: `/industries/${i.slug}/`, priority: 0.7, en: vertical('en', i.slug), zh: vertical('zh', i.slug) })),
+  { path: '/industries/', indexable: false, priority: 0.7, en: indexPage('en'), zh: indexPage('zh') },
+  ...INDUSTRIES.map((i) => ({ path: `/industries/${i.slug}/`, indexable: false, priority: 0.7, en: vertical('en', i.slug), zh: vertical('zh', i.slug) })),
 ];

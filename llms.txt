@@ -1,33 +1,27 @@
 # AI Man Jack
 
-> AI Man Jack LLC (aimanjack.com) is Jack Qian's Dallas, Texas company for hands-on AI training. Jack teaches non-technical teams in English or Chinese using tasks they already do: each participant builds one working AI workflow and learns how to verify its output. Formats are a 90-minute lunch-and-learn, a half-day workshop and a multi-week program, priced per engagement. Training evidence currently shown on the site: five community talks with 50+ people each, one 37-person hackathon and 10 Google reviews averaging 5.0. The company also provides an AI receptionist and booking service for appointment businesses. Book a 30-minute call at https://aimanjack.com/book/, text TRAINING to +1 (469) 425-4142, call the AI demo at +1 (469) 517-2968, or email jack@aimanjack.com. A visitor may request one unique $25 coupon per email for any AI Man Jack service; each coupon is used once and manually redeemed. There is no minimum spend, expiration or new-customer restriction.
+> AI Man Jack LLC (aimanjack.com) is Jack Qian's Dallas, Texas company for corporate AI training and practical AI workflow training. Jack teaches non-technical teams — sales, operations, marketing, managers — in English or Chinese, onsite in Dallas–Fort Worth or remotely. Each participant brings a task they already do and leaves with a working AI workflow (ChatGPT, Claude, Gemini or Copilot) plus a checklist for verifying its output. Formats: a 90-minute session, a half-day hands-on workshop (from $1,500 for up to 10 people) and a multi-week program. Evidence shown on the site: 5 community AI talks in Plano and Dallas with 50+ people each, one 37-person AI hackathon, and 10 Google reviews averaging 5.0. To plan a team workshop, book a 30-minute call at https://aimanjack.com/book/, email jack@aimanjack.com, or text TRAINING to (469) 425-4142.
 
 Key facts:
-- Company: AI Man Jack LLC, Dallas, Texas. Founder and operator: Jack Qian. One person handles setup, testing and support.
-- Primary service: hands-on AI training for Dallas–Fort Worth teams, taught in English or Chinese. Each participant works on a real recurring task and leaves with a working workflow plus a verification checklist.
-- Additional service: AI receptionist + booking for salons and beauty, med spas, clinics (dental, chiropractic, physical therapy, acupuncture), home services and repair services. Demo line: +1 (469) 517-2968, always on in English, Spanish and Chinese.
-- Limits: the AI answers only from information the business approved; it does not invent answers, does not give medical or legal advice, and makes no promise about search rankings or AI-assistant recommendations. Unsupported questions go to the fallback flow (message, transfer, or text to the owner).
-- Integrations (as of September 2026): AI Man Jack's own booking system = Supported; call forwarding or a new dedicated number = Supported; texting the owner = Supported; Google Calendar and customer confirmation texts = Pilot; Square, Booksy, Vagaro, Fresha, Calendly, VoIP systems and CRMs = Ask us (not yet tested).
-- Setup: about one week after the business supplies hours, services, prices and booking rules, then a tuning period. Cancellation: month to month. The client keeps website files and domain; included hosting ends with the service. The client's number is theirs; a provisioned number can be transferred or ported to the client when service ends. No call recordings or transcripts are stored by AI Man Jack.
-- Case studies: AI Man Jack's own demo line (pilot, numbers published after the first full month) and an SMS booking agent for a used-car dealership in DFW (live, metrics not yet published). No customer metrics are invented.
-- Consultation: the site and booking service use one 30-minute call length. The phone demo and SMS contact remain available.
-- Coupon: one unique $25 code per normalized email, valid once for any service and manually redeemed. Claiming it does not subscribe the email to marketing.
-- Profiles: X https://x.com/JackQianAI · YouTube https://www.youtube.com/@JackBuildAI · GitHub https://github.com/qianquandong · LinkedIn https://www.linkedin.com/in/quandong-qian-156563191/ · Nextdoor https://nextdoor.com/page/ai-man-jack-melissa-tx/
+- Company: AI Man Jack LLC, Dallas, Texas. Founder and trainer: Jack Qian. One person designs, teaches and follows up.
+- Service: corporate AI training and AI workflow training for teams of roughly 5 to 60 people. Taught in English or Chinese. Onsite anywhere in Dallas–Fort Worth (Dallas, Fort Worth, Plano, Richardson, Frisco, McKinney, Arlington); remote on request.
+- Method, five parts: choose a suitable task, give the AI useful context, move from chat to workflow, verify the output, apply data and approval guardrails. Two weeks after a session Jack checks whether the workflow was tested, was accurate enough to use, and should continue, change or stop.
+- Tools: whichever the company has approved — ChatGPT, Claude, Gemini, Microsoft Copilot. The method is tool-agnostic. No coding.
+- Pricing: half-day hands-on workshops from $1,500 for up to 10 people at the client's office. 90-minute sessions and multi-week programs are quoted by team size after one 30-minute call; written quote within 24 hours.
+- Proof: 5 community talks (50+ attendees each), one 37-person hackathon, 10 Google reviews at 5.0, all from workshop attendees. No client ROI figures are claimed.
+- Sister site: https://realagentusecases.com/ — Jack's weekly newsletter on AI agents and workflows working professionals actually run (learn there; train with AI Man Jack).
+- Profiles: https://realagentusecases.com/ · https://github.com/qianquandong · https://www.linkedin.com/in/quandong-qian-156563191/ · https://www.youtube.com/@JackBuildAI · https://x.com/JackQianAI · https://www.threads.com/@jack_qian616
 
 ## Pages
 
-- [Home / AI training](https://aimanjack.com/): AI training curriculum, formats, workshop evidence, 30-minute call booking and the $25 email coupon
-- [AI receptionist](https://aimanjack.com/ai-receptionist/): what happens on a call, languages and limits, what the business must provide
-- [Pricing](https://aimanjack.com/pricing/): Starter, Growth, Pro comparison table, setup scope, service terms in plain words
-- [Industries](https://aimanjack.com/industries/): salons, med spas, clinics, home services, repair services, each with call scenarios and an example transcript
-- [Integrations](https://aimanjack.com/integrations/): every integration with a Supported / Pilot / Ask us label
-- [Case studies](https://aimanjack.com/case-studies/): the demo line pilot and the dealership SMS agent
-- [AI training legacy URL](https://aimanjack.com/ai-training/): the same training offer remains available for existing links
-- [About](https://aimanjack.com/about/): the company and Jack Qian
-- [Book a 30-minute call](https://aimanjack.com/book/): choose a US Central time, then change or cancel from the confirmation link
-- [Contact](https://aimanjack.com/contact/): call the demo, email, or text
+- [Home](https://aimanjack.com/): who AI Man Jack trains, what a team can do after training, formats, proof, FAQ
+- [Corporate AI training](https://aimanjack.com/ai-training/): the five-part curriculum, who it is for, formats and pricing, Google reviews, FAQ
+- [Resources](https://aimanjack.com/blog/): field notes on training employees to use AI and on AI workflows
+- [About](https://aimanjack.com/about/): Jack Qian and AI Man Jack LLC
+- [Book a 30-minute call](https://aimanjack.com/book/): choose a US Central time to plan a team workshop
+- [Contact](https://aimanjack.com/contact/): book, email or text
 
-Chinese versions of every page live under https://aimanjack.com/zh/ (for example https://aimanjack.com/zh/pricing/).
+Chinese versions of every page live under https://aimanjack.com/zh/ (for example https://aimanjack.com/zh/ai-training/).
 
 ## Optional
 

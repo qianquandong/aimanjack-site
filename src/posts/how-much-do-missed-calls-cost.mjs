@@ -5,7 +5,7 @@ export const post = {
   slug: 'how-much-do-missed-calls-cost',
   date: '2026-09-18',
   updated: undefined,
-  status: 'published',
+  status: 'hidden',   // receptionist-era post: URL keeps resolving, noindex, off the index (PRD 2026-09-18 §52)
   en: {
     keyword: 'how much do missed calls cost',
     title: 'How Much Do Missed Calls Cost? 3 Examples | AI Man Jack',

@@ -1,36 +1,38 @@
-import { readFileSync } from 'node:fs';
-import { SITE, BRAND, EMAIL, DEMO_TEL, DEMO_DISPLAY, SMS_TEL, SMS_DISPLAY, GA4_ID, BOOK_URL, langPath, zhPath } from './config.mjs';
+import { SITE, BRAND, EMAIL, SMS_TEL, SMS_DISPLAY, GA4_ID, BOOK_URL, langPath, zhPath } from './config.mjs';
 import { T } from './i18n.mjs';
 
-const QR = readFileSync(new URL('./qr-demo.svg', import.meta.url), 'utf8').replace('<svg ', '<svg role="img" aria-hidden="true" focusable="false" ');
 export const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
 export const L = (lang, p) => langPath(lang, p);
 
-// ── CTAs ──────────────────────────────────────────────────────────────────
-export const callBtn = (lang, { event = 'demo_call_click', pos = '', cls = '', label } = {}) =>
-  `<a class="btn btn-primary ${cls}" href="tel:${DEMO_TEL}" data-call data-event="${event}" data-pos="${pos}">${label || T[lang].cta.call}</a>`;
+// Route → page object for one language. `indexable: false` on the route = noindex,follow + out of the sitemap
+// for both languages, so legacy routes are hidden in one place (build.mjs and tests both go through here).
+export const pageOf = (p, lang) => ({ path: p.path, ...p[lang], noindex: p.indexable === false || !!p[lang].noindex });
 
-export const secondaryBtn = (lang, { pos = '', cls = '' } = {}) => BOOK_URL
-  ? `<a class="btn btn-secondary ${cls}" href="${BOOK_URL.startsWith('/') ? L(lang, BOOK_URL) : BOOK_URL}" data-event="book_demo_click" data-pos="${pos}">${T[lang].cta.book}</a>`
-  : `<a class="btn btn-secondary ${cls}" href="mailto:${EMAIL}?subject=${encodeURIComponent(lang === 'zh' ? 'AI 前台咨询' : 'AI receptionist demo')}" data-event="email_click" data-pos="${pos}">${T[lang].cta.email}</a>`;
+// ── Primary CTA: Plan a Team Workshop → /book/ ────────────────────────────
+export const planBtn = (lang, { pos = '', cls = '', id = '', label } = {}) =>
+  `<a class="btn btn-primary ${cls}"${id ? ` id="${id}"` : ''} href="${L(lang, BOOK_URL)}" data-event="workshop_cta_click" data-pos="${pos}">${label || T[lang].cta.plan}</a>`;
 
-export const textLink = (lang, { pos = '', body = '' } = {}) =>
-  `<a href="sms:${SMS_TEL}${body ? '?body=' + encodeURIComponent(body) : ''}" data-event="sms_click" data-pos="${pos}">${T[lang].cta.text} · ${SMS_DISPLAY}</a>`;
+export const emailBtn = (lang, { pos = '', cls = 'btn-secondary' } = {}) =>
+  `<a class="btn ${cls}" href="mailto:${EMAIL}?subject=${encodeURIComponent(lang === 'zh' ? '团队 AI 培训' : 'AI training for our team')}" data-event="email_training_click" data-pos="${pos}">${T[lang].cta.email}</a>`;
 
-// ── Header / footer / dialog / sticky ─────────────────────────────────────
+export const textLink = (lang, { pos = '', body = 'TRAINING - ' } = {}) =>
+  `<a href="sms:${SMS_TEL}${body ? '?body=' + encodeURIComponent(body) : ''}" data-event="sms_training_click" data-pos="${pos}">${T[lang].cta.text} · ${SMS_DISPLAY}</a>`;
+
+// ── Header / footer / sticky ──────────────────────────────────────────────
 function header(lang, path) {
   const t = T[lang], n = t.nav;
   const other = lang === 'zh' ? path : zhPath(path);
   const links = [
-    [L(lang, '/') + '#curriculum', n.training], [L(lang, '/ai-receptionist/'), n.services],
-    [L(lang, '/industries/'), n.useCases], [L(lang, '/pricing/'), n.pricing], [L(lang, '/about/'), n.about],
+    [L(lang, '/ai-training/'), n.training], [L(lang, '/ai-training/') + '#formats', n.workshops], [L(lang, '/ai-training/') + '#teams', n.teams],
+    [L(lang, '/blog/'), n.resources], [L(lang, '/about/'), n.about],
   ].map(([h, l]) => `<a href="${h}">${l}</a>`).join('');
+  const langLink = `<a class="lang" href="${other}" lang="${t.otherLangCode}" hreflang="${t.otherLangCode}" data-event="language_change">${t.otherLang}</a>`;
   return `<header class="site-header"><div class="wrap head-row">
 <a class="brand" href="${L(lang, '/')}" aria-label="${BRAND}">AI Man <span>Jack</span></a>
-<nav class="nav" aria-label="Primary">${links}<a class="lang" href="${other}" lang="${t.otherLangCode}" hreflang="${t.otherLangCode}" data-event="language_change">${t.otherLang}</a></nav>
+<nav class="nav" aria-label="Primary">${links}${langLink}</nav>
 <details class="menu"><summary aria-label="${t.menu}"><span class="menu-icon" aria-hidden="true"></span><span class="menu-label">${t.menu}</span></summary>
-<nav class="nav mobile-nav" aria-label="Primary, mobile">${links}<a class="lang" href="${other}" lang="${t.otherLangCode}" hreflang="${t.otherLangCode}" data-event="language_change">${t.otherLang}</a></nav></details>
-${callBtn(lang, { event: 'header_call_click', pos: 'header', cls: 'btn-sm head-call' })}
+<nav class="nav mobile-nav" aria-label="Primary, mobile">${links}${langLink}</nav></details>
+${planBtn(lang, { pos: 'header', cls: 'btn-sm head-call' })}
 </div></header>`;
 }
 
@@ -39,43 +41,27 @@ function footer(lang) {
   const col = (title, items) => `<div><h2 class="foot-h">${title}</h2><ul>${items.map(([h, l]) => `<li><a href="${h}">${l}</a></li>`).join('')}</ul></div>`;
   return `<footer class="site-footer"><div class="wrap">
 <div class="foot-grid">
-${col(f.product, [[L(lang, '/') + '#curriculum', f.training], [L(lang, '/ai-receptionist/'), f.product_page], [L(lang, '/pricing/'), f.pricing], [L(lang, '/integrations/'), f.integrations], [L(lang, '/case-studies/'), f.cases]])}
-${col(f.solutions, [[L(lang, '/industries/salons/'), f.salon], [L(lang, '/industries/'), f.local], [L(lang, '/ai-training/'), f.training], [L(lang, '/tools/missed-call-calculator/'), f.calc]])}
-${col(f.company, [[L(lang, '/about/'), f.about], [L(lang, '/blog/'), f.blog], [L(lang, '/contact/'), f.contact], [L(lang, '/privacy'), f.privacy], [L(lang, '/terms'), f.terms], [L(lang, '/sms-terms'), f.sms]])}
+${col(f.training, [[L(lang, '/ai-training/'), f.corporate], [L(lang, '/ai-training/') + '#formats', f.formats], [L(lang, '/ai-training/') + '#teams', f.teams], [L(lang, '/ai-training/') + '#curriculum', f.method]])}
+${col(f.resources, [[L(lang, '/blog/'), f.guides], ['https://realagentusecases.com/', f.newsletter]])}
+${col(f.company, [[L(lang, '/about/'), f.about], [L(lang, '/contact/'), f.contact], [L(lang, BOOK_URL), f.book], [L(lang, '/privacy'), f.privacy], [L(lang, '/terms'), f.terms], [L(lang, '/sms-terms'), f.sms]])}
 <div><h2 class="foot-h">${f.location}</h2><p class="foot-loc">${f.loc}</p><p class="foot-serves">${f.serves}</p></div>
 </div>
-<div class="foot-id"><span>© 2026 AI Man Jack LLC</span><a href="mailto:${EMAIL}">${EMAIL}</a><a href="sms:${SMS_TEL}" data-event="sms_click" data-pos="footer">${SMS_DISPLAY}</a><a href="https://realagentusecases.com/" rel="noopener">${f.newsletter}</a></div>
+<div class="foot-id"><span>© 2026 AI Man Jack LLC</span><a href="mailto:${EMAIL}">${EMAIL}</a><a href="sms:${SMS_TEL}" data-event="sms_training_click" data-pos="footer">${SMS_DISPLAY}</a></div>
 <p class="legal">${f.legal}</p>
 </div></footer>`;
 }
 
-function dialog(lang) {
-  const m = T[lang].modal, d = T[lang].demo, t = T[lang];
-  return `<dialog id="call-dialog" class="call-dialog" aria-labelledby="call-dialog-title">
-<form method="dialog"><button class="dialog-close" aria-label="${t.close}">&times;</button></form>
-<h2 id="call-dialog-title">${m.title}</h2>
-<a class="dialog-number" href="tel:${DEMO_TEL}" data-event="demo_call_click" data-pos="dialog">${DEMO_DISPLAY}</a>
-<div class="dialog-body"><div class="dialog-qr" role="img" aria-label="${m.qrAlt}">${QR}</div>
-<div><p class="dialog-scan">${m.scan}</p><p class="dialog-try">${m.tryAsking}</p><ul>${m.prompts.map((p) => `<li>${p}</li>`).join('')}</ul>
-<p class="dialog-meta">${d.langs} · ${d.alwaysOn}</p>
-<button type="button" class="copy-number" data-number="${DEMO_DISPLAY}" data-copied="${m.copied}">${m.copy}</button><span class="copy-status" role="status" aria-live="polite"></span></div></div>
-</dialog>`;
-}
-
-const sticky = (lang) => `<div class="sticky-call" id="sticky-call" hidden><a href="tel:${DEMO_TEL}" data-event="sticky_call_click" data-pos="sticky"><span>${T[lang].sticky}</span><b>${DEMO_DISPLAY}</b></a></div>`;
+// Mobile sticky bar: appears once the hero CTA (#hero-cta) has scrolled out of view.
+const sticky = (lang) => `<div class="sticky-call" id="sticky-cta" hidden><a href="${L(lang, BOOK_URL)}" data-event="workshop_cta_click" data-pos="sticky"><span>${T[lang].sticky}</span></a></div>`;
 
 const script = `<script>
-(function(){var D=document,dlg=D.getElementById('call-dialog');
+(function(){var D=document;
 var desk=matchMedia('(hover:hover) and (pointer:fine)').matches&&navigator.maxTouchPoints===0;
 window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}
 function track(n,p){gtag('event',n,Object.assign({page:location.pathname,language:D.documentElement.lang,device:desk?'desktop':'mobile'},p||{}))}
-D.addEventListener('click',function(e){var a=e.target.closest('a[data-call]');
- if(a&&desk&&dlg&&dlg.showModal){e.preventDefault();dlg.showModal();track(a.dataset.event,{cta_position:a.dataset.pos});return}
- var l=e.target.closest('[data-event]');if(l)track(l.dataset.event,{cta_position:l.dataset.pos||''});
+D.addEventListener('click',function(e){var l=e.target.closest('[data-event]');if(l)track(l.dataset.event,{cta_position:l.dataset.pos||''});
  var m=e.target.closest('.menu nav a');if(m)m.closest('details').open=false});
-var cp=D.querySelector('.copy-number'),st=D.querySelector('.copy-status');
-if(cp){if(!(navigator.clipboard&&isSecureContext))cp.hidden=true;cp.addEventListener('click',function(){navigator.clipboard.writeText(cp.dataset.number).then(function(){st.textContent=cp.dataset.copied})})}
-var bar=D.getElementById('sticky-call'),hero=D.getElementById('hero-call');
+var bar=D.getElementById('sticky-cta'),hero=D.getElementById('hero-cta');
 if(bar&&hero&&'IntersectionObserver' in window)new IntersectionObserver(function(en){bar.hidden=en[0].isIntersecting||en[0].boundingClientRect.top>0}).observe(hero);
 if(!/(^|\\.)aimanjack\\.com$/.test(location.hostname))return;
 addEventListener('load',function(){var s=D.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=${GA4_ID}';D.head.appendChild(s);
@@ -90,8 +76,10 @@ export function render(page, lang) {
   const canonicalPath = page.canonicalPath ?? page.path;
   const url = SITE + L(lang, canonicalPath);
   const og = page.og || {};
-  const twitterImage = page.path === '/' ? `<meta name="twitter:image" content="${SITE}${og.image || (lang === 'zh' ? '/img/og-receptionist-zh.jpg' : '/img/og-receptionist.jpg')}">
-<meta name="twitter:image:alt" content="${esc(og.alt || (lang === 'zh' ? 'AI Man Jack：24 小时 AI 客服，拨打 (469) 517-2968 试听' : 'AI Man Jack: 24/7 AI customer service for appointment businesses. Call the AI: (469) 517-2968'))}">
+  const ogImage = og.image || (lang === 'zh' ? '/img/og-training-zh.jpg' : '/img/og-training.jpg');
+  const ogAlt = og.alt || (lang === 'zh' ? 'AI Man Jack：团队 AI 实战培训与 AI 工作流培训，达拉斯' : 'AI Man Jack: corporate AI training and practical AI workflows for teams, Dallas');
+  const twitterImage = page.path === '/' ? `<meta name="twitter:image" content="${SITE}${ogImage}">
+<meta name="twitter:image:alt" content="${esc(ogAlt)}">
 ` : '';
   const ld = page.jsonld?.length ? `<script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@graph': page.jsonld })}</script>` : '';
   return `<!DOCTYPE html>
@@ -116,8 +104,8 @@ export function render(page, lang) {
 <meta property="og:site_name" content="${BRAND}">
 <meta property="og:title" content="${esc(og.title || page.title)}">
 <meta property="og:description" content="${esc(og.description || page.description)}">
-<meta property="og:image" content="${SITE}${og.image || (lang === 'zh' ? '/img/og-receptionist-zh.jpg' : '/img/og-receptionist.jpg')}">
-<meta property="og:image:alt" content="${esc(og.alt || (lang === 'zh' ? 'AI Man Jack：预约制商家的 AI 前台，拨打 (469) 517-2968 试听' : 'AI Man Jack: AI receptionist for appointment businesses. Call the AI: (469) 517-2968'))}">
+<meta property="og:image" content="${SITE}${ogImage}">
+<meta property="og:image:alt" content="${esc(ogAlt)}">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:locale" content="${t.ogLocale}">
@@ -136,7 +124,6 @@ ${page.body}
 </main>
 ${footer(lang)}
 ${sticky(lang)}
-${dialog(lang)}
 ${script}
 </body>
 </html>

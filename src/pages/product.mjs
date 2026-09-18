@@ -82,4 +82,4 @@ ${finalCta(lang)}${geoFacts(lang)}`,
   };
 };
 
-export const pages = [{ path: '/ai-receptionist/', priority: 0.9, changefreq: 'weekly', en: page('en'), zh: page('zh') }];
+export const pages = [{ path: '/ai-receptionist/', indexable: false, priority: 0.9, changefreq: 'weekly', en: page('en'), zh: page('zh') }];

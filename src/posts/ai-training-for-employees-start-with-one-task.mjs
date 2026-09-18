@@ -33,7 +33,7 @@ export const post = {
 <li><strong>Score each one on four questions.</strong> Does it happen often enough to matter? Can the input and the output be described clearly? Can a knowledgeable person check the result quickly? Can it be tested without exposing sensitive information? A task that fails any one of these is not a first task. It might be a third task.</li>
 <li><strong>Pick the narrowest task that passes.</strong> "Prepare a five-point meeting brief from these approved notes" passes all four. "Run my department" fails three. Narrow feels underwhelming in the room and is exactly what gets used the following week.</li>
 <li><strong>Write the instruction in five parts.</strong> A prompt is a work instruction, not a secret formula. A reliable one has a goal, an approved source, constraints, a usable output format, and a list of what to flag for a person to verify. Everyone in the session rewrites one weak instruction into this shape, runs it, and compares the two results side by side.</li>
-<li><strong>Move from chat to workflow.</strong> A chat produces an answer. A workflow moves information through steps: collect the approved notes, extract decisions, identify owners, draft follow-ups, put the result in a review queue. The same shape, on a phone line instead of a document, is what an <a href="/ai-receptionist/">AI receptionist</a> does: collect, answer from approved information, book, hand off when unsure.</li>
+<li><strong>Move from chat to workflow.</strong> A chat produces an answer. A workflow moves information through steps: collect the approved notes, extract decisions, identify owners, draft follow-ups, put the result in a review queue. The same shape works for a sales follow-up, a weekly report or a support reply: collect, draft from approved information, review, send.</li>
 <li><strong>Verify as part of the exercise.</strong> Five checks, every time: can every claim be traced to the source, did it follow the format, what context is missing, could it harm a customer or a decision if wrong, who approves it before use. At least one output in every session is deliberately flawed. Finding it teaches more than another perfect demo.</li>
 <li><strong>Leave with three answers.</strong> Which tools are approved, which information is off limits, and where a human must sign off before anything is used. If the team cannot answer these, the workflow should not run yet.</li>
 </ol>
@@ -49,7 +49,7 @@ export const post = {
 <li>Take the single highest-scoring task and write its instruction in five parts. Run it once. Have the person who normally does the task grade the output.</li>
 <li>Decide who signs off before that output is used. Write the name down. If there is no name, the workflow is not ready.</li>
 </ul>
-<p>If you want this run with your whole team in one room, the formats and what each one covers are on the <a href="/pricing/">pricing page</a>. The dealership case in our <a href="/case-studies/car-dealership-sms/">case studies</a> shows the same collect-answer-book-hand-off shape running on SMS.</p>
+<p>If you want this run with your whole team in one room, the three formats and what each one covers are on the <a href="/ai-training/#formats">training page</a>, and the workflows each team builds are under <a href="/ai-training/#teams">who it’s for</a>.</p>
 `,
     faq: [
       ['How long does AI training for employees take?', 'Three formats run the same five-part method: a 90-minute lunch-and-learn with one live build, a half-day hands-on workshop where everyone builds on their own task, and a multi-week program. What changes is how much each person does with their own hands.'],
@@ -59,7 +59,7 @@ export const post = {
       ['Is the training available in Chinese?', 'Yes. Sessions run in English or Chinese, in person anywhere in the Dallas–Fort Worth metroplex (Dallas, Fort Worth, Plano, Richardson, Frisco, McKinney, Arlington and the rest of the metroplex).'],
     ],
     pillar: ['hands-on AI training for Dallas teams', '/ai-training/'],
-    related: [['How the AI receptionist works', '/ai-receptionist/'], ['Pricing and formats', '/pricing/'], ['Case studies', '/case-studies/'], ['How much do missed calls cost?', '/blog/how-much-do-missed-calls-cost/']],
+    related: [['Corporate AI training: curriculum and formats', '/ai-training/'], ['The workflows each team builds', '/ai-training/#teams'], ['About Jack', '/about/']],
     sources: [],
   },
   zh: {
@@ -90,7 +90,7 @@ export const post = {
 <li><strong>每件事用四个问题打分。</strong>发生得够不够频繁，值得花功夫？输入和输出能不能说清楚？一个内行能不能很快检查结果？能不能不碰敏感信息就把它测一遍？有一项不过，就不该是第一个任务。可以是第三个。</li>
 <li><strong>挑过关的任务里最窄的那个。</strong>「从这份确认过的会议记录里整理出五点纪要」四项全过。「替我管整个部门」三项不过。窄任务在场子里看着不过瘾，可下周真会被用的正是它。</li>
 <li><strong>把指令写成五个部分。</strong>prompt 是一份工作说明，不是什么秘方。靠得住的指令有目标、允许读取的来源、限制条件、能直接用的输出格式，以及一份「哪些地方要标出来让人核对」的清单。培训里每个人都把一条写得差的指令改成这个样子，跑一遍，两份结果摆在一起比。</li>
-<li><strong>从聊天走到工作流。</strong>聊天给的是一个答案。工作流是让信息一步步往前走：收集确认过的记录，提取决定，找到负责人，起草跟进，把结果放进待审队列。同一个形状放到电话线上，就是 <a href="/zh/ai-receptionist/">AI 前台</a>在做的事：收集，按确认过的信息回答，预约，拿不准就转人工。</li>
+<li><strong>从聊天走到工作流。</strong>聊天给的是一个答案。工作流是让信息一步步往前走：收集确认过的记录，提取决定，找到负责人，起草跟进，把结果放进待审队列。同一个形状，放到销售跟进、周报或客服回复上都一样：收集，按确认过的信息起草，审核，发出。</li>
 <li><strong>把核对当成练习的一部分。</strong>五个检查，每次都做：每句话能不能追溯到来源，格式对不对，缺了什么上下文，错了会不会伤到客户或者一个决定，用之前谁来批。每场培训里至少有一个输出是故意放错的。把它找出来，比再看一个完美的演示学得多。</li>
 <li><strong>带着三个答案离开。</strong>哪些工具是允许用的，哪些信息不能碰，哪个环节必须有人签字才能用。团队答不出这三个问题，工作流就还不该跑。</li>
 </ol>
@@ -106,7 +106,7 @@ export const post = {
 <li>拿分数最高的那一件，把指令写成五个部分。跑一次。让平时做这件事的人给输出打分。</li>
 <li>定下来输出用之前谁签字。把名字写下来。没有名字，工作流就还没准备好。</li>
 </ul>
-<p>想让整个团队在一个屋里把这套走一遍，三种形式各自包含什么，都在<a href="/zh/pricing/">价格页</a>上。<a href="/zh/case-studies/car-dealership-sms/">案例</a>里的二手车行，就是同一个「收集、回答、预约、转人工」的形状跑在短信上。</p>
+<p>想让整个团队在一个屋里把这套走一遍，三种形式各自包含什么，都在<a href="/zh/ai-training/#formats">培训页</a>上；各团队在课上搭的工作流，见<a href="/zh/ai-training/#teams">适合哪些团队</a>。</p>
 `,
     faq: [
       ['员工 AI 培训要多长时间？', '三种形式走的都是同一套五步方法：90 分钟的 lunch-and-learn，现场搭一个；半天的动手 workshop，每个人拿自己的任务搭；还有多周的项目。不同的只是每个人亲手做多少。'],
@@ -116,7 +116,7 @@ export const post = {
       ['有中文培训吗？', '有。培训可以用英文或中文，在达拉斯—沃斯堡都会区（达拉斯、沃斯堡、Plano、Richardson、Frisco、McKinney、Arlington 及周边地区）上门进行。'],
     ],
     pillar: ['达拉斯团队的动手 AI 培训', '/ai-training/'],
-    related: [['AI 前台怎么运作', '/ai-receptionist/'], ['价格与形式', '/pricing/'], ['案例', '/case-studies/'], ['漏接电话损失多少？', '/blog/how-much-do-missed-calls-cost/']],
+    related: [['企业 AI 培训：课纲与形式', '/ai-training/'], ['各团队搭的工作流', '/ai-training/#teams'], ['关于 Jack', '/about/']],
     sources: [],
   },
 };

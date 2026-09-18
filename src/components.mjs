@@ -1,6 +1,13 @@
-import { SITE, EMAIL, DEMO_TEL, DEMO_DISPLAY, SMS_TEL, SMS_DISPLAY, PRICING, money, GBP_URL, langPath } from './config.mjs';
+import { SITE, EMAIL, DEMO_TEL, DEMO_DISPLAY, SMS_TEL, SMS_DISPLAY, PRICING, money, GBP_URL, BOOK_URL, langPath } from './config.mjs';
 import { T } from './i18n.mjs';
-import { callBtn, secondaryBtn, L, esc } from './layout.mjs';
+import { planBtn, emailBtn, L, esc } from './layout.mjs';
+import { AREA, BUSINESS_REF, faqPage } from './schema.mjs';
+
+// Legacy receptionist CTAs. Only the noindex legacy pages (product, pricing, industries, integrations, tools, cases) use these.
+export const callBtn = (lang, { event = 'demo_call_click', pos = '', cls = '', label } = {}) =>
+  `<a class="btn btn-primary ${cls}" href="tel:${DEMO_TEL}" data-event="${event}" data-pos="${pos}">${label || T[lang].cta.call}</a>`;
+export const secondaryBtn = (lang, { pos = '', cls = '' } = {}) =>
+  `<a class="btn btn-secondary ${cls}" href="${L(lang, BOOK_URL)}" data-event="booking_start" data-pos="${pos}">${T[lang].cta.book}</a>`;
 
 // ── Shared data ───────────────────────────────────────────────────────────
 export const INDUSTRIES = [
@@ -93,7 +100,7 @@ export const eyebrow = (s) => `<p class="eyebrow">${s}</p>`;
 
 export function pageHero(lang, { eyebrow: e, h1, sub, ctas = true, pos = 'hero' }) {
   return `<section class="page-hero"><div class="wrap narrow">${e ? eyebrow(e) : ''}<h1>${h1}</h1>${sub ? `<p class="lead">${sub}</p>` : ''}
-${ctas ? `<div class="cta-row">${callBtn(lang, { event: 'hero_call_click', pos })}${secondaryBtn(lang, { pos })}</div>` : ''}</div></section>`;
+${ctas ? `<div class="cta-row">${planBtn(lang, { pos, id: 'hero-cta' })}${emailBtn(lang, { pos })}</div>` : ''}</div></section>`;
 }
 
 // PhoneDemoCard: live-call mockup on top, demo strip (number, Call now, languages, status) below.
@@ -241,8 +248,8 @@ export function contactSales(lang) {
 
 export function founder(lang) {
   const f = lang === 'zh'
-    ? ['达拉斯本地搭建，有问题找得到人。', 'AI Man Jack 帮 DFW 的华人老板和本地商家装实用的 AI 系统，省下员工时间，接住漏掉的客人。安装、测试、后来的支持，都是 Jack 本人。', '认识 Jack']
-    : ['Built locally. Supported by a real person.', 'AI Man Jack helps DFW businesses install practical AI systems that save staff time and capture missed opportunities. Jack handles setup, testing, and ongoing support.', 'About Jack'];
+    ? ['达拉斯本地，真人上课。', 'Jack Qian 在达拉斯办社区 AI 工作坊，也给公司团队上课。方法是同一套：拿你们手头的真实任务，搭成能跑的 AI 工作流。', '认识 Jack']
+    : ['Dallas-based. Taught by a real person.', 'Jack Qian runs hands-on AI workshops for the Dallas community and for company teams. Same method either way: your team’s real work, turned into AI workflows that run.', 'About Jack'];
   return `<section class="section founder"><div class="wrap founder-row"><img src="/img/jack-portrait-256.webp" width="128" height="128" loading="lazy" decoding="async" alt="Jack Qian"><div><h2>${f[0]}</h2><p>${f[1]}</p><a href="${L(lang, '/about/')}">${f[2]} &rarr;</a></div></div></section>`;
 }
 
@@ -250,17 +257,17 @@ export function faq(lang, items = FAQ[lang], { heading = true } = {}) {
   const h = lang === 'zh' ? '常见问题' : 'Common questions';
   return `${heading ? `<section class="section" id="faq"><div class="wrap narrow"><h2>${h}</h2>` : ''}<div class="faq">${items.map(([q, a], i) => `<details><summary>${q}</summary><div class="faq-a"><p>${a}</p></div></details>`).join('')}</div>${heading ? '</div></section>' : ''}`;
 }
-export const faqJsonLd = (items) => ({ '@type': 'FAQPage', mainEntity: items.map(([q, a]) => ({ '@type': 'Question', name: q.replace(/<[^>]+>/g, ''), acceptedAnswer: { '@type': 'Answer', text: a.replace(/<[^>]+>/g, '') } })) });
+export const faqJsonLd = faqPage;
 export const HOME_FAQ = FAQ;
 
+// Final CTA on every training-first page: one primary action, email as the quiet alternative.
 export function finalCta(lang, { h, sub } = {}) {
-  // Final CTA — explicit AI demo framing. Was: "Call Jessy, the AI receptionist, and ask her…"
   const d = lang === 'zh'
-    ? ['先试，再买。', '拨打 AI 演示线，让它帮你约个时间。问问价格，约个时间，再改一次。']
-    : ['Try it before you buy it.', 'Call our AI demo and ask it to book an appointment. Ask about price. Ask for a time. Try changing it.'];
+    ? ['带一个任务来，带着它跑起来走。', '预约 30 分钟通话。24 小时内给你推荐的形式和书面报价。', '或者发邮件到']
+    : ['Bring one task. Leave with it running.', 'Book a 30-minute call. You’ll have a recommended format and a written quote within 24 hours.', 'Or email'];
   return `<section class="section final-cta" id="start"><div class="wrap narrow center"><h2>${h || d[0]}</h2><p class="lead">${sub || d[1]}</p>
-<div class="cta-row center">${callBtn(lang, { event: 'demo_call_click', pos: 'final', cls: 'btn-lg' })}${secondaryBtn(lang, { pos: 'final', cls: 'btn-lg' })}</div>
-<p class="final-number"><a href="tel:${DEMO_TEL}" data-event="demo_call_click" data-pos="final-number">${DEMO_DISPLAY}</a> · ${T[lang].cta.noSignup}</p></div></section>`;
+<div class="cta-row center">${planBtn(lang, { pos: 'final', cls: 'btn-lg' })}</div>
+<p class="final-number">${d[2]} <a href="mailto:${EMAIL}" data-event="email_training_click" data-pos="final">${EMAIL}</a></p></div></section>`;
 }
 
 // GEO fact module (PRD §40): stand-alone factual paragraphs.
@@ -297,14 +304,7 @@ export function breadcrumb(lang, items) {
   return { html, ld };
 }
 
-export const BUSINESS_REF = { '@type': 'ProfessionalService', '@id': `${SITE}/#business`, name: 'AI Man Jack', url: `${SITE}/`, telephone: '+1-469-425-4142', email: EMAIL };
-
-export const AREA = [
-  { '@type': 'AdministrativeArea', '@id': `${SITE}/#dfw`, name: 'Dallas–Fort Worth metroplex', sameAs: 'https://en.wikipedia.org/wiki/Dallas%E2%80%93Fort_Worth_metroplex',
-    containedInPlace: { '@type': 'State', name: 'Texas', containedInPlace: { '@type': 'Country', name: 'United States' } } },
-  ...['Dallas', 'Fort Worth', 'Plano', 'Richardson', 'Frisco', 'McKinney', 'Arlington'].map((n) => ({ '@type': 'City', name: n, containedInPlace: { '@id': `${SITE}/#dfw` } })),
-];
-
+// Legacy receptionist Service node (noindex pages only).
 export const SERVICE_LD = (lang, extra = {}) => ({
   '@type': 'Service', '@id': `${SITE}/#service`, serviceType: 'AI receptionist and appointment booking',
   name: lang === 'zh' ? '预约制商家的 AI 前台' : 'AI receptionist for appointment businesses',
@@ -318,4 +318,4 @@ export const SERVICE_LD = (lang, extra = {}) => ({
   url: `${SITE}${langPath(lang, '/ai-receptionist/')}`, ...extra,
 });
 
-export { FAQ, TIER_COPY, GBP_URL, DEMO_TEL, DEMO_DISPLAY, SMS_TEL, SMS_DISPLAY, EMAIL, SITE, callBtn, secondaryBtn, L, esc, T };
+export { FAQ, TIER_COPY, GBP_URL, DEMO_TEL, DEMO_DISPLAY, SMS_TEL, SMS_DISPLAY, EMAIL, SITE, AREA, BUSINESS_REF, planBtn, emailBtn, L, esc, T };

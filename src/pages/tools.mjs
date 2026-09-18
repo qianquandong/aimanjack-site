@@ -112,4 +112,4 @@ ${script(lang)}`,
   };
 };
 
-export const pages = [{ path: PATH, priority: 0.7, changefreq: 'monthly', en: page('en'), zh: page('zh') }];
+export const pages = [{ path: PATH, indexable: false, priority: 0.7, changefreq: 'monthly', en: page('en'), zh: page('zh') }];

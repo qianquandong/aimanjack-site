@@ -41,4 +41,4 @@ ${finalCta(lang)}`,
   };
 };
 
-export const pages = [{ path: '/integrations/', priority: 0.6, en: page('en'), zh: page('zh') }];
+export const pages = [{ path: '/integrations/', indexable: false, priority: 0.6, en: page('en'), zh: page('zh') }];

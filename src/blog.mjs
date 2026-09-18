@@ -10,8 +10,8 @@ export const BLOG_PATH = '/blog/';
 const JACK_REF = { '@id': `${SITE}/#jack` };
 
 const STR = {
-  en: { crumb: 'Blog', by: 'By', published: 'Published', updated: 'Updated', takeaways: 'Key takeaways', related: 'Read next', minutes: 'min read', faq: 'Questions people ask', ctaH: 'Want this done with your own team?', ctaSub: 'Book a 30-minute call. Jack looks at one task your team does every week and tells you whether AI training or an AI receptionist fits, or neither.' },
-  zh: { crumb: '博客', by: '作者', published: '发布', updated: '更新', takeaways: '要点', related: '接着读', minutes: '分钟读完', faq: '大家常问', ctaH: '想让自己的团队也这样做？', ctaSub: '约一个 30 分钟的电话。Jack 看一个你们每周都在做的任务，告诉你 AI 培训还是 AI 前台合适，或者都不合适。' },
+  en: { crumb: 'Resources', by: 'By', published: 'Published', updated: 'Updated', takeaways: 'Key takeaways', related: 'Read next', minutes: 'min read', faq: 'Questions people ask', ctaH: 'Want this done with your own team?', ctaSub: 'Book a 30-minute call. Jack looks at one task your team does every week and tells you which format fits, or whether training is not the answer yet.' },
+  zh: { crumb: '资源', by: '作者', published: '发布', updated: '更新', takeaways: '要点', related: '接着读', minutes: '分钟读完', faq: '大家常问', ctaH: '想让自己的团队也这样做？', ctaSub: '约一个 30 分钟的电话。Jack 看一个你们每周都在做的任务，告诉你哪种形式合适，或者现在还不该上培训。' },
 };
 
 const dateText = (lang, iso) => lang === 'zh' ? iso.replace(/(\d+)-0?(\d+)-0?(\d+)/, '$1 年 $2 月 $3 日') : new Date(iso + 'T00:00:00Z').toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' });
@@ -57,8 +57,8 @@ ${related}${finalCta(lang, { h: s.ctaH, sub: s.ctaSub })}`,
 export function indexPage(posts, lang) {
   const s = STR[lang], bc = breadcrumb(lang, [[s.crumb, BLOG_PATH]]);
   const c = lang === 'zh'
-    ? { title: '博客：AI 培训与 AI 前台，达拉斯实战笔记 | AI Man Jack', description: 'Jack Qian 写给达拉斯老板和团队的 AI 笔记：怎么挑任务、怎么教不写代码的同事用 AI、AI 前台什么时候该转人工。只写真做过的。', h1: '实战笔记', sub: '每篇讲一件在达拉斯真做过的事：一个练习、一次现场提问、一个装好的 agent。没有数字就不编数字。' }
-    : { title: 'Blog: AI Training and AI Receptionist Notes from Dallas | AI Man Jack', description: 'Notes from Jack Qian for Dallas owners and teams: how to pick the task, how to teach non-technical staff to use AI, when an AI receptionist should hand off. Only what was actually done.', h1: 'Field notes', sub: 'Each post covers one thing that actually happened in Dallas: an exercise, a question from the room, an agent that went live. No invented numbers.' };
+    ? { title: '资源：员工 AI 培训与 AI 工作流笔记 | AI Man Jack', description: 'Jack Qian 写给团队负责人的 AI 笔记：怎么挑任务、怎么教不写代码的同事用 AI、一条工作流怎么才算跑通。只写真做过的。', h1: '课堂笔记', sub: '每篇讲一件在达拉斯的课上真发生过的事：一个练习、一次现场提问、一条跑起来的工作流。没有数字就不编数字。' }
+    : { title: 'Resources: AI Training and AI Workflow Notes | AI Man Jack', description: 'Notes from Jack Qian for team leads: how to pick the task, how to teach non-technical staff to use AI, when a workflow is really working. Only what was actually done.', h1: 'Field notes', sub: 'Each post covers one thing that actually happened in a Dallas session: an exercise, a question from the room, a workflow that ran. No invented numbers.' };
   const cards = posts.map((p) => {
     const x = p[lang];
     return `<a class="card link-card post-card" href="${L(lang, postPath(p.slug))}"><p class="post-meta"><time datetime="${p.date}">${dateText(lang, p.date)}</time> · ${readingMinutes(lang, x.sections)} ${s.minutes}</p><h2 class="h3">${x.h1}</h2><p>${x.description}</p></a>`;

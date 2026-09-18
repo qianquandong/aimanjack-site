@@ -88,7 +88,7 @@ const indexPage = (lang) => {
 };
 
 export const pages = [
-  { path: '/case-studies/', priority: 0.7, en: indexPage('en'), zh: indexPage('zh') },
-  { path: '/case-studies/ai-man-jack/', priority: 0.6, en: casePage('en', 'ai-man-jack', own.en), zh: casePage('zh', 'ai-man-jack', own.zh) },
-  { path: '/case-studies/car-dealership-sms/', priority: 0.6, en: casePage('en', 'car-dealership-sms', dealer.en), zh: casePage('zh', 'car-dealership-sms', dealer.zh) },
+  { path: '/case-studies/', indexable: false, priority: 0.7, en: indexPage('en'), zh: indexPage('zh') },
+  { path: '/case-studies/ai-man-jack/', indexable: false, priority: 0.6, en: casePage('en', 'ai-man-jack', own.en), zh: casePage('zh', 'ai-man-jack', own.zh) },
+  { path: '/case-studies/car-dealership-sms/', indexable: false, priority: 0.6, en: casePage('en', 'car-dealership-sms', dealer.en), zh: casePage('zh', 'car-dealership-sms', dealer.zh) },
 ];

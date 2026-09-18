@@ -54,4 +54,4 @@ ${finalCta(lang)}`,
   };
 };
 
-export const pages = [{ path: '/pricing/', priority: 0.9, changefreq: 'weekly', en: page('en'), zh: page('zh') }];
+export const pages = [{ path: '/pricing/', indexable: false, priority: 0.9, changefreq: 'weekly', en: page('en'), zh: page('zh') }];

@@ -7,14 +7,20 @@
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 
 const SITE = "https://aimanjack.com";
-const EN = ["/", "/ai-receptionist/", "/pricing/", "/industries/", "/industries/salons/", "/integrations/", "/case-studies/", "/case-studies/ai-man-jack/", "/about/", "/contact/", "/ai-training/"];
+// Indexable routes (PRD 2026-09-18 §77). Add /ai-training-dallas/, /ai-workflow-training/, /ai-workshops/ and the team pages as they ship.
+const EN = ["/", "/ai-training/", "/blog/", "/about/", "/contact/", "/book/"];
 const PAGES = [...EN, ...EN.map((p) => "/zh" + p)];
+// Legacy receptionist routes: must still resolve (200) but carry noindex and stay out of the sitemap.
+const LEGACY = ["/ai-receptionist/", "/pricing/", "/industries/", "/integrations/", "/tools/missed-call-calculator/", "/case-studies/", "/blog/how-much-do-missed-calls-cost/"];
+// Receptionist-era marketing that must not appear on any indexable page (§79). Legal pages are the only exception.
+const BANNED = [/AI receptionist/i, /Call our AI demo/i, /missed[- ]call calculator/i, /\$199/, /\$299/, /\$599/, /appointment businesses/i, /AI 前台/, /拨打 AI 演示/];
 const BASELINE = "scripts/seo-baseline.json";
 const today = new Date().toISOString().slice(0, 10);
 const checks = [];
 const add = (id, status, detail = "") => checks.push({ id, status, detail });
-const get = async (p, opt = {}) => { try { const t0 = Date.now(); const r = await fetch(p.startsWith("http") ? p : SITE + p, { redirect: "manual", ...opt }); return { status: r.status, loc: r.headers.get("location") ?? "", body: opt.method === "HEAD" ? "" : await r.text(), ms: Date.now() - t0 }; } catch { return { status: 0, loc: "", body: "", ms: 0 }; } };
+const get = async (p, opt = {}) => { try { const t0 = Date.now(); const r = await fetch(p.startsWith("http") ? p : SITE + p, { redirect: "manual", headers: { "user-agent": "Mozilla/5.0 (health check; aimanjack.com)" }, ...opt }); return { status: r.status, loc: r.headers.get("location") ?? "", body: opt.method === "HEAD" ? "" : await r.text(), ms: Date.now() - t0 }; } catch { return { status: 0, loc: "", body: "", ms: 0 }; } };
 const m = (html, re) => html.match(re)?.[1]?.trim() ?? "";
+const visible = (html) => html.replace(/<script[\s\S]*?<\/script>/g, "").replace(/<footer[\s\S]*?<\/footer>/g, "");
 
 // 1. Uptime + TTFB-ish
 for (const p of [...PAGES, "/sitemap.xml", "/robots.txt", "/llms.txt"]) {
@@ -33,34 +39,49 @@ for (const line of readFileSync("_redirects", "utf8").split("\n")) {
 }
 add("redirects", bad.length ? "FAIL" : "PASS", bad.join("; ") || "all _redirects rules hold");
 
-// 3. Sitemap ↔ pages parity
+// 3. Sitemap ↔ pages parity: every indexable page in, every legacy route out
 const sm = (await get("/sitemap.xml")).body;
 const smUrls = [...sm.matchAll(/<loc>([^<]+)<\/loc>/g)].map((x) => x[1].replace(SITE, ""));
 const missing = PAGES.filter((p) => !smUrls.includes(p));
 add("sitemap:pages", missing.length ? "FAIL" : "PASS", missing.length ? `missing ${missing.join(",")}` : `${smUrls.length} urls`);
+const leaked = LEGACY.filter((p) => smUrls.includes(p) || smUrls.includes("/zh" + p));
+add("sitemap:legacy-out", leaked.length ? "FAIL" : "PASS", leaked.length ? `legacy in sitemap: ${leaked.join(",")}` : "no legacy receptionist routes in sitemap");
 
-// 4. On-page invariants per page vs baseline (title, description, canonical, hreflang, H1, robots, schema types, og:image)
+// 4. Legacy routes: 200 + noindex (robots.txt must NOT block them, or crawlers never read the noindex)
+for (const p of LEGACY) {
+  const r = await get(p);
+  const robots = m(r.body, /<meta name="robots" content="([^"]*)"/);
+  add(`legacy:${p}`, r.status === 200 && /noindex/.test(robots) ? "PASS" : "FAIL", `HTTP ${r.status}, robots="${robots}"`);
+}
+
+// 5. On-page invariants per indexable page vs baseline
 const snap = {};
 for (const p of PAGES) {
   const h = (await get(p)).body;
   const ld = [...h.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map((x) => x[1]);
-  let types = "PARSE_ERROR";
-  try { types = [...new Set(ld.flatMap((j) => JSON.stringify(JSON.parse(j)).match(/"@type":"([A-Za-z]+)"/g) ?? []))].map((t) => t.split('"')[3]).sort().join(","); } catch {}
+  let types = "PARSE_ERROR", ldText = "";
+  try { ldText = ld.join(""); types = [...new Set(ld.flatMap((j) => JSON.stringify(JSON.parse(j)).match(/"@type":"([A-Za-z]+)"/g) ?? []))].map((t) => t.split('"')[3]).sort().join(","); } catch {}
+  const self = SITE + p;
   snap[p] = {
     title: m(h, /<title>([^<]*)<\/title>/), description: m(h, /<meta name="description" content="([^"]*)"/),
     canonical: m(h, /<link rel="canonical" href="([^"]*)"/), hreflang: [...h.matchAll(/hreflang="([^"]+)"/g)].map((x) => x[1]).sort().join(","),
     h1: m(h, /<h1[^>]*>([\s\S]*?)<\/h1>/).replace(/<[^>]+>|\s+/g, " ").trim(), robots: m(h, /<meta name="robots" content="([^"]*)"/),
-    schemaTypes: types, ogImage: m(h, /property="og:image" content="([^"]*)"/), smsLinks: (h.match(/href="sms:\+14694254142/g) ?? []).length, telDemo: (h.match(/href="tel:\+14695172968"/g) ?? []).length,
+    schemaTypes: types, ogImage: m(h, /property="og:image" content="([^"]*)"/), bookLinks: (h.match(/href="\/(?:zh\/)?book\/"/g) ?? []).length,
     ga4: /googletagmanager\.com\/gtag/.test(h), h1Count: (h.match(/<h1[\s>]/g) ?? []).length,
   };
-  add(`page:${p}:h1`, snap[p].h1Count === 1 ? "PASS" : "FAIL", `${snap[p].h1Count} h1`);
+  const s = snap[p];
+  add(`page:${p}:h1`, s.h1Count === 1 ? "PASS" : "FAIL", `${s.h1Count} h1`);
+  add(`page:${p}:meta`, s.title && s.description && s.canonical === self && s.hreflang === "en,x-default,zh" && /^index/.test(s.robots) ? "PASS" : "FAIL", `canonical=${s.canonical} robots=${s.robots} hreflang=${s.hreflang}`);
   add(`page:${p}:schema`, types !== "PARSE_ERROR" && types.includes("ProfessionalService") ? "PASS" : "FAIL", types.slice(0, 80));
-  add(`page:${p}:cta`, snap[p].telDemo >= 1 && snap[p].smsLinks >= 1 ? "PASS" : "FAIL", `${snap[p].telDemo} tel: demo CTAs, ${snap[p].smsLinks} sms: CTAs to (469) 425-4142`);
+  add(`page:${p}:cta`, s.bookLinks >= 1 ? "PASS" : "FAIL", `${s.bookLinks} links to /book/ (Plan a Team Workshop)`);
   // Label must say what the click does: "Call" → tel:, "Text" → sms:, "Email" → mailto:
   const mism = [...h.matchAll(/<a [^>]*href="(tel:|sms:|mailto:)[^"]*"[^>]*>([^<]*)<\/a>/g)].filter(([, proto, t]) =>
-    (/\bCall\b|打|拨/.test(t) && proto !== "tel:") || (/\bText\b|短信|发 TRAINING/.test(t) && proto !== "sms:") || (/\bEmail\b|邮件/.test(t) && proto !== "mailto:")).map(([, proto, t]) => `${proto} "${t.trim()}"`);
+    (/\bCall\b|打|拨/.test(t) && proto !== "tel:") || (/\bText\b|短信/.test(t) && proto !== "sms:") || (/\bEmail\b|邮件/.test(t) && proto !== "mailto:")).map(([, proto, t]) => `${proto} "${t.trim()}"`);
   add(`page:${p}:cta-labels`, mism.length ? "FAIL" : "PASS", mism.join("; ") || "every CTA label matches its protocol");
-  if (p === "/") { add("page:/:og-image", (await get(snap[p].ogImage, { method: "HEAD" })).status === 200 ? "PASS" : "FAIL", snap[p].ogImage); add("track:ga4", snap[p].ga4 ? "PASS" : "FAIL", "no GA4 tag → visitors and conversion rate are unmeasurable"); }
+  // Banned receptionist marketing, in visible copy and in JSON-LD (footer excluded: A2P legal text mentions missed calls)
+  const hits = BANNED.filter((re) => re.test(visible(h)) || re.test(ldText)).map(String);
+  add(`page:${p}:no-receptionist`, hits.length ? "FAIL" : "PASS", hits.join(" ") || "no receptionist marketing");
+  if (p === "/") { add("page:/:og-image", (await get(s.ogImage, { method: "HEAD" })).status === 200 ? "PASS" : "FAIL", s.ogImage); add("track:ga4", s.ga4 ? "PASS" : "FAIL", s.ga4 ? "GA4 present" : "GA4 missing → visitors and conversion rate are unmeasurable"); }
 }
 if (process.argv.includes("--baseline") || !existsSync(BASELINE)) { writeFileSync(BASELINE, JSON.stringify({ capturedAt: today, pages: snap }, null, 1) + "\n"); add("drift", "PASS", `baseline captured → ${BASELINE}`); }
 else {
@@ -69,18 +90,18 @@ else {
   add("drift", diffs.length ? "FAIL" : "PASS", diffs.join(" | ") || "no on-page drift vs baseline (intentional change? rerun with --baseline)");
 }
 
-// 5. GEO surface: robots lets AI crawlers in, llms.txt describes the CURRENT offer
+// 6. GEO surface: robots lets AI crawlers in, llms.txt describes the CURRENT offer
 const robots = (await get("/robots.txt")).body;
 add("geo:robots", /User-agent: \*\s+Allow: \//.test(robots) && !/Disallow: \/\s*$/m.test(robots) ? "PASS" : "FAIL", "AI crawlers (GPTBot/OAI-SearchBot/PerplexityBot/ClaudeBot) must not be blocked");
 const llms = (await get("/llms.txt")).body;
-add("geo:llms-current", /training/i.test(llms) && /\$199/.test(llms) && /517-2968/.test(llms) && /425-4142/.test(llms) ? "PASS" : "FAIL", "llms.txt must name training + $199 Starter plan + both phone numbers; stale copy misleads AI answers");
+add("geo:llms-current", /corporate AI training/i.test(llms) && /\$1,500/.test(llms) && /425-4142/.test(llms) && !/receptionist|\$199/i.test(llms) ? "PASS" : "FAIL", "llms.txt must describe corporate AI training + $1,500 half-day + SMS number, and nothing about the receptionist");
 
-// 6. Data plumbing the task needs — WARN until Jack wires them (HEALTH-CHECK.md §2)
+// 7. Data plumbing the task needs — WARN until Jack wires them (HEALTH-CHECK.md §2)
 add("creds:google-api", existsSync(`${process.env.HOME}/.config/claude-seo/google-api.json`) ? "PASS" : "WARN", "GSC/GA4/PSI via claude-seo need ~/.config/claude-seo/google-api.json");
 
 const out = { date: today, checks };
 writeFileSync(`scripts/health/${today}.json`, JSON.stringify(out, null, 1) + "\n");
-for (const c of checks) console.log(`${c.status.padEnd(4)} ${c.id.padEnd(26)} ${c.detail}`);
+for (const c of checks) console.log(`${c.status.padEnd(4)} ${c.id.padEnd(30)} ${c.detail}`);
 const fails = checks.filter((c) => c.status === "FAIL").length, warns = checks.filter((c) => c.status === "WARN").length;
 console.log(`\n${fails} FAIL, ${warns} WARN → scripts/health/${today}.json`);
 process.exit(fails ? 1 : 0);

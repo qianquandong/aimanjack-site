@@ -1,26 +1,39 @@
-// Single source of business facts. Every page reads from here, so a fact changes once.
+// Single source of business facts. Every page, schema node and llms.txt reads from here, so a fact changes once.
 export const SITE = 'https://aimanjack.com';
 export const BRAND = 'AI Man Jack';
 export const LEGAL_NAME = 'AI Man Jack LLC';
 export const EMAIL = 'jack@aimanjack.com';
 
 // Two numbers, both correct — never merge them (A2P review requires every sms: CTA to use SMS_TEL).
-export const DEMO_TEL = '+14695172968';          // the AI demo line — tel: CTAs
+export const DEMO_TEL = '+14695172968';          // the AI demo line — tel: CTAs (legacy receptionist pages only)
 export const DEMO_DISPLAY = '(469) 517-2968';
 export const SMS_TEL = '+14694254142';           // main / SMS number — sms: CTAs
 export const SMS_DISPLAY = '(469) 425-4142';
 
-// Secondary CTA. Empty = Jack's booking system is not live yet → CTA is "Email Jack" (mailto).
-// Set to the real booking page URL and the label switches to "Book a 30-minute call" everywhere.
 export const BOOK_URL = '/book/';   // src/pages/book.mjs; a site-relative path is localised per language
 
 export const GA4_ID = 'G-H7EF9HVN02';
 export const GBP_URL = 'https://g.page/r/CWX_rCfFduC1EAI';
 
-// Pricing — approved 2026-09-09 (PRD §15). Change here only with Jack's decision.
+// Positioning (PRD 2026-09-18): corporate AI training + practical AI workflow training. The AI receptionist
+// source stays in the repo but its marketing, navigation, schema and sitemap presence are off.
+export const FEATURES = {
+  receptionistMarketing: false,   // no receptionist copy, offers or CTAs on indexable pages
+  aiDemoGlobalCTA: false,         // no "Call our AI demo" header/sticky/dialog
+  legacyReceptionistRoutes: true, // /ai-receptionist/, /pricing/, /industries/… still render (noindex, unlinked)
+};
+
+// Training proof and price anchor. Real counts only — never bump these for marketing.
+export const PROOF = { talks: 5, perTalk: '50+', hackathon: 37, reviews: 10, rating: '5.0' };
+export const TRAINING = { halfDayFrom: 1500, halfDayMax: 10 };
+
+export const BUSINESS_SAME_AS = [GBP_URL, 'https://nextdoor.com/page/ai-man-jack-melissa-tx/', 'https://www.linkedin.com/in/quandong-qian-156563191/', 'https://www.youtube.com/@JackBuildAI', 'https://x.com/JackQianAI', 'https://www.facebook.com/profile.php?id=100084925451350'];
+export const JACK_SAME_AS = ['https://realagentusecases.com/', 'https://luma.com/user/usr-FlERJUF6Mcrie58', 'https://github.com/qianquandong', 'https://www.linkedin.com/in/quandong-qian-156563191/', 'https://www.youtube.com/@JackBuildAI', 'https://x.com/JackQianAI', 'https://www.threads.com/@jack_qian616', 'https://www.facebook.com/profile.php?id=100084925451350', 'https://nextdoor.com/page/ai-man-jack-melissa-tx/'];
+
+// Legacy receptionist pricing — read only by the noindex legacy pages (src/pages/pricing.mjs, product.mjs, industries.mjs).
 export const PRICING = {
   overage: 0.45,
-  addon: { website: 500 },   // Website + Google Business Profile: optional, one-time, any plan
+  addon: { website: 500 },
   tiers: [
     { id: 'starter', monthly: 199, setup: 750,  minutes: 200,  recommended: false },
     { id: 'growth',  monthly: 299, setup: 1500, minutes: 300,  recommended: true },
