@@ -390,6 +390,58 @@
    "bookLinks": 5,
    "ga4": true,
    "h1Count": 1
+  },
+  "/case-studies/": {
+   "title": "AI Workflow Case Studies | AI Man Jack",
+   "description": "Real AI workflow implementations from AI Man Jack: the business problem, what was built, what failed, what was measured, and what still needs validation.",
+   "canonical": "https://aimanjack.com/case-studies/",
+   "hreflang": "en,x-default,zh",
+   "h1": "Real workflows. Real constraints. Real failures.",
+   "robots": "index, follow, max-image-preview:large, max-snippet:-1",
+   "schemaTypes": "BreadcrumbList,CollectionPage,ListItem,ProfessionalService",
+   "ogImage": "https://aimanjack.com/img/og-2026-09.jpg",
+   "bookLinks": 5,
+   "ga4": true,
+   "h1Count": 1
+  },
+  "/zh/case-studies/": {
+   "title": "AI 工作流案例 | AI Man Jack",
+   "description": "AI Man Jack 的真实 AI 工作流落地案例：原始问题、实际搭建、失败、实测结果，以及仍待验证的部分。",
+   "canonical": "https://aimanjack.com/zh/case-studies/",
+   "hreflang": "en,x-default,zh",
+   "h1": "真实工作流，真实约束，也写真实踩坑。",
+   "robots": "index, follow, max-image-preview:large, max-snippet:-1",
+   "schemaTypes": "BreadcrumbList,CollectionPage,ListItem,ProfessionalService",
+   "ogImage": "https://aimanjack.com/img/og-2026-09-zh.jpg",
+   "bookLinks": 5,
+   "ga4": true,
+   "h1Count": 1
+  },
+  "/case-studies/livestream-agency-scheduling/": {
+   "title": "Case Study: Weekly Scheduling for a Livestream Agency | AI Man Jack",
+   "description": "A TikTok Shop livestream agency built its weekly host and operator schedule by hand. Now the first draft is generated from rules the client keeps in its own spreadsheet.",
+   "canonical": "https://aimanjack.com/case-studies/livestream-agency-scheduling/",
+   "hreflang": "en,x-default,zh",
+   "h1": "A livestream agency that stopped building its weekly schedule from a blank sheet.",
+   "robots": "index, follow, max-image-preview:large, max-snippet:-1",
+   "schemaTypes": "Article,BreadcrumbList,ListItem,ProfessionalService",
+   "ogImage": "https://aimanjack.com/img/og-2026-09.jpg",
+   "bookLinks": 6,
+   "ga4": true,
+   "h1Count": 1
+  },
+  "/zh/case-studies/livestream-agency-scheduling/": {
+   "title": "案例：直播代运营公司的周排班 | AI Man Jack",
+   "description": "一家 TikTok Shop 直播代运营公司，以前每周从空白表格手排主播和运营。现在第一版班表自动生成，规则都在客户自己的表格里。",
+   "canonical": "https://aimanjack.com/zh/case-studies/livestream-agency-scheduling/",
+   "hreflang": "en,x-default,zh",
+   "h1": "一家直播公司，不用再从空白表格开始排下周的班。",
+   "robots": "index, follow, max-image-preview:large, max-snippet:-1",
+   "schemaTypes": "Article,BreadcrumbList,ListItem,ProfessionalService",
+   "ogImage": "https://aimanjack.com/img/og-2026-09-zh.jpg",
+   "bookLinks": 6,
+   "ga4": true,
+   "h1Count": 1
   }
  }
 }
