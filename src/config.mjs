@@ -12,6 +12,10 @@ export const SMS_DISPLAY = '(469) 425-4142';
 
 export const BOOK_URL = '/book/';   // src/pages/book.mjs; a site-relative path is localised per language
 
+// Link-preview cards. /img/* is cached immutable for a year, so a new card = a new file name here, never an overwrite.
+// Regenerate with: sh scripts/make-brand-assets.sh <new-suffix>
+export const OG_CARD = { en: '/img/og-2026-09.jpg', zh: '/img/og-2026-09-zh.jpg' };
+
 export const GA4_ID = 'G-H7EF9HVN02';
 export const GBP_URL = 'https://g.page/r/CWX_rCfFduC1EAI';
 

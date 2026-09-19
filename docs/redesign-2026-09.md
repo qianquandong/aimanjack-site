@@ -35,8 +35,12 @@ Titles/descriptions/canonicals/hreflang logic, JSON-LD builders, every `data-eve
 - Tests: 25 pass. New/changed: header items are never anchors; library is bilingual and zh never links to EN library pages; home strings.
 - Fixed along the way: an inline 3-column grid on the legacy receptionist page that overflowed phones (pre-existing), a directory filter row that overflowed at 390px.
 
+## Follow-up (2026-09-19): dead CSS and brand assets
+- `scripts/css-prune.py` removed 110 selectors that name a class/id found in no built page (legacy pages and inline-script markup included): `style.css` 68,315 → 61,366 bytes. Verified with `scripts/shots.sh` + `scripts/shots-diff.py`: 27 pages × 2 widths, before vs after, **54/54 pixel-identical**. The rest of the old rules are still used by the noindex legacy pages, so they stay until those pages go.
+- New link-preview cards `img/og-2026-09.jpg` / `-zh.jpg` (headless Chrome, real Satoshi + workshop photo + J mark). Path lives in `config.mjs` `OG_CARD`; `/img/*` is immutable-cached, so a new card always gets a new file name. Old `og-training*.jpg` files stay for links already shared.
+- Favicon set regenerated from the J mark (`favicon.ico` 16/32/48, `favicon-16/32.png`, `apple-touch-icon.png` full-bleed) plus `favicon.svg`. `sh scripts/make-brand-assets.sh <suffix>` regenerates everything.
+
 ## Known gaps
-1. `style.css` still carries the pre-redesign rules for the old header/footer/menu and legacy blocks (≈25 KB raw, dead on indexable pages). Safe to prune in a follow-up once the preview is approved.
-2. Favicon and OG cards still use the old mark/colours.
-3. Chinese workflows/templates were written for this release and, like the English ones, have not each been run by Jack on real work.
-4. `docs/site-audit.md` D4 (English-only library) is superseded by this release.
+1. Favicons are cached for 7 days; returning visitors see the old icon until then.
+2. Chinese workflows/templates were written for this release and, like the English ones, have not each been run by Jack on real work.
+3. `docs/site-audit.md` D4 (English-only library) is superseded by this release.

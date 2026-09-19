@@ -1,0 +1,31 @@
+<!doctype html><meta charset="utf-8">
+<!-- 1200×630 link-preview card, rendered by scripts/make-brand-assets.sh with headless Chrome. ?lang=zh for the Chinese card. -->
+<style>
+@font-face{font-family:'Satoshi';src:url('../../fonts/Satoshi-Variable.woff2') format('woff2');font-weight:300 900}
+*{margin:0;box-sizing:border-box}
+body{width:1200px;height:630px;overflow:hidden;position:relative;color:#fff;font-family:'Satoshi','PingFang SC','Hiragino Sans GB',sans-serif;background:#1D1A19}
+img.bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 38%}
+.wash{position:absolute;inset:0;background:linear-gradient(180deg,rgba(20,17,15,.62) 0%,rgba(20,17,15,.35) 30%,rgba(20,17,15,.62) 60%,rgba(20,17,15,.94) 100%)}
+.in{position:absolute;inset:0;padding:56px 64px;display:flex;flex-direction:column}
+.logo{display:flex;align-items:center;gap:16px;font-size:30px;font-weight:800;letter-spacing:-.02em}
+.eyebrow{margin-top:auto;font-size:19px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#E9E3D8}
+h1{margin-top:18px;font-size:104px;line-height:.95;letter-spacing:-.045em;font-weight:700}
+h1 em{font-style:italic;font-weight:500}
+.foot{margin-top:30px;padding-top:22px;border-top:1px solid rgba(255,255,255,.3);display:flex;justify-content:space-between;font-size:24px;color:#EFEAE1}
+.foot b{color:#fff;font-weight:700}
+.zh h1{font-size:88px;line-height:1.16;letter-spacing:0}.zh h1 em{font-style:normal;font-weight:700;color:#E8A27A}.zh .eyebrow{letter-spacing:.08em}
+</style>
+<body>
+<img class="bg" src="../../img/hero-workshop-1600.webp" alt="">
+<div class="wash"></div>
+<div class="in">
+<div class="logo"><svg width="52" height="52" viewBox="0 0 64 64"><rect width="64" height="64" rx="16" fill="#fff"/><g transform="translate(15 49)"><path fill="#1D1A19" d="M0.88 -9.328V-11.616H7.744V-9.328Q7.744 -8.052 8.58 -7.04Q9.416 -6.028 11.44 -6.028Q13.42 -6.028 14.256 -6.996Q15.092 -7.964 15.092 -9.592V-32.56H22.22V-9.152Q22.22 -6.38 20.922 -4.18Q19.624 -1.98 17.226 -0.704Q14.828 0.572 11.528 0.572Q7.964 0.572 5.588 -0.726Q3.212 -2.024 2.046 -4.268Q0.88 -6.512 0.88 -9.328Z"/></g><circle cx="46.5" cy="18" r="5.5" fill="#A8552F"/></svg><span>AI Man Jack</span></div>
+<div class="eyebrow" id="k"></div><h1 id="h"></h1>
+<div class="foot"><span id="s"></span><b>aimanjack.com</b></div>
+</div>
+<script>
+var zh=/lang=zh/.test(location.search),T=zh
+ ?{k:'企业 AI 培训 · 达拉斯现场或远程 · 中英文授课',h:'让 AI 真正落地<br>于<em>日常工作</em>。',s:'面向团队的实操型 AI 培训与工作流'}
+ :{k:'Corporate AI training · Dallas onsite or remote',h:'Make AI useful<br>at <em>work.</em>',s:'Practical AI training and workflows for teams'};
+if(zh)document.body.className='zh';k.textContent=T.k;h.innerHTML=T.h;s.textContent=T.s;
+</script>

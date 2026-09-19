@@ -3,6 +3,7 @@ import test from 'node:test';
 import { readdir, readFile } from 'node:fs/promises';
 import { render, pageOf, langsOf } from '../src/layout.mjs';
 import { llms } from '../src/llms.mjs';
+import { OG_CARD } from '../src/config.mjs';
 
 async function allPages() {
   const files = (await readdir(new URL('../src/pages/', import.meta.url))).filter((f) => f.endsWith('.mjs')).sort();
@@ -29,7 +30,7 @@ test('home page positions AI Man Jack as practical AI training for teams, in bot
     assert.ok(home, `missing ${lang} home`);
     assert.match(head(home.html), new RegExp(`<title>[^<]*${title.source}`));
     assert.match(home.html, new RegExp(`<h1[^>]*>[^<]*${h1.source}`));
-    assert.match(home.html, /og-training(?:-zh)?\.jpg/);
+    assert.ok(home.html.includes(`property="og:image" content="https://aimanjack.com${OG_CARD[lang]}"`), `${lang} home OG card`);
     assert.match(home.html, /Book a Workshop|预约团队培训/);
     for (const p of ['/tools/', '/use-cases/', '/workflows/', '/ai-training/']) assert.match(home.html, new RegExp(`href="(?:/zh)?${p}`), `${lang} home links ${p}`);
     for (const re of BANNED) assert.doesNotMatch(body(home.html) + ld(home.html), re, `${lang} home contains ${re}`);
@@ -50,7 +51,8 @@ test('every indexable page carries complete technical SEO metadata and no recept
     assert.match(html, new RegExp(`<link rel="canonical" href="${self.replace(/[/.]/g, '\\$&')}">`), `${route} self canonical`);
     assert.match(html, /<meta name="robots" content="index, follow/, `${route} index,follow`);
     assert.match(html, /<script type="application\/ld\+json">/, `${route} JSON-LD`);
-    assert.match(html, /property="og:image" content="https:\/\/aimanjack\.com\/img\/og-training(?:-zh)?\.jpg"/, `${route} training OG image`);
+    assert.ok(html.includes(`property="og:image" content="https://aimanjack.com${OG_CARD[lang]}"`), `${route} OG card`);
+    assert.match(html, /<link rel="icon" type="image\/svg\+xml" href="\/favicon\.svg">/, `${route} svg icon`);
     if (LEGAL.includes(p.path)) continue;
     for (const re of BANNED) assert.doesNotMatch(body(html) + ld(html), re, `${route} contains ${re}`);
     assert.match(html, /href="\/(?:zh\/)?book\/"/, `${route} links to /book/`);
@@ -192,4 +194,9 @@ test('no inline grid columns and no unwrapped tables on indexable pages (mobile 
     const tables = (x.html.match(/<table/g) || []).length, wrapped = (x.html.match(/class="table-wrap"><table/g) || []).length;
     assert.equal(tables, wrapped, `${x.lang}:${x.p.path} has a table outside .table-wrap`);
   }
+});
+
+test('brand assets exist: OG cards named in config, full favicon set', async () => {
+  const { access } = await import('node:fs/promises');
+  for (const f of [OG_CARD.en, OG_CARD.zh, '/favicon.ico', '/favicon.svg', '/favicon-16.png', '/favicon-32.png', '/apple-touch-icon.png']) await access(new URL('..' + f, import.meta.url));
 });

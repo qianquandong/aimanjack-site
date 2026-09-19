@@ -1,4 +1,4 @@
-import { SITE, BRAND, EMAIL, SMS_TEL, SMS_DISPLAY, GA4_ID, BOOK_URL, langPath, zhPath } from './config.mjs';
+import { SITE, BRAND, EMAIL, SMS_TEL, SMS_DISPLAY, GA4_ID, BOOK_URL, OG_CARD, langPath, zhPath } from './config.mjs';
 import { T } from './i18n.mjs';
 
 export const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
@@ -110,7 +110,7 @@ export function render(page, lang) {
   const canonicalPath = page.canonicalPath ?? page.path;
   const url = SITE + L(lang, canonicalPath);
   const og = page.og || {}, langs = page.langs || ['en', 'zh'];
-  const ogImage = og.image || (lang === 'zh' ? '/img/og-training-zh.jpg' : '/img/og-training.jpg');
+  const ogImage = og.image || OG_CARD[lang];
   const ogAlt = og.alt || (lang === 'zh' ? 'AI Man Jack：团队 AI 实战培训与 AI 工作流培训，达拉斯' : 'AI Man Jack: corporate AI training and practical AI workflows for teams, Dallas');
   const twitterImage = page.path === '/' ? `<meta name="twitter:image" content="${SITE}${ogImage}">
 <meta name="twitter:image:alt" content="${esc(ogAlt)}">
@@ -123,6 +123,7 @@ export function render(page, lang) {
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#F2EEE6">
 <link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">

@@ -11,7 +11,7 @@ const C = {
   en: {
     title: 'Corporate AI Training for Teams | AI Man Jack',
     description: `Hands-on corporate AI training for teams in Dallas and remotely, in English or Chinese. Each person leaves with one working AI workflow for a task they already do. Half-day from ${PRICE}.`,
-    og: { title: 'Corporate AI Training Built Around Real Work', description: `Each person brings one task they already do and leaves with a working AI workflow for it. Dallas onsite or remote, in English or Chinese. ${PROOF.rating} on Google across ${PROOF.reviews} reviews.`, image: '/img/og-training.jpg', alt: 'Hands-on corporate AI training for your team, in English or Chinese' },
+    og: { title: 'Corporate AI Training Built Around Real Work', description: `Each person brings one task they already do and leaves with a working AI workflow for it. Dallas onsite or remote, in English or Chinese. ${PROOF.rating} on Google across ${PROOF.reviews} reviews.`, alt: 'Hands-on corporate AI training for your team, in English or Chinese' },
     crumb: 'AI training', eyebrow: 'Corporate AI training · Dallas onsite or remote · English or Chinese', h1: 'Corporate AI training built around <em>real work</em>',
     sub: 'Each person brings one task they already do every week and leaves with a working AI workflow for it, plus the habit of checking the output before it goes out.',
     text: 'Prefer to text? Send TRAINING to', heroAlt: 'A full classroom in Dallas at one of Jack Qian’s hands-on AI workshops',
@@ -32,7 +32,7 @@ const C = {
   zh: {
     title: '面向团队的企业 AI 培训 | AI Man Jack',
     description: `面向达拉斯及远程团队的实操型企业 AI 培训，中英文授课。每位学员带走一条针对自身任务的可用 AI 工作流。半天工作坊 ${PRICE} 起。`,
-    og: { title: '围绕真实工作设计的企业 AI 培训', description: `每位学员带来一项每周都在做的任务，带走一条可用的 AI 工作流。达拉斯上门或远程，中英文授课。Google ${PROOF.reviews} 条评价，${PROOF.rating} 分。`, image: '/img/og-training-zh.jpg', alt: '面向团队的实操型企业 AI 培训，中英文授课' },
+    og: { title: '围绕真实工作设计的企业 AI 培训', description: `每位学员带来一项每周都在做的任务，带走一条可用的 AI 工作流。达拉斯上门或远程，中英文授课。Google ${PROOF.reviews} 条评价，${PROOF.rating} 分。`, alt: '面向团队的实操型企业 AI 培训，中英文授课' },
     crumb: 'AI 培训', eyebrow: '企业 AI 培训 · 达拉斯现场或远程 · 中英文授课', h1: '围绕<em>真实工作</em>设计的<br>企业 AI 培训',
     sub: '每位学员带来一项每周都在做的任务，课程结束时带走一条可用的 AI 工作流，并养成输出前先核验的习惯。',
     text: '更习惯短信？发送 TRAINING 至', heroAlt: '达拉斯，Jack Qian 主讲的一场 AI 实操工作坊，教室座无虚席',
