@@ -103,6 +103,17 @@ var desk=matchMedia('(hover:hover) and (pointer:fine)').matches&&navigator.maxTo
 window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}
 function track(n,p){gtag('event',n,Object.assign({page:location.pathname,language:D.documentElement.lang,device:desk?'desktop':'mobile'},p||{}))}
 window.amjTrack=track;
+// Motion (2026-09): count-up on .stat-bar numbers + pointer position for the .prog spotlight. Scroll reveals are CSS-only (style.css "MOTION").
+// The HTML always carries the final number; this only replays it, and not at all under prefers-reduced-motion.
+if(!matchMedia('(prefers-reduced-motion:reduce)').matches&&'IntersectionObserver' in window){
+ var io=new IntersectionObserver(function(es){es.forEach(function(en){if(!en.isIntersecting)return;io.unobserve(en.target);
+  var el=en.target,t=el.textContent,m=t.match(/\d[\d,]*(\.\d+)?/);if(!m)return;
+  var end=parseFloat(m[0].replace(/,/g,'')),dec=m[1]?m[1].length-1:0,t0=performance.now();
+  (function f(now){var q=Math.min(1,(now-t0)/900),v=end*(1-Math.pow(1-q,3)),n=dec?v.toFixed(dec):String(Math.round(v));
+   if(m[0].indexOf(',')>-1)n=n.replace(/\B(?=(\d{3})+$)/g,',');el.textContent=q<1?t.replace(m[0],n):t;if(q<1)requestAnimationFrame(f)})(t0)})},{threshold:.6});
+ [].forEach.call(D.querySelectorAll('.stat-bar b'),function(b){io.observe(b)});
+ if(desk)D.addEventListener('pointermove',function(e){var c=e.target.closest&&e.target.closest('.prog');if(!c)return;var r=c.getBoundingClientRect();
+  c.style.setProperty('--mx',e.clientX-r.left+'px');c.style.setProperty('--my',e.clientY-r.top+'px')},{passive:true})}
 D.addEventListener('click',function(e){var l=e.target.closest('[data-event]');if(l)track(l.dataset.event,{cta_position:l.dataset.pos||''});
  var m=e.target.closest('.menu nav a');if(m)m.closest('details').open=false});
 var bar=D.getElementById('sticky-cta'),hero=D.getElementById('hero-cta');

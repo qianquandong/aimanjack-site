@@ -764,3 +764,26 @@ html[lang=zh] .nums .why{font-style:normal}
 .art-body .kv{margin:0;background:var(--surface)}.art-body p.art-by{margin:0}
 @media(max-width:720px){.art-body .nums-t{font-size:14.5px}.art-body .nums-t th,.art-body .nums-t td{padding:11px 10px}.art-body .nums-t th:first-child{min-width:112px}.art-body .nums-t thead th{font-size:12.5px;white-space:normal}}
 .sec.tight.case-proof{padding:72px 0 0}.sec.tight.case-proof.flush{padding-top:0}.case-proof+.sec.tight{padding-top:20px}@media(max-width:720px){.sec.tight.case-proof{padding:48px 0 0}}
+
+/* ── MOTION 2026-09 ─ deliberately restrained: one load effect, scroll-linked reveals, one hover light. No library.
+   Reveals are CSS scroll-driven animations: no JS, content is never hidden when the browser lacks support, all of it
+   is off under prefers-reduced-motion. Do not add glitch/terminal/particle effects — this is a training company. */
+.stat-bar b{font-variant-numeric:tabular-nums}
+@property --spot{syntax:'<number>';inherits:false;initial-value:0}
+@media(hover:hover) and (pointer:fine){
+  .prog{background-image:radial-gradient(440px circle at var(--mx,50%) var(--my,0%),rgba(168,85,47,var(--spot)),transparent 62%);transition:--spot .25s}
+  .prog:hover{--spot:.09}.prog.dark:hover{--spot:.3}
+}
+@media(prefers-reduced-motion:no-preference){
+  main h1{animation:blur-in .6s cubic-bezier(.2,.7,.2,1) both}
+  @keyframes blur-in{from{filter:blur(14px);opacity:.2;transform:translateY(6px)}}
+  @supports (animation-timeline:view()){
+    .sec-head,.g4>*,.g3>*,.g2>*,.nums>li,.rows a,.big-card,.panel-dark{animation:rise linear both;animation-timeline:view();animation-range:entry 0% entry 55%}
+    .g4>:nth-child(2),.g3>:nth-child(3n+2),.g2>:nth-child(2n){animation-range:entry 12% entry 67%}
+    .g4>:nth-child(3),.g3>:nth-child(3n){animation-range:entry 24% entry 79%}
+    .g4>:nth-child(4){animation-range:entry 36% entry 91%}
+    @keyframes rise{from{opacity:0;transform:translateY(32px)}}
+    .split-photo>img,.photo-strip img,.art-fig img{animation:unmask linear both;animation-timeline:view();animation-range:entry 5% cover 38%}
+    @keyframes unmask{from{clip-path:inset(0 0 100% 0)}to{clip-path:inset(0 0 0 0)}}
+  }
+}

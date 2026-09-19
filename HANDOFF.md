@@ -599,3 +599,10 @@ Next step: Plan a Team Workshop
 - Metric rule: "about six hours" = the old manual **first draft** only, always beside the human-review caveat. Do not write "6 hours saved" or any net/ROI figure until review time is measured (next number worth publishing: how many cells the operations lead changes before publishing).
 - Privacy: no client name, staff names, links, keys or identifiable screenshots.
 - Proof card `caseProof(lang)` is on home, training, operations and workflows. Footer → Resources → Case studies. Header unchanged.
+
+## Motion (2026-09-19)
+
+- Restrained motion layer, no library (React Bits was the reference; the site is not React and stays framework-free): H1 blur-in on load, count-up on `.stat-bar` numbers, CSS scroll-driven reveals (`rise`, `unmask` on real photos), pointer spotlight on `.prog` cards. All in the "MOTION 2026-09" block at the end of `style.css` + ~12 lines in the global script in `src/layout.mjs`.
+- Guarantees: HTML always carries final numbers and full content; browsers without `animation-timeline: view()` show everything statically; everything is off under `prefers-reduced-motion`.
+- Amends the redesign rule "colour-only transitions". Still banned: glitch/terminal/particle/cursor effects.
+- `scripts/shots.sh` output near the bottom edge of the tall window can now show elements mid-reveal; compare with that in mind.
