@@ -200,3 +200,24 @@ test('brand assets exist: OG cards named in config, full favicon set', async () 
   const { access } = await import('node:fs/promises');
   for (const f of [OG_CARD.en, OG_CARD.zh, '/favicon.ico', '/favicon.svg', '/favicon-16.png', '/favicon-32.png', '/apple-touch-icon.png']) await access(new URL('..' + f, import.meta.url));
 });
+
+// Flywheel order: assessment result → free template → use case → training (and the worksheet templates lead back to the tool).
+test('every assessment area leads to a template first; that template leads on to a use case and training', async () => {
+  const { NEXT, CATEGORIES } = await import('../src/pages/freetools.mjs');
+  const { templateBySlug } = await import('../src/content/templates.mjs');
+  const pages = await allPages();
+  assert.deepEqual(Object.keys(NEXT).sort(), Object.keys(CATEGORIES).sort(), 'one destination per area');
+  for (const [lang, pre] of [['en', ''], ['zh', '/zh']]) {
+    const tool = find(pages, '/tools/ai-readiness-assessment/', lang).html;
+    for (const [area, [tpl, uc]] of Object.entries(NEXT)) {
+      assert.ok(templateBySlug[tpl], `${area} → template ${tpl} exists`);
+      assert.ok(tool.includes(`"${pre}/templates/${tpl}/"`), `${lang} result data links ${tpl}`);
+      assert.ok(tool.includes(`"${pre}/use-cases/${uc}/"`), `${lang} result data links use case ${uc}`);
+      const t = body(find(pages, `/templates/${tpl}/`, lang).html);
+      assert.ok(t.includes(`href="${pre}/use-cases/${templateBySlug[tpl].category}/"`), `${lang} ${tpl} → use case`);
+      assert.ok(t.includes(`href="${pre}/ai-training/"`), `${lang} ${tpl} → training`);
+      assert.ok(t.includes(`href="${pre}/book/"`), `${lang} ${tpl} → book`);
+      if (templateBySlug[tpl].standalone) assert.ok(t.includes(`href="${pre}/tools/ai-readiness-assessment/"`), `${lang} ${tpl} → back to the tool`);
+    }
+  }
+});

@@ -40,7 +40,15 @@ Titles/descriptions/canonicals/hreflang logic, JSON-LD builders, every `data-eve
 - New link-preview cards `img/og-2026-09.jpg` / `-zh.jpg` (headless Chrome, real Satoshi + workshop photo + J mark). Path lives in `config.mjs` `OG_CARD`; `/img/*` is immutable-cached, so a new card always gets a new file name. Old `og-training*.jpg` files stay for links already shared.
 - Favicon set regenerated from the J mark (`favicon.ico` 16/32/48, `favicon-16/32.png`, `apple-touch-icon.png` full-bleed) plus `favicon.svg`. `sh scripts/make-brand-assets.sh <suffix>` regenerates everything.
 
+## Follow-up (2026-09-19): assessment → template → use case → training
+- Six planning worksheets added (EN + ZH), one per assessment area that had no template: Team AI Training Brief (people), AI Workflow One-Pager (processes), Approved Source Inventory (knowledge), AI Tool Approval Checklist (tools), AI Data Boundaries One-Pager (governance), Two-Week AI Workflow Review (measurement). Usage → discovery worksheet and leadership → weekly executive summary already existed. 14 templates, 86 indexable URLs.
+- `NEXT` in `src/pages/freetools.mjs` maps every area to `[template, use case]`. The result screen now shows, per weak area: a "Free template" button first, then "How teams use it" (use case). No recommendation jumps straight to the training page any more; the Book CTA stays below the steps.
+- Worksheet templates (`standalone: true`) get their own framing sentence and link back to the assessment, which closes the loop template → tool.
+- A test enforces the order in both languages: area → template → use case + training + book (+ back to the tool for worksheets).
+- Fixed a live bug found while checking this: between 1001 and ~1150px (tablet landscape) the desktop header overflowed the viewport. The header now collapses to the menu at ≤1180px; `scripts/shots.sh` shoots 1024 as well.
+- The tool-approval and data-boundaries templates state that they are not legal or security advice.
+
 ## Known gaps
 1. Favicons are cached for 7 days; returning visitors see the old icon until then.
-2. Chinese workflows/templates were written for this release and, like the English ones, have not each been run by Jack on real work.
+2. Jack has run the ten workflows himself (confirmed 2026-09-19). The example outputs on the pages are still the fictional ones; swapping in anonymised real output is optional polish.
 3. `docs/site-audit.md` D4 (English-only library) is superseded by this release.

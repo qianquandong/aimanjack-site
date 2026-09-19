@@ -20,7 +20,7 @@ Two mechanisms, both in `src/layout.mjs`: any element with `data-event="x"` fire
 | `tool_start` | First answer in the assessment | `tool` | Started. |
 | `tool_complete` | Last answer given | `tool`, `score`, `band` | Completed. `tool_complete / tool_start` = completion rate. |
 | `tool_result_view` | Result screen shown (also when restored from session) | `tool` | — |
-| `tool_resource_click` | A recommended-next-step link on the result | `cta_position` = category | Which weak areas people act on. |
+| `tool_template_click` | The "Free template: …" button under a recommended step on the assessment result | `cta_position` = area (people, governance…) | Flywheel step 2: result → template. Compare with `tool_complete` to see how many finishers take a template. Replaces `tool_resource_click` (2026-09-19). |
 | `use_case_view` / `use_case_click` | Use-case page loads / card clicked | — | Which departments are interested. |
 | `workflow_view` / `workflow_click` | Workflow page loads / card clicked | — | — |
 | `template_view` / `template_click` | Template page loads / card clicked | — | — |
@@ -30,6 +30,8 @@ Two mechanisms, both in `src/layout.mjs`: any element with `data-event="x"` fire
 | `language_change` | EN ↔ 中文 switch | — | — |
 
 Not tracked on purpose: scroll depth, every outbound click, time on page. `tool_email_capture` and `contact_submit` from the PRD do not exist because there is no email capture and no contact form (docs/site-audit.md D8).
+
+Flywheel funnel (2026-09-19): `tool_complete` → `tool_template_click` → `template_copy` → `use_case_view` → `training_page_view` → `workshop_cta_click` → `booking_complete`.
 
 Funnel to build in GA4 Explorations: organic landing → (`workflow_view` | `template_view` | `tool_view`) → (`template_copy` | `tool_complete`) → `training_page_view` → `workshop_cta_click` → `booking_complete`.
 Never report `workshop_cta_click` as a booked meeting; only `booking_complete` is.

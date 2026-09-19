@@ -1,10 +1,11 @@
 // /tools/ hub + /tools/ai-readiness-assessment/. Deterministic, client-side, no email gate, no LLM (PRD §15–19, §84).
 // The legacy /tools/missed-call-calculator/ lives in tools.mjs and stays noindex and unlinked.
-import { SITE, R, L, href, card, related, band, crumbs, page } from '../resources.mjs';
+import { SITE, R, L, href, loc, card, related, band, crumbs, page } from '../resources.mjs';
 import { faq, pageHero } from '../components.mjs';
 import { faqPage } from '../schema.mjs';
 import { workflowBySlug } from '../content/workflows.mjs';
 import { templateBySlug } from '../content/templates.mjs';
+import { useCaseBySlug } from '../content/usecases.mjs';
 import { workflowCard, templateCard } from './workflows.mjs';
 
 const ARA_PATH = '/tools/ai-readiness-assessment/';
@@ -13,14 +14,22 @@ const ARA_PATH = '/tools/ai-readiness-assessment/';
 // 10 questions over 8 categories. Each option scores 0–4 in order. Category score = mean/4×100; overall = mean of all answers/4×100.
 // This is a self-assessment built from what AI Man Jack sees in training sessions. It is not a validated instrument and the page says so.
 export const CATEGORIES = {
-  people: ['People', 'Train by function, on real tasks', 'Comfort comes from doing one real task, not from a product tour. Train each team on work it already does.', '/ai-training/', 'How hands-on training works'],
-  usage: ['Usage', 'Start everyone on one narrow weekly task', 'Have each person list three weekly tasks and score them. The narrowest task that passes becomes their first workflow.', '/templates/ai-use-case-discovery-worksheet/', 'AI Use Case Discovery Worksheet'],
-  processes: ['Processes', 'Turn one-off chats into repeatable workflows', 'A chat gives an answer. A workflow has inputs, steps, a reviewer and an owner, and runs the same way next week.', '/workflows/', 'Browse AI workflows'],
-  knowledge: ['Knowledge', 'Document the sources AI is allowed to read', 'If nobody can point to the approved notes, price list or procedure, the model has nothing reliable to work from. Fix the source first.', '/workflows/sop-creation/', 'SOP creation workflow'],
-  tools: ['Tools', 'Approve one tool, and say so in writing', 'People are already using personal accounts. Pick one approved tool, make it available, and tell everyone which one it is.', '/use-cases/leadership/', 'AI for leaders and managers'],
-  governance: ['Governance', 'Put the data and sign-off rules on one page', 'Two lists: what must never go into an AI tool, and which outputs need a named person to check them before use.', '/use-cases/leadership/', 'AI for leaders and managers'],
-  leadership: ['Leadership', 'Name an owner and review progress weekly', 'Adoption stalls when it is everybody’s side project. One named owner, one page a week: what changed, what is at risk, what needs a decision.', '/workflows/executive-brief/', 'Executive brief workflow'],
-  measurement: ['Measurement', 'Review each workflow after two weeks: keep, change or stop', 'Ask three things: was it tested on real work, was it accurate enough to use, should it continue. Attendance and enthusiasm are not measures.', '/ai-training/#curriculum', 'The five-part method'],
+  people: ['People', 'Train by function, on real tasks', 'Comfort comes from doing one real task, not from a product tour. Train each team on work it already does.'],
+  usage: ['Usage', 'Start everyone on one narrow weekly task', 'Have each person list three weekly tasks and score them. The narrowest task that passes becomes their first workflow.'],
+  processes: ['Processes', 'Turn one-off chats into repeatable workflows', 'A chat gives an answer. A workflow has inputs, steps, a reviewer and an owner, and runs the same way next week.'],
+  knowledge: ['Knowledge', 'Document the sources AI is allowed to read', 'If nobody can point to the approved notes, price list or procedure, the model has nothing reliable to work from. Fix the source first.'],
+  tools: ['Tools', 'Approve one tool, and say so in writing', 'People are already using personal accounts. Pick one approved tool, make it available, and tell everyone which one it is.'],
+  governance: ['Governance', 'Put the data and sign-off rules on one page', 'Two lists: what must never go into an AI tool, and which outputs need a named person to check them before use.'],
+  leadership: ['Leadership', 'Name an owner and review progress weekly', 'Adoption stalls when it is everybody’s side project. One named owner, one page a week: what changed, what is at risk, what needs a decision.'],
+  measurement: ['Measurement', 'Review each workflow after two weeks: keep, change or stop', 'Ask three things: was it tested on real work, was it accurate enough to use, should it continue. Attendance and enthusiasm are not measures.'],
+};
+
+// Flywheel order (2026-09-19): result → free template → use case → training. Each area's first link is a template that fixes it.
+export const NEXT = {
+  people: ['team-ai-training-brief', 'leadership'], usage: ['ai-use-case-discovery-worksheet', 'leadership'],
+  processes: ['ai-workflow-one-pager', 'operations'], knowledge: ['approved-source-inventory', 'operations'],
+  tools: ['ai-tool-approval-checklist', 'leadership'], governance: ['ai-data-boundaries-one-pager', 'leadership'],
+  leadership: ['weekly-executive-summary', 'leadership'], measurement: ['two-week-workflow-review', 'leadership'],
 };
 
 export const QUESTIONS = [
@@ -70,7 +79,7 @@ function done(){var r=score(ans,A.questions),b=band(r.overall),keys=Object.keys(
  D.getElementById('ara-score').textContent=r.overall;D.getElementById('ara-band').textContent=b[1];D.getElementById('ara-band-text').textContent=b[2];D.getElementById('ara-ring').style.setProperty('--p',r.overall);
  D.getElementById('ara-bars').innerHTML=Object.keys(A.cats).map(function(k){return '<div class="bar-row"><span>'+A.cats[k][0]+'</span><span class="bar"><i style="width:'+r.cats[k]+'%"></i></span><b>'+r.cats[k]+'</b></div>'}).join('');
  D.getElementById('ara-strong').textContent=strong.map(function(k){return A.cats[k][0]}).join(' · ');D.getElementById('ara-weak').textContent=weak.map(function(k){return A.cats[k][0]}).join(' · ');
- D.getElementById('ara-next').innerHTML=weak.map(function(k){var c=A.cats[k];return '<li><strong>'+c[1]+'.</strong> '+c[2]+' <a href="'+c[3]+'" data-event="tool_resource_click" data-pos="'+k+'">'+c[4]+' &rarr;</a></li>'}).join('');
+ D.getElementById('ara-next').innerHTML=weak.map(function(k){var c=A.cats[k];return '<li><strong>'+c[1]+A.ui.dot+'</strong> '+c[2]+'<span class="ara-links"><a class="btn btn-secondary btn-sm" href="'+c[3]+'" data-event="tool_template_click" data-pos="'+k+'">'+A.ui.tpl+c[4]+' &rarr;</a><a href="'+c[5]+'" data-event="use_case_click" data-pos="tool-'+k+'">'+A.ui.uc+c[6]+' &rarr;</a></span></li>'}).join('');
  var goal=A.ui.goal.replace('{s}',r.overall).replace('{b}',b[1]).replace('{w}',weak.map(function(k){return A.cats[k][0]}).join(', '));D.getElementById('ara-book').href=A.ui.book+'?goal='+encodeURIComponent(goal);
  T('tool_complete',{tool:'ai-readiness-assessment',score:r.overall,band:b[1]});T('tool_result_view',{tool:'ai-readiness-assessment'});res.scrollIntoView({behavior:'smooth',block:'start'});res.focus()}
 root.addEventListener('change',function(e){if(e.target.name&&e.target.name.indexOf('q')===0){if(!started){started=true;T('tool_start',{tool:'ai-readiness-assessment'})}
@@ -83,14 +92,14 @@ if(ans.length===qs.length)done();else show();})();</script>`;
 // ── Chinese version of the assessment (same keys, same scoring) ───────────
 const ZH = {
   CATEGORIES: {
-    people: ['人员', '按职能培训，基于真实任务练习', '对 AI 的熟悉来自完成一项真实任务，而不是观看产品演示。让每个团队围绕自己已有的工作进行练习。', '/ai-training/', '了解实操培训方式'],
-    usage: ['使用', '让每个人从一项范围明确的每周任务开始', '请每位员工列出三项每周任务并打分，通过评估且范围最窄的那一项，就是其第一条工作流。', '/templates/ai-use-case-discovery-worksheet/', 'AI 应用场景发掘表'],
-    processes: ['流程', '将一次性的对话升级为可复用的工作流', '对话产出的是一个回答；工作流则有明确的输入、步骤、核验人与负责人，下周仍能以同样方式运行。', '/workflows/', '浏览 AI 工作流'],
-    knowledge: ['知识', '将允许 AI 读取的资料整理成文', '如果没有人能指出经批准的记录、价目表或流程文档，模型就没有可靠的依据。请先补齐资料来源。', '/workflows/sop-creation/', 'SOP 编写工作流'],
-    tools: ['工具', '批准一款工具，并以书面形式明确', '员工实际上已在使用个人账号。请选定一款经批准的工具，向全员开放，并明确告知是哪一款。', '/use-cases/leadership/', '管理层的 AI 应用'],
-    governance: ['治理', '用一页纸写明数据规则与签字规则', '列出两份清单：哪些信息不得输入 AI 工具；哪些输出在使用前必须由指定人员核验。', '/use-cases/leadership/', '管理层的 AI 应用'],
-    leadership: ['领导力', '指定负责人，并每周复盘进展', '当 AI 落地只是每个人的副业时，推进就会停滞。请指定一位负责人，每周用一页纸说明：有何变化、存在哪些风险、需要哪些决策。', '/workflows/executive-brief/', '管理层简报工作流'],
-    measurement: ['衡量', '每条工作流运行两周后复盘：保留、调整或停止', '只问三个问题：是否在真实工作中测试过？结果是否足够准确？是否应当继续？出勤率与热情不是衡量标准。', '/ai-training/#curriculum', '五个部分的方法'],
+    people: ['人员', '按职能培训，基于真实任务练习', '对 AI 的熟悉来自完成一项真实任务，而不是观看产品演示。让每个团队围绕自己已有的工作进行练习。'],
+    usage: ['使用', '让每个人从一项范围明确的每周任务开始', '请每位员工列出三项每周任务并打分，通过评估且范围最窄的那一项，就是其第一条工作流。'],
+    processes: ['流程', '将一次性的对话升级为可复用的工作流', '对话产出的是一个回答；工作流则有明确的输入、步骤、核验人与负责人，下周仍能以同样方式运行。'],
+    knowledge: ['知识', '将允许 AI 读取的资料整理成文', '如果没有人能指出经批准的记录、价目表或流程文档，模型就没有可靠的依据。请先补齐资料来源。'],
+    tools: ['工具', '批准一款工具，并以书面形式明确', '员工实际上已在使用个人账号。请选定一款经批准的工具，向全员开放，并明确告知是哪一款。'],
+    governance: ['治理', '用一页纸写明数据规则与签字规则', '列出两份清单：哪些信息不得输入 AI 工具；哪些输出在使用前必须由指定人员核验。'],
+    leadership: ['领导力', '指定负责人，并每周复盘进展', '当 AI 落地只是每个人的副业时，推进就会停滞。请指定一位负责人，每周用一页纸说明：有何变化、存在哪些风险、需要哪些决策。'],
+    measurement: ['衡量', '每条工作流运行两周后复盘：保留、调整或停止', '只问三个问题：是否在真实工作中测试过？结果是否足够准确？是否应当继续？出勤率与热情不是衡量标准。'],
   },
   QUESTIONS: [
     ['大多数员工在自己的工作中使用生成式 AI 工具的熟练程度如何？', ['大多数人从未尝试', '少数爱好者在用，多数人没有', '不少人试过，但很少经常使用', '大多数人会在部分任务中使用', '大多数人能熟练使用，并清楚何时不该使用']],
@@ -120,6 +129,7 @@ const UI = {
     eyebrow: 'Free tool · 3 min · no sign-up', h1: 'AI Readiness Assessment', lead: 'An AI readiness assessment checks whether a team has the people, processes, knowledge, tools, governance, leadership and measurement it needs to adopt AI. Answer 10 questions about your team and get a score with next steps.',
     n: '10 questions', back: '← Back', noscript: 'Scoring runs in your browser and needs JavaScript. The questions above still work as a discussion sheet: score each answer 0–4 from top to bottom.',
     scoreK: 'AI Man Jack AI Readiness Score', strong: 'Strongest areas', weak: 'Weakest areas', next: 'Recommended next steps', ctaH: 'Run this assessment with your team', ctaP: 'In a 30-minute call we go through your weakest areas and what a first workshop would cover. Your score is passed along so you do not have to repeat it.', retake: 'Retake', fine: 'A structured self-assessment, not a validated benchmark. Nothing you answered left your browser.',
+    dot: '.', tplLabel: 'Free template: ', ucLabel: 'How teams use it: ', path: 'Each step starts with a free template you can fill in today. From there you can see how teams like yours use it, and how to work through it with Jack.',
     step: 'Question {i} of {n}', goal: 'AI readiness score {s} ({b}). Weakest: {w}.',
     howH: 'How it works', howP: 'Ten multiple-choice questions cover eight areas. Each answer scores 0 to 4. Your overall score is the average across all answers, scaled to 100; each area gets its own score the same way. The calculation is fixed and runs in your browser — the same answers always give the same result.', th: ['Score', 'Stage', 'What it usually looks like'],
     whyH: 'Why this matters', whyP: 'Most teams do not fail at AI because of the model. They stall because nobody decided which tasks are worth it, which tool is allowed, what data is off-limits, or who checks the output. Those are organisational questions, and they can be answered in an afternoon once someone asks them.',
@@ -135,6 +145,7 @@ const UI = {
     eyebrow: '免费工具 · 3 分钟 · 无需注册', h1: 'AI 准备度评估', lead: 'AI 准备度评估用于判断团队在人员、流程、知识、工具、治理、领导力与衡量等方面，是否具备采用 AI 的条件。回答 10 个关于团队的问题，即可获得得分与后续建议。',
     n: '共 10 个问题', back: '← 返回', noscript: '评分在浏览器中完成，需要启用 JavaScript。上述问题仍可作为讨论表使用：每个选项自上而下记 0–4 分。',
     scoreK: 'AI Man Jack AI 准备度得分', strong: '优势维度', weak: '薄弱维度', next: '建议的后续步骤', ctaH: '与团队一起完成这项评估', ctaP: '在 30 分钟通话中，我们将梳理薄弱维度，并说明首场工作坊会涵盖的内容。得分会随预约一并提交，无需重复说明。', retake: '重新评估', fine: '这是一份结构化的自评，并非经过验证的基准。你的回答不会离开浏览器。',
+    dot: '。', tplLabel: '免费模板：', ucLabel: '团队如何使用：', path: '每一步都从一份今天就能填写的免费模板开始。你可以由此了解同类团队的用法，以及如何与 Jack 一起完成。',
     step: '第 {i} 题，共 {n} 题', goal: 'AI 准备度得分 {s}（{b}）。薄弱维度：{w}。',
     howH: '评估方式', howP: '十道选择题覆盖八个维度，每个回答计 0 至 4 分。总分为全部回答的平均值，并换算为百分制；各维度得分的计算方式相同。算法固定，并在浏览器中运行：相同的回答始终得到相同的结果。', th: ['得分', '阶段', '通常的表现'],
     whyH: '为什么重要', whyP: '多数团队在 AI 上受阻，并不是因为模型本身，而是因为没有人决定：哪些任务值得做、允许使用哪款工具、哪些数据不得输入、由谁核验输出。这些是组织层面的问题，只要有人提出，一个下午就能得出答案。',
@@ -159,8 +170,9 @@ const assessment = () => page({
   path: ARA_PATH, priority: 0.9,
   build: (lang) => {
     const u = UI[lang], r = R[lang], d = dataFor(lang), bc = crumbs(lang, [[r.tools, '/tools/'], [u.h1, ARA_PATH]]);
-    const cats = Object.fromEntries(Object.entries(d.cats).map(([k, v]) => [k, [v[0], v[1], v[2], href(lang, v[3]), v[4]]]));
-    const data = { questions: d.qs.map(([c]) => [c]), cats, bands: d.bands, ui: { step: u.step, goal: u.goal, book: L(lang, '/book/') } };
+    const cats = Object.fromEntries(Object.entries(d.cats).map(([k, v]) => { const [tpl, uc] = NEXT[k];
+      return [k, [v[0], v[1], v[2], href(lang, `/templates/${tpl}/`), loc(templateBySlug[tpl], lang).title, href(lang, `/use-cases/${uc}/`), loc(useCaseBySlug[uc], lang).title]]; }));
+    const data = { questions: d.qs.map(([c]) => [c]), cats, bands: d.bands, ui: { step: u.step, goal: u.goal, book: L(lang, '/book/'), dot: u.dot, tpl: u.tplLabel, uc: u.ucLabel } };
     const questions = d.qs.map(([c, q, opts], n) => `<fieldset class="ara-q"><legend><span class="ara-cat">${d.cats[c][0]}</span>${q}</legend>${opts.map((o, v) => `<label class="ara-opt"><input type="radio" name="q${n}" value="${v}"><span>${o}</span></label>`).join('')}</fieldset>`).join('\n');
     return {
       view: 'tool_view', title: u.title, description: u.desc,
@@ -177,7 +189,7 @@ ${questions}
 <div class="ara-top"><div class="ara-ring" id="ara-ring"><b id="ara-score">0</b><span>/ 100</span></div><div><h2 id="ara-band" class="h2-sm">—</h2><p id="ara-band-text" class="muted"></p></div></div>
 <div id="ara-bars" class="bars"></div>
 <div class="g2 ara-sw"><div class="card" style="padding:24px"><h3>${u.strong}</h3><p id="ara-strong"></p></div><div class="card" style="padding:24px"><h3>${u.weak}</h3><p id="ara-weak"></p></div></div>
-<h3 style="margin-top:32px">${u.next}</h3><ol id="ara-next" class="ara-next"></ol>
+<h3 style="margin-top:32px">${u.next}</h3><p class="muted" style="font-size:15px;margin-top:6px">${u.path}</p><ol id="ara-next" class="ara-next"></ol>
 <div class="ara-cta"><h3>${u.ctaH}</h3><p>${u.ctaP}</p>
 <div class="cta-row"><a class="btn btn-primary" id="ara-book" href="${L(lang, '/book/')}" data-event="book_workshop_click" data-pos="tool-result">${lang === 'zh' ? '预约团队培训' : 'Book a Workshop'}</a><button type="button" class="btn btn-secondary" id="ara-again">${u.retake}</button></div></div>
 <p class="muted" style="font-size:14px;margin-top:18px">${u.fine}</p>
@@ -191,7 +203,7 @@ ${questions}
 <h2>${u.areasH}</h2><ul>${Object.values(d.cats).map(([n, h, t]) => `<li><strong>${n}${lang === 'zh' ? '：' : '.'}</strong> ${t}</li>`).join('')}</ul>
 <h2>${u.bestH}</h2><ul>${u.best.map((x) => `<li>${x}</li>`).join('')}</ul>
 <h2>${u.faqH}</h2></div>${faq(lang, d.faq, { heading: false })}</div></section>
-${related(u.relK, u.relH, [templateCard(templateBySlug['ai-use-case-discovery-worksheet'], lang), workflowCard(workflowBySlug['sop-creation'], lang), workflowCard(workflowBySlug['executive-brief'], lang)])}
+${related(u.relK, u.relH, ['ai-data-boundaries-one-pager', 'ai-workflow-one-pager', 'ai-use-case-discovery-worksheet'].map((x) => templateCard(templateBySlug[x], lang)), [href(lang, '/templates/'), r.allTemplates])}
 ${band(lang, { h: u.bandH, sub: u.bandP, pos: 'tool-ara' })}`,
       jsonld: [{ '@type': 'WebApplication', '@id': `${SITE}${L(lang, ARA_PATH)}#app`, name: u.h1, url: `${SITE}${L(lang, ARA_PATH)}`, applicationCategory: 'BusinessApplication', operatingSystem: 'Any', browserRequirements: 'Requires JavaScript', inLanguage: lang, isAccessibleForFree: true,
         offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' }, description: u.desc, provider: { '@id': `${SITE}/#business` } },
