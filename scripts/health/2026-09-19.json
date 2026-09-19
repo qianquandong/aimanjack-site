@@ -4,162 +4,172 @@
   {
    "id": "up:/",
    "status": "PASS",
-   "detail": "HTTP 200 271ms"
+   "detail": "HTTP 200 341ms"
   },
   {
    "id": "perf:home-fetch",
    "status": "PASS",
-   "detail": "271ms full fetch (PSI weekly gives the real CWV)"
+   "detail": "341ms full fetch (PSI weekly gives the real CWV)"
   },
   {
    "id": "up:/zh/",
    "status": "PASS",
-   "detail": "HTTP 200 44ms"
+   "detail": "HTTP 200 113ms"
   },
   {
    "id": "up:/ai-training/",
    "status": "PASS",
-   "detail": "HTTP 200 45ms"
+   "detail": "HTTP 200 108ms"
   },
   {
    "id": "up:/zh/ai-training/",
    "status": "PASS",
-   "detail": "HTTP 200 42ms"
+   "detail": "HTTP 200 93ms"
   },
   {
    "id": "up:/blog/",
    "status": "PASS",
-   "detail": "HTTP 200 92ms"
+   "detail": "HTTP 200 38ms"
   },
   {
    "id": "up:/zh/blog/",
    "status": "PASS",
-   "detail": "HTTP 200 42ms"
+   "detail": "HTTP 200 37ms"
   },
   {
    "id": "up:/about/",
    "status": "PASS",
-   "detail": "HTTP 200 74ms"
+   "detail": "HTTP 200 105ms"
   },
   {
    "id": "up:/zh/about/",
    "status": "PASS",
-   "detail": "HTTP 200 68ms"
+   "detail": "HTTP 200 105ms"
   },
   {
    "id": "up:/contact/",
    "status": "PASS",
-   "detail": "HTTP 200 37ms"
+   "detail": "HTTP 200 41ms"
   },
   {
    "id": "up:/zh/contact/",
    "status": "PASS",
-   "detail": "HTTP 200 87ms"
+   "detail": "HTTP 200 36ms"
   },
   {
    "id": "up:/book/",
    "status": "PASS",
-   "detail": "HTTP 200 41ms"
+   "detail": "HTTP 200 99ms"
   },
   {
    "id": "up:/zh/book/",
    "status": "PASS",
-   "detail": "HTTP 200 71ms"
+   "detail": "HTTP 200 88ms"
   },
   {
    "id": "up:/tools/",
    "status": "PASS",
-   "detail": "HTTP 200 42ms"
+   "detail": "HTTP 200 110ms"
   },
   {
    "id": "up:/zh/tools/",
    "status": "PASS",
-   "detail": "HTTP 200 80ms"
+   "detail": "HTTP 200 92ms"
   },
   {
    "id": "up:/tools/ai-readiness-assessment/",
    "status": "PASS",
-   "detail": "HTTP 200 49ms"
+   "detail": "HTTP 200 41ms"
   },
   {
    "id": "up:/zh/tools/ai-readiness-assessment/",
    "status": "PASS",
-   "detail": "HTTP 200 79ms"
+   "detail": "HTTP 200 42ms"
   },
   {
    "id": "up:/use-cases/",
    "status": "PASS",
-   "detail": "HTTP 200 44ms"
+   "detail": "HTTP 200 39ms"
   },
   {
    "id": "up:/zh/use-cases/",
    "status": "PASS",
-   "detail": "HTTP 200 36ms"
+   "detail": "HTTP 200 41ms"
   },
   {
    "id": "up:/use-cases/sales/",
    "status": "PASS",
-   "detail": "HTTP 200 37ms"
+   "detail": "HTTP 200 122ms"
   },
   {
    "id": "up:/zh/use-cases/sales/",
    "status": "PASS",
-   "detail": "HTTP 200 84ms"
+   "detail": "HTTP 200 102ms"
   },
   {
    "id": "up:/workflows/",
    "status": "PASS",
-   "detail": "HTTP 200 70ms"
+   "detail": "HTTP 200 97ms"
   },
   {
    "id": "up:/zh/workflows/",
    "status": "PASS",
-   "detail": "HTTP 200 46ms"
+   "detail": "HTTP 200 39ms"
   },
   {
    "id": "up:/workflows/prospect-research/",
    "status": "PASS",
-   "detail": "HTTP 200 42ms"
+   "detail": "HTTP 200 95ms"
   },
   {
    "id": "up:/zh/workflows/prospect-research/",
    "status": "PASS",
-   "detail": "HTTP 200 71ms"
+   "detail": "HTTP 200 123ms"
   },
   {
    "id": "up:/templates/",
    "status": "PASS",
-   "detail": "HTTP 200 64ms"
+   "detail": "HTTP 200 38ms"
   },
   {
    "id": "up:/zh/templates/",
    "status": "PASS",
-   "detail": "HTTP 200 69ms"
+   "detail": "HTTP 200 95ms"
   },
   {
    "id": "up:/templates/sales-meeting-prep/",
    "status": "PASS",
-   "detail": "HTTP 200 72ms"
+   "detail": "HTTP 200 40ms"
   },
   {
    "id": "up:/zh/templates/sales-meeting-prep/",
    "status": "PASS",
-   "detail": "HTTP 200 69ms"
+   "detail": "HTTP 200 37ms"
+  },
+  {
+   "id": "up:/templates/ai-data-boundaries-one-pager/",
+   "status": "PASS",
+   "detail": "HTTP 200 39ms"
+  },
+  {
+   "id": "up:/zh/templates/ai-data-boundaries-one-pager/",
+   "status": "PASS",
+   "detail": "HTTP 200 36ms"
   },
   {
    "id": "up:/sitemap.xml",
    "status": "PASS",
-   "detail": "HTTP 200 31ms"
+   "detail": "HTTP 200 26ms"
   },
   {
    "id": "up:/robots.txt",
    "status": "PASS",
-   "detail": "HTTP 200 42ms"
+   "detail": "HTTP 200 45ms"
   },
   {
    "id": "up:/llms.txt",
    "status": "PASS",
-   "detail": "HTTP 200 35ms"
+   "detail": "HTTP 200 28ms"
   },
   {
    "id": "up:404",
@@ -174,7 +184,7 @@
   {
    "id": "sitemap:pages",
    "status": "PASS",
-   "detail": "74 urls"
+   "detail": "86 urls"
   },
   {
    "id": "sitemap:legacy-out",
@@ -1063,6 +1073,66 @@
   },
   {
    "id": "page:/zh/templates/sales-meeting-prep/:no-receptionist",
+   "status": "PASS",
+   "detail": "no receptionist marketing"
+  },
+  {
+   "id": "page:/templates/ai-data-boundaries-one-pager/:h1",
+   "status": "PASS",
+   "detail": "1 h1"
+  },
+  {
+   "id": "page:/templates/ai-data-boundaries-one-pager/:meta",
+   "status": "PASS",
+   "detail": "canonical=https://aimanjack.com/templates/ai-data-boundaries-one-pager/ robots=index, follow, max-image-preview:large, max-snippet:-1 hreflang=en,x-default,zh"
+  },
+  {
+   "id": "page:/templates/ai-data-boundaries-one-pager/:schema",
+   "status": "PASS",
+   "detail": "BreadcrumbList,CreativeWork,ListItem,ProfessionalService"
+  },
+  {
+   "id": "page:/templates/ai-data-boundaries-one-pager/:cta",
+   "status": "PASS",
+   "detail": "5 links to /book/ (Book a Workshop)"
+  },
+  {
+   "id": "page:/templates/ai-data-boundaries-one-pager/:cta-labels",
+   "status": "PASS",
+   "detail": "every CTA label matches its protocol"
+  },
+  {
+   "id": "page:/templates/ai-data-boundaries-one-pager/:no-receptionist",
+   "status": "PASS",
+   "detail": "no receptionist marketing"
+  },
+  {
+   "id": "page:/zh/templates/ai-data-boundaries-one-pager/:h1",
+   "status": "PASS",
+   "detail": "1 h1"
+  },
+  {
+   "id": "page:/zh/templates/ai-data-boundaries-one-pager/:meta",
+   "status": "PASS",
+   "detail": "canonical=https://aimanjack.com/zh/templates/ai-data-boundaries-one-pager/ robots=index, follow, max-image-preview:large, max-snippet:-1 hreflang=en,x-default,zh"
+  },
+  {
+   "id": "page:/zh/templates/ai-data-boundaries-one-pager/:schema",
+   "status": "PASS",
+   "detail": "BreadcrumbList,CreativeWork,ListItem,ProfessionalService"
+  },
+  {
+   "id": "page:/zh/templates/ai-data-boundaries-one-pager/:cta",
+   "status": "PASS",
+   "detail": "5 links to /book/ (Book a Workshop)"
+  },
+  {
+   "id": "page:/zh/templates/ai-data-boundaries-one-pager/:cta-labels",
+   "status": "PASS",
+   "detail": "every CTA label matches its protocol"
+  },
+  {
+   "id": "page:/zh/templates/ai-data-boundaries-one-pager/:no-receptionist",
    "status": "PASS",
    "detail": "no receptionist marketing"
   },
