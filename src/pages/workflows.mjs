@@ -2,6 +2,7 @@
 import { WORKFLOWS, workflowBySlug } from '../content/workflows.mjs';
 import { templateBySlug } from '../content/templates.mjs';
 import { useCaseBySlug } from '../content/usecases.mjs';
+import { caseProof } from './cases.mjs';
 import { SITE, R, L, href, loc, card, directory, related, darkCode, copyScript, band, crumbs, ticks, meta, page } from '../resources.mjs';
 
 const short = (t) => t.replace(/ with AI$/, '');
@@ -70,6 +71,7 @@ const index = () => page({
 <div style="grid-column:span 7;display:flex;flex-direction:column;gap:20px">${bc.html}<div class="eyebrow">${s.hubK}</div><h1 class="lg" style="font-size:clamp(42px,6.1vw,88px)">${s.hubH}</h1></div>
 <div style="grid-column:9 / span 4;display:flex;flex-direction:column;gap:16px"><p class="lead" style="font-size:18px">${s.hubP(n)}</p><div style="display:flex;gap:10px"><img src="/img/events/dallas-session3-hands-on.webp" width="1600" height="1066" alt="${s.imgA}" style="width:50%;height:120px;object-fit:cover;border-radius:14px"><img src="/img/events/dallas-session3-jack-presenting.webp" width="1600" height="1066" alt="${s.imgB}" style="width:50%;height:120px;object-fit:cover;border-radius:14px"></div></div></div></section>
 <section style="padding-bottom:64px"><div class="wrap">${directory({ lang, noun: s.noun, cards: WORKFLOWS.map((w) => workflowCard(w, lang, 'h2')) })}</div></section>
+${caseProof(lang, { real: true })}
 <section class="sec tight"><div class="wrap"><div class="g2">${promo(s.promoTool, href(lang, '/tools/ai-readiness-assessment/'), 'tool_click')}${promo(s.promoTpl, href(lang, '/templates/ai-use-case-discovery-worksheet/'), 'template_click')}</div></div></section>
 ${band(lang, { h: s.bandH, pos: 'workflows-index' })}`,
       jsonld: [{ '@type': 'CollectionPage', '@id': `${SITE}${L(lang, '/workflows/')}`, name: s.hubH, inLanguage: lang, isPartOf: { '@id': `${SITE}/#website` }, hasPart: WORKFLOWS.map((w) => ({ '@type': 'HowTo', name: loc(w, lang).title, url: `${SITE}${L(lang, `/workflows/${w.slug}/`)}` })) }, bc.ld],

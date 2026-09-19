@@ -6,6 +6,7 @@ import { TRAINING } from '../config.mjs';
 import { photoHero } from '../layout.mjs';
 import { SITE, R, L, href, loc, card, secHead, band, crumbs, ticks, page } from '../resources.mjs';
 import { workflowCard, templateCard } from './workflows.mjs';
+import { caseProof } from './cases.mjs';
 
 const PRICE = `$${TRAINING.halfDayFrom.toLocaleString()}`;
 const S = {
@@ -40,7 +41,7 @@ const detail = (u0) => page({
 <section class="sec" style="padding-bottom:96px"><div class="wrap g12" style="row-gap:16px"><div style="grid-column:span 3"><div class="eyebrow">${s.answerK}</div></div><p class="answer" style="grid-column:4 / span 9">${u.answer}</p></div></section>
 <section class="sec tight"><div class="wrap">${secHead(s.fitK, s.fitH(u.team), { lead: s.fitLead })}
 <div class="g4">${u.groups.map(([g, items], i) => `<div class="card" style="padding:28px;display:flex;flex-direction:column"><span style="font-size:13px;font-weight:700;color:var(--accent-text);margin-bottom:6px">${String(i + 1).padStart(2, '0')}</span><h3 style="margin-bottom:10px">${g}</h3>${items.map(item).join('')}</div>`).join('')}</div></div></section>
-<section class="sec tight"><div class="wrap">${secHead(s.startK, s.startH(r.dept[u.slug]), { more: [href(lang, '/workflows/'), r.allWorkflows] })}<div class="g3">${mine.map((w) => workflowCard(w, lang)).join('\n')}</div></div></section>
+<section class="sec tight"><div class="wrap">${secHead(s.startK, s.startH(r.dept[u.slug]), { more: [href(lang, '/workflows/'), r.allWorkflows] })}<div class="g3">${mine.map((w) => workflowCard(w, lang)).join('\n')}</div></div></section>${u.slug === 'operations' ? caseProof(lang, { real: true }) : ''}
 <section class="sec tight"><div class="wrap"><div class="panel-dark g12" style="row-gap:20px"><div style="grid-column:span 5;display:flex;flex-direction:column;gap:16px"><div class="eyebrow">${s.chargeK}</div><h2>${s.chargeH}</h2></div><div style="grid-column:7 / span 6">${ticks(u.watch, 'bang')}</div></div></div></section>
 <section class="sec tight"><div class="wrap"><div class="g2">${tpl ? templateCard(tpl, lang, 'h3', true) : ''}${card({ href: L(lang, '/ai-training/'), kicker: s.trainK, title: s.trainH(u.team), text: s.trainP, tags: s.trainTags, cta: R[lang].seeTraining.replace(' →', ''), event: 'training_page_click', oak: true })}</div></div></section>
 ${band(lang, { pos: `use-case-${u.slug}` })}`,

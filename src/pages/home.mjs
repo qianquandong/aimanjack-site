@@ -5,6 +5,7 @@ import { planBtn, photoHero, ctaBand, href, L } from '../layout.mjs';
 import { T } from '../i18n.mjs';
 import { business, person, website } from '../schema.mjs';
 import { USE_CASES } from '../content/usecases.mjs';
+import { caseProof } from './cases.mjs';
 import { templateBySlug } from '../content/templates.mjs';
 import { loc } from '../resources.mjs';
 import { templateCard } from './workflows.mjs';
@@ -77,6 +78,7 @@ const page = (lang) => {
 <div><div class="eyebrow" style="color:var(--on-dark-accent)">${c.roomK}</div><h2>${c.roomH}</h2><p>${c.roomP}</p>
 <div class="byline"><img src="/img/jack-portrait-256.webp" width="256" height="256" loading="lazy" decoding="async" alt="Jack Qian"><div><b>Jack Qian</b><span>${c.by}</span></div><a href="${L(lang, '/about/')}">${c.about}</a></div></div></section>
 
+${caseProof(lang)}
 <section class="sec" id="teams"><div class="wrap">${head(c.teamK, c.teamH, [href(lang, '/use-cases/'), c.teamMore])}
 <div class="rows">${USE_CASES.map((u, i) => { const x = loc(u, lang); return `<a href="${href(lang, `/use-cases/${u.slug}/`)}" data-event="use_case_click" data-pos="home"><span class="n">${n2(i)}</span><h3>${x.title}</h3><p>${x.card}</p><span class="go" aria-hidden="true">→</span></a>`; }).join('')}</div></div></section>
 

@@ -752,3 +752,15 @@ html[lang=zh] .nums .why{font-style:normal}
 .ara-links{display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px;margin-top:10px}.ara-links a:not(.btn){font-size:15px;font-weight:600;color:var(--accent-text)}.ara-next li{margin-bottom:20px}
 /* Header needs ~1150px for six links + language + CTA: collapse it to the menu before it overflows (tablet landscape, small laptops). */
 @media(max-width:1180px){.hdr-nav,.hdr .hdr-cta{display:none}.hdr-menu{display:block}.hdr-row{gap:10px}.hdr-row .spacer{flex-grow:1}}
+
+/* Case study (2026-09-19): numeric tables + before/now pair inside the article column */
+.art-body .table-wrap{margin:0;background:var(--surface)}
+.art-body .nums-t{width:100%;border-collapse:collapse;margin:0;font-size:16px}
+.art-body .nums-t th,.art-body .nums-t td{border:0;border-bottom:1px solid var(--line);padding:13px 18px;text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+.art-body .nums-t th:first-child{text-align:left;white-space:normal;min-width:180px;font-weight:500}
+.art-body .nums-t thead th{background:var(--card);font-size:13.5px;font-weight:700}
+.art-body .nums-t tbody tr:last-child>*{border-bottom:0}
+.art-body .ba .card{padding:24px 26px;display:flex;flex-direction:column;gap:14px}.art-body .ba ul{gap:10px;margin-left:20px}.art-body .ba li{font-size:16.5px;line-height:1.55}
+.art-body .kv{margin:0;background:var(--surface)}.art-body p.art-by{margin:0}
+@media(max-width:720px){.art-body .nums-t{font-size:14.5px}.art-body .nums-t th,.art-body .nums-t td{padding:11px 10px}.art-body .nums-t th:first-child{min-width:112px}.art-body .nums-t thead th{font-size:12.5px;white-space:normal}}
+.sec.tight.case-proof{padding:72px 0 0}.sec.tight.case-proof.flush{padding-top:0}.case-proof+.sec.tight{padding-top:20px}@media(max-width:720px){.sec.tight.case-proof{padding:48px 0 0}}

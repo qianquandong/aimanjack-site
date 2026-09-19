@@ -1,6 +1,10 @@
+// Case studies. CURRENT cases (src/content/cases.mjs) are indexable proof pages for the training positioning.
+// LEGACY receptionist-era cases below stay HTTP 200 + noindex, out of the sitemap, and are never linked from an indexable page.
 import { SITE, DEMO_DISPLAY } from '../config.mjs';
-import { L } from '../layout.mjs';
-import { pageHero, breadcrumb, caseCards, finalCta, CASES, BUSINESS_REF, T } from '../components.mjs';
+import { L, planBtn, ctaBand, href } from '../layout.mjs';
+import { pageHero, breadcrumb, finalCta, CASES, BUSINESS_REF, T } from '../components.mjs';
+import { card } from '../resources.mjs';
+import { CURRENT_CASES, LIVESTREAM } from '../content/cases.mjs';
 
 const DATE = '2026-09-09';
 const article = (lang, slug, headline, description) => ({
@@ -8,15 +12,64 @@ const article = (lang, slug, headline, description) => ({
   inLanguage: lang, author: { '@id': `${SITE}/#jack` }, publisher: { '@id': `${SITE}/#business` }, about: { '@id': `${SITE}/#service` },
 });
 
-// ── Index ──
+// ── Index (current cases only) ──
 const index = {
-  en: { title: 'Case Studies | AI Man Jack', description: 'Two real Dallas–Fort Worth deployments. Built, measured, validated. No invented numbers.',
-    crumb: 'Case studies', h1: 'Proof, as it becomes available.', sub: 'Every case study lists the problem, the implementation, the measurement period and the failures. Numbers appear only once they have been counted.' },
-  zh: { title: '案例 | AI Man Jack', description: '达拉斯—沃斯堡两个真实项目：电话和短信 agent。做了什么、在测什么、不编数字。',
-    crumb: '案例', h1: '证据，有多少给多少。', sub: '每个案例都写问题、实现方式、测量周期和出过的错。数字数过了才发。' },
+  en: { title: 'AI Workflow Case Studies | AI Man Jack', description: 'Real AI workflow implementations from AI Man Jack: the business problem, what was built, what failed, what was measured, and what still needs validation.',
+    crumb: 'Case studies', h1: 'Real workflows. Real constraints. Real failures.', sub: 'No invented ROI. Each case shows the process before automation, what was actually built, the rules and guardrails, measured results, failures, and what still needs validation.', read: 'Read the case study' },
+  zh: { title: 'AI 工作流案例 | AI Man Jack', description: 'AI Man Jack 的真实 AI 工作流落地案例：原始问题、实际搭建、失败、实测结果，以及仍待验证的部分。',
+    crumb: '案例', h1: '真实工作流，真实约束，也写真实踩坑。', sub: '不编 ROI。每个案例都写自动化前的流程、真正搭了什么、规则和护栏、测到的结果、出过的错，以及还没验证的地方。', read: '查看完整案例' },
+};
+const casePath = (c) => `/case-studies/${c.slug}/`;
+const currentCard = (c, lang, hl = 'h2') => card({ href: L(lang, casePath(c)), kicker: c[lang].eyebrow, title: c[lang].name, text: c[lang].card, tags: c[lang].tags, cta: index[lang].read, event: 'case_study_click', hl });
+
+// One compact proof block for the home, training, operations and workflows pages. Keeps the six-hour figure next to its human-review caveat.
+const PROOF = {
+  en: { k: 'Real workflow · In production', real: 'Real deployment · In production', h: 'A livestream agency’s weekly first draft used to take about six hours.', p: 'Now it is generated automatically from staff availability and client-owned rules. A person still reviews, edits and publishes the schedule. The case study includes the measurements and everything that broke.' },
+  zh: { k: '真实案例 · 已上线', real: '真实落地 · 已上线', h: '一家直播公司，以前每周排第一版班表大约要 6 小时。', p: '现在系统根据员工可播时间和客户自己维护的规则自动生成第一版，最终仍由运营负责人审核、修改并发布。案例里写了实测数据，也写了坏过的地方。' },
+};
+export const caseProof = (lang, { real = false } = {}) => { const x = PROOF[lang];
+  return `<section class="sec tight case-proof${real ? ' flush' : ''}" id="case-study"><div class="wrap">${card({ href: L(lang, casePath(LIVESTREAM)), kicker: real ? x.real : x.k, title: x.h, text: x.p, tags: LIVESTREAM[lang].tags, cta: index[lang].read, event: 'case_study_click', hl: 'h2', oak: true })}</div></section>`; };
+
+// ── Current case page: a proof page in the article layout (auto "on this page" list from the <h2>s) ──
+const STR = { en: { toc: 'On this page', ctaH: 'Have a process like this on your team?', ctaSub: 'Book a 30-minute call. Bring the task; we will work out what should be a rule, what AI can draft, and what a person must check.', moreK: 'Keep going', moreH: 'From this case to your team',
+    ops: ['Use case', 'AI for Operations', 'Where AI saves time in operations work, and which steps stay with a person.', 'Open use case'], wf: ['Workflows', 'Step-by-step AI workflows', 'Each with the prompt, an example, a human review checklist and when not to use it.', 'Browse workflows'], tr: ['Training', 'Corporate AI training', 'Each person brings a task they already do and leaves with a workflow and a way to verify it.', 'See how training works'] },
+  zh: { toc: '本页目录', ctaH: '你的团队里也有这样的流程？', ctaSub: '预约 30 分钟通话。带上那项任务，我们一起分清哪些该写成规则、哪些可以让 AI 起草、哪些必须由人核验。', moreK: '接下来', moreH: '从这个案例到你的团队',
+    ops: ['应用场景', '运营团队的 AI 应用', 'AI 在运营工作里能省时间的环节，以及哪些步骤要留给人。', '查看应用场景'], wf: ['工作流', '分步骤的 AI 工作流', '每条都有提示词、示例、人工核验清单，以及不适用的情况。', '浏览工作流'], tr: ['培训', '企业 AI 培训', '每位学员带一项真实任务来，带一条工作流和一套核验方法走。', '了解培训方式'] } };
+const table = (t) => `<div class="table-wrap"><table class="nums-t"><thead><tr>${t.head.map((h) => `<th scope="col">${h}</th>`).join('')}</tr></thead><tbody>${t.rows.map(([h, ...v]) => `<tr><th scope="row">${h}</th>${v.map((x) => `<td>${x}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+const ul = (items) => `<ul>${items.map((i) => `<li>${i}</li>`).join('')}</ul>`;
+const ol = (items) => `<ol>${items.map(([b, t]) => `<li><strong>${b}</strong> ${t}</li>`).join('')}</ol>`;
+
+const currentPage = (c0, lang) => {
+  const c = c0[lang], s = STR[lang], path = casePath(c0), url = `${SITE}${L(lang, path)}`;
+  const bc = breadcrumb(lang, [[index[lang].crumb, '/case-studies/'], [c.name, path]]);
+  const ops = href(lang, '/use-cases/operations/'), wf = href(lang, '/workflows/'), tr = L(lang, '/ai-training/');
+  const secs = [
+    [c.factsH, `<dl class="kv">${c.kv.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join('')}</dl>`],
+    [c.beforeH, `<p>${c.beforeP}</p><div class="g2 ba"><div class="card"><div class="eyebrow">${c.beforeK}</div>${ul(c.before)}</div><div class="card oakc"><div class="eyebrow">${c.nowK}</div>${ul(c.now)}</div></div><p class="callout">${c.caveat}</p>`],
+    [c.builtH, c.built.map((p) => `<p>${p}</p>`).join('')],
+    [c.llmH, `${c.llm.map((p) => `<p>${p}</p>`).join('')}<p class="callout"><strong>${c.lesson}</strong></p>`],
+    [c.notesH, ul(c.notes)],
+    [c.measureH, `<p>${c.measureP1}</p>${table(c.t1)}<p>${c.measureP2}</p>${table(c.t2)}<p>${c.measureP3}</p>`],
+    [c.failH, ol(c.fails)],
+    [c.openH, `${ul(c.open)}<p class="callout">${c.why}</p>`],
+    [c.teachH, `${ol(c.teach)}<p>${c.outro(ops, wf, tr)}</p>`],
+  ];
+  const toc = `<aside class="toc" aria-label="${s.toc}"><div class="eyebrow">${s.toc}</div><a href="#summary">${c.summaryH}</a>${secs.map(([h], i) => `<a href="#s${i + 1}">${h}</a>`).join('')}</aside>`;
+  const onward = [[s.ops, ops, 'use_case_click'], [s.wf, wf, 'resource_click'], [s.tr, tr, 'resource_to_training_click']].map(([[k, t, p, cta], h, ev]) => card({ href: h, kicker: k, title: t, text: p, cta, event: ev }));
+  return {
+    title: c.title, description: c.description, view: 'case_study_view', ogType: 'article', bodyClass: 'post',
+    body: `<div class="wrap"><header class="art-head" style="background:none;border:0">${bc.html}<div class="eyebrow">${c.eyebrow}</div><h1 class="sm">${c.h1}</h1><p class="lead">${c.sub}</p><p class="art-by">${c.trust}</p></header>
+<div class="art-grid">${toc}<article class="art-body post-body"><div class="takeaways" id="summary"><div class="eyebrow">${c.summaryH}</div><ul>${c.summary.map((t) => `<li><span>${t}</span></li>`).join('')}</ul></div>
+${secs.map(([h, html], i) => `<h2 id="s${i + 1}">${h}</h2>${html}`).join('\n')}
+<div class="cta-card on-dark"><div><b>${s.ctaH}</b><span>${s.ctaSub}</span></div>${planBtn(lang, { pos: 'case-study', cls: 'btn-sm' })}</div></article></div></div>
+<section class="sec tight"><div class="wrap"><div class="sec-head"><div><div class="eyebrow">${s.moreK}</div><h2>${s.moreH}</h2></div><a class="more" href="${L(lang, '/case-studies/')}">${index[lang].crumb} →</a></div><div class="g3">${onward.join('')}</div></div></section>
+${ctaBand(lang, { pos: 'case-study-final' })}`,
+    jsonld: [{ '@type': 'Article', '@id': url, headline: c.h1, description: c.description, inLanguage: lang, datePublished: c0.date, dateModified: c0.updated || c0.date,
+      author: { '@id': `${SITE}/#jack` }, publisher: { '@id': `${SITE}/#business` }, mainEntityOfPage: url }, BUSINESS_REF, bc.ld],
+  };
 };
 
-// ── Case pages ──
+// ── Legacy case pages (noindex) ──
 const own = {
   en: {
     title: 'Case Study: Our Demo Line | AI Man Jack',
@@ -82,13 +135,14 @@ const indexPage = (lang) => {
   return {
     title: c.title, description: c.description, view: 'case_study_view',
     body: `<div class="wrap">${bc.html}</div>${pageHero(lang, { eyebrow: c.crumb, h1: c.h1, sub: c.sub, ctas: false })}
-<section class="wrap" style="padding-bottom:64px">${caseCards(lang, { hl: 'h2' })}</section>${finalCta(lang)}`,
-    jsonld: [BUSINESS_REF, bc.ld],
+<section class="sec tight"><div class="wrap"><div class="g2">${CURRENT_CASES.map((x) => currentCard(x, lang)).join('')}</div></div></section>${ctaBand(lang, { pos: 'case-studies-index' })}`,
+    jsonld: [{ '@type': 'CollectionPage', '@id': `${SITE}${L(lang, '/case-studies/')}`, name: c.h1, description: c.description, inLanguage: lang, isPartOf: { '@id': `${SITE}/#website` } }, BUSINESS_REF, bc.ld],
   };
 };
 
 export const pages = [
-  { path: '/case-studies/', indexable: false, priority: 0.7, en: indexPage('en'), zh: indexPage('zh') },
+  { path: '/case-studies/', priority: 0.7, en: indexPage('en'), zh: indexPage('zh') },
+  ...CURRENT_CASES.map((c) => ({ path: casePath(c), priority: 0.8, en: currentPage(c, 'en'), zh: currentPage(c, 'zh') })),
   { path: '/case-studies/ai-man-jack/', indexable: false, priority: 0.6, en: casePage('en', 'ai-man-jack', own.en), zh: casePage('zh', 'ai-man-jack', own.zh) },
   { path: '/case-studies/car-dealership-sms/', indexable: false, priority: 0.6, en: casePage('en', 'car-dealership-sms', dealer.en), zh: casePage('zh', 'car-dealership-sms', dealer.zh) },
 ];

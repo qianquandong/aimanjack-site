@@ -105,7 +105,7 @@ test('global navigation links training and booking, never the receptionist clust
 test('legacy receptionist routes still render but are noindex and out of the sitemap', async () => {
   const pages = await allPages();
   const sitemap = await readFile(new URL('../sitemap.xml', import.meta.url), 'utf8');
-  for (const path of ['/ai-receptionist/', '/pricing/', '/industries/', '/industries/salons/', '/integrations/', '/tools/missed-call-calculator/', '/case-studies/', '/case-studies/car-dealership-sms/', '/blog/how-much-do-missed-calls-cost/']) {
+  for (const path of ['/ai-receptionist/', '/pricing/', '/industries/', '/industries/salons/', '/integrations/', '/tools/missed-call-calculator/', '/case-studies/ai-man-jack/', '/case-studies/car-dealership-sms/', '/blog/how-much-do-missed-calls-cost/']) {
     for (const lang of ['en', 'zh']) {
       const x = find(pages, path, lang);
       assert.ok(x, `legacy ${lang}:${path} must still be rendered`);
@@ -220,4 +220,36 @@ test('every assessment area leads to a template first; that template leads on to
       if (templateBySlug[tpl].standalone) assert.ok(t.includes(`href="${pre}/tools/ai-readiness-assessment/"`), `${lang} ${tpl} → back to the tool`);
     }
   }
+});
+
+test('case studies: the index and the livestream case are indexable proof pages; receptionist-era cases stay legacy and unlinked', async () => {
+  const pages = await allPages();
+  const sitemap = await readFile(new URL('../sitemap.xml', import.meta.url), 'utf8');
+  const CASE = '/case-studies/livestream-agency-scheduling/', OLD = ['/case-studies/ai-man-jack/', '/case-studies/car-dealership-sms/'];
+  for (const lang of ['en', 'zh']) {
+    const pre = lang === 'zh' ? '/zh' : '', idx = find(pages, '/case-studies/', lang), c = find(pages, CASE, lang);
+    for (const [x, path] of [[idx, '/case-studies/'], [c, CASE]]) {
+      assert.ok(x && !x.page.noindex, `${lang}:${path} indexable`);
+      assert.match(sitemap, new RegExp(`<loc>https://aimanjack\\.com${pre}${path}</loc>`), `${lang}:${path} in sitemap`);
+    }
+    assert.ok(idx.html.includes(`href="${pre}${CASE}"`), `${lang} index links the case`);
+    const b = body(c.html);
+    assert.match(ld(c.html), /"@type":"Article"/); assert.match(ld(c.html), /"@type":"BreadcrumbList"/);
+    for (const to of ['/use-cases/operations/', '/workflows/', '/ai-training/', '/book/']) assert.ok(b.includes(`href="${pre}${to}"`), `${lang} case → ${to}`);
+    // measured tables, all six failures, and the six-hour fact always next to its human-review caveat
+    for (const n of ['41%', '0%', '392', '456', '17%', '26%']) assert.ok(b.includes(`>${n}<`), `${lang} table value ${n}`);
+    assert.equal((b.match(/<ol><li><strong>/g) || []).length, 2); assert.ok((b.match(/<li><strong>/g) || []).length >= 12, 'six failures + six lessons');
+    assert.match(b, lang === 'zh' ? /大约要 6 小时，现在这一步已经自动生成。最终班表仍由运营负责人审核、修改并发布/ : /about six hours each week\. That first draft is now generated automatically; a person still reviews, edits and publishes/);
+    assert.doesNotMatch(b, /(6|six)[ -]hours? saved|saved? (about |roughly )?(6|six) hours|fully autonomous|zero human|100% automated/i);
+  }
+  // the proof block is on the home, training, operations and workflows pages, and keeps the caveat
+  for (const path of ['/', '/ai-training/', '/use-cases/operations/', '/workflows/']) {
+    const b = body(find(pages, path, 'en').html);
+    assert.ok(b.includes(`href="${CASE}"`), `${path} links the case`); assert.match(b, /still reviews, edits and publishes/);
+  }
+  assert.ok(!body(find(pages, '/use-cases/sales/', 'en').html).includes(CASE), 'only the operations use case carries it');
+  for (const x of pages.filter((x) => !x.page.noindex)) for (const o of OLD) assert.ok(!x.html.includes(`${o}"`), `${x.lang}:${x.p.path} links legacy case ${o}`);
+  const t = llms();
+  assert.match(t, /case-studies\/livestream-agency-scheduling\//); assert.match(t, /still reviews, edits and publishes/);
+  for (const o of OLD) assert.ok(!t.includes(o));
 });

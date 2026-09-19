@@ -15,6 +15,15 @@ Key facts:
 - Sister site: https://realagentusecases.com/ — Jack's weekly newsletter on AI agents and workflows working professionals actually run (learn there; train with AI Man Jack).
 - Profiles: ${JACK_SAME_AS.filter((u) => !/facebook|nextdoor|luma/.test(u)).join(' · ')}
 
+Real workflow case study (${SITE}/case-studies/livestream-agency-scheduling/):
+- A US TikTok Shop livestream agency schedules about 30 part-time hosts/operators across 8 brand rooms. Client name withheld.
+- Building the first weekly draft manually took about six hours.
+- A deterministic scheduling workflow (code, not a language model) now generates the first draft from staff availability, client-owned scoring/constraint sheets and room requirements.
+- A person still reviews, edits and publishes the final schedule. Net hours saved have not been measured and are not claimed.
+- In one measured iteration, operator changes mid-show fell from 41% in the hour-by-hour version to 0% in the show-based version.
+- The final measured iteration produced 456 role-hours with 10 required shows left unfilled; the remaining gaps were primarily evening/weekend availability constraints.
+- The page documents implementation failures and unvalidated items instead of claiming invented ROI.
+
 ## Pages
 
 - [Home](${SITE}/): what AI Man Jack helps teams do, entry points to tools, use cases, workflows and training
@@ -23,12 +32,13 @@ Key facts:
 - [AI use cases by team](${SITE}/use-cases/): sales, marketing, operations, leadership
 - [AI workflows](${SITE}/workflows/): step-by-step workflows, each with the prompt, an illustrative example, a human review checklist and when not to use it
 - [AI templates](${SITE}/templates/): copy-and-paste prompts and worksheets, including the four-question AI Use Case Discovery Worksheet
+- [Case studies](${SITE}/case-studies/): real workflow implementations — the problem, what was built, what was measured, what failed and what is still unvalidated
 - [Resources](${SITE}/blog/): field notes on training employees to use AI and on AI workflows
 - [About](${SITE}/about/): Jack Qian and ${LEGAL_NAME}
 - [Book a 30-minute call](${SITE}/book/): choose a US Central time to plan a team workshop
 - [Contact](${SITE}/contact/): book, email or text
 
-Chinese versions of the home, training, resources, about, contact and booking pages live under ${SITE}/zh/. Tools, use cases, workflows and templates are English only.
+Every page above also has a Chinese version under ${SITE}/zh/ (for example ${SITE}/zh/case-studies/livestream-agency-scheduling/).
 
 ## Optional
 

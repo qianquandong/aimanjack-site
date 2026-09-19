@@ -2,6 +2,7 @@
 import { SITE, EMAIL, SMS_TEL, SMS_DISPLAY, GBP_URL, TRAINING, PROOF } from '../config.mjs';
 import { planBtn, photoHero, ctaBand, L } from '../layout.mjs';
 import { breadcrumb } from '../components.mjs';
+import { caseProof } from './cases.mjs';
 import { business, person, faqPage } from '../schema.mjs';
 
 const SMS = `sms:${SMS_TEL}?body=TRAINING%20-%20`;
@@ -68,6 +69,7 @@ const page = (lang) => {
 <div style="grid-column:span 4;display:flex;flex-direction:column;gap:20px"><div class="eyebrow">${c.curK}</div><h2 style="font-size:clamp(36px,4.4vw,64px);line-height:1">${c.curH}</h2><p style="font-size:17px;line-height:1.65">${c.curP}</p><p style="margin-top:12px;padding-top:20px;border-top:1px solid var(--dark-line);font-size:15.5px;line-height:1.65">${c.curNote}</p></div>
 <ol class="nums" style="grid-column:6 / span 7">${c.cur.map(([h, p, why], i) => `<li><span class="n">${i + 1}</span><div><h3 style="font-size:26px">${h}</h3><p>${p}</p>${why ? `<span class="why">${why}</span>` : ''}</div></li>`).join('')}</ol></div></section>
 
+${caseProof(lang)}
 <section class="sec" id="formats"><div class="wrap">${head(c.fmtK, c.fmtH, c.fmtP)}
 <div class="g3" style="align-items:stretch">${c.fmt.map(([k, big, sub, chip, items, note], i) => `<div class="prog${i === 1 ? ' dark on-dark' : ''}"><span class="k">${k}</span><span class="big">${big}</span><span class="sub">${sub}</span>${chip ? `<span class="chip">${chip}</span>` : ''}<ul class="ticks">${items.map((x) => `<li><span>${x}</span></li>`).join('')}</ul>${planBtn(lang, { pos: 'training-format', label: c.quote })}<span class="note">${note}</span></div>`).join('')}</div></div></section>
 

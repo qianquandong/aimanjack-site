@@ -13,10 +13,10 @@ const PREVIEW = SITE !== PROD;
 // Indexable routes (PRD 2026-09-18 §77). Add /ai-training-dallas/, /ai-workflow-training/, /ai-workshops/ and the team pages as they ship.
 const EN = ["/", "/ai-training/", "/blog/", "/about/", "/contact/", "/book/"];
 // Resource library (bilingual since the 2026-09 redesign): hubs plus one detail page of each type as a canary.
-const EN_ONLY = ["/tools/", "/tools/ai-readiness-assessment/", "/use-cases/", "/use-cases/sales/", "/workflows/", "/workflows/prospect-research/", "/templates/", "/templates/sales-meeting-prep/", "/templates/ai-data-boundaries-one-pager/"];
+const EN_ONLY = ["/tools/", "/tools/ai-readiness-assessment/", "/use-cases/", "/use-cases/sales/", "/workflows/", "/workflows/prospect-research/", "/templates/", "/templates/sales-meeting-prep/", "/templates/ai-data-boundaries-one-pager/", "/case-studies/", "/case-studies/livestream-agency-scheduling/"];
 const PAGES = [...EN, ...EN_ONLY].flatMap((p) => [p, "/zh" + p]);
 // Legacy receptionist routes: must still resolve (200) but carry noindex and stay out of the sitemap.
-const LEGACY = ["/ai-receptionist/", "/pricing/", "/industries/", "/integrations/", "/tools/missed-call-calculator/", "/case-studies/", "/blog/how-much-do-missed-calls-cost/"];
+const LEGACY = ["/ai-receptionist/", "/pricing/", "/industries/", "/integrations/", "/tools/missed-call-calculator/", "/case-studies/ai-man-jack/", "/case-studies/car-dealership-sms/", "/blog/how-much-do-missed-calls-cost/"];
 // Receptionist-era marketing that must not appear on any indexable page (§79). Legal pages are the only exception.
 const BANNED = [/AI receptionist/i, /Call our AI demo/i, /missed[- ]call calculator/i, /\$199/, /\$299/, /\$599/, /appointment businesses/i, /AI 前台/, /拨打 AI 演示/];
 const BASELINE = "scripts/seo-baseline.json";

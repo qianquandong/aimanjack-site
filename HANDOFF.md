@@ -591,3 +591,11 @@ Next step: Plan a Team Workshop
 
 只要页面、schema、listing、外链锚文本、AI answer 或旧产品页开始把实体重新拉回 “AI receptionist company”，就进入排查队列。
 
+
+## Case studies (2026-09-19)
+
+- Current, indexable: `/case-studies/` + `/case-studies/livestream-agency-scheduling/` (EN + ZH). Content lives in `src/content/cases.mjs`; add the next case there and push it into `CURRENT_CASES`.
+- Legacy, noindex, unlinked: `/case-studies/ai-man-jack/`, `/case-studies/car-dealership-sms/`. Never put them back on the index.
+- Metric rule: "about six hours" = the old manual **first draft** only, always beside the human-review caveat. Do not write "6 hours saved" or any net/ROI figure until review time is measured (next number worth publishing: how many cells the operations lead changes before publishing).
+- Privacy: no client name, staff names, links, keys or identifiable screenshots.
+- Proof card `caseProof(lang)` is on home, training, operations and workflows. Footer → Resources → Case studies. Header unchanged.

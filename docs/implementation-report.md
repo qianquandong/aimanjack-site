@@ -67,3 +67,14 @@ P1: training detail pages under `/ai-training/`; AI Use Case Finder; AI ROI Calc
 8. `/case-studies/dallas-ai-hackathon/` — real photos, real numbers, already in hand
 9. `/blog/ai-agent-vs-ai-workflow/` — definition query, feeds the workflow hub
 10. `/use-cases/hr/` — only once three HR workflows exist
+
+## 2026-09-19 — First current case study: livestream agency scheduling
+
+- **New indexable pages (EN + ZH):** `/case-studies/` and `/case-studies/livestream-agency-scheduling/`. Build is now 90 indexable URLs.
+- **`/case-studies/` is no longer legacy.** It lists current cases only (`src/content/cases.mjs` → `CURRENT_CASES`). The two receptionist-era case details (`/case-studies/ai-man-jack/`, `/case-studies/car-dealership-sms/`) stay HTTP 200 + `noindex, follow`, out of the sitemap, and unlinked from every indexable page (test-enforced).
+- **Page type:** a proof page in the article layout — summary, key facts, before/now, what was built, why deterministic code and not an LLM, implementation notes, two measured tables, six failures, unvalidated items, six lessons, onward links, Book a Workshop. Schema: `Article` + `BreadcrumbList` + business reference. No Review schema, no custom OG image (no privacy-safe real image exists yet).
+- **The ~6-hour figure is scoped to first-draft construction only.** It always appears next to "a person still reviews, edits and publishes". "6 hours saved", ROI, revenue and net time are not claimed; review time has not been measured. A test fails the build if that wording appears.
+- **Internal proof links:** one compact card (`caseProof()` in `src/pages/cases.mjs`) on the home page, `/ai-training/`, `/use-cases/operations/` and `/workflows/`; "Case studies" added to the footer Resources column. No seventh header item — revisit at 2–3 current cases.
+- **llms.txt** (via `src/llms.mjs`) carries the case facts and URL; also corrected the stale line that said the library was English-only.
+- **health.mjs:** `/case-studies/` moved from `LEGACY` to the monitored indexable set together with the new case; the two old case details are now the legacy canaries.
+- **Not done on purpose:** no spin-off blog/workflow/city pages from this case. Create related content later from real query data.

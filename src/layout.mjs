@@ -50,7 +50,7 @@ function footer(lang) {
 <div class="ftr-cols">
 ${col(f.training, [[L(lang, '/ai-training/'), f.corporate], [L(lang, '/ai-training/') + '#formats', f.workshops], [href(lang, '/tools/'), f.tools], [href(lang, '/templates/'), f.templates], [href(lang, '/workflows/'), f.workflows]])}
 ${col(f.teams, [[href(lang, '/use-cases/sales/'), f.sales], [href(lang, '/use-cases/marketing/'), f.marketing], [href(lang, '/use-cases/operations/'), f.operations], [href(lang, '/use-cases/leadership/'), f.leadership]])}
-${col(f.resources, [[L(lang, '/blog/'), f.guides], ['https://realagentusecases.com/', f.newsletter]])}
+${col(f.resources, [[L(lang, '/blog/'), f.guides], [L(lang, '/case-studies/'), f.cases], ['https://realagentusecases.com/', f.newsletter]])}
 ${col(f.company, [[L(lang, '/about/'), f.about], [L(lang, '/contact/'), f.contact], [L(lang, BOOK_URL), f.book]])}
 </div></div>
 <p class="ftr-legal">${f.legal}</p>

@@ -76,6 +76,8 @@
 function run(){var t=q.value.trim().toLowerCase(),n=0;cs.forEach(function(c){var ok=(!t||c.dataset.search.indexOf(t)>-1)&&(!cat||c.dataset.cat===cat);c.hidden=!ok;if(ok)n++});em.hidden=n>0;d.querySelector('[data-dir-term]').textContent=q.value.trim()||cat}
 q.addEventListener('input',run);fs.forEach(function(b){b.addEventListener('click',function(){cat=b.dataset.dirF;fs.forEach(function(x){x.setAttribute('aria-pressed',String(x===b))});run()})});
 d.querySelector('[data-dir-reset]').addEventListener('click',function(){q.value='';cat='';fs.forEach(function(x,i){x.setAttribute('aria-pressed',String(i===0))});run();q.focus()})})();</script></div></section>
+<section class="sec tight case-proof flush" id="case-study"><div class="wrap"><a class="card link-card res-card oakc" href="/zh/case-studies/livestream-agency-scheduling/" data-search="一家直播公司，以前每周排第一版班表大约要 6 小时。 现在系统根据员工可播时间和客户自己维护的规则自动生成第一版，最终仍由运营负责人审核、修改并发布。案例里写了实测数据，也写了坏过的地方。 真实落地 · 已上线 运营 确定性排班 人工审核 " data-event="case_study_click">
+<div class="eyebrow">真实落地 · 已上线</div><h2 class="h3">一家直播公司，以前每周排第一版班表大约要 6 小时。</h2><p>现在系统根据员工可播时间和客户自己维护的规则自动生成第一版，最终仍由运营负责人审核、修改并发布。案例里写了实测数据，也写了坏过的地方。</p><div class="tags"><span class="tag">运营</span><span class="tag">确定性排班</span><span class="tag">人工审核</span></div><span class="res-cta">查看完整案例 →</span></a></div></section>
 <section class="sec tight"><div class="wrap"><div class="g2"><a class="card link-card res-card oakc" href="/zh/tools/ai-readiness-assessment/" data-event="tool_click" data-pos="workflows-hub"><div class="eyebrow">免费工具</div><h3 class="h3">不确定从哪里开始？花 3 分钟完成 AI 准备度评估。</h3><span class="res-cta">开始评估 →</span></a><a class="card link-card res-card oakc" href="/zh/templates/ai-use-case-discovery-worksheet/" data-event="template_click" data-pos="workflows-hub"><div class="eyebrow">模板</div><h3 class="h3">AI 应用场景发掘表：用四个问题为三项每周任务打分。</h3><span class="res-cta">查看模板 →</span></a></div></div></section>
 <section class="cta-band on-dark" id="start"><img src="/img/jack-classroom.webp" width="1000" height="750" loading="lazy" decoding="async" alt="">
 <div><h2>希望团队也搭建这些工作流？<br>我们基于<em>你们的</em>工作来做。</h2><p>预约 30 分钟通话，24 小时内收到推荐方案与书面报价。</p><a class="btn btn-primary btn-lg" href="/zh/book/" data-event="workshop_cta_click" data-pos="workflows-index">预约团队培训</a>
@@ -86,7 +88,7 @@ d.querySelector('[data-dir-reset]').addEventListener('click',function(){q.value=
 <div class="ftr-cols">
 <div><h2>AI 培训</h2><a href="/zh/ai-training/">企业培训</a><a href="/zh/ai-training/#formats">工作坊</a><a href="/zh/tools/">免费工具</a><a href="/zh/templates/">模板</a><a href="/zh/workflows/">工作流</a></div>
 <div><h2>按团队</h2><a href="/zh/use-cases/sales/">销售</a><a href="/zh/use-cases/marketing/">市场</a><a href="/zh/use-cases/operations/">运营</a><a href="/zh/use-cases/leadership/">管理层</a></div>
-<div><h2>资源</h2><a href="/zh/blog/">实践指南</a><a href="https://realagentusecases.com/">Real Agent Use Cases ↗</a></div>
+<div><h2>资源</h2><a href="/zh/blog/">实践指南</a><a href="/zh/case-studies/">案例</a><a href="https://realagentusecases.com/">Real Agent Use Cases ↗</a></div>
 <div><h2>公司</h2><a href="/zh/about/">关于</a><a href="/zh/contact/">联系</a><a href="/zh/book/">预约通话</a></div>
 </div></div>
 <p class="ftr-legal">拨打或发送短信至 (469) 425-4142，即表示您同意接收来自 AI Man Jack 的短信，包括我们未能接听来电时的自动回复。发送频率不定（通常每次未接来电一条）。可能产生短信及数据费用。回复 STOP 退订，回复 HELP 获取帮助。详见<a href="/zh/privacy">隐私政策</a>与<a href="/zh/sms-terms">短信条款</a>。</p>
