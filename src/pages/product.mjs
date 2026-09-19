@@ -67,7 +67,7 @@ const page = (lang) => {
     body: `<div class="wrap">${bc.html}</div>${pageHero(lang, { eyebrow: c.eyebrow, h1: c.h1, sub: c.sub })}
 <section class="section"><div class="wrap split"><div><h2>${c.tryH}</h2><p class="lead">${c.trySub}</p></div>${phoneCard(lang)}</div></section>
 ${howItWorks(lang)}
-<section class="section soft"><div class="wrap"><h2>${c.flowH}</h2><ol class="steps" style="grid-template-columns:repeat(3,1fr)">${c.flow.map(([h, p], i) => `<li><span class="num">0${i + 1}</span><h3>${h}</h3><p>${p}</p></li>`).join('')}</ol></div></section>
+<section class="section soft"><div class="wrap"><h2>${c.flowH}</h2><ol class="steps">${c.flow.map(([h, p], i) => `<li><span class="num">0${i + 1}</span><h3>${h}</h3><p>${p}</p></li>`).join('')}</ol></div></section>
 <section class="section"><div class="wrap split"><div>${eyebrow(c.callH)}<h2>${lang === 'zh' ? '一家美甲店的电话' : 'A nail salon call'}</h2><p class="lead">${lang === 'zh' ? '价格和时段都来自店主确认过的表。' : 'Prices and slots come from the owner’s approved sheet.'}</p></div>${transcript(lang, c.lines, c.result)}</div></section>
 ${capabilities(lang)}
 <section class="section"><div class="wrap"><h2>${c.needsH}</h2><p class="lead">${c.needsSub}</p><ul class="needs">${c.needs.map((n) => `<li>${n}</li>`).join('')}</ul></div></section>

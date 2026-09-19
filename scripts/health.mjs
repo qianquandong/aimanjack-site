@@ -6,12 +6,15 @@
 // added by the scheduled task on top of this (see HEALTH-CHECK.md).
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 
-const SITE = "https://aimanjack.com";
+const PROD = "https://aimanjack.com";
+// SITE=https://<branch>.aimanjack.pages.dev node scripts/health.mjs → same checks against a preview deploy (canonicals still point at PROD, by design).
+const SITE = (process.env.SITE || PROD).replace(/\/$/, "");
+const PREVIEW = SITE !== PROD;
 // Indexable routes (PRD 2026-09-18 §77). Add /ai-training-dallas/, /ai-workflow-training/, /ai-workshops/ and the team pages as they ship.
 const EN = ["/", "/ai-training/", "/blog/", "/about/", "/contact/", "/book/"];
-// English-only resource library (docs/site-audit.md D4): hubs plus one detail page of each type as a canary.
+// Resource library (bilingual since the 2026-09 redesign): hubs plus one detail page of each type as a canary.
 const EN_ONLY = ["/tools/", "/tools/ai-readiness-assessment/", "/use-cases/", "/use-cases/sales/", "/workflows/", "/workflows/prospect-research/", "/templates/", "/templates/sales-meeting-prep/"];
-const PAGES = [...EN, ...EN.map((p) => "/zh" + p), ...EN_ONLY];
+const PAGES = [...EN, ...EN_ONLY].flatMap((p) => [p, "/zh" + p]);
 // Legacy receptionist routes: must still resolve (200) but carry noindex and stay out of the sitemap.
 const LEGACY = ["/ai-receptionist/", "/pricing/", "/industries/", "/integrations/", "/tools/missed-call-calculator/", "/case-studies/", "/blog/how-much-do-missed-calls-cost/"];
 // Receptionist-era marketing that must not appear on any indexable page (§79). Legal pages are the only exception.
@@ -43,7 +46,7 @@ add("redirects", bad.length ? "FAIL" : "PASS", bad.join("; ") || "all _redirects
 
 // 3. Sitemap ↔ pages parity: every indexable page in, every legacy route out
 const sm = (await get("/sitemap.xml")).body;
-const smUrls = [...sm.matchAll(/<loc>([^<]+)<\/loc>/g)].map((x) => x[1].replace(SITE, ""));
+const smUrls = [...sm.matchAll(/<loc>([^<]+)<\/loc>/g)].map((x) => x[1].replace(PROD, ""));
 const missing = PAGES.filter((p) => !smUrls.includes(p));
 add("sitemap:pages", missing.length ? "FAIL" : "PASS", missing.length ? `missing ${missing.join(",")}` : `${smUrls.length} urls`);
 const leaked = LEGACY.filter((p) => smUrls.includes(p) || smUrls.includes("/zh" + p));
@@ -63,7 +66,7 @@ for (const p of PAGES) {
   const ld = [...h.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map((x) => x[1]);
   let types = "PARSE_ERROR", ldText = "";
   try { ldText = ld.join(""); types = [...new Set(ld.flatMap((j) => JSON.stringify(JSON.parse(j)).match(/"@type":"([A-Za-z]+)"/g) ?? []))].map((t) => t.split('"')[3]).sort().join(","); } catch {}
-  const self = SITE + p;
+  const self = PROD + p;
   snap[p] = {
     title: m(h, /<title>([^<]*)<\/title>/), description: m(h, /<meta name="description" content="([^"]*)"/),
     canonical: m(h, /<link rel="canonical" href="([^"]*)"/), hreflang: [...h.matchAll(/<link rel="alternate" hreflang="([^"]+)"/g)]   // <link> only: the header language switch also carries hreflang=
@@ -74,7 +77,7 @@ for (const p of PAGES) {
   };
   const s = snap[p];
   add(`page:${p}:h1`, s.h1Count === 1 ? "PASS" : "FAIL", `${s.h1Count} h1`);
-  add(`page:${p}:meta`, s.title && s.description && s.canonical === self && s.hreflang === (EN_ONLY.includes(p) ? "en,x-default" : "en,x-default,zh") && /^index/.test(s.robots) ? "PASS" : "FAIL", `canonical=${s.canonical} robots=${s.robots} hreflang=${s.hreflang}`);
+  add(`page:${p}:meta`, s.title && s.description && s.canonical === self && s.hreflang === "en,x-default,zh" && /^index/.test(s.robots) ? "PASS" : "FAIL", `canonical=${s.canonical} robots=${s.robots} hreflang=${s.hreflang}`);
   add(`page:${p}:schema`, types !== "PARSE_ERROR" && types.includes("ProfessionalService") ? "PASS" : "FAIL", types.slice(0, 80));
   add(`page:${p}:cta`, s.bookLinks >= 1 ? "PASS" : "FAIL", `${s.bookLinks} links to /book/ (Book a Workshop)`);
   // Label must say what the click does: "Call" → tel:, "Text" → sms:, "Email" → mailto:
@@ -84,9 +87,10 @@ for (const p of PAGES) {
   // Banned receptionist marketing, in visible copy and in JSON-LD (footer excluded: A2P legal text mentions missed calls)
   const hits = BANNED.filter((re) => re.test(visible(h)) || re.test(ldText)).map(String);
   add(`page:${p}:no-receptionist`, hits.length ? "FAIL" : "PASS", hits.join(" ") || "no receptionist marketing");
-  if (p === "/") { add("page:/:og-image", (await get(s.ogImage, { method: "HEAD" })).status === 200 ? "PASS" : "FAIL", s.ogImage); add("track:ga4", s.ga4 ? "PASS" : "FAIL", s.ga4 ? "GA4 present" : "GA4 missing → visitors and conversion rate are unmeasurable"); }
+  if (p === "/") { add("page:/:og-image", (await get(s.ogImage.replace(PROD, SITE), { method: "HEAD" })).status === 200 ? "PASS" : "FAIL", s.ogImage); add("track:ga4", s.ga4 ? "PASS" : "FAIL", s.ga4 ? "GA4 present" : "GA4 missing → visitors and conversion rate are unmeasurable"); }
 }
-if (process.argv.includes("--baseline") || !existsSync(BASELINE)) { writeFileSync(BASELINE, JSON.stringify({ capturedAt: today, pages: snap }, null, 1) + "\n"); add("drift", "PASS", `baseline captured → ${BASELINE}`); }
+if (PREVIEW) add("drift", "PASS", "skipped on a preview origin (baseline is production)");
+else if (process.argv.includes("--baseline") || !existsSync(BASELINE)) { writeFileSync(BASELINE, JSON.stringify({ capturedAt: today, pages: snap }, null, 1) + "\n"); add("drift", "PASS", `baseline captured → ${BASELINE}`); }
 else {
   const base = JSON.parse(readFileSync(BASELINE, "utf8")).pages, diffs = [];
   for (const p of PAGES) for (const k of ["title", "description", "canonical", "hreflang", "h1", "robots", "schemaTypes", "ogImage"]) if (base[p]?.[k] !== snap[p][k]) diffs.push(`${p} ${k}: "${base[p]?.[k]}" → "${snap[p][k]}"`);
@@ -103,7 +107,7 @@ add("geo:llms-current", /corporate AI training/i.test(llms) && /\$1,500/.test(ll
 add("creds:google-api", existsSync(`${process.env.HOME}/.config/claude-seo/google-api.json`) ? "PASS" : "WARN", "GSC/GA4/PSI via claude-seo need ~/.config/claude-seo/google-api.json");
 
 const out = { date: today, checks };
-writeFileSync(`scripts/health/${today}.json`, JSON.stringify(out, null, 1) + "\n");
+if (!PREVIEW) writeFileSync(`scripts/health/${today}.json`, JSON.stringify(out, null, 1) + "\n");
 for (const c of checks) console.log(`${c.status.padEnd(4)} ${c.id.padEnd(30)} ${c.detail}`);
 const fails = checks.filter((c) => c.status === "FAIL").length, warns = checks.filter((c) => c.status === "WARN").length;
 console.log(`\n${fails} FAIL, ${warns} WARN → scripts/health/${today}.json`);

@@ -1,120 +1,96 @@
-// / — what AI Man Jack helps teams accomplish, and the way into the library. Not an SEO encyclopedia (PRD §10):
-// curriculum, formats in detail, reviews and FAQ live on /ai-training/.
-import { SITE, EMAIL, TRAINING, PROOF, GBP_URL } from '../config.mjs';
-import { planBtn, L } from '../layout.mjs';
+// / — what AI Man Jack helps teams accomplish, and the way into the library (design canvas: Main / ZH-Main).
+// Curriculum, format details, reviews and FAQ live on /ai-training/. Numbers come from config.mjs.
+import { SITE, TRAINING, PROOF } from '../config.mjs';
+import { planBtn, photoHero, ctaBand, href, L } from '../layout.mjs';
 import { T } from '../i18n.mjs';
-import { published } from './blog.mjs';
-import { readingMinutes, postPath } from '../blog.mjs';
 import { business, person, website } from '../schema.mjs';
 import { USE_CASES } from '../content/usecases.mjs';
-import { workflowBySlug } from '../content/workflows.mjs';
 import { templateBySlug } from '../content/templates.mjs';
-import { card } from '../resources.mjs';
-import { workflowCard, templateCard } from './workflows.mjs';
-import { useCaseCard } from './usecases.mjs';
+import { loc } from '../resources.mjs';
+import { templateCard } from './workflows.mjs';
 import { TOOLS, toolCard } from './freetools.mjs';
 
-const PRICE = `$${TRAINING.halfDayFrom.toLocaleString()}`;
-const FEATURED = ['meeting-notes-to-action-items', 'sales-meeting-preparation', 'sop-creation'];
+const PRICE = `$${TRAINING.halfDayFrom.toLocaleString()}`, MAX = TRAINING.halfDayMax;
 
 const C = {
   en: {
     title: 'AI Man Jack | Practical AI Training for Teams',
     description: 'Practical AI training, workshops and workflows that help teams use ChatGPT, Claude, Copilot and AI agents in real work. Free tools and templates included.',
     og: { title: 'Make AI useful at work', description: 'Practical AI training and workflows that help teams use AI in real day-to-day work. Free tools, templates and step-by-step workflows.' },
-    h1: 'Make AI useful at work.', sub: 'Practical AI training and workflows that help teams use AI in real day-to-day work.',
-    trust: 'Training · Workshops · AI Workflows · Team Adoption', heroAlt: 'A full classroom in Dallas at one of Jack Qian’s hands-on AI workshops',
-    proof: [[`${PROOF.talks} talks`, `${PROOF.perTalk} people at each community AI event in Dallas and Plano`], [`${PROOF.hackathon} builders`, 'One AI hackathon: live demos after three hours'], [`${PROOF.rating} &#9733;`, `${PROOF.reviews} Google reviews, all from workshop attendees`]],
-    reviews: 'Read the reviews on Google',
+    eyebrow: 'Corporate AI training · Dallas onsite or remote · English or Chinese', h1: 'Make AI useful<br>at <em>work.</em>',
+    sub: 'Each person brings one task they already do every week and leaves with a working AI workflow for it — plus the habit of checking the output before it goes out.',
+    heroAlt: 'A full classroom in Dallas at one of Jack Qian’s hands-on AI workshops',
+    stats: [[PRICE, `Half-day workshop, up to ${MAX} people`], [PROOF.hackathon, 'builders at one Dallas AI hackathon'], [PROOF.perTalk, 'people at each community AI talk'], [`${PROOF.rating} ★`, `${PROOF.reviews} Google reviews, all from attendees`]],
     learnK: 'What teams learn', learnH: 'Four things your team can do after training',
     learn: [['Find the right AI use cases', 'Pick the tasks in their own week that are worth handing to AI, and skip the ones that are not.'], ['Build repeatable workflows', 'Go from a one-off prompt to a workflow that runs the same way next week.'], ['Verify AI output', 'Know which results can go straight out, which must be checked, and which should never be left to AI.'], ['Apply AI to real work', 'Leave with a working workflow for a task they already do, not a demo of someone else’s.']],
-    teamK: 'Explore by team', teamH: 'Where does your team start?', teamMore: 'All use cases',
-    toolsK: 'Free tools', toolsH: 'Get something useful in three minutes', toolsMore: 'All free tools',
-    wfK: 'AI workflows', wfH: 'Step-by-step, with the prompt and the review checklist', wfMore: 'Browse all workflows', enNote: '',
-    progK: 'Training programs', progH: 'Three ways to work together', progMore: 'Formats, curriculum and pricing',
-    prog: [['90 min', 'session', 'One task, one live build, one checklist. A first look for a whole department.'], ['Half day', 'hands-on workshop', `Everyone builds on their own task. From ${PRICE}, up to ${TRAINING.halfDayMax} people, at your office or remote.`], ['Multi-week', 'AI workflow program', 'One workflow per week, reviewed between sessions, with a playbook the team keeps.']],
-    roomK: 'Real rooms', roomH: 'Built in front of real people, then taught to companies',
-    photos: ['The 37-person Dallas AI hackathon: three hours, live demos at the end.', 'A team demonstrating what it built.', 'Hands-on session: everyone working on their own task.'],
-    howK: 'How engagement works', howH: 'From first call to a workflow that survives',
+    roomK: 'Real rooms', roomH: 'Built in front of real people, then taught to companies.',
+    roomP: `${['Zero', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine'][PROOF.talks] || PROOF.talks} community talks in Dallas and Plano and a ${PROOF.hackathon}-person hackathon came first. The method that survived those rooms is the one your team gets: your real work, turned into AI workflows that run.`,
+    roomAlt: 'Hands-on session: everyone working on their own task.', by: 'Dallas-based · teaches every session himself', about: 'About Jack →',
+    teamK: 'Explore by team', teamH: 'Where does your team start?', teamMore: 'All use cases →',
+    progK: 'Training programs', progH: 'Three ways to work together', progMore: 'Formats, curriculum and pricing →',
+    prog: [['session', '90 min', 'One task, one live build, one checklist. A first look for a whole department.'], ['hands-on workshop', 'Half day', `Everyone builds on their own task. From ${PRICE}, up to ${MAX} people, at your office or remote.`], ['AI workflow program', 'Multi-week', 'One workflow per week, reviewed between sessions, with a playbook the team keeps.']],
+    toolsK: 'Free tools', toolsH: 'Get something useful in three minutes', toolsMore: 'All free tools →',
+    strip: ['The 37-person Dallas AI hackathon', 'Jack presenting at a Dallas session', 'A team demonstrating what it built'],
+    howK: 'How engagement works', howH: 'From first call to a workflow that survives', step: 'Step',
     how: [['A 30-minute call', 'What your team does every week, which tools are approved, what you want people to be able to do.'], ['A written quote in 24 hours', 'A recommended format and a fixed price. No add-ons.'], ['The session, on your work', 'Each person builds one workflow on a task they already do, and catches one deliberately flawed output.'], ['A two-week check', 'Was it tested, was it accurate enough to use, should it continue, change or stop.']],
-    resK: 'Resources', resH: 'Field notes from the sessions', resMore: 'All resources', min: 'min read',
-    finalH: 'Bring one task. We’ll make it work.', finalSub: 'Book a 30-minute call. You’ll have a recommended format and a written quote within 24 hours.', or: 'Or email', about: 'Who teaches it',
+    bandH: 'Bring one task.<br>We’ll make it <em>work.</em>',
   },
   zh: {
-    title: 'AI Man Jack | 给团队的 AI 实战培训',
-    description: '实用的 AI 培训、工作坊和工作流，帮团队把 ChatGPT、Claude、Copilot 和 AI agent 用到真实工作里。另有免费工具和模板。',
-    og: { title: '让 AI 在工作里真的有用', description: '实用的 AI 培训和工作流，帮团队把 AI 用到每天的真实工作里。免费工具、模板和分步骤的工作流。' },
-    h1: '让 AI 在工作里真的有用', sub: '实用的 AI 培训和工作流，帮团队把 AI 用到每天的真实工作里。',
-    trust: '培训 · 工作坊 · AI 工作流 · 团队落地', heroAlt: '达拉斯，Jack Qian 的一场动手 AI workshop，教室坐满了人',
-    proof: [[`${PROOF.talks} 场讲座`, `达拉斯和 Plano 的社区 AI 活动，每场 ${PROOF.perTalk} 人`], [`${PROOF.hackathon} 人动手`, '一场 AI hackathon，三小时后现场 demo'], [`${PROOF.rating} &#9733;`, `${PROOF.reviews} 条 Google 评价，全部来自 workshop 学员`]],
-    reviews: '在 Google 上看评价',
-    learnK: '团队能学到什么', learnH: '培训之后，你的团队能做到这四件事',
-    learn: [['找到值得用 AI 的地方', '从自己一周的工作里挑出值得交给 AI 的任务，也知道哪些不值得。'], ['搭成能重复跑的工作流', '从一次性的 prompt，变成下周还能照样跑的工作流。'], ['学会核对 AI 的结果', '知道哪些结果能直接用，哪些必须检查，哪些根本不能交给 AI。'], ['用在自己的真实工作上', '带走的是自己手头那件事的工作流，不是别人的演示。']],
-    teamK: '按团队看', teamH: '你的团队从哪里开始？', teamMore: '全部应用场景',
-    toolsK: '免费工具', toolsH: '三分钟，拿到一个能用的结果', toolsMore: '全部免费工具',
-    wfK: 'AI 工作流', wfH: '分步骤，带 prompt，带人工核对清单', wfMore: '浏览全部工作流', enNote: '这几个栏目的内容目前是英文。',
-    progK: '培训形式', progH: '三种合作方式', progMore: '形式、课纲和价格',
-    prog: [['90 分钟', '分享', '一个任务、一次现场搭建、一份清单。适合整个部门先摸个底。'], ['半天', '动手 workshop', `每个人都在自己的任务上动手。${PRICE} 起，${TRAINING.halfDayMax} 人以内，上门或远程。`], ['多周', 'AI 工作流项目', '每周搭一条工作流，两次课之间复盘，团队留下一份 playbook。']],
-    roomK: '真实的教室', roomH: '先在真人面前磨出来，再教给公司',
-    photos: ['37 人的达拉斯 AI hackathon：三小时，结尾现场 demo。', '一个小组在演示自己搭出来的东西。', '动手环节：每个人在做自己的任务。'],
-    howK: '怎么合作', howH: '从第一通电话，到一条留得下来的工作流',
-    how: [['30 分钟通话', '你的团队每周在做什么、批准了哪些工具、希望大家学会做什么。'], ['24 小时内书面报价', '推荐的形式加一个固定价格，没有附加费。'], ['用你们的工作上课', '每个人拿自己已经在做的事搭一条工作流，再亲手揪出一个故意做错的结果。'], ['两周后回访', '有没有测过、准不准、够不够用，该继续、该改还是该停。']],
-    resK: '资源', resH: '课堂笔记', resMore: '全部资源', min: '分钟读完',
-    finalH: '带一个任务来，我们让它跑起来', finalSub: '预约 30 分钟通话，24 小时内给你推荐的形式和书面报价。', or: '或者发邮件到', about: '谁来教',
+    title: 'AI Man Jack | 面向团队的实操型 AI 培训',
+    description: '实操型 AI 培训、工作坊与工作流，帮助团队将 ChatGPT、Claude、Copilot 与 AI 智能体应用于真实工作，并提供免费工具与模板。',
+    og: { title: '让 AI 真正落地于日常工作', description: '实操型 AI 培训与工作流，帮助团队将 AI 应用于日常工作。提供免费工具、模板与分步骤工作流。' },
+    eyebrow: '企业 AI 培训 · 达拉斯现场或远程 · 中英文授课', h1: '让 AI 真正落地<br>于<em>日常工作</em>。',
+    sub: '每位学员带来一项每周都在做的工作任务，课程结束时带走一条可直接使用的 AI 工作流，并养成在输出前先核验结果的习惯。',
+    heroAlt: '达拉斯，Jack Qian 主讲的一场 AI 实操工作坊，教室座无虚席',
+    stats: [[PRICE, `半天工作坊，最多 ${MAX} 人`], [PROOF.hackathon, '人参与达拉斯 AI 黑客松'], [PROOF.perTalk, '每场社区 AI 讲座参与人数'], [`${PROOF.rating} ★`, `${PROOF.reviews} 条 Google 评价，均来自学员`]],
+    learnK: '培训成果', learnH: '培训结束后，团队能够做到的四件事',
+    learn: [['识别合适的 AI 应用场景', '从日常工作中筛选出值得交给 AI 的任务，同时明确哪些并不适合。'], ['搭建可复用的工作流', '从一次性的提示词，升级为下周依然能稳定运行的工作流。'], ['核验 AI 的输出', '清楚哪些结果可以直接使用、哪些必须复核、哪些不应交给 AI。'], ['应用于真实工作', '带走的是针对自身任务的可用工作流，而不是别人的演示案例。']],
+    roomK: '真实课堂', roomH: '先在真实课堂中打磨，再交付给企业团队。',
+    roomP: `在达拉斯与 Plano 举办的${['零', '一', '两', '三', '四', '五', '六', '七', '八', '九'][PROOF.talks] || PROOF.talks}场社区讲座和一场 ${PROOF.hackathon} 人黑客松，是这套方法的试验场。经过这些课堂检验的方法，正是你的团队将获得的：以真实工作为素材，搭建真正可运行的 AI 工作流。`,
+    roomAlt: '实操环节：每位学员都在处理自己的任务。', by: '常驻达拉斯 · 每场课程均亲自授课', about: '了解 Jack →',
+    teamK: '按团队浏览', teamH: '你的团队从哪里开始？', teamMore: '全部应用场景 →',
+    progK: '培训形式', progH: '三种合作方式', progMore: '形式、课程与价格 →',
+    prog: [['专题分享', '90 分钟', '一项任务、一次现场搭建、一份核验清单，适合整个部门初步了解。'], ['实操工作坊', '半天', `每位学员基于自己的任务动手搭建。${PRICE} 起，最多 ${MAX} 人，可上门或远程。`], ['AI 工作流项目', '多周', '每周落地一条工作流，课间复盘，最终沉淀为团队长期使用的操作手册。']],
+    toolsK: '免费工具', toolsH: '三分钟，获得一份可用的结果', toolsMore: '全部免费工具 →',
+    strip: ['37 人参与的达拉斯 AI 黑客松', 'Jack 在达拉斯的一场课程中讲解', '一个小组正在演示自己搭建的成果'],
+    howK: '合作流程', howH: '从首次沟通，到真正落地的工作流', step: '第 {n} 步',
+    how: [['30 分钟沟通', '了解团队的日常工作、已获批准的工具，以及希望达成的目标。'], ['24 小时内书面报价', '推荐合适的培训形式并给出固定价格，无任何附加费用。'], ['基于真实工作授课', '每位学员围绕自己的任务搭建一条工作流，并找出一个刻意设置的错误输出。'], ['两周后回访', '评估工作流是否经过实测、结果是否足够准确，以及应继续、调整还是停止。']],
+    bandH: '带一项任务来，<br>我们让它<em>真正运转</em>。',
   },
 };
 
-const PHOTOS = [['dallas-ai-hackathon-group', 1200, 910], ['dallas-ai-hackathon-live-demo', 1200, 900], ['dallas-session3-hands-on', 1600, 1066]];
+const STRIP = [['dallas-ai-hackathon-group', 1200, 910], ['dallas-session3-jack-presenting', 1600, 1066], ['dallas-ai-hackathon-live-demo', 1200, 900]];
 
 const page = (lang) => {
-  const c = C[lang], z = lang === 'zh', t = (p) => L(lang, p);
-  const more = (href, label) => `<p class="section-note"><a href="${href}">${label} &rarr;</a></p>`;
-  const en = c.enNote ? `<p class="muted" style="margin:-8px 0 18px;font-size:15px">${c.enNote}</p>` : '';
-  const posts = published.slice(0, 3).map((p) => { const x = p[lang]; return card({ href: t(postPath(p.slug)), kicker: `${readingMinutes(lang, x.sections)} ${c.min}`, title: x.h1, text: x.description, event: 'resource_click' }); }).join('');
+  const c = C[lang], n2 = (i) => String(i + 1).padStart(2, '0');
+  const head = (k, h, more) => `<div class="sec-head"><div><div class="eyebrow">${k}</div><h2>${h}</h2></div>${more ? `<a class="more" href="${more[0]}">${more[1]}</a>` : ''}</div>`;
   return {
-    title: c.title, description: c.description, og: c.og, view: 'home_view',
-    body: `
-<section class="wrap hero">
-<div><h1>${c.h1}</h1><p class="lead">${c.sub}</p>
-<div class="cta-row" style="margin-top:28px">${planBtn(lang, { pos: 'hero', id: 'hero-cta' })}<a class="btn btn-secondary" href="/tools/" data-event="free_tools_click" data-pos="hero">${T[lang].cta.tools}</a></div>
-<p class="trust-line">${c.trust}</p></div>
-<picture><source media="(max-width:720px)" srcset="/img/hero-workshop-960.webp"><img class="hero-img" src="/img/hero-workshop-1600.webp" srcset="/img/hero-workshop-960.webp 960w, /img/hero-workshop-1600.webp 1600w" sizes="(max-width:900px) 100vw, 560px" width="1600" height="1067" fetchpriority="high" decoding="async" alt="${c.heroAlt}"></picture>
-</section>
+    title: c.title, description: c.description, og: c.og, view: 'home_view', hero: 'photo',
+    body: `${photoHero({ photo: 'workshop', alt: c.heroAlt, stats: c.stats, inner: `<div class="hero-main">
+<div class="col-a"><div class="eyebrow">${c.eyebrow}</div><h1 class="xl">${c.h1}</h1></div>
+<div class="col-b"><p>${c.sub}</p><div class="cta-row">${planBtn(lang, { pos: 'hero', id: 'hero-cta' })}<a class="btn btn-secondary" href="${href(lang, '/tools/')}" data-event="free_tools_click" data-pos="hero">${T[lang].cta.tools}</a></div></div></div>` })}
 
-<section class="wrap" aria-label="Track record"><div class="proof-strip" style="margin-top:0">${c.proof.map(([b, s]) => `<div><strong>${b}</strong><span>${s}</span></div>`).join('')}</div>
-<p style="margin-top:14px;font-size:14.5px"><a class="review-link" href="${GBP_URL}" target="_blank" rel="noopener"><span aria-hidden="true">★★★★★</span> ${c.reviews}</a></p></section>
+<section class="sec" id="learn"><div class="wrap">${head(c.learnK, c.learnH)}
+<div class="g4">${c.learn.map(([h, p], i) => `<div class="oak" style="min-height:280px"><span class="n">${n2(i)}</span><h3>${h}</h3><p>${p}</p></div>`).join('')}</div></div></section>
 
-<div class="wrap">
-<section class="section" id="learn" style="margin-top:64px"><div class="kicker">${c.learnK}</div><h2>${c.learnH}</h2>
-<div class="grid-4" style="margin-top:26px">${c.learn.map(([h, p]) => `<div class="card"><h3>${h}</h3><p>${p}</p></div>`).join('')}</div></section>
+<section class="split-photo dark" id="rooms"><img src="/img/events/dallas-session3-hands-on.webp" width="1600" height="1066" loading="lazy" decoding="async" alt="${c.roomAlt}">
+<div><div class="eyebrow" style="color:var(--on-dark-accent)">${c.roomK}</div><h2>${c.roomH}</h2><p>${c.roomP}</p>
+<div class="byline"><img src="/img/jack-portrait-256.webp" width="256" height="256" loading="lazy" decoding="async" alt="Jack Qian"><div><b>Jack Qian</b><span>${c.by}</span></div><a href="${L(lang, '/about/')}">${c.about}</a></div></div></section>
 
-<section class="section" id="teams"><div class="kicker">${c.teamK}</div><h2>${c.teamH}</h2>${en}
-<div class="grid-4 res-grid" style="margin-top:26px">${USE_CASES.map((u) => useCaseCard(u)).join('')}</div>${more('/use-cases/', c.teamMore)}</section>
+<section class="sec" id="teams"><div class="wrap">${head(c.teamK, c.teamH, [href(lang, '/use-cases/'), c.teamMore])}
+<div class="rows">${USE_CASES.map((u, i) => { const x = loc(u, lang); return `<a href="${href(lang, `/use-cases/${u.slug}/`)}" data-event="use_case_click" data-pos="home"><span class="n">${n2(i)}</span><h3>${x.title}</h3><p>${x.card}</p><span class="go" aria-hidden="true">→</span></a>`; }).join('')}</div></div></section>
 
-<section class="section" id="tools"><div class="kicker">${c.toolsK}</div><h2>${c.toolsH}</h2>
-<div class="grid-2 res-grid" style="margin-top:26px">${TOOLS.map((x) => toolCard(x)).join('')}${templateCard(templateBySlug['ai-use-case-discovery-worksheet'])}</div>${more('/tools/', c.toolsMore)}</section>
+<section class="sec tight" id="programs"><div class="wrap">${head(c.progK, c.progH, [L(lang, '/ai-training/') + '#formats', c.progMore])}
+<div class="g3">${c.prog.map(([k, big, p], i) => `<div class="prog${i === 1 ? ' dark' : ''}"><span class="k">${k}</span><span class="big">${big}</span><p>${p}</p></div>`).join('')}</div></div></section>
 
-<section class="section" id="workflows"><div class="kicker">${c.wfK}</div><h2>${c.wfH}</h2>
-<div class="grid-3 res-grid" style="margin-top:26px">${FEATURED.map((s) => workflowCard(workflowBySlug[s])).join('')}</div>${more('/workflows/', c.wfMore)}</section>
+<section class="sec tight" id="tools"><div class="wrap">${head(c.toolsK, c.toolsH, [href(lang, '/tools/'), c.toolsMore])}
+<div class="g2">${TOOLS.map((x) => toolCard(x, lang)).join('')}${templateCard(templateBySlug['ai-use-case-discovery-worksheet'], lang)}</div></div></section>
 
-<section class="section" id="programs"><div class="kicker">${c.progK}</div><h2>${c.progH}</h2>
-<div class="tiers" style="margin-top:26px">${c.prog.map(([big, small, p]) => `<div class="price-card"><div class="big">${big} <small>${small}</small></div><p class="plus" style="border:0;margin-bottom:0">${p}</p></div>`).join('')}</div>
-<div class="cta-row" style="margin-top:28px">${planBtn(lang, { pos: 'home-programs' })}<a class="btn btn-secondary" href="${t('/ai-training/')}" data-event="training_page_click" data-pos="home-programs">${c.progMore}</a></div></section>
+<section class="photo-strip" aria-hidden="false">${STRIP.map(([f, w, h], i) => `<img src="/img/events/${f}.webp" width="${w}" height="${h}" loading="lazy" decoding="async" alt="${c.strip[i]}">`).join('')}</section>
 
-<section class="section" id="proof"><div class="kicker">${c.roomK}</div><h2>${c.roomH}</h2>
-<div class="grid-3" style="margin-top:26px">${PHOTOS.map(([f, w, h], i) => `<figure class="figure"><img src="/img/events/${f}.webp" width="${w}" height="${h}" loading="lazy" decoding="async" alt="${c.photos[i]}"><figcaption>${c.photos[i]}</figcaption></figure>`).join('')}</div>
-<p class="section-note"><a href="${t('/about/')}">${c.about}: Jack Qian &rarr;</a></p></section>
-
-<section class="section" id="how"><div class="kicker">${c.howK}</div><h2>${c.howH}</h2>
-<ol class="steps steps-4" style="margin-top:26px">${c.how.map(([h, p], i) => `<li><span class="num">0${i + 1}</span><h3>${h}</h3><p>${p}</p></li>`).join('')}</ol></section>
-
-<section class="section" id="resources"><div class="kicker">${c.resK}</div><h2>${c.resH}</h2>
-<div class="grid-3 res-grid" style="margin-top:26px">${posts}</div>${more(t('/blog/'), c.resMore)}</section>
-</div>
-
-<section class="section final-cta" id="start"><div class="wrap narrow center"><h2>${c.finalH}</h2><p class="lead">${c.finalSub}</p>
-<div class="cta-row center">${planBtn(lang, { pos: 'home-final', cls: 'btn-lg' })}</div><p class="final-number">${c.or} <a href="mailto:${EMAIL}" data-event="email_training_click" data-pos="final">${EMAIL}</a></p></div></section>
-`,
+<section class="sec" id="how"><div class="wrap">${head(c.howK, c.howH)}
+<ol class="steps-line">${c.how.map(([h, p], i) => `<li><span class="n">${c.step.includes('{n}') ? c.step.replace('{n}', i + 1) : `${c.step} ${i + 1}`}</span><h3>${h}</h3><p>${p}</p></li>`).join('')}</ol></div></section>
+${ctaBand(lang, { h: c.bandH, pos: 'home-final' })}`,
     jsonld: [business(lang, { full: true }), person(), website()],
   };
 };

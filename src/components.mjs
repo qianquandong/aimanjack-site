@@ -1,6 +1,6 @@
 import { SITE, EMAIL, DEMO_TEL, DEMO_DISPLAY, SMS_TEL, SMS_DISPLAY, PRICING, money, GBP_URL, BOOK_URL, langPath } from './config.mjs';
 import { T } from './i18n.mjs';
-import { planBtn, emailBtn, L, esc } from './layout.mjs';
+import { planBtn, emailBtn, ctaBand, L, esc } from './layout.mjs';
 import { AREA, BUSINESS_REF, faqPage } from './schema.mjs';
 
 // Legacy receptionist CTAs. Only the noindex legacy pages (product, pricing, industries, integrations, tools, cases) use these.
@@ -98,8 +98,8 @@ const FAQ = {
 // ── Blocks ────────────────────────────────────────────────────────────────
 export const eyebrow = (s) => `<p class="eyebrow">${s}</p>`;
 
-export function pageHero(lang, { eyebrow: e, h1, sub, ctas = true, pos = 'hero' }) {
-  return `<section class="page-hero"><div class="wrap narrow">${e ? eyebrow(e) : ''}<h1>${h1}</h1>${sub ? `<p class="lead">${sub}</p>` : ''}
+export function pageHero(lang, { eyebrow: e, h1, sub, ctas = true, pos = 'hero', crumbs = '', cls = '' }) {
+  return `<section class="page-hero"><div class="wrap">${crumbs}${e ? eyebrow(e) : ''}<h1 class="${cls}" style="max-width:1080px">${h1}</h1>${sub ? `<p class="lead" style="max-width:760px">${sub}</p>` : ''}
 ${ctas ? `<div class="cta-row">${planBtn(lang, { pos, id: 'hero-cta' })}${emailBtn(lang, { pos })}</div>` : ''}</div></section>`;
 }
 
@@ -260,15 +260,8 @@ export function faq(lang, items = FAQ[lang], { heading = true } = {}) {
 export const faqJsonLd = faqPage;
 export const HOME_FAQ = FAQ;
 
-// Final CTA on every training-first page: one primary action, email as the quiet alternative.
-export function finalCta(lang, { h, sub } = {}) {
-  const d = lang === 'zh'
-    ? ['带一个任务来，带着它跑起来走。', '预约 30 分钟通话。24 小时内给你推荐的形式和书面报价。', '或者发邮件到']
-    : ['Bring one task. Leave with it running.', 'Book a 30-minute call. You’ll have a recommended format and a written quote within 24 hours.', 'Or email'];
-  return `<section class="section final-cta" id="start"><div class="wrap narrow center"><h2>${h || d[0]}</h2><p class="lead">${sub || d[1]}</p>
-<div class="cta-row center">${planBtn(lang, { pos: 'final', cls: 'btn-lg' })}</div>
-<p class="final-number">${d[2]} <a href="mailto:${EMAIL}" data-event="email_training_click" data-pos="final">${EMAIL}</a></p></div></section>`;
-}
+// Closing call to action: the photo CTA band from layout.mjs. Kept under this name because every page module already calls it.
+export const finalCta = (lang, { h, sub } = {}) => ctaBand(lang, { h, sub, pos: 'final' });
 
 // GEO fact module (PRD §40): stand-alone factual paragraphs.
 export function geoFacts(lang) {

@@ -1,51 +1,76 @@
-// Shared primitives for the resource library (tools, use cases, workflows, templates). EN-only at launch (docs/site-audit.md D4).
-// One card, one directory, one hero, one related block — new content is a data object, never a new layout.
+// Shared primitives for the resource library (tools, use cases, workflows, templates), EN + ZH.
+// One card, one directory, one related block — new content is a data object, never a new layout.
+// Content objects carry English at the top level and Chinese under `zh`; loc() overlays it.
 import { SITE } from './config.mjs';
-import { L, esc, planBtn } from './layout.mjs';
+import { L, esc, ctaBand, href } from './layout.mjs';
 import { breadcrumb, BUSINESS_REF } from './components.mjs';
 
-export const LANG = 'en';
-export const DEPARTMENTS = { sales: 'Sales', marketing: 'Marketing', operations: 'Operations', leadership: 'Leadership' };
+export const loc = (o, lang) => (lang === 'zh' && o.zh ? { ...o, ...o.zh } : o);
+
+export const R = {
+  en: {
+    dept: { sales: 'Sales', marketing: 'Marketing', operations: 'Operations', leadership: 'Leadership' },
+    level: { beginner: 'Beginner', intermediate: 'Intermediate' },
+    all: 'All', filterBy: 'Filter by team', search: (n) => `Search ${n}…`, empty: (n) => [`No ${n} found for “`, `”. Try another search or `, `browse all ${n}`, '.'],
+    openWorkflow: 'Open workflow', openTemplate: 'Open template', copied: 'Copied', selected: 'Selected — press Ctrl/Cmd+C',
+    workflows: 'Workflows', templates: 'Templates', useCases: 'Use cases', tools: 'Free tools', allWorkflows: 'All workflows →', allTemplates: 'All templates →',
+    seeTraining: 'See how training works →',
+  },
+  zh: {
+    dept: { sales: '销售', marketing: '市场', operations: '运营', leadership: '管理层' },
+    level: { beginner: '入门', intermediate: '进阶' },
+    all: '全部', filterBy: '按团队筛选', search: (n) => `搜索${n}`, empty: (n) => [`未找到与“`, `”相关的${n}。请尝试其他关键词，或`, `浏览全部${n}`, '。'],
+    openWorkflow: '查看工作流', openTemplate: '查看模板', copied: '已复制', selected: '已选中，请按 Ctrl/Cmd+C 复制',
+    workflows: '工作流', templates: '模板', useCases: '应用场景', tools: '免费工具', allWorkflows: '全部工作流 →', allTemplates: '全部模板 →',
+    seeTraining: '了解培训方式 →',
+  },
+};
 
 export const tag = (s) => `<span class="tag">${s}</span>`;
 
-// card: whole surface is the link. `search` = extra text the directory filter matches on; `cat` = filter key.
-export const card = ({ href, kicker = '', title, text, tags = [], cta = '', cat = '', search = '', event = '', hl = 'h3' }) =>
-  `<a class="card link-card res-card" href="${href}"${cat ? ` data-cat="${cat}"` : ''} data-search="${esc([title, text, kicker, ...tags, search].join(' ').toLowerCase())}"${event ? ` data-event="${event}"` : ''}>
-${kicker ? `<p class="res-kicker">${kicker}</p>` : ''}<${hl} class="h3">${title}</${hl}><p>${text}</p>${tags.length ? `<p class="tags">${tags.map(tag).join('')}</p>` : ''}${cta ? `<span class="res-cta">${cta} <span aria-hidden="true">&rarr;</span></span>` : '<span class="arrow" aria-hidden="true">&rarr;</span>'}</a>`;
+// card: whole surface is the link. `search` = extra text the directory filter matches on; `cat` = filter key; oak = --card fill.
+export const card = ({ href: h, kicker = '', title, text, tags = [], cta = '', cat = '', search = '', event = '', hl = 'h3', oak = false }) =>
+  `<a class="card link-card res-card${oak ? ' oakc' : ''}" href="${h}"${cat ? ` data-cat="${cat}"` : ''} data-search="${esc([title, text, kicker, ...tags, search].join(' ').toLowerCase())}"${event ? ` data-event="${event}"` : ''}>
+${kicker ? `<div class="eyebrow">${kicker}</div>` : ''}<${hl} class="h3">${title}</${hl}><p>${text}</p>${tags.length ? `<div class="tags">${tags.map(tag).join('')}</div>` : ''}${cta ? `<span class="res-cta">${cta} →</span>` : ''}</a>`;
 
-// directory: search box + optional category buttons + card grid + no-match state. Filtering is ~15 lines of inline JS;
-// with JS off, every card is simply visible (and every link crawlable).
-export const directory = ({ noun, cards, filters = [] }) => `<div class="dir" data-dir>
-<div class="dir-controls"><label class="dir-search"><span class="sr-only">Search ${noun}</span><input type="search" placeholder="Search ${noun}…" autocomplete="off" data-dir-q></label>
-${filters.length ? `<div class="filters" role="group" aria-label="Filter by category"><button type="button" class="filter" aria-pressed="true" data-dir-f="">All</button>${filters.map(([k, l]) => `<button type="button" class="filter" aria-pressed="false" data-dir-f="${k}">${l}</button>`).join('')}</div>` : ''}</div>
-<div class="grid-3 res-grid">${cards.join('\n')}</div>
-<p class="dir-empty" data-dir-empty hidden role="status">No ${noun} found for “<span data-dir-term></span>”. Try another search or <button type="button" class="linkish" data-dir-reset>browse all ${noun}</button>.</p>
+// directory: search box + team filter + card grid + no-match state. ~15 lines of inline JS; with JS off every card is visible and crawlable.
+export const directory = ({ lang, noun, cards, filters = true }) => {
+  const r = R[lang], e = r.empty(noun);
+  return `<div class="dir" data-dir>
+<div class="dir-controls"><label class="dir-search"><span class="sr-only">${r.search(noun)}</span><input type="search" placeholder="${r.search(noun)}" autocomplete="off" data-dir-q></label>
+${filters ? `<div class="filters" role="group" aria-label="${r.filterBy}"><button type="button" class="filter" aria-pressed="true" data-dir-f="">${r.all}</button>${Object.entries(r.dept).map(([k, l]) => `<button type="button" class="filter" aria-pressed="false" data-dir-f="${k}">${l}</button>`).join('')}</div>` : ''}</div>
+<div class="g3">${cards.join('\n')}</div>
+<p class="dir-empty" data-dir-empty hidden role="status">${e[0]}<span data-dir-term></span>${e[1]}<button type="button" class="linkish" data-dir-reset>${e[2]}</button>${e[3]}</p>
 </div>
 <script>(function(){var d=document.querySelector('[data-dir]');if(!d)return;var q=d.querySelector('[data-dir-q]'),cs=[].slice.call(d.querySelectorAll('.res-card')),fs=[].slice.call(d.querySelectorAll('[data-dir-f]')),em=d.querySelector('[data-dir-empty]'),cat='';
 function run(){var t=q.value.trim().toLowerCase(),n=0;cs.forEach(function(c){var ok=(!t||c.dataset.search.indexOf(t)>-1)&&(!cat||c.dataset.cat===cat);c.hidden=!ok;if(ok)n++});em.hidden=n>0;d.querySelector('[data-dir-term]').textContent=q.value.trim()||cat}
 q.addEventListener('input',run);fs.forEach(function(b){b.addEventListener('click',function(){cat=b.dataset.dirF;fs.forEach(function(x){x.setAttribute('aria-pressed',String(x===b))});run()})});
 d.querySelector('[data-dir-reset]').addEventListener('click',function(){q.value='';cat='';fs.forEach(function(x,i){x.setAttribute('aria-pressed',String(i===0))});run();q.focus()})})();</script>`;
+};
 
-export const resourceHero = ({ crumbs, eyebrow = '', h1, lead = '', extra = '' }) =>
-  `<div class="wrap">${crumbs}</div><section class="page-hero res-hero"><div class="wrap narrow">${eyebrow ? `<p class="eyebrow">${eyebrow}</p>` : ''}<h1>${h1}</h1>${lead ? `<p class="lead">${lead}</p>` : ''}${extra}</div></section>`;
+export const secHead = (k, h, { lead = '', more } = {}) => `<div class="sec-head"><div>${k ? `<div class="eyebrow">${k}</div>` : ''}<h2>${h}</h2>${lead ? `<p class="lead">${lead}</p>` : ''}</div>${more ? `<a class="more" href="${more[0]}">${more[1]}</a>` : ''}</div>`;
 
 // related: a titled grid of cards. Empty list → nothing rendered.
-export const related = (title, cards) => cards.length ? `<section class="section soft"><div class="wrap"><h2 class="h2-sm">${title}</h2><div class="grid-3 res-grid">${cards.join('\n')}</div></div></section>` : '';
+export const related = (k, title, cards, more) => cards.length ? `<section class="sec tight"><div class="wrap">${secHead(k, title, { more })}<div class="g3">${cards.join('\n')}</div></div></section>` : '';
 
-// Copyable block (templates, workflow prompts). The copy button is tracked through the global [data-event] listener.
-export const copyBlock = (id, text, { label = 'Copy template', event = 'template_copy' } = {}) =>
-  `<div class="tpl"><div class="tpl-bar"><button type="button" class="btn btn-secondary btn-sm" data-copy="${id}" data-event="${event}" data-pos="${id}">${label}</button><span class="copy-status" role="status" aria-live="polite"></span></div><pre id="${id}" tabindex="0"><code>${esc(text)}</code></pre></div>`;
-export const copyScript = `<script>document.addEventListener('click',function(e){var b=e.target.closest('[data-copy]');if(!b)return;var t=document.getElementById(b.dataset.copy).textContent,s=b.parentNode.querySelector('.copy-status');
-function ok(){s.textContent='Copied';setTimeout(function(){s.textContent=''},2000)}
-if(navigator.clipboard&&isSecureContext)navigator.clipboard.writeText(t).then(ok);else{var r=document.createRange();r.selectNodeContents(document.getElementById(b.dataset.copy));var sel=getSelection();sel.removeAllRanges();sel.addRange(r);s.textContent='Selected — press Ctrl/Cmd+C'}});</script>`;
+// Copyable block on a dark ground (workflow prompt, template body). The button is tracked by the global [data-event] listener.
+export const darkCode = (lang, { id, label, text, copy, event = 'template_copy' }) =>
+  `<div style="min-width:0"><div class="code-head"><div class="eyebrow">${label}</div>${copy ? `<span><span class="copy-status" role="status" aria-live="polite"></span> <button type="button" class="copy-dark" data-copy="${id}" data-copied="${R[lang].copied}" data-selected="${R[lang].selected}" data-event="${event}" data-pos="${id}">${copy}</button></span>` : ''}</div>
+<div class="code-dark"><pre${id ? ` id="${id}"` : ''} tabindex="0">${esc(text)}</pre></div></div>`;
+export const copyScript = `<script>document.addEventListener('click',function(e){var b=e.target.closest('[data-copy]');if(!b)return;var el=document.getElementById(b.dataset.copy),s=b.parentNode.querySelector('.copy-status');
+function ok(){s.textContent=b.dataset.copied;setTimeout(function(){s.textContent=''},2000)}
+if(navigator.clipboard&&isSecureContext)navigator.clipboard.writeText(el.textContent).then(ok);else{var r=document.createRange();r.selectNodeContents(el);var sel=getSelection();sel.removeAllRanges();sel.addRange(r);s.textContent=b.dataset.selected}});</script>`;
 
-// Contextual commercial CTA for resource pages (PRD §29: 80–90% useful content, one relevant ask).
-export const trainingCta = ({ h, sub, pos, goal = '' }) => `<section class="section final-cta"><div class="wrap narrow center"><h2>${h}</h2><p class="lead">${sub}</p>
-<div class="cta-row center">${planBtn(LANG, { pos, cls: 'btn-lg' })}<a class="btn btn-secondary btn-lg" href="/ai-training/" data-event="training_page_click" data-pos="${pos}">See how training works</a></div></div></section>`;
+export const band = (lang, opts) => ctaBand(lang, opts);
+export const crumbs = (lang, items) => breadcrumb(lang, items);
+export const ticks = (items, cls = '') => `<ul class="ticks ${cls}">${items.map((i) => `<li><span>${i}</span></li>`).join('')}</ul>`;
+export const list = (items) => `<ul>${items.map((i) => `<li>${i}</li>`).join('')}</ul>`;
+export const meta = (pairs) => `<div class="meta-grid">${pairs.map(([k, v]) => `<div><span>${k}</span><b>${v}</b></div>`).join('')}</div>`;
 
-export const crumbs = (items) => breadcrumb(LANG, items);
-export const list = (items, cls = '') => `<ul${cls ? ` class="${cls}"` : ''}>${items.map((i) => `<li>${i}</li>`).join('')}</ul>`;
-export const page = ({ path, title, description, body, jsonld, view, priority = 0.7, changefreq = 'monthly' }) => ({ path, priority, changefreq, en: { title, description, body, jsonld: [...jsonld, BUSINESS_REF], view } });
+// Route factory: build(lang) → { title, description, body, jsonld, view, hero? } for both languages.
+export const page = ({ path, priority = 0.7, changefreq = 'monthly', build }) => {
+  const one = (lang) => { const p = build(lang); return { ...p, jsonld: [...p.jsonld, BUSINESS_REF] }; };
+  return { path, priority, changefreq, en: one('en'), zh: one('zh') };
+};
 
-export { SITE, L, esc, BUSINESS_REF };
+export { SITE, L, esc, href, BUSINESS_REF };

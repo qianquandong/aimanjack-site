@@ -17,16 +17,16 @@ const copy = {
   },
   zh: {
     title: '联系 AI Man Jack | 预约、邮件或短信',
-    description: '找 Jack 聊团队 AI 培训的三种方式：预约 30 分钟通话，发邮件到 jack@aimanjack.com，或发 TRAINING 到 (469) 425-4142。不用填表，不用等。',
-    crumb: '联系', h1: '跟 Jack 聊聊你的团队。',
-    sub: '不用填表。哪个方便用哪个。',
+    description: '就团队 AI 培训联系 Jack 的三种方式：预约 30 分钟通话、发送邮件至 jack@aimanjack.com，或发送 TRAINING 至 (469) 425-4142。无需填写表单。',
+    crumb: '联系', h1: '与 Jack 沟通你的团队需求。',
+    sub: '无需填写表单，选择最方便的方式即可。',
     cards: [
-      ['预约 30 分钟通话', '选个时间。Jack 打给你，问清楚你们团队每周在做什么，24 小时内给推荐的形式和书面报价。', '预约通话', BOOK_URL, 'booking_start', true],
-      ['给 Jack 发邮件', '适合说清楚团队有多少人、批准了哪些工具、希望大家学会做什么。回信的是 Jack 本人，不是客服队列。', '发邮件到 ' + EMAIL, `mailto:${EMAIL}?subject=${encodeURIComponent('团队 AI 培训')}`, 'email_training_click', false],
-      ['给 Jack 发短信', '发 TRAINING 加上公司名。Jack 当天或下一个工作日回。', '发短信到 ' + SMS_DISPLAY, `sms:${SMS_TEL}?body=TRAINING%20-%20`, 'sms_training_click', false],
+      ['预约 30 分钟通话', '选择一个时间，Jack 会致电给你，了解团队每周的工作，并在 24 小时内提供推荐的培训形式与书面报价。', '预约通话', BOOK_URL, 'booking_start', true],
+      ['发送邮件', '适合说明团队规模、已获批准的工具，以及希望员工掌握的能力。邮件由 Jack 本人回复。', '发送邮件至 ' + EMAIL, `mailto:${EMAIL}?subject=${encodeURIComponent('团队 AI 培训')}`, 'email_training_click', false],
+      ['发送短信', '发送 TRAINING 并附上公司名称。Jack 会在当天或下一个工作日回复。', '发送短信至 ' + SMS_DISPLAY, `sms:${SMS_TEL}?body=TRAINING%20-%20`, 'sms_training_click', false],
     ],
-    nextH: '接下来会怎样', next: ['Jack 回复你，通常当天或下一个工作日。', '一次 30 分钟通话，聊你的团队、大家重复在做的事，以及批准了哪些工具。', '24 小时内给推荐的形式和书面报价；想继续的话，把范围写清楚。'],
-    idH: '公司信息', id: [['公司', 'AI Man Jack LLC'], ['所在地', '德州达拉斯'], ['服务范围', '达拉斯—沃斯堡上门；远程不限地区'], ['语言', '英语、中文'], ['邮箱', EMAIL], ['电话 / 短信', SMS_DISPLAY]],
+    nextH: '后续流程', next: ['Jack 通常会在当天或下一个工作日回复。', '进行一次 30 分钟通话，了解团队情况、重复性任务以及已获批准的工具。', '24 小时内提供推荐的培训形式与书面报价；如决定合作，服务范围将以书面形式确认。'],
+    idH: '公司信息', id: [['公司', 'AI Man Jack LLC'], ['所在地', '德州达拉斯'], ['服务范围', '达拉斯—沃斯堡地区上门授课；其他地区远程授课'], ['授课语言', '英语、中文'], ['邮箱', EMAIL], ['电话／短信', SMS_DISPLAY]],
   },
 };
 
@@ -34,10 +34,10 @@ const page = (lang) => {
   const c = copy[lang], bc = breadcrumb(lang, [[c.crumb, '/contact/']]);
   return {
     title: c.title, description: c.description,
-    body: `<div class="wrap">${bc.html}</div>${pageHero(lang, { eyebrow: T[lang].footer.contact, h1: c.h1, sub: c.sub, ctas: false })}
-<section class="wrap" style="padding-bottom:64px"><div class="contact-grid">${c.cards.map(([h, p, label, href, ev, primary]) => `<div class="card"><h2 class="h3">${h}</h2><p>${p}</p><a class="btn ${primary ? 'btn-primary' : 'btn-secondary'}" href="${href.startsWith('/') ? L(lang, href) : href}"${primary ? ' id="hero-cta"' : ''} data-event="${ev}" data-pos="contact">${label}</a></div>`).join('')}</div></section>
-<section class="section soft"><div class="wrap split"><div><h2>${c.nextH}</h2><ol class="prose" style="margin-left:22px">${c.next.map((n) => `<li>${n}</li>`).join('')}</ol></div>
-<div><h2>${c.idH}</h2><dl class="kv">${c.id.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join('')}</dl></div></div></section>`,
+    body: `${pageHero(lang, { crumbs: bc.html, eyebrow: T[lang].footer.contact, h1: c.h1, sub: c.sub, ctas: false })}
+<section class="sec tight"><div class="wrap"><div class="g3">${c.cards.map(([h, p, label, href, ev, primary]) => `<div class="card" style="padding:32px;display:flex;flex-direction:column;gap:14px"><h2 class="h3">${h}</h2><p style="flex-grow:1">${p}</p><a class="btn ${primary ? 'btn-primary' : 'btn-secondary'}" href="${href.startsWith('/') ? L(lang, href) : href}"${primary ? ' id="hero-cta"' : ''} data-event="${ev}" data-pos="contact">${label}</a></div>`).join('')}</div></div></section>
+<section class="sec tight"><div class="wrap g2" style="gap:24px"><div class="big-card oakc"><h2>${c.nextH}</h2><ol style="margin-left:22px;display:flex;flex-direction:column;gap:10px">${c.next.map((n) => `<li>${n}</li>`).join('')}</ol></div>
+<div class="big-card"><h2>${c.idH}</h2><dl class="kv">${c.id.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join('')}</dl></div></div></section>`,
     jsonld: [{ '@type': 'ContactPage', '@id': `${SITE}${L(lang, '/contact/')}`, name: c.title, about: { '@id': `${SITE}/#business` } }, BUSINESS_REF, bc.ld],
   };
 };

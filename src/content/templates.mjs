@@ -1,3 +1,4 @@
+import { TPL_ZH } from './zh.mjs';
 // AI template library. One object → one page at /templates/<slug>/ (template: src/pages/templates.mjs).
 //
 // @typedef {Object} Template
@@ -279,4 +280,5 @@ STEP 5 — Before anyone uses the output
   },
 ];
 
+TEMPLATES.forEach((t) => { t.zh = TPL_ZH[t.slug]; });
 export const templateBySlug = Object.fromEntries(TEMPLATES.map((t) => [t.slug, t]));

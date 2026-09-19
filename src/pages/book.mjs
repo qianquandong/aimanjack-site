@@ -1,6 +1,6 @@
 // /book/ — Jack's own booking page (BOOKING-PLAN.md W1). Static shell + one inline script that talks to /v1/*.
 // Same page handles ?id=<booking> for reschedule / cancel (the id is the customer's manage token).
-import { SITE, SMS_TEL, SMS_DISPLAY } from '../config.mjs';
+import { SITE, EMAIL, SMS_TEL, SMS_DISPLAY } from '../config.mjs';
 import { pageHero, breadcrumb, BUSINESS_REF, T } from '../components.mjs';
 
 const BUSINESS = 'aimanjack', SERVICE = 'demo-call', TZ = 'America/Chicago';
@@ -9,7 +9,7 @@ const copy = {
   en: {
     title: 'Book a 30-Minute Call to Plan Your Team’s AI Training | AI Man Jack',
     description: 'Pick a time for a 30-minute call with Jack about AI training, a workshop or a workflow program for your team. Times are US Central. Change or cancel from your confirmation link.',
-    crumb: 'Book a call', eyebrow: 'Book a call', h1: 'Book a 30-minute call to plan your team’s workshop.',
+    crumb: 'Book a call', eyebrow: 'Book a call · 30 minutes · free', h1: 'Plan your team’s workshop in one call.',
     sub: 'Pick a day and a time. Jack calls you; you get a link to change or cancel.',
     s: {
       day: 'Pick a day', time: 'Pick a time', you: 'Your details', tz: 'All times are US Central (Dallas).',
@@ -24,22 +24,28 @@ const copy = {
     },
   },
   zh: {
-    title: '约 Jack 通 30 分钟电话，聊团队 AI 培训 | AI Man Jack',
-    description: '选一个时间，和 Jack 通 30 分钟电话，聊团队 AI 培训、工作坊或工作流项目。时间为美国中部时间，确认链接里可以改期或取消。',
-    crumb: '预约通话', eyebrow: '预约通话', h1: '约 30 分钟电话，聊聊团队的工作坊。',
-    sub: '选好日期和时间，Jack 打给你；改期、取消都从确认链接进。',
+    title: '预约 30 分钟通话，规划团队的 AI 工作坊 | AI Man Jack',
+    description: '选择一个时间，与 Jack 进行 30 分钟通话，沟通团队的 AI 培训、工作坊或工作流项目。时间均为美国中部时间，可通过确认链接改期或取消。',
+    crumb: '预约通话', eyebrow: '预约通话 · 30 分钟 · 免费', h1: '一次通话，<br>规划团队的工作坊。',
+    sub: '选择日期和时间，Jack 会致电给你；确认后你会收到可改期或取消的链接。',
     s: {
-      day: '选日期', time: '选时间', you: '你的信息', tz: '时间均为美国中部时间（达拉斯）。',
-      name: '姓名', phone: '手机号', email: '邮箱（选填，用来收确认邮件）', biz: '公司（选填）', goal: '团队人数，以及想让大家用 AI 做什么（选填）', submit: '确认预约', working: '正在预约…',
-      loading: '正在加载时间…', none: `接下来 30 天没有空档，给 Jack 发短信吧：${SMS_DISPLAY}`,
-      doneH: '约好了。', doneP: 'Jack 会在 {time} 打 {phone}。', doneLink: '改期或取消，用这个链接：',
-      manageH: '你的预约', manageP: '{time} · Jack 打 {phone}', change: '改时间', cancel: '取消预约', changeH: '选个新时间',
-      confirmMove: '把通话改到 {time}？', confirmCancel: '确定取消这个预约？', moved: '已改到 {time}。', cancelled: '这个预约已经取消了。',
-      closed: '离通话时间太近，网上改不了了。给 Jack 发短信：' + SMS_DISPLAY,
-      taken: '这个时间刚被约走了，换一个吧。', yes: '确定', no: '返回', moreDays: '更多日期', moreTimes: '更多时间', notFound: '没找到这个预约。',
-      error: `出了点问题。再试一次，或者给 Jack 发短信：${SMS_DISPLAY}`, bookAnother: '重新约一个时间',
+      day: '选择日期', time: '选择时间', you: '填写信息', tz: '所有时间均为美国中部时间（达拉斯）',
+      name: '姓名', phone: '手机号码', email: '邮箱（选填）', biz: '公司（选填）', goal: '团队规模，以及希望团队用 AI 做什么（选填）', submit: '确认预约', working: '正在预约…',
+      loading: '正在加载可选时间…', none: `未来 30 天暂无可预约时间，请发送短信至 ${SMS_DISPLAY} 联系 Jack。`,
+      doneH: '预约成功。', doneP: 'Jack 将于 {time} 致电 {phone}。', doneLink: '如需改期或取消，请使用此链接：',
+      manageH: '你的预约', manageP: '{time} · Jack 将致电 {phone}', change: '更改时间', cancel: '取消预约', changeH: '选择新的时间',
+      confirmMove: '将通话改至 {time}？', confirmCancel: '确定取消这次预约？', moved: '已改至 {time}。', cancelled: '该预约已取消。',
+      closed: '距离通话时间过近，无法在线更改。请发送短信至 ' + SMS_DISPLAY + ' 联系 Jack。',
+      taken: '该时间刚刚被预约，请选择其他时间。', yes: '确定', no: '返回', moreDays: '更多日期', moreTimes: '更多时间', notFound: '未找到该预约。',
+      error: `出现问题，请重试，或发送短信至 ${SMS_DISPLAY} 联系 Jack。`, bookAnother: '重新预约',
     },
   },
+};
+
+// Left column of the page (design: Book / ZH-Book).
+const INFO = {
+  en: { top: '30-minute call with Jack', steps: [['On the call:', 'what your team does every week, which tools are approved, what you want people to be able to do.'], ['Within 24 hours:', 'a recommended format and a fixed, written price. No add-ons.'], ['Then:', 'the session runs on your team’s real tasks — at your office or remote.']], alt: ['Rather text? Send <strong>TRAINING</strong> to', ', or email', '.'] },
+  zh: { top: '与 Jack 的 30 分钟通话', steps: [['通话中：', '了解团队每周的工作、已获批准的工具，以及希望达成的目标。'], ['24 小时内：', '提供推荐的培训形式和固定的书面报价，无附加费用。'], ['之后：', '基于团队的真实任务授课——上门或远程均可。']], alt: ['更习惯短信？发送 <strong>TRAINING</strong> 至', '，或发邮件至', '。'] },
 };
 
 // One script for both languages; strings come from window.BK.
@@ -91,12 +97,14 @@ bookingId?manage():loadTimes();
 </script>`;
 
 const page = (lang) => {
-  const c = copy[lang], s = c.s, bc = breadcrumb(lang, [[c.crumb, '/book/']]);
+  const c = copy[lang], s = c.s, info = INFO[lang], bc = breadcrumb(lang, [[c.crumb, '/book/']]);
   return {
     title: c.title, description: c.description, view: 'booking_start',
-    body: `<div class="wrap">${bc.html}</div>${pageHero(lang, { eyebrow: c.eyebrow, h1: c.h1, sub: c.sub, ctas: false })}
-<section class="wrap narrow bk" data-nosnippet>
-<p class="bk-tz">${s.tz}</p>
+    body: `<div class="wrap book-grid"><div class="book-info">${bc.html}<div class="eyebrow">${c.eyebrow}</div><h1 class="sm" style="font-size:clamp(40px,5vw,72px)">${c.h1}</h1><p class="lead">${c.sub}</p>
+<ol class="book-steps">${info.steps.map(([b, t], i) => `<li><span class="n">0${i + 1}</span><span><strong>${b}</strong> <span>${t}</span></span></li>`).join('')}</ol>
+<div class="book-alt"><img src="/img/jack-portrait-256.webp" width="256" height="256" alt="Jack Qian"><span>${info.alt[0]} <a href="sms:${SMS_TEL}?body=TRAINING%20-%20" data-event="sms_training_click" data-pos="book">${SMS_DISPLAY}</a>${info.alt[1]} <a href="mailto:${EMAIL}" data-event="email_training_click" data-pos="book">${EMAIL}</a>${info.alt[2]}</span></div></div>
+<div class="book-form"><section class="bk" data-nosnippet>
+<div class="bk-top"><b>${info.top}</b><span>${s.tz}</span></div>
 <div id="bk-manage" class="bk-card" hidden><h2 class="h3">${s.manageH}</h2><p id="bk-manage-p"></p><div class="cta-row" style="margin-top:16px"><button type="button" class="btn btn-secondary" id="bk-change">${s.change}</button><button type="button" class="btn btn-ghost" id="bk-cancel">${s.cancel}</button></div></div>
 <div id="bk-pick" hidden><h2 class="bk-h" id="bk-pick-h">${s.day}</h2><div id="bk-days" class="bk-chips"></div></div>
 <div id="bk-time" hidden><h2 class="bk-h">${s.time}</h2><div id="bk-slots" class="bk-chips"></div></div>
@@ -110,8 +118,7 @@ const page = (lang) => {
 <div id="bk-done" class="bk-card bk-done" hidden><h2 class="h3" id="bk-done-h"></h2><p id="bk-done-p"></p><p id="bk-done-linkwrap">${s.doneLink}<br><a id="bk-done-link" href="/book/"></a></p><p><a class="btn btn-secondary btn-sm" href="${lang === 'zh' ? '/zh/book/' : '/book/'}">${s.bookAnother}</a></p></div>
 <div id="bk-ask" class="bk-card bk-ask" hidden><p id="bk-ask-p"></p><div class="cta-row" style="margin-top:12px"><button type="button" class="btn btn-primary btn-sm" id="bk-yes">${s.yes}</button><button type="button" class="btn btn-ghost btn-sm" id="bk-no">${s.no}</button></div></div>
 <p id="bk-msg" class="bk-msg" role="status" aria-live="polite"></p>
-<p class="bk-alt">${lang === 'zh' ? '不想选时间？' : 'Rather not pick a time?'} <a href="sms:${SMS_TEL}?body=TRAINING%20-%20" data-event="sms_training_click" data-pos="book">${T[lang].cta.text} · ${SMS_DISPLAY}</a></p>
-</section>
+</section></div></div>
 <script>window.BK=${JSON.stringify({ lang, tz: TZ, business: BUSINESS, service: SERVICE, s })}</script>
 ${script}`,
     jsonld: [{ '@type': 'WebPage', '@id': `${SITE}${lang === 'zh' ? '/zh' : ''}/book/`, name: c.title, about: { '@id': `${SITE}/#business` } }, BUSINESS_REF, bc.ld],

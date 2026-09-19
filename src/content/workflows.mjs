@@ -1,3 +1,4 @@
+import { WF_ZH } from './zh.mjs';
 // AI workflow library. One object → one page at /workflows/<slug>/ (template: src/pages/workflows.mjs).
 //
 // @typedef {Object} Workflow
@@ -380,4 +381,5 @@ UPDATES:
   },
 ];
 
+WORKFLOWS.forEach((w) => { w.zh = WF_ZH[w.slug]; });   // Chinese overlay, read through loc() in src/resources.mjs
 export const workflowBySlug = Object.fromEntries(WORKFLOWS.map((w) => [w.slug, w]));

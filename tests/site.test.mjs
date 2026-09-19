@@ -24,13 +24,13 @@ const LEGAL = ['/privacy', '/terms', '/sms-terms'];
 
 test('home page positions AI Man Jack as practical AI training for teams, in both languages', async () => {
   const pages = await allPages();
-  for (const [lang, title, h1] of [['en', /Practical AI Training for Teams/, /Make AI useful at work/], ['zh', /AI 实战培训/, /让 AI 在工作里真的有用/]]) {
+  for (const [lang, title, h1] of [['en', /Practical AI Training for Teams/, /Make AI useful/], ['zh', /实操型 AI 培训/, /让 AI 真正落地/]]) {
     const home = find(pages, '/', lang);
     assert.ok(home, `missing ${lang} home`);
     assert.match(head(home.html), new RegExp(`<title>[^<]*${title.source}`));
     assert.match(home.html, new RegExp(`<h1[^>]*>[^<]*${h1.source}`));
     assert.match(home.html, /og-training(?:-zh)?\.jpg/);
-    assert.match(home.html, /Book a Workshop|预约工作坊/);
+    assert.match(home.html, /Book a Workshop|预约团队培训/);
     for (const p of ['/tools/', '/use-cases/', '/workflows/', '/ai-training/']) assert.match(home.html, new RegExp(`href="(?:/zh)?${p}`), `${lang} home links ${p}`);
     for (const re of BANNED) assert.doesNotMatch(body(home.html) + ld(home.html), re, `${lang} home contains ${re}`);
   }
@@ -94,8 +94,10 @@ test('global navigation links training and booking, never the receptionist clust
   assert.match(chrome, /href="\/book\/"/);
   assert.match(chrome, /Book a Workshop/);
   for (const p of ['/use-cases/', '/tools/', '/templates/', '/workflows/', '/blog/', '/about/']) assert.match(chrome, new RegExp(`href="${p}"`), `chrome links ${p}`);
-  for (const bad of ['/ai-receptionist/', '/pricing/', '/industries/', '/integrations/', '/tools/missed-call-calculator/', 'tel:+14695172968', '#formats"', '#teams"']) assert.doesNotMatch(chrome, new RegExp(bad.replace(/[/+]/g, '\\$&')), `chrome links ${bad}`);
+  for (const bad of ['/ai-receptionist/', '/pricing/', '/industries/', '/integrations/', '/tools/missed-call-calculator/', 'tel:+14695172968']) assert.doesNotMatch(chrome, new RegExp(bad.replace(/[/+]/g, '\\$&')), `chrome links ${bad}`);
   assert.doesNotMatch(home.html, /<dialog/, 'AI demo dialog is no longer injected');
+  const hdr = home.html.slice(home.html.indexOf('<header'), home.html.indexOf('</header>'));
+  assert.doesNotMatch(hdr, /href="[^"]*#/, 'every header nav item is its own page, never an anchor');
 });
 
 test('legacy receptionist routes still render but are noindex and out of the sitemap', async () => {
@@ -143,6 +145,7 @@ test('every workflow links to its use case, a related workflow, a tool or templa
   const { WORKFLOWS } = await import('../src/content/workflows.mjs');
   const { TEMPLATES } = await import('../src/content/templates.mjs');
   for (const w of WORKFLOWS) {
+    for (const lang of ['en', 'zh']) assert.ok(find(pages, `/workflows/${w.slug}/`, lang), `${lang} ${w.slug}`);
     const html = body(find(pages, `/workflows/${w.slug}/`, 'en').html);
     assert.match(html, new RegExp(`href="/use-cases/${w.department}/"`), `${w.slug} → use case`);
     assert.ok(w.related.length >= 2 && w.related.every((r) => html.includes(`href="/workflows/${r}/"`)), `${w.slug} → related workflows`);
@@ -156,9 +159,11 @@ test('every workflow links to its use case, a related workflow, a tool or templa
     assert.match(html, new RegExp(`href="/workflows/${t.workflows[0]}/"`), `${t.slug} → workflow`);
     assert.match(html, new RegExp(`href="/use-cases/${t.category}/"`), `${t.slug} → use case`);
   }
+  // The library exists in both languages (redesign 2026-09): each page advertises its twin, and zh pages link to zh pages.
   for (const x of pages.filter((x) => /^\/(tools|use-cases|workflows|templates)\//.test(x.p.path) && !x.page.noindex)) {
-    assert.deepEqual(x.page.langs, ['en'], `${x.p.path} is EN-only`);
-    assert.doesNotMatch(x.html, /hreflang="zh"/, `${x.p.path} must not advertise a zh version`);
+    assert.deepEqual(x.page.langs, ['en', 'zh'], `${x.p.path} is bilingual`);
+    assert.match(x.html, /hreflang="zh"/, `${x.p.path} advertises its zh version`);
+    if (x.lang === 'zh') assert.doesNotMatch(body(x.html), /href="\/(tools|use-cases|workflows|templates)\//, `zh ${x.p.path} links to an English library page`);
   }
 });
 

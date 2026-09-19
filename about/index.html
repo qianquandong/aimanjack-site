@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#ffffff">
+<meta name="theme-color" content="#F2EEE6">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
@@ -32,49 +32,42 @@
 <link rel="preload" href="/fonts/Satoshi-latin-2.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/style.css?v=0">
 </head>
-<body>
+<body class="on-photo">
 <a class="skip-link" href="#main">Skip to content</a>
-<header class="site-header"><div class="wrap head-row">
-<a class="brand" href="/" aria-label="AI Man Jack">AI Man <span>Jack</span></a>
-<nav class="nav" aria-label="Primary"><a href="/ai-training/">Training</a><a href="/use-cases/">Use Cases</a><a href="/tools/">Free Tools</a><a href="/templates/">Templates</a><a href="/blog/">Resources</a><a href="/about/" aria-current="page">About</a><a class="lang" href="/zh/about/" lang="zh" hreflang="zh" data-event="language_change">中文</a></nav>
-<details class="menu"><summary aria-label="Menu"><span class="menu-icon" aria-hidden="true"></span><span class="menu-label">Menu</span></summary>
-<nav class="nav mobile-nav" aria-label="Primary, mobile"><a href="/ai-training/">Training</a><a href="/use-cases/">Use Cases</a><a href="/tools/">Free Tools</a><a href="/templates/">Templates</a><a href="/blog/">Resources</a><a href="/about/" aria-current="page">About</a><a class="lang" href="/zh/about/" lang="zh" hreflang="zh" data-event="language_change">中文</a></nav></details>
-<a class="btn btn-primary btn-sm head-call" href="/book/" data-event="workshop_cta_click" data-pos="header">Book a Workshop</a>
+<header class="hdr"><div class="wrap hdr-row">
+<a class="logo" href="/" aria-label="AI Man Jack"><svg width="36" height="36" viewBox="0 0 64 64" aria-hidden="true"><rect class="mark-bg" width="64" height="64" rx="16"/><g transform="translate(15 49)"><path class="mark-j" d="M0.88 -9.328V-11.616H7.744V-9.328Q7.744 -8.052 8.58 -7.04Q9.416 -6.028 11.44 -6.028Q13.42 -6.028 14.256 -6.996Q15.092 -7.964 15.092 -9.592V-32.56H22.22V-9.152Q22.22 -6.38 20.922 -4.18Q19.624 -1.98 17.226 -0.704Q14.828 0.572 11.528 0.572Q7.964 0.572 5.588 -0.726Q3.212 -2.024 2.046 -4.268Q0.88 -6.512 0.88 -9.328Z"/></g><circle cx="46.5" cy="18" r="5.5" fill="#A8552F"/></svg><span>AI Man Jack</span></a>
+<nav class="hdr-nav" aria-label="Primary"><a href="/ai-training/">Training</a><a href="/use-cases/">Use Cases</a><a href="/tools/">Free Tools</a><a href="/templates/">Templates</a><a href="/blog/">Resources</a><a href="/about/" aria-current="page">About</a></nav><span class="spacer"></span>
+<a class="lang-pill" href="/zh/about/" lang="zh" hreflang="zh" data-event="language_change">中文</a>
+<a class="btn btn-primary btn-sm hdr-cta" href="/book/" data-event="workshop_cta_click" data-pos="header">Book a Workshop</a>
+<details class="hdr-menu"><summary aria-label="Menu"><svg width="18" height="14" viewBox="0 0 18 14" aria-hidden="true"><path d="M0 1h18M0 7h18M0 13h18" stroke="currentColor" stroke-width="2"/></svg></summary>
+<nav class="hdr-menu-panel" aria-label="Primary, mobile"><a href="/ai-training/">Training</a><a href="/use-cases/">Use Cases</a><a href="/tools/">Free Tools</a><a href="/templates/">Templates</a><a href="/blog/">Resources</a><a href="/about/" aria-current="page">About</a><a class="btn btn-primary " href="/book/" data-event="workshop_cta_click" data-pos="menu">Book a Workshop</a></nav></details>
 </div></header>
 <main id="main">
-<div class="wrap"><nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="/">Home</a></li><li aria-current="page">About</li></ol></nav></div><section class="page-hero"><div class="wrap narrow"><p class="eyebrow">About</p><h1>AI Man Jack helps teams learn and apply AI to real work.</h1><p class="lead">A one-person company in Dallas, Texas. Jack Qian designs the session, teaches it, and does the two-week follow-up himself.</p>
-<div class="cta-row"><a class="btn btn-primary " id="hero-cta" href="/book/" data-event="workshop_cta_click" data-pos="hero">Book a Workshop</a><a class="btn btn-secondary" href="mailto:jack@aimanjack.com?subject=AI%20training%20for%20our%20team" data-event="email_training_click" data-pos="hero">Email Jack</a></div></div></section>
-<section class="section"><div class="wrap"><div class="split"><div class="prose">
-<h2>What the company does</h2>
-<p>AI Man Jack runs <a href="/ai-training/">hands-on AI training for teams</a>, onsite in Dallas–Fort Worth or remotely, in English or Chinese. Each person works on a task they already do and leaves with a working AI workflow plus a way to verify its output. The Google reviews on this site come from those sessions.</p>
-<h2>Who runs it</h2>
-<p>Jack Qian is an AI trainer, AI workflow builder and Dallas AI community organizer. By day he is a business planner at a Dallas semiconductor company; the workflows he teaches are the ones he runs on his own work first.</p>
-<p>Since 2026 he has hosted 5 community AI talks in Plano and Dallas with 50+ people each, and a 37-person AI hackathon where teams built and demonstrated live demos in three hours. Attendees left 10 Google reviews, all five stars. He also writes <a href="https://realagentusecases.com/" rel="noopener">Real Agent Use Cases</a>, a weekly newsletter on AI agents and workflows working professionals actually run.</p>
-<h2>How he works</h2>
-<ul>
-<li>Task first, tool second. Every session starts with work the team already does, not with a product tour.</li>
-<li>Everyone builds. No one leaves with slides alone; each person leaves with a workflow that ran.</li>
-<li>Verification is part of the exercise. One output in every session is deliberately flawed, and the room has to catch it.</li>
-<li>Follow up before claiming. Two weeks after a session he checks whether the workflow was tested and whether it should continue, change or stop.</li>
-</ul>
-<h2>Where</h2>
-<p>Dallas–Fort Worth, Texas: Dallas, Fort Worth, Plano, Richardson, Frisco, McKinney, Arlington and the towns between. Onsite across the metroplex; remote sessions anywhere.</p>
-<h2>Contact</h2>
-<p><a href="/book/">Book a 30-minute call</a>, email <a href="mailto:jack@aimanjack.com">jack@aimanjack.com</a>, or text TRAINING to <a href="sms:+14694254142?body=TRAINING%20-%20" data-event="sms_training_click" data-pos="about">(469) 425-4142</a>. More on the <a href="/contact/">contact page</a>.</p></div><div><img src="/img/jack-headshot.jpg" width="640" height="640" loading="lazy" decoding="async" alt="Jack Qian" style="border-radius:16px;max-width:420px"><p class="muted" style="font-size:14px;margin-top:10px">Jack Qian, AI Man Jack LLC, Dallas</p></div></div></div></section>
-<section class="section final-cta" id="start"><div class="wrap narrow center"><h2>Bring one task. Leave with it running.</h2><p class="lead">Book a 30-minute call. You’ll have a recommended format and a written quote within 24 hours.</p>
-<div class="cta-row center"><a class="btn btn-primary btn-lg" href="/book/" data-event="workshop_cta_click" data-pos="final">Book a Workshop</a></div>
-<p class="final-number">Or email <a href="mailto:jack@aimanjack.com" data-event="email_training_click" data-pos="final">jack@aimanjack.com</a></p></div></section>
+<section class="photo-hero on-dark md"><img src="/img/jack-teaching.webp" width="1100" height="825" fetchpriority="high" decoding="async" alt="Jack Qian teaching a hands-on AI session" style="object-position:50% 30%">
+<div class="wrap"><div class="hero-main" style="padding-bottom:64px;row-gap:18px"><div class="col-a" style="gap:20px"><nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="/">Home</a></li><li aria-current="page">About</li></ol></nav><h1 class="lg" style="font-size:clamp(40px,6.1vw,88px)">AI Man Jack helps teams learn and apply AI to <em>real work.</em></h1></div><p class="col-b" style="padding:0">A one-person company in Dallas, Texas. Jack Qian designs the session, teaches it, and does the two-week follow-up himself.</p></div></div></section>
+<section class="sec"><div class="wrap g12" style="row-gap:64px">
+<div style="grid-column:span 3"><div class="eyebrow">What the company does</div></div><p class="answer" style="grid-column:4 / span 9;font-size:clamp(21px,2.1vw,30px)">AI Man Jack runs <a href="/ai-training/">hands-on AI training for teams</a>, onsite in Dallas–Fort Worth or remotely, in English or Chinese. Each person works on a task they already do and leaves with a working AI workflow plus a way to verify its output.</p>
+<div style="grid-column:span 3"><div class="eyebrow">Who runs it</div></div>
+<div class="who-grid" style="grid-column:4 / span 9"><img src="/img/jack-headshot.jpg" width="640" height="640" loading="lazy" decoding="async" alt="Jack Qian" style="border-radius:24px;aspect-ratio:1;object-fit:cover">
+<div style="display:flex;flex-direction:column;gap:18px"><p style="font-size:clamp(17px,1.35vw,19px);line-height:1.7;color:var(--body-strong)">Jack Qian is an AI trainer, AI workflow builder and Dallas AI community organizer. By day he is a business planner at a Dallas semiconductor company; the workflows he teaches are the ones he runs on his own work first.</p><p style="font-size:clamp(17px,1.35vw,19px);line-height:1.7;color:var(--body-strong)">He also writes <a style="color:var(--accent-text);font-weight:600" href="https://realagentusecases.com/" rel="noopener">Real Agent Use Cases</a>, a weekly newsletter on AI agents and workflows working professionals actually run.</p><div class="stat-cards" style="margin-top:8px"><div><b>5</b><span>community AI talks in Plano and Dallas, 50+ each</span></div><div><b>37</b><span>builders at one three-hour AI hackathon</span></div><div><b>10 × ★5</b><span>Google reviews from attendees</span></div></div></div></div>
+</div></section>
+<section class="sec dark"><div class="wrap"><div class="sec-head"><div><div class="eyebrow">How he works</div><h2>Four rules every session follows</h2></div></div>
+<ol class="steps-line"><li><span class="n" style="font-size:15px">01</span><h3>Task first, tool second.</h3><p>Every session starts with work the team already does, not with a product tour.</p></li><li><span class="n" style="font-size:15px">02</span><h3>Everyone builds.</h3><p>No one leaves with slides alone; each person leaves with a workflow that ran.</p></li><li><span class="n" style="font-size:15px">03</span><h3>Verification is part of the exercise.</h3><p>One output in every session is deliberately flawed, and the room has to catch it.</p></li><li><span class="n" style="font-size:15px">04</span><h3>Follow up before claiming.</h3><p>Two weeks after a session he checks whether the workflow was tested and whether it should continue, change or stop.</p></li></ol></div></section>
+<section class="photo-strip" style="padding-top:12px"><img src="/img/events/dallas-ai-hackathon-group.webp" width="1200" height="910" loading="lazy" decoding="async" alt="The 37-person Dallas AI hackathon" style="height:clamp(200px,30vw,440px)"><img src="/img/events/dallas-session3-jack-presenting.webp" width="1600" height="1066" loading="lazy" decoding="async" alt="Jack presenting at a Dallas session" style="height:clamp(200px,30vw,440px)"><img src="/img/events/dallas-ai-hackathon-live-demo.webp" width="1200" height="900" loading="lazy" decoding="async" alt="A team demonstrating what it built" style="height:clamp(200px,30vw,440px)"></section>
+<section class="sec"><div class="wrap"><div class="g2" style="gap:24px">
+<div class="big-card oakc"><div class="eyebrow">Where</div><h2>Onsite across Dallas–Fort Worth. Remote anywhere.</h2><div class="pills"><span>Dallas</span><span>Fort Worth</span><span>Plano</span><span>Richardson</span><span>Frisco</span><span>McKinney</span><span>Arlington</span><span>Remote</span></div></div>
+<div class="big-card"><div class="eyebrow">Contact</div><h2>Three ways to reach Jack</h2><div class="contact-rows"><a href="/book/" data-event="booking_start" data-pos="about"><span><span class="k">Book</span><span class="v">A 30-minute call</span></span><span class="go" aria-hidden="true">→</span></a><a href="mailto:jack@aimanjack.com" data-event="email_training_click" data-pos="about"><span><span class="k">Email</span><span class="v">jack@aimanjack.com</span></span><span class="go" aria-hidden="true">→</span></a><a href="sms:+14694254142?body=TRAINING%20-%20" data-event="sms_training_click" data-pos="about"><span><span class="k">Text</span><span class="v">TRAINING to (469) 425-4142</span></span><span class="go" aria-hidden="true">→</span></a></div></div></div></div></section>
 </main>
-<footer class="site-footer"><div class="wrap">
-<div class="foot-grid">
-<div><h2 class="foot-h">Product</h2><ul><li><a href="/ai-training/">Training</a></li><li><a href="/tools/">Free Tools</a></li><li><a href="/templates/">Templates</a></li><li><a href="/workflows/">AI Workflows</a></li></ul></div>
-<div><h2 class="foot-h">Use Cases</h2><ul><li><a href="/use-cases/sales/">Sales</a></li><li><a href="/use-cases/marketing/">Marketing</a></li><li><a href="/use-cases/operations/">Operations</a></li><li><a href="/use-cases/leadership/">Leadership</a></li></ul></div>
-<div><h2 class="foot-h">Resources</h2><ul><li><a href="/blog/">AI training guides</a></li><li><a href="https://realagentusecases.com/">Real Agent Use Cases ↗</a></li></ul></div>
-<div><h2 class="foot-h">Company</h2><ul><li><a href="/about/">About Jack</a></li><li><a href="/contact/">Contact</a></li><li><a href="/book/">Book a workshop</a></li><li><a href="/privacy">Privacy</a></li><li><a href="/terms">Terms</a></li><li><a href="/sms-terms">SMS terms</a></li></ul></div>
-</div>
-<p class="foot-serves">Dallas–Fort Worth, Texas · Onsite across Dallas, Fort Worth, Plano, Richardson, Frisco, McKinney and Arlington. Remote sessions anywhere.</p>
-<div class="foot-id"><span>© 2026 AI Man Jack LLC</span><a href="mailto:jack@aimanjack.com">jack@aimanjack.com</a><a href="sms:+14694254142" data-event="sms_training_click" data-pos="footer">(469) 425-4142</a></div>
-<p class="legal">By calling or texting (469) 425-4142, you agree to receive SMS messages from AI Man Jack, including an automated reply when we miss your call. Message frequency varies (typically one message per missed call). Message and data rates may apply. Reply STOP to opt out, HELP for help. See our <a href="/privacy">Privacy Policy</a> and <a href="/sms-terms">SMS Terms</a>.</p>
+<footer class="ftr"><div class="wrap">
+<div class="ftr-top"><div class="ftr-brand"><a class="logo" href="/" aria-label="AI Man Jack"><svg width="36" height="36" viewBox="0 0 64 64" aria-hidden="true"><rect class="mark-bg" width="64" height="64" rx="16"/><g transform="translate(15 49)"><path class="mark-j" d="M0.88 -9.328V-11.616H7.744V-9.328Q7.744 -8.052 8.58 -7.04Q9.416 -6.028 11.44 -6.028Q13.42 -6.028 14.256 -6.996Q15.092 -7.964 15.092 -9.592V-32.56H22.22V-9.152Q22.22 -6.38 20.922 -4.18Q19.624 -1.98 17.226 -0.704Q14.828 0.572 11.528 0.572Q7.964 0.572 5.588 -0.726Q3.212 -2.024 2.046 -4.268Q0.88 -6.512 0.88 -9.328Z"/></g><circle cx="46.5" cy="18" r="5.5" fill="#A8552F"/></svg><span>AI Man Jack</span></a><p>Hands-on AI training for teams in Dallas–Fort Worth and remotely, in English or Chinese.</p></div>
+<div class="ftr-cols">
+<div><h2>AI Training</h2><a href="/ai-training/">Corporate training</a><a href="/ai-training/#formats">Workshops</a><a href="/tools/">Free tools</a><a href="/templates/">Templates</a><a href="/workflows/">Workflows</a></div>
+<div><h2>Teams</h2><a href="/use-cases/sales/">Sales</a><a href="/use-cases/marketing/">Marketing</a><a href="/use-cases/operations/">Operations</a><a href="/use-cases/leadership/">Leadership</a></div>
+<div><h2>Resources</h2><a href="/blog/">Guides</a><a href="https://realagentusecases.com/">Real Agent Use Cases ↗</a></div>
+<div><h2>Company</h2><a href="/about/">About</a><a href="/contact/">Contact</a><a href="/book/">Book a call</a></div>
+</div></div>
+<p class="ftr-legal">By calling or texting (469) 425-4142, you agree to receive SMS messages from AI Man Jack, including an automated reply when we miss your call. Message frequency varies (typically one message per missed call). Message and data rates may apply. Reply STOP to opt out, HELP for help. See our <a href="/privacy">Privacy Policy</a> and <a href="/sms-terms">SMS Terms</a>.</p>
+<div class="ftr-bottom"><span>© 2026 AI Man Jack LLC · Dallas · Fort Worth · Plano · Frisco · Remote</span><div><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/sms-terms">SMS Terms</a><a href="mailto:jack@aimanjack.com" data-event="email_training_click" data-pos="footer">jack@aimanjack.com</a><a href="sms:+14694254142?body=TRAINING%20-%20" data-event="sms_training_click" data-pos="footer">(469) 425-4142</a></div></div>
 </div></footer>
 <div class="sticky-call" id="sticky-cta" hidden><a href="/book/" data-event="workshop_cta_click" data-pos="sticky"><span>Book a Workshop</span></a></div>
 <script>
