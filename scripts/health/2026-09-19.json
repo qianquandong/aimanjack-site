@@ -4,162 +4,162 @@
   {
    "id": "up:/",
    "status": "PASS",
-   "detail": "HTTP 200 236ms"
+   "detail": "HTTP 200 271ms"
   },
   {
    "id": "perf:home-fetch",
    "status": "PASS",
-   "detail": "236ms full fetch (PSI weekly gives the real CWV)"
+   "detail": "271ms full fetch (PSI weekly gives the real CWV)"
   },
   {
    "id": "up:/zh/",
    "status": "PASS",
-   "detail": "HTTP 200 70ms"
+   "detail": "HTTP 200 44ms"
   },
   {
    "id": "up:/ai-training/",
    "status": "PASS",
-   "detail": "HTTP 200 67ms"
+   "detail": "HTTP 200 45ms"
   },
   {
    "id": "up:/zh/ai-training/",
    "status": "PASS",
-   "detail": "HTTP 200 62ms"
+   "detail": "HTTP 200 42ms"
   },
   {
    "id": "up:/blog/",
    "status": "PASS",
-   "detail": "HTTP 200 64ms"
+   "detail": "HTTP 200 92ms"
   },
   {
    "id": "up:/zh/blog/",
    "status": "PASS",
-   "detail": "HTTP 200 57ms"
+   "detail": "HTTP 200 42ms"
   },
   {
    "id": "up:/about/",
    "status": "PASS",
-   "detail": "HTTP 200 146ms"
+   "detail": "HTTP 200 74ms"
   },
   {
    "id": "up:/zh/about/",
    "status": "PASS",
-   "detail": "HTTP 200 57ms"
+   "detail": "HTTP 200 68ms"
   },
   {
    "id": "up:/contact/",
    "status": "PASS",
-   "detail": "HTTP 200 103ms"
+   "detail": "HTTP 200 37ms"
   },
   {
    "id": "up:/zh/contact/",
    "status": "PASS",
-   "detail": "HTTP 200 60ms"
+   "detail": "HTTP 200 87ms"
   },
   {
    "id": "up:/book/",
    "status": "PASS",
-   "detail": "HTTP 200 59ms"
+   "detail": "HTTP 200 41ms"
   },
   {
    "id": "up:/zh/book/",
    "status": "PASS",
-   "detail": "HTTP 200 64ms"
+   "detail": "HTTP 200 71ms"
   },
   {
    "id": "up:/tools/",
    "status": "PASS",
-   "detail": "HTTP 200 72ms"
+   "detail": "HTTP 200 42ms"
   },
   {
    "id": "up:/zh/tools/",
    "status": "PASS",
-   "detail": "HTTP 200 63ms"
+   "detail": "HTTP 200 80ms"
   },
   {
    "id": "up:/tools/ai-readiness-assessment/",
    "status": "PASS",
-   "detail": "HTTP 200 77ms"
+   "detail": "HTTP 200 49ms"
   },
   {
    "id": "up:/zh/tools/ai-readiness-assessment/",
    "status": "PASS",
-   "detail": "HTTP 200 67ms"
+   "detail": "HTTP 200 79ms"
   },
   {
    "id": "up:/use-cases/",
    "status": "PASS",
-   "detail": "HTTP 200 119ms"
+   "detail": "HTTP 200 44ms"
   },
   {
    "id": "up:/zh/use-cases/",
    "status": "PASS",
-   "detail": "HTTP 200 145ms"
+   "detail": "HTTP 200 36ms"
   },
   {
    "id": "up:/use-cases/sales/",
    "status": "PASS",
-   "detail": "HTTP 200 64ms"
+   "detail": "HTTP 200 37ms"
   },
   {
    "id": "up:/zh/use-cases/sales/",
    "status": "PASS",
-   "detail": "HTTP 200 135ms"
+   "detail": "HTTP 200 84ms"
   },
   {
    "id": "up:/workflows/",
    "status": "PASS",
-   "detail": "HTTP 200 105ms"
+   "detail": "HTTP 200 70ms"
   },
   {
    "id": "up:/zh/workflows/",
    "status": "PASS",
-   "detail": "HTTP 200 54ms"
+   "detail": "HTTP 200 46ms"
   },
   {
    "id": "up:/workflows/prospect-research/",
    "status": "PASS",
-   "detail": "HTTP 200 130ms"
+   "detail": "HTTP 200 42ms"
   },
   {
    "id": "up:/zh/workflows/prospect-research/",
    "status": "PASS",
-   "detail": "HTTP 200 51ms"
+   "detail": "HTTP 200 71ms"
   },
   {
    "id": "up:/templates/",
    "status": "PASS",
-   "detail": "HTTP 200 139ms"
+   "detail": "HTTP 200 64ms"
   },
   {
    "id": "up:/zh/templates/",
    "status": "PASS",
-   "detail": "HTTP 200 52ms"
+   "detail": "HTTP 200 69ms"
   },
   {
    "id": "up:/templates/sales-meeting-prep/",
    "status": "PASS",
-   "detail": "HTTP 200 68ms"
+   "detail": "HTTP 200 72ms"
   },
   {
    "id": "up:/zh/templates/sales-meeting-prep/",
    "status": "PASS",
-   "detail": "HTTP 200 161ms"
+   "detail": "HTTP 200 69ms"
   },
   {
    "id": "up:/sitemap.xml",
    "status": "PASS",
-   "detail": "HTTP 200 39ms"
+   "detail": "HTTP 200 31ms"
   },
   {
    "id": "up:/robots.txt",
    "status": "PASS",
-   "detail": "HTTP 200 49ms"
+   "detail": "HTTP 200 42ms"
   },
   {
    "id": "up:/llms.txt",
    "status": "PASS",
-   "detail": "HTTP 200 34ms"
+   "detail": "HTTP 200 35ms"
   },
   {
    "id": "up:404",
@@ -249,7 +249,7 @@
   {
    "id": "page:/:og-image",
    "status": "PASS",
-   "detail": "https://aimanjack.com/img/og-training.jpg"
+   "detail": "https://aimanjack.com/img/og-2026-09.jpg"
   },
   {
    "id": "track:ga4",
