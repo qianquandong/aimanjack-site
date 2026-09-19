@@ -4,122 +4,162 @@
   {
    "id": "up:/",
    "status": "PASS",
-   "detail": "HTTP 200 2471ms"
+   "detail": "HTTP 200 236ms"
   },
   {
    "id": "perf:home-fetch",
-   "status": "WARN",
-   "detail": "2471ms full fetch (PSI weekly gives the real CWV)"
-  },
-  {
-   "id": "up:/ai-training/",
    "status": "PASS",
-   "detail": "HTTP 200 475ms"
-  },
-  {
-   "id": "up:/blog/",
-   "status": "PASS",
-   "detail": "HTTP 200 465ms"
-  },
-  {
-   "id": "up:/about/",
-   "status": "PASS",
-   "detail": "HTTP 200 369ms"
-  },
-  {
-   "id": "up:/contact/",
-   "status": "PASS",
-   "detail": "HTTP 200 371ms"
-  },
-  {
-   "id": "up:/book/",
-   "status": "PASS",
-   "detail": "HTTP 200 2139ms"
+   "detail": "236ms full fetch (PSI weekly gives the real CWV)"
   },
   {
    "id": "up:/zh/",
    "status": "PASS",
-   "detail": "HTTP 200 2636ms"
+   "detail": "HTTP 200 70ms"
+  },
+  {
+   "id": "up:/ai-training/",
+   "status": "PASS",
+   "detail": "HTTP 200 67ms"
   },
   {
    "id": "up:/zh/ai-training/",
    "status": "PASS",
-   "detail": "HTTP 200 1069ms"
+   "detail": "HTTP 200 62ms"
+  },
+  {
+   "id": "up:/blog/",
+   "status": "PASS",
+   "detail": "HTTP 200 64ms"
   },
   {
    "id": "up:/zh/blog/",
    "status": "PASS",
-   "detail": "HTTP 200 628ms"
+   "detail": "HTTP 200 57ms"
+  },
+  {
+   "id": "up:/about/",
+   "status": "PASS",
+   "detail": "HTTP 200 146ms"
   },
   {
    "id": "up:/zh/about/",
    "status": "PASS",
-   "detail": "HTTP 200 2096ms"
+   "detail": "HTTP 200 57ms"
+  },
+  {
+   "id": "up:/contact/",
+   "status": "PASS",
+   "detail": "HTTP 200 103ms"
   },
   {
    "id": "up:/zh/contact/",
    "status": "PASS",
-   "detail": "HTTP 200 1017ms"
+   "detail": "HTTP 200 60ms"
+  },
+  {
+   "id": "up:/book/",
+   "status": "PASS",
+   "detail": "HTTP 200 59ms"
   },
   {
    "id": "up:/zh/book/",
    "status": "PASS",
-   "detail": "HTTP 200 791ms"
+   "detail": "HTTP 200 64ms"
   },
   {
    "id": "up:/tools/",
    "status": "PASS",
-   "detail": "HTTP 200 516ms"
+   "detail": "HTTP 200 72ms"
+  },
+  {
+   "id": "up:/zh/tools/",
+   "status": "PASS",
+   "detail": "HTTP 200 63ms"
   },
   {
    "id": "up:/tools/ai-readiness-assessment/",
    "status": "PASS",
-   "detail": "HTTP 200 1324ms"
+   "detail": "HTTP 200 77ms"
+  },
+  {
+   "id": "up:/zh/tools/ai-readiness-assessment/",
+   "status": "PASS",
+   "detail": "HTTP 200 67ms"
   },
   {
    "id": "up:/use-cases/",
    "status": "PASS",
-   "detail": "HTTP 200 677ms"
+   "detail": "HTTP 200 119ms"
+  },
+  {
+   "id": "up:/zh/use-cases/",
+   "status": "PASS",
+   "detail": "HTTP 200 145ms"
   },
   {
    "id": "up:/use-cases/sales/",
    "status": "PASS",
-   "detail": "HTTP 200 762ms"
+   "detail": "HTTP 200 64ms"
+  },
+  {
+   "id": "up:/zh/use-cases/sales/",
+   "status": "PASS",
+   "detail": "HTTP 200 135ms"
   },
   {
    "id": "up:/workflows/",
    "status": "PASS",
-   "detail": "HTTP 200 721ms"
+   "detail": "HTTP 200 105ms"
+  },
+  {
+   "id": "up:/zh/workflows/",
+   "status": "PASS",
+   "detail": "HTTP 200 54ms"
   },
   {
    "id": "up:/workflows/prospect-research/",
    "status": "PASS",
-   "detail": "HTTP 200 768ms"
+   "detail": "HTTP 200 130ms"
+  },
+  {
+   "id": "up:/zh/workflows/prospect-research/",
+   "status": "PASS",
+   "detail": "HTTP 200 51ms"
   },
   {
    "id": "up:/templates/",
    "status": "PASS",
-   "detail": "HTTP 200 1134ms"
+   "detail": "HTTP 200 139ms"
+  },
+  {
+   "id": "up:/zh/templates/",
+   "status": "PASS",
+   "detail": "HTTP 200 52ms"
   },
   {
    "id": "up:/templates/sales-meeting-prep/",
    "status": "PASS",
-   "detail": "HTTP 200 874ms"
+   "detail": "HTTP 200 68ms"
+  },
+  {
+   "id": "up:/zh/templates/sales-meeting-prep/",
+   "status": "PASS",
+   "detail": "HTTP 200 161ms"
   },
   {
    "id": "up:/sitemap.xml",
    "status": "PASS",
-   "detail": "HTTP 200 520ms"
+   "detail": "HTTP 200 39ms"
   },
   {
    "id": "up:/robots.txt",
    "status": "PASS",
-   "detail": "HTTP 200 1619ms"
+   "detail": "HTTP 200 49ms"
   },
   {
    "id": "up:/llms.txt",
    "status": "PASS",
-   "detail": "HTTP 200 1074ms"
+   "detail": "HTTP 200 34ms"
   },
   {
    "id": "up:404",
@@ -134,7 +174,7 @@
   {
    "id": "sitemap:pages",
    "status": "PASS",
-   "detail": "47 urls"
+   "detail": "74 urls"
   },
   {
    "id": "sitemap:legacy-out",
@@ -217,156 +257,6 @@
    "detail": "GA4 present"
   },
   {
-   "id": "page:/ai-training/:h1",
-   "status": "PASS",
-   "detail": "1 h1"
-  },
-  {
-   "id": "page:/ai-training/:meta",
-   "status": "PASS",
-   "detail": "canonical=https://aimanjack.com/ai-training/ robots=index, follow, max-image-preview:large, max-snippet:-1 hreflang=en,x-default,zh"
-  },
-  {
-   "id": "page:/ai-training/:schema",
-   "status": "PASS",
-   "detail": "AdministrativeArea,AggregateRating,Answer,BreadcrumbList,City,Country,FAQPage,Li"
-  },
-  {
-   "id": "page:/ai-training/:cta",
-   "status": "PASS",
-   "detail": "9 links to /book/ (Book a Workshop)"
-  },
-  {
-   "id": "page:/ai-training/:cta-labels",
-   "status": "PASS",
-   "detail": "every CTA label matches its protocol"
-  },
-  {
-   "id": "page:/ai-training/:no-receptionist",
-   "status": "PASS",
-   "detail": "no receptionist marketing"
-  },
-  {
-   "id": "page:/blog/:h1",
-   "status": "PASS",
-   "detail": "1 h1"
-  },
-  {
-   "id": "page:/blog/:meta",
-   "status": "PASS",
-   "detail": "canonical=https://aimanjack.com/blog/ robots=index, follow, max-image-preview:large, max-snippet:-1 hreflang=en,x-default,zh"
-  },
-  {
-   "id": "page:/blog/:schema",
-   "status": "PASS",
-   "detail": "BreadcrumbList,CollectionPage,ListItem,ProfessionalService"
-  },
-  {
-   "id": "page:/blog/:cta",
-   "status": "PASS",
-   "detail": "4 links to /book/ (Book a Workshop)"
-  },
-  {
-   "id": "page:/blog/:cta-labels",
-   "status": "PASS",
-   "detail": "every CTA label matches its protocol"
-  },
-  {
-   "id": "page:/blog/:no-receptionist",
-   "status": "PASS",
-   "detail": "no receptionist marketing"
-  },
-  {
-   "id": "page:/about/:h1",
-   "status": "PASS",
-   "detail": "1 h1"
-  },
-  {
-   "id": "page:/about/:meta",
-   "status": "PASS",
-   "detail": "canonical=https://aimanjack.com/about/ robots=index, follow, max-image-preview:large, max-snippet:-1 hreflang=en,x-default,zh"
-  },
-  {
-   "id": "page:/about/:schema",
-   "status": "PASS",
-   "detail": "AdministrativeArea,BreadcrumbList,City,Country,ListItem,Offer,Person,PostalAddre"
-  },
-  {
-   "id": "page:/about/:cta",
-   "status": "PASS",
-   "detail": "6 links to /book/ (Book a Workshop)"
-  },
-  {
-   "id": "page:/about/:cta-labels",
-   "status": "PASS",
-   "detail": "every CTA label matches its protocol"
-  },
-  {
-   "id": "page:/about/:no-receptionist",
-   "status": "PASS",
-   "detail": "no receptionist marketing"
-  },
-  {
-   "id": "page:/contact/:h1",
-   "status": "PASS",
-   "detail": "1 h1"
-  },
-  {
-   "id": "page:/contact/:meta",
-   "status": "PASS",
-   "detail": "canonical=https://aimanjack.com/contact/ robots=index, follow, max-image-preview:large, max-snippet:-1 hreflang=en,x-default,zh"
-  },
-  {
-   "id": "page:/contact/:schema",
-   "status": "PASS",
-   "detail": "BreadcrumbList,ContactPage,ListItem,ProfessionalService"
-  },
-  {
-   "id": "page:/contact/:cta",
-   "status": "PASS",
-   "detail": "4 links to /book/ (Book a Workshop)"
-  },
-  {
-   "id": "page:/contact/:cta-labels",
-   "status": "PASS",
-   "detail": "every CTA label matches its protocol"
-  },
-  {
-   "id": "page:/contact/:no-receptionist",
-   "status": "PASS",
-   "detail": "no receptionist marketing"
-  },
-  {
-   "id": "page:/book/:h1",
-   "status": "PASS",
-   "detail": "1 h1"
-  },
-  {
-   "id": "page:/book/:meta",
-   "status": "PASS",
-   "detail": "canonical=https://aimanjack.com/book/ robots=index, follow, max-image-preview:large, max-snippet:-1 hreflang=en,x-default,zh"
-  },
-  {
-   "id": "page:/book/:schema",
-   "status": "PASS",
-   "detail": "BreadcrumbList,ListItem,ProfessionalService,WebPage"
-  },
-  {
-   "id": "page:/book/:cta",
-   "status": "PASS",
-   "detail": "7 links to /book/ (Book a Workshop)"
-  },
-  {
-   "id": "page:/book/:cta-labels",
-   "status": "PASS",
-   "detail": "every CTA label matches its protocol"
-  },
-  {
-   "id": "page:/book/:no-receptionist",
-   "status": "PASS",
-   "detail": "no receptionist marketing"
-  },
-  {
    "id": "page:/zh/:h1",
    "status": "PASS",
    "detail": "1 h1"
@@ -397,6 +287,36 @@
    "detail": "no receptionist marketing"
   },
   {
+   "id": "page:/ai-training/:h1",
+   "status": "PASS",
+   "detail": "1 h1"
+  },
+  {
+   "id": "page:/ai-training/:meta",
+   "status": "PASS",
+   "detail": "canonical=https://aimanjack.com/ai-training/ robots=index, follow, max-image-preview:large, max-snippet:-1 hreflang=en,x-default,zh"
+  },
+  {
+   "id": "page:/ai-training/:schema",
+   "status": "PASS",
+   "detail": "AdministrativeArea,AggregateRating,Answer,BreadcrumbList,City,Country,FAQPage,Li"
+  },
+  {
+   "id": "page:/ai-training/:cta",
+   "status": "PASS",
+   "detail": "10 links to /book/ (Book a Workshop)"
+  },
+  {
+   "id": "page:/ai-training/:cta-labels",
+   "status": "PASS",
+   "detail": "every CTA label matches its protocol"
+  },
+  {
+   "id": "page:/ai-training/:no-receptionist",
+   "status": "PASS",
+   "detail": "no receptionist marketing"
+  },
+  {
    "id": "page:/zh/ai-training/:h1",
    "status": "PASS",
    "detail": "1 h1"
@@ -414,7 +334,7 @@
   {
    "id": "page:/zh/ai-training/:cta",
    "status": "PASS",
-   "detail": "9 links to /book/ (Book a Workshop)"
+   "detail": "10 links to /book/ (Book a Workshop)"
   },
   {
    "id": "page:/zh/ai-training/:cta-labels",
@@ -423,6 +343,36 @@
   },
   {
    "id": "page:/zh/ai-training/:no-receptionist",
+   "status": "PASS",
+   "detail": "no receptionist marketing"
+  },
+  {
+   "id": "page:/blog/:h1",
+   "status": "PASS",
+   "detail": "1 h1"
+  },
+  {
+   "id": "page:/blog/:meta",
+   "status": "PASS",
+   "detail": "canonical=https://aimanjack.com/blog/ robots=index, follow, max-image-preview:large, max-snippet:-1 hreflang=en,x-default,zh"
+  },
+  {
+   "id": "page:/blog/:schema",
+   "status": "PASS",
+   "detail": "BreadcrumbList,CollectionPage,ListItem,ProfessionalService"
+  },
+  {
+   "id": "page:/blog/:cta",
+   "status": "PASS",
+   "detail": "5 links to /book/ (Book a Workshop)"
+  },
+  {
+   "id": "page:/blog/:cta-labels",
+   "status": "PASS",
+   "detail": "every CTA label matches its protocol"
+  },
+  {
+   "id": "page:/blog/:no-receptionist",
    "status": "PASS",
    "detail": "no receptionist marketing"
   },
@@ -444,7 +394,7 @@
   {
    "id": "page:/zh/blog/:cta",
    "status": "PASS",
-   "detail": "4 links to /book/ (Book a Workshop)"
+   "detail": "5 links to /book/ (Book a Workshop)"
   },
   {
    "id": "page:/zh/blog/:cta-labels",
@@ -453,6 +403,36 @@
   },
   {
    "id": "page:/zh/blog/:no-receptionist",
+   "status": "PASS",
+   "detail": "no receptionist marketing"
+  },
+  {
+   "id": "page:/about/:h1",
+   "status": "PASS",
+   "detail": "1 h1"
+  },
+  {
+   "id": "page:/about/:meta",
+   "status": "PASS",
+   "detail": "canonical=https://aimanjack.com/about/ robots=index, follow, max-image-preview:large, max-snippet:-1 hreflang=en,x-default,zh"
+  },
+  {
+   "id": "page:/about/:schema",
+   "status": "PASS",
+   "detail": "AdministrativeArea,BreadcrumbList,City,Country,ListItem,Offer,Person,PostalAddre"
+  },
+  {
+   "id": "page:/about/:cta",
+   "status": "PASS",
+   "detail": "5 links to /book/ (Book a Workshop)"
+  },
+  {
+   "id": "page:/about/:cta-labels",
+   "status": "PASS",
+   "detail": "every CTA label matches its protocol"
+  },
+  {
+   "id": "page:/about/:no-receptionist",
    "status": "PASS",
    "detail": "no receptionist marketing"
   },
@@ -474,7 +454,7 @@
   {
    "id": "page:/zh/about/:cta",
    "status": "PASS",
-   "detail": "6 links to /book/ (Book a Workshop)"
+   "detail": "5 links to /book/ (Book a Workshop)"
   },
   {
    "id": "page:/zh/about/:cta-labels",
@@ -483,6 +463,36 @@
   },
   {
    "id": "page:/zh/about/:no-receptionist",
+   "status": "PASS",
+   "detail": "no receptionist marketing"
+  },
+  {
+   "id": "page:/contact/:h1",
+   "status": "PASS",
+   "detail": "1 h1"
+  },
+  {
+   "id": "page:/contact/:meta",
+   "status": "PASS",
+   "detail": "canonical=https://aimanjack.com/contact/ robots=index, follow, max-image-preview:large, max-snippet:-1 hreflang=en,x-default,zh"
+  },
+  {
+   "id": "page:/contact/:schema",
+   "status": "PASS",
+   "detail": "BreadcrumbList,ContactPage,ListItem,ProfessionalService"
+  },
+  {
+   "id": "page:/contact/:cta",
+   "status": "PASS",
+   "detail": "5 links to /book/ (Book a Workshop)"
+  },
+  {
+   "id": "page:/contact/:cta-labels",
+   "status": "PASS",
+   "detail": "every CTA label matches its protocol"
+  },
+  {
+   "id": "page:/contact/:no-receptionist",
    "status": "PASS",
    "detail": "no receptionist marketing"
   },
@@ -504,7 +514,7 @@
   {
    "id": "page:/zh/contact/:cta",
    "status": "PASS",
-   "detail": "4 links to /book/ (Book a Workshop)"
+   "detail": "5 links to /book/ (Book a Workshop)"
   },
   {
    "id": "page:/zh/contact/:cta-labels",
@@ -513,6 +523,36 @@
   },
   {
    "id": "page:/zh/contact/:no-receptionist",
+   "status": "PASS",
+   "detail": "no receptionist marketing"
+  },
+  {
+   "id": "page:/book/:h1",
+   "status": "PASS",
+   "detail": "1 h1"
+  },
+  {
+   "id": "page:/book/:meta",
+   "status": "PASS",
+   "detail": "canonical=https://aimanjack.com/book/ robots=index, follow, max-image-preview:large, max-snippet:-1 hreflang=en,x-default,zh"
+  },
+  {
+   "id": "page:/book/:schema",
+   "status": "PASS",
+   "detail": "BreadcrumbList,ListItem,ProfessionalService,WebPage"
+  },
+  {
+   "id": "page:/book/:cta",
+   "status": "PASS",
+   "detail": "7 links to /book/ (Book a Workshop)"
+  },
+  {
+   "id": "page:/book/:cta-labels",
+   "status": "PASS",
+   "detail": "every CTA label matches its protocol"
+  },
+  {
+   "id": "page:/book/:no-receptionist",
    "status": "PASS",
    "detail": "no receptionist marketing"
   },
@@ -554,7 +594,7 @@
   {
    "id": "page:/tools/:meta",
    "status": "PASS",
-   "detail": "canonical=https://aimanjack.com/tools/ robots=index, follow, max-image-preview:large, max-snippet:-1 hreflang=en,x-default"
+   "detail": "canonical=https://aimanjack.com/tools/ robots=index, follow, max-image-preview:large, max-snippet:-1 hreflang=en,x-default,zh"
   },
   {
    "id": "page:/tools/:schema",
@@ -564,7 +604,7 @@
   {
    "id": "page:/tools/:cta",
    "status": "PASS",
-   "detail": "4 links to /book/ (Book a Workshop)"
+   "detail": "5 links to /book/ (Book a Workshop)"
   },
   {
    "id": "page:/tools/:cta-labels",
@@ -577,6 +617,36 @@
    "detail": "no receptionist marketing"
   },
   {
+   "id": "page:/zh/tools/:h1",
+   "status": "PASS",
+   "detail": "1 h1"
+  },
+  {
+   "id": "page:/zh/tools/:meta",
+   "status": "PASS",
+   "detail": "canonical=https://aimanjack.com/zh/tools/ robots=index, follow, max-image-preview:large, max-snippet:-1 hreflang=en,x-default,zh"
+  },
+  {
+   "id": "page:/zh/tools/:schema",
+   "status": "PASS",
+   "detail": "BreadcrumbList,CollectionPage,ListItem,ProfessionalService"
+  },
+  {
+   "id": "page:/zh/tools/:cta",
+   "status": "PASS",
+   "detail": "5 links to /book/ (Book a Workshop)"
+  },
+  {
+   "id": "page:/zh/tools/:cta-labels",
+   "status": "PASS",
+   "detail": "every CTA label matches its protocol"
+  },
+  {
+   "id": "page:/zh/tools/:no-receptionist",
+   "status": "PASS",
+   "detail": "no receptionist marketing"
+  },
+  {
    "id": "page:/tools/ai-readiness-assessment/:h1",
    "status": "PASS",
    "detail": "1 h1"
@@ -584,7 +654,7 @@
   {
    "id": "page:/tools/ai-readiness-assessment/:meta",
    "status": "PASS",
-   "detail": "canonical=https://aimanjack.com/tools/ai-readiness-assessment/ robots=index, follow, max-image-preview:large, max-snippet:-1 hreflang=en,x-default"
+   "detail": "canonical=https://aimanjack.com/tools/ai-readiness-assessment/ robots=index, follow, max-image-preview:large, max-snippet:-1 hreflang=en,x-default,zh"
   },
   {
    "id": "page:/tools/ai-readiness-assessment/:schema",
@@ -594,7 +664,7 @@
   {
    "id": "page:/tools/ai-readiness-assessment/:cta",
    "status": "PASS",
-   "detail": "5 links to /book/ (Book a Workshop)"
+   "detail": "6 links to /book/ (Book a Workshop)"
   },
   {
    "id": "page:/tools/ai-readiness-assessment/:cta-labels",
@@ -607,6 +677,36 @@
    "detail": "no receptionist marketing"
   },
   {
+   "id": "page:/zh/tools/ai-readiness-assessment/:h1",
+   "status": "PASS",
+   "detail": "1 h1"
+  },
+  {
+   "id": "page:/zh/tools/ai-readiness-assessment/:meta",
+   "status": "PASS",
+   "detail": "canonical=https://aimanjack.com/zh/tools/ai-readiness-assessment/ robots=index, follow, max-image-preview:large, max-snippet:-1 hreflang=en,x-default,zh"
+  },
+  {
+   "id": "page:/zh/tools/ai-readiness-assessment/:schema",
+   "status": "PASS",
+   "detail": "Answer,BreadcrumbList,FAQPage,ListItem,Offer,ProfessionalService,Question,WebApp"
+  },
+  {
+   "id": "page:/zh/tools/ai-readiness-assessment/:cta",
+   "status": "PASS",
+   "detail": "6 links to /book/ (Book a Workshop)"
+  },
+  {
+   "id": "page:/zh/tools/ai-readiness-assessment/:cta-labels",
+   "status": "PASS",
+   "detail": "every CTA label matches its protocol"
+  },
+  {
+   "id": "page:/zh/tools/ai-readiness-assessment/:no-receptionist",
+   "status": "PASS",
+   "detail": "no receptionist marketing"
+  },
+  {
    "id": "page:/use-cases/:h1",
    "status": "PASS",
    "detail": "1 h1"
@@ -614,7 +714,7 @@
   {
    "id": "page:/use-cases/:meta",
    "status": "PASS",
-   "detail": "canonical=https://aimanjack.com/use-cases/ robots=index, follow, max-image-preview:large, max-snippet:-1 hreflang=en,x-default"
+   "detail": "canonical=https://aimanjack.com/use-cases/ robots=index, follow, max-image-preview:large, max-snippet:-1 hreflang=en,x-default,zh"
   },
   {
    "id": "page:/use-cases/:schema",
@@ -624,7 +724,7 @@
   {
    "id": "page:/use-cases/:cta",
    "status": "PASS",
-   "detail": "4 links to /book/ (Book a Workshop)"
+   "detail": "5 links to /book/ (Book a Workshop)"
   },
   {
    "id": "page:/use-cases/:cta-labels",
@@ -637,6 +737,36 @@
    "detail": "no receptionist marketing"
   },
   {
+   "id": "page:/zh/use-cases/:h1",
+   "status": "PASS",
+   "detail": "1 h1"
+  },
+  {
+   "id": "page:/zh/use-cases/:meta",
+   "status": "PASS",
+   "detail": "canonical=https://aimanjack.com/zh/use-cases/ robots=index, follow, max-image-preview:large, max-snippet:-1 hreflang=en,x-default,zh"
+  },
+  {
+   "id": "page:/zh/use-cases/:schema",
+   "status": "PASS",
+   "detail": "BreadcrumbList,CollectionPage,ListItem,ProfessionalService"
+  },
+  {
+   "id": "page:/zh/use-cases/:cta",
+   "status": "PASS",
+   "detail": "5 links to /book/ (Book a Workshop)"
+  },
+  {
+   "id": "page:/zh/use-cases/:cta-labels",
+   "status": "PASS",
+   "detail": "every CTA label matches its protocol"
+  },
+  {
+   "id": "page:/zh/use-cases/:no-receptionist",
+   "status": "PASS",
+   "detail": "no receptionist marketing"
+  },
+  {
    "id": "page:/use-cases/sales/:h1",
    "status": "PASS",
    "detail": "1 h1"
@@ -644,7 +774,7 @@
   {
    "id": "page:/use-cases/sales/:meta",
    "status": "PASS",
-   "detail": "canonical=https://aimanjack.com/use-cases/sales/ robots=index, follow, max-image-preview:large, max-snippet:-1 hreflang=en,x-default"
+   "detail": "canonical=https://aimanjack.com/use-cases/sales/ robots=index, follow, max-image-preview:large, max-snippet:-1 hreflang=en,x-default,zh"
   },
   {
    "id": "page:/use-cases/sales/:schema",
@@ -654,7 +784,7 @@
   {
    "id": "page:/use-cases/sales/:cta",
    "status": "PASS",
-   "detail": "4 links to /book/ (Book a Workshop)"
+   "detail": "5 links to /book/ (Book a Workshop)"
   },
   {
    "id": "page:/use-cases/sales/:cta-labels",
@@ -667,6 +797,36 @@
    "detail": "no receptionist marketing"
   },
   {
+   "id": "page:/zh/use-cases/sales/:h1",
+   "status": "PASS",
+   "detail": "1 h1"
+  },
+  {
+   "id": "page:/zh/use-cases/sales/:meta",
+   "status": "PASS",
+   "detail": "canonical=https://aimanjack.com/zh/use-cases/sales/ robots=index, follow, max-image-preview:large, max-snippet:-1 hreflang=en,x-default,zh"
+  },
+  {
+   "id": "page:/zh/use-cases/sales/:schema",
+   "status": "PASS",
+   "detail": "BreadcrumbList,CollectionPage,ListItem,ProfessionalService"
+  },
+  {
+   "id": "page:/zh/use-cases/sales/:cta",
+   "status": "PASS",
+   "detail": "5 links to /book/ (Book a Workshop)"
+  },
+  {
+   "id": "page:/zh/use-cases/sales/:cta-labels",
+   "status": "PASS",
+   "detail": "every CTA label matches its protocol"
+  },
+  {
+   "id": "page:/zh/use-cases/sales/:no-receptionist",
+   "status": "PASS",
+   "detail": "no receptionist marketing"
+  },
+  {
    "id": "page:/workflows/:h1",
    "status": "PASS",
    "detail": "1 h1"
@@ -674,7 +834,7 @@
   {
    "id": "page:/workflows/:meta",
    "status": "PASS",
-   "detail": "canonical=https://aimanjack.com/workflows/ robots=index, follow, max-image-preview:large, max-snippet:-1 hreflang=en,x-default"
+   "detail": "canonical=https://aimanjack.com/workflows/ robots=index, follow, max-image-preview:large, max-snippet:-1 hreflang=en,x-default,zh"
   },
   {
    "id": "page:/workflows/:schema",
@@ -684,7 +844,7 @@
   {
    "id": "page:/workflows/:cta",
    "status": "PASS",
-   "detail": "4 links to /book/ (Book a Workshop)"
+   "detail": "5 links to /book/ (Book a Workshop)"
   },
   {
    "id": "page:/workflows/:cta-labels",
@@ -697,6 +857,36 @@
    "detail": "no receptionist marketing"
   },
   {
+   "id": "page:/zh/workflows/:h1",
+   "status": "PASS",
+   "detail": "1 h1"
+  },
+  {
+   "id": "page:/zh/workflows/:meta",
+   "status": "PASS",
+   "detail": "canonical=https://aimanjack.com/zh/workflows/ robots=index, follow, max-image-preview:large, max-snippet:-1 hreflang=en,x-default,zh"
+  },
+  {
+   "id": "page:/zh/workflows/:schema",
+   "status": "PASS",
+   "detail": "BreadcrumbList,CollectionPage,HowTo,ListItem,ProfessionalService"
+  },
+  {
+   "id": "page:/zh/workflows/:cta",
+   "status": "PASS",
+   "detail": "5 links to /book/ (Book a Workshop)"
+  },
+  {
+   "id": "page:/zh/workflows/:cta-labels",
+   "status": "PASS",
+   "detail": "every CTA label matches its protocol"
+  },
+  {
+   "id": "page:/zh/workflows/:no-receptionist",
+   "status": "PASS",
+   "detail": "no receptionist marketing"
+  },
+  {
    "id": "page:/workflows/prospect-research/:h1",
    "status": "PASS",
    "detail": "1 h1"
@@ -704,7 +894,7 @@
   {
    "id": "page:/workflows/prospect-research/:meta",
    "status": "PASS",
-   "detail": "canonical=https://aimanjack.com/workflows/prospect-research/ robots=index, follow, max-image-preview:large, max-snippet:-1 hreflang=en,x-default"
+   "detail": "canonical=https://aimanjack.com/workflows/prospect-research/ robots=index, follow, max-image-preview:large, max-snippet:-1 hreflang=en,x-default,zh"
   },
   {
    "id": "page:/workflows/prospect-research/:schema",
@@ -714,7 +904,7 @@
   {
    "id": "page:/workflows/prospect-research/:cta",
    "status": "PASS",
-   "detail": "4 links to /book/ (Book a Workshop)"
+   "detail": "5 links to /book/ (Book a Workshop)"
   },
   {
    "id": "page:/workflows/prospect-research/:cta-labels",
@@ -727,6 +917,36 @@
    "detail": "no receptionist marketing"
   },
   {
+   "id": "page:/zh/workflows/prospect-research/:h1",
+   "status": "PASS",
+   "detail": "1 h1"
+  },
+  {
+   "id": "page:/zh/workflows/prospect-research/:meta",
+   "status": "PASS",
+   "detail": "canonical=https://aimanjack.com/zh/workflows/prospect-research/ robots=index, follow, max-image-preview:large, max-snippet:-1 hreflang=en,x-default,zh"
+  },
+  {
+   "id": "page:/zh/workflows/prospect-research/:schema",
+   "status": "PASS",
+   "detail": "BreadcrumbList,HowTo,HowToStep,HowToTool,ListItem,ProfessionalService"
+  },
+  {
+   "id": "page:/zh/workflows/prospect-research/:cta",
+   "status": "PASS",
+   "detail": "5 links to /book/ (Book a Workshop)"
+  },
+  {
+   "id": "page:/zh/workflows/prospect-research/:cta-labels",
+   "status": "PASS",
+   "detail": "every CTA label matches its protocol"
+  },
+  {
+   "id": "page:/zh/workflows/prospect-research/:no-receptionist",
+   "status": "PASS",
+   "detail": "no receptionist marketing"
+  },
+  {
    "id": "page:/templates/:h1",
    "status": "PASS",
    "detail": "1 h1"
@@ -734,7 +954,7 @@
   {
    "id": "page:/templates/:meta",
    "status": "PASS",
-   "detail": "canonical=https://aimanjack.com/templates/ robots=index, follow, max-image-preview:large, max-snippet:-1 hreflang=en,x-default"
+   "detail": "canonical=https://aimanjack.com/templates/ robots=index, follow, max-image-preview:large, max-snippet:-1 hreflang=en,x-default,zh"
   },
   {
    "id": "page:/templates/:schema",
@@ -744,7 +964,7 @@
   {
    "id": "page:/templates/:cta",
    "status": "PASS",
-   "detail": "4 links to /book/ (Book a Workshop)"
+   "detail": "5 links to /book/ (Book a Workshop)"
   },
   {
    "id": "page:/templates/:cta-labels",
@@ -757,6 +977,36 @@
    "detail": "no receptionist marketing"
   },
   {
+   "id": "page:/zh/templates/:h1",
+   "status": "PASS",
+   "detail": "1 h1"
+  },
+  {
+   "id": "page:/zh/templates/:meta",
+   "status": "PASS",
+   "detail": "canonical=https://aimanjack.com/zh/templates/ robots=index, follow, max-image-preview:large, max-snippet:-1 hreflang=en,x-default,zh"
+  },
+  {
+   "id": "page:/zh/templates/:schema",
+   "status": "PASS",
+   "detail": "BreadcrumbList,CollectionPage,ListItem,ProfessionalService"
+  },
+  {
+   "id": "page:/zh/templates/:cta",
+   "status": "PASS",
+   "detail": "5 links to /book/ (Book a Workshop)"
+  },
+  {
+   "id": "page:/zh/templates/:cta-labels",
+   "status": "PASS",
+   "detail": "every CTA label matches its protocol"
+  },
+  {
+   "id": "page:/zh/templates/:no-receptionist",
+   "status": "PASS",
+   "detail": "no receptionist marketing"
+  },
+  {
    "id": "page:/templates/sales-meeting-prep/:h1",
    "status": "PASS",
    "detail": "1 h1"
@@ -764,7 +1014,7 @@
   {
    "id": "page:/templates/sales-meeting-prep/:meta",
    "status": "PASS",
-   "detail": "canonical=https://aimanjack.com/templates/sales-meeting-prep/ robots=index, follow, max-image-preview:large, max-snippet:-1 hreflang=en,x-default"
+   "detail": "canonical=https://aimanjack.com/templates/sales-meeting-prep/ robots=index, follow, max-image-preview:large, max-snippet:-1 hreflang=en,x-default,zh"
   },
   {
    "id": "page:/templates/sales-meeting-prep/:schema",
@@ -774,7 +1024,7 @@
   {
    "id": "page:/templates/sales-meeting-prep/:cta",
    "status": "PASS",
-   "detail": "4 links to /book/ (Book a Workshop)"
+   "detail": "5 links to /book/ (Book a Workshop)"
   },
   {
    "id": "page:/templates/sales-meeting-prep/:cta-labels",
@@ -787,9 +1037,39 @@
    "detail": "no receptionist marketing"
   },
   {
+   "id": "page:/zh/templates/sales-meeting-prep/:h1",
+   "status": "PASS",
+   "detail": "1 h1"
+  },
+  {
+   "id": "page:/zh/templates/sales-meeting-prep/:meta",
+   "status": "PASS",
+   "detail": "canonical=https://aimanjack.com/zh/templates/sales-meeting-prep/ robots=index, follow, max-image-preview:large, max-snippet:-1 hreflang=en,x-default,zh"
+  },
+  {
+   "id": "page:/zh/templates/sales-meeting-prep/:schema",
+   "status": "PASS",
+   "detail": "BreadcrumbList,CreativeWork,ListItem,ProfessionalService"
+  },
+  {
+   "id": "page:/zh/templates/sales-meeting-prep/:cta",
+   "status": "PASS",
+   "detail": "5 links to /book/ (Book a Workshop)"
+  },
+  {
+   "id": "page:/zh/templates/sales-meeting-prep/:cta-labels",
+   "status": "PASS",
+   "detail": "every CTA label matches its protocol"
+  },
+  {
+   "id": "page:/zh/templates/sales-meeting-prep/:no-receptionist",
+   "status": "PASS",
+   "detail": "no receptionist marketing"
+  },
+  {
    "id": "drift",
    "status": "PASS",
-   "detail": "no on-page drift vs baseline (intentional change? rerun with --baseline)"
+   "detail": "baseline captured → scripts/seo-baseline.json"
   },
   {
    "id": "geo:robots",
