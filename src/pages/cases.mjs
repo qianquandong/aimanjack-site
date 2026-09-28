@@ -4,7 +4,7 @@ import { SITE, DEMO_DISPLAY } from '../config.mjs';
 import { L, planBtn, ctaBand, href } from '../layout.mjs';
 import { pageHero, breadcrumb, finalCta, CASES, BUSINESS_REF, T } from '../components.mjs';
 import { card } from '../resources.mjs';
-import { CURRENT_CASES, LIVESTREAM } from '../content/cases.mjs';
+import { CURRENT_CASES, LIVESTREAM, CLIENT_PROGRAM } from '../content/cases.mjs';
 
 const DATE = '2026-09-09';
 const article = (lang, slug, headline, description) => ({
@@ -29,6 +29,13 @@ const PROOF = {
 };
 export const caseProof = (lang, { real = false } = {}) => { const x = PROOF[lang];
   return `<section class="sec tight case-proof${real ? ' flush' : ''}" id="case-study"><div class="wrap">${card({ href: L(lang, casePath(LIVESTREAM)), kicker: real ? x.real : x.k, title: x.h, text: x.p, tags: LIVESTREAM[lang].tags, cta: index[lang].read, event: 'case_study_click', hl: 'h2', oak: true })}</div></section>`; };
+
+// The in-progress client program: same card language as caseProof, but not a link — there is no case study to open yet.
+// where = 'home' (tags only) | 'training' (adds the list of what the program is working on).
+export const clientProof = (lang, where) => { const c = CLIENT_PROGRAM[lang], x = c[where];
+  const p = typeof x.p === 'function' ? x.p(c.who) : x.p;
+  const list = x.list ? `<div class="eyebrow">${x.listH}</div><ul class="ticks">${x.list.map((i) => `<li><span>${i}</span></li>`).join('')}</ul>` : '';
+  return `<section class="sec tight case-proof" id="client-program"><div class="wrap"><div class="card res-card oakc client-card"><div class="eyebrow">${x.k}</div><h2 class="h3">${x.h}</h2><p>${p}</p>${list}<div class="tags">${c.tags.map((t) => `<span class="tag">${t}</span>`).join('')}</div><p class="note">${c.note}</p></div></div></section>`; };
 
 // ── Current case page: a proof page in the article layout (auto "on this page" list from the <h2>s) ──
 const STR = { en: { toc: 'On this page', ctaH: 'Have a process like this on your team?', ctaSub: 'Book a 30-minute call. Bring the task; we will work out what should be a rule, what AI can draft, and what a person must check.', moreK: 'Keep going', moreH: 'From this case to your team',

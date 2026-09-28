@@ -1,7 +1,7 @@
 // /tools/ hub + /tools/ai-readiness-assessment/. Deterministic, client-side, no email gate, no LLM (PRD §15–19, §84).
 // The legacy /tools/missed-call-calculator/ lives in tools.mjs and stays noindex and unlinked.
 import { SITE, R, L, href, loc, card, related, band, crumbs, page } from '../resources.mjs';
-import { faq, pageHero } from '../components.mjs';
+import { faq, pageHero, T } from '../components.mjs';
 import { faqPage } from '../schema.mjs';
 import { workflowBySlug } from '../content/workflows.mjs';
 import { templateBySlug } from '../content/templates.mjs';
@@ -128,14 +128,14 @@ const UI = {
   en: { path: ARA_PATH, title: 'Free AI Readiness Assessment for Teams | AI Man Jack', desc: 'Evaluate your team’s AI readiness across people, processes, tools, governance and leadership. 10 questions, 3 minutes, a score and practical next steps. No email required.',
     eyebrow: 'Free tool · 3 min · no sign-up', h1: 'AI Readiness Assessment', lead: 'An AI readiness assessment checks whether a team has the people, processes, knowledge, tools, governance, leadership and measurement it needs to adopt AI. Answer 10 questions about your team and get a score with next steps.',
     n: '10 questions', back: '← Back', noscript: 'Scoring runs in your browser and needs JavaScript. The questions above still work as a discussion sheet: score each answer 0–4 from top to bottom.',
-    scoreK: 'AI Man Jack AI Readiness Score', strong: 'Strongest areas', weak: 'Weakest areas', next: 'Recommended next steps', ctaH: 'Run this assessment with your team', ctaP: 'In a 30-minute call we go through your weakest areas and what a first workshop would cover. Your score is passed along so you do not have to repeat it.', retake: 'Retake', fine: 'A structured self-assessment, not a validated benchmark. Nothing you answered left your browser.',
+    scoreK: 'AI Man Jack AI Readiness Score', strong: 'Strongest areas', weak: 'Weakest areas', next: 'Recommended next steps', ctaH: 'Run this assessment with your team', ctaP: 'In a 30-minute call we go through your weakest areas and where training should start. Your score is passed along so you do not have to repeat it.', retake: 'Retake', fine: 'A structured self-assessment, not a validated benchmark. Nothing you answered left your browser.',
     dot: '.', tplLabel: 'Free template: ', ucLabel: 'How teams use it: ', path: 'Each step starts with a free template you can fill in today. From there you can see how teams like yours use it, and how to work through it with Jack.',
     step: 'Question {i} of {n}', goal: 'AI readiness score {s} ({b}). Weakest: {w}.',
     howH: 'How it works', howP: 'Ten multiple-choice questions cover eight areas. Each answer scores 0 to 4. Your overall score is the average across all answers, scaled to 100; each area gets its own score the same way. The calculation is fixed and runs in your browser — the same answers always give the same result.', th: ['Score', 'Stage', 'What it usually looks like'],
     whyH: 'Why this matters', whyP: 'Most teams do not fail at AI because of the model. They stall because nobody decided which tasks are worth it, which tool is allowed, what data is off-limits, or who checks the output. Those are organisational questions, and they can be answered in an afternoon once someone asks them.',
     readH: 'How to interpret your result', read: [['Look at the lowest area first.', 'An overall 60 with governance at 25 is a governance problem, not a 60.'], ['Compare answers inside the team.', 'If a manager answers “written guidance” and the team answers “no guidance”, the guidance has not landed.'], ['A low score is not a verdict.', 'Exploring is where every team starts. The next step is one tool and one narrow task.'], ['A high score needs evidence.', 'If you scored 80+, can you name three workflows, their owners and when each was last reviewed?']],
     areasH: 'What the eight areas cover', bestH: 'Best practices', best: ['Have three or four people take it separately, then discuss the differences.', 'Retake it a quarter after training. The area scores should move; if they do not, the training did not change the work.', 'Do not average teams together. Sales and operations are usually at different stages.'],
-    faqH: 'Questions people ask', relK: 'Next', relH: 'Start with these', bandH: 'Turn the score into a <em>plan.</em>', bandP: 'A half-day workshop covers the lowest areas with your team, on tasks they already do.',
+    faqH: 'Questions people ask', relK: 'Next', relH: 'Start with these', bandH: 'Turn the score into a <em>plan.</em>', bandP: 'The four-session program works through your lowest areas, on tasks your team already does.',
     hubTitle: 'Free AI Tools for Teams: Assess, Plan and Adopt AI | AI Man Jack', hubDesc: 'Free, practical tools to help your team find, evaluate and implement useful AI opportunities. Start with the 3-minute AI Readiness Assessment. No sign-up.',
     hubK: 'Free · no sign-up', hubH: 'Free AI tools', hubP: 'Practical tools to help your team find, evaluate and implement useful AI opportunities. Each one gives you a result you can use straight away.', soon: 'In development: an AI Use Case Finder and an AI ROI Calculator. Both will be deterministic and free, like this one.',
     hubBand: 'Tools show where you are.<br>Training moves you <em>forward.</em>',
@@ -144,14 +144,14 @@ const UI = {
   zh: { title: '免费 AI 准备度评估（团队版） | AI Man Jack', desc: '从人员、流程、工具、治理与领导力等维度评估团队的 AI 准备度。10 个问题，3 分钟，获得得分与可执行的后续建议，无需邮箱。',
     eyebrow: '免费工具 · 3 分钟 · 无需注册', h1: 'AI 准备度评估', lead: 'AI 准备度评估用于判断团队在人员、流程、知识、工具、治理、领导力与衡量等方面，是否具备采用 AI 的条件。回答 10 个关于团队的问题，即可获得得分与后续建议。',
     n: '共 10 个问题', back: '← 返回', noscript: '评分在浏览器中完成，需要启用 JavaScript。上述问题仍可作为讨论表使用：每个选项自上而下记 0–4 分。',
-    scoreK: 'AI Man Jack AI 准备度得分', strong: '优势维度', weak: '薄弱维度', next: '建议的后续步骤', ctaH: '与团队一起完成这项评估', ctaP: '在 30 分钟通话中，我们将梳理薄弱维度，并说明首场工作坊会涵盖的内容。得分会随预约一并提交，无需重复说明。', retake: '重新评估', fine: '这是一份结构化的自评，并非经过验证的基准。你的回答不会离开浏览器。',
+    scoreK: 'AI Man Jack AI 准备度得分', strong: '优势维度', weak: '薄弱维度', next: '建议的后续步骤', ctaH: '与团队一起完成这项评估', ctaP: '在 30 分钟通话中，我们将梳理薄弱维度，并说明培训应从哪里开始。得分会随预约一并提交，无需重复说明。', retake: '重新评估', fine: '这是一份结构化的自评，并非经过验证的基准。你的回答不会离开浏览器。',
     dot: '。', tplLabel: '免费模板：', ucLabel: '团队如何使用：', path: '每一步都从一份今天就能填写的免费模板开始。你可以由此了解同类团队的用法，以及如何与 Jack 一起完成。',
     step: '第 {i} 题，共 {n} 题', goal: 'AI 准备度得分 {s}（{b}）。薄弱维度：{w}。',
     howH: '评估方式', howP: '十道选择题覆盖八个维度，每个回答计 0 至 4 分。总分为全部回答的平均值，并换算为百分制；各维度得分的计算方式相同。算法固定，并在浏览器中运行：相同的回答始终得到相同的结果。', th: ['得分', '阶段', '通常的表现'],
     whyH: '为什么重要', whyP: '多数团队在 AI 上受阻，并不是因为模型本身，而是因为没有人决定：哪些任务值得做、允许使用哪款工具、哪些数据不得输入、由谁核验输出。这些是组织层面的问题，只要有人提出，一个下午就能得出答案。',
     readH: '如何解读结果', read: [['先看得分最低的维度。', '总分 60、治理仅 25，说明问题在治理，而不是“60 分”。'], ['对比团队内部的回答。', '如果管理者选择“有书面指引”，而团队选择“没有指引”，说明指引并未真正传达到位。'], ['低分不是定论。', '每个团队都从探索阶段起步，下一步是确定一款工具和一项范围明确的任务。'], ['高分需要证据。', '如果得分在 80 以上，你能否说出三条工作流、各自的负责人以及最近一次复盘的时间？']],
     areasH: '八个维度分别涵盖什么', bestH: '使用建议', best: ['请三四位成员分别完成，再讨论回答中的差异。', '培训结束一个季度后重新评估。各维度得分应有变化；如果没有，说明培训并未改变实际工作。', '不要将不同团队的得分平均。销售与运营通常处于不同阶段。'],
-    faqH: '常见问题', relK: '下一步', relH: '建议从这些内容开始', bandH: '把得分变成一份<em>行动计划</em>。', bandP: '半天工作坊将与团队一起，围绕他们已有的任务补齐薄弱维度。',
+    faqH: '常见问题', relK: '下一步', relH: '建议从这些内容开始', bandH: '把得分变成一份<em>行动计划</em>。', bandP: '四次课程项目会围绕团队已有的任务，逐项补齐薄弱维度。',
     hubTitle: '面向团队的免费 AI 工具：评估、规划与落地 | AI Man Jack', hubDesc: '免费、实用的工具，帮助团队发现、评估并落地有价值的 AI 应用。可从 3 分钟的 AI 准备度评估开始，无需注册。',
     hubK: '免费 · 无需注册', hubH: '免费 AI 工具', hubP: '实用工具，帮助团队发现、评估并落地有价值的 AI 应用。每个工具都会给出一份可直接使用的结果。', soon: '开发中：AI 应用场景查找器与 AI 投资回报计算器。两者都将采用固定算法，并免费提供。',
     hubBand: '工具告诉你现状，<br>培训带你<em>向前</em>。',
@@ -191,7 +191,7 @@ ${questions}
 <div class="g2 ara-sw"><div class="card" style="padding:24px"><h3>${u.strong}</h3><p id="ara-strong"></p></div><div class="card" style="padding:24px"><h3>${u.weak}</h3><p id="ara-weak"></p></div></div>
 <h3 style="margin-top:32px">${u.next}</h3><p class="muted" style="font-size:15px;margin-top:6px">${u.path}</p><ol id="ara-next" class="ara-next"></ol>
 <div class="ara-cta"><h3>${u.ctaH}</h3><p>${u.ctaP}</p>
-<div class="cta-row"><a class="btn btn-primary" id="ara-book" href="${L(lang, '/book/')}" data-event="book_workshop_click" data-pos="tool-result">${lang === 'zh' ? '预约团队培训' : 'Book a Workshop'}</a><button type="button" class="btn btn-secondary" id="ara-again">${u.retake}</button></div></div>
+<div class="cta-row"><a class="btn btn-primary" id="ara-book" href="${L(lang, '/book/')}" data-event="book_workshop_click" data-pos="tool-result">${T[lang].cta.plan}</a><button type="button" class="btn btn-secondary" id="ara-again">${u.retake}</button></div></div>
 <p class="muted" style="font-size:14px;margin-top:18px">${u.fine}</p>
 </div></div></div></section>
 <script>window.ARA=${JSON.stringify(data)}</script>${araScript}

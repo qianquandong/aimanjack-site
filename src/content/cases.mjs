@@ -197,3 +197,29 @@ export const LIVESTREAM = {
 };
 
 export const CURRENT_CASES = [LIVESTREAM];
+
+// First paid training program, still running (2026-09-28). NOT a case study: no outcomes, hours or ROI until session 4 plus a
+// follow-up are done and the client agrees to a write-up. Never name the client or its line of business.
+// `who` is the public descriptor. "A California retail business" may replace it only once the client has said yes to that.
+export const CLIENT_PROGRAM = {
+  en: {
+    who: 'A U.S. small business',
+    home: { k: 'Client program · In progress', h: 'Running a business with Claude — one real workflow at a time',
+      p: (who) => `${who} is currently using the 4-session program to apply Claude to day-to-day operations and website management. The training is built around the work the owner already does, not a fixed AI curriculum.` },
+    training: { k: 'First paid program · In progress', h: 'Claude applied to day-to-day business operations',
+      p: 'One current client is using the 4-session program to learn how to apply Claude to real operating work and website management. Each session is built around the next highest-value task, rather than following a generic tool curriculum.',
+      listH: 'What we’re working on', list: ['Recurring business operations', 'Website management', 'Practical Claude workflows', 'Deciding what still requires human review'] },
+    tags: ['Business operations', 'Website management', 'Claude', 'Customized training'],
+    note: 'A full case study will be published only after the program is complete and results can be verified.',
+  },
+  zh: {
+    who: '一家美国小企业',
+    home: { k: '客户项目 · 进行中', h: '用 Claude 经营生意，一次落地一条真实工作流',
+      p: (who) => `${who}正在通过四次课程项目，把 Claude 用到日常运营和网站管理上。课程围绕老板本来就在做的工作设计，而不是照搬固定的 AI 课程大纲。` },
+    training: { k: '首个付费项目 · 进行中', h: '把 Claude 用到日常经营中',
+      p: '目前有一位客户正通过四次课程项目，学习把 Claude 用到实际运营和网站管理上。每节课都围绕当下最有价值的下一项任务设计，而不是按通用的工具课程走。',
+      listH: '正在做的事', list: ['日常经营中的重复工作', '网站管理', '实用的 Claude 工作流', '判断哪些环节仍需人工审核'] },
+    tags: ['日常运营', '网站管理', 'Claude', '定制培训'],
+    note: '项目完成、结果经过核实之后，才会发布完整案例。',
+  },
+};

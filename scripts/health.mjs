@@ -79,7 +79,7 @@ for (const p of PAGES) {
   add(`page:${p}:h1`, s.h1Count === 1 ? "PASS" : "FAIL", `${s.h1Count} h1`);
   add(`page:${p}:meta`, s.title && s.description && s.canonical === self && s.hreflang === "en,x-default,zh" && /^index/.test(s.robots) ? "PASS" : "FAIL", `canonical=${s.canonical} robots=${s.robots} hreflang=${s.hreflang}`);
   add(`page:${p}:schema`, types !== "PARSE_ERROR" && types.includes("ProfessionalService") ? "PASS" : "FAIL", types.slice(0, 80));
-  add(`page:${p}:cta`, s.bookLinks >= 1 ? "PASS" : "FAIL", `${s.bookLinks} links to /book/ (Book a Workshop)`);
+  add(`page:${p}:cta`, s.bookLinks >= 1 ? "PASS" : "FAIL", `${s.bookLinks} links to /book/ (Book a Workflow Call)`);
   // Label must say what the click does: "Call" → tel:, "Text" → sms:, "Email" → mailto:
   const mism = [...h.matchAll(/<a [^>]*href="(tel:|sms:|mailto:)[^"]*"[^>]*>([^<]*)<\/a>/g)].filter(([, proto, t]) =>
     (/\bCall\b|打|拨/.test(t) && proto !== "tel:") || (/\bText\b|短信/.test(t) && proto !== "sms:") || (/\bEmail\b|邮件/.test(t) && proto !== "mailto:")).map(([, proto, t]) => `${proto} "${t.trim()}"`);
@@ -101,7 +101,7 @@ else {
 const robots = (await get("/robots.txt")).body;
 add("geo:robots", /User-agent: \*\s+Allow: \//.test(robots) && !/Disallow: \/\s*$/m.test(robots) ? "PASS" : "FAIL", "AI crawlers (GPTBot/OAI-SearchBot/PerplexityBot/ClaudeBot) must not be blocked");
 const llms = (await get("/llms.txt")).body;
-add("geo:llms-current", /corporate AI training/i.test(llms) && /\$1,500/.test(llms) && /425-4142/.test(llms) && !/receptionist|\$199/i.test(llms) ? "PASS" : "FAIL", "llms.txt must describe corporate AI training + $1,500 half-day + SMS number, and nothing about the receptionist");
+add("geo:llms-current", /corporate AI training/i.test(llms) && /\$499 per person/.test(llms) && /425-4142/.test(llms) && !/receptionist|\$199/i.test(llms) ? "PASS" : "FAIL", "llms.txt must describe corporate AI training + $499/person program + SMS number, and nothing about the receptionist");
 
 // 7. Data plumbing the task needs — WARN until Jack wires them (HEALTH-CHECK.md §2)
 add("creds:google-api", existsSync(`${process.env.HOME}/.config/claude-seo/google-api.json`) ? "PASS" : "WARN", "GSC/GA4/PSI via claude-seo need ~/.config/claude-seo/google-api.json");

@@ -319,7 +319,7 @@ Fill in before booking or designing any AI training. About 20 minutes. One page.
    Who checks whether they are used:  ______________________
 
 7. LOGISTICS
-   Format:  [ ] 90 minutes   [ ] half day   [ ] multi-week
+   Format:  [ ] 4-session program   [ ] 90 minutes   [ ] half day
    Onsite or remote: __________   Language: __________   Preferred dates: __________`,
     inputs: ['Twenty minutes with the team’s manager', 'A rough list of what each role does every week', 'The name of whoever approves software'],
     howTo: ['Fill it in with the manager, not for them. Section 3 is the part only they know.', 'If section 4 has blanks, stop and resolve them; everything else depends on it.', 'Send the finished page to whoever is running the training — it replaces the first discovery call.', 'Keep it. Section 6 is what you review two weeks after the session.'],

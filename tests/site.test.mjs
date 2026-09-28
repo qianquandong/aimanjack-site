@@ -25,13 +25,13 @@ const LEGAL = ['/privacy', '/terms', '/sms-terms'];
 
 test('home page positions AI Man Jack as practical AI training for teams, in both languages', async () => {
   const pages = await allPages();
-  for (const [lang, title, h1] of [['en', /Practical AI Training for Teams/, /Make AI useful/], ['zh', /实操型 AI 培训/, /让 AI 真正落地/]]) {
+  for (const [lang, title, h1] of [['en', /Customized AI Training for Business Teams/, /Make AI useful/], ['zh', /定制的 AI 培训/, /让 AI 真正落地/]]) {
     const home = find(pages, '/', lang);
     assert.ok(home, `missing ${lang} home`);
     assert.match(head(home.html), new RegExp(`<title>[^<]*${title.source}`));
     assert.match(home.html, new RegExp(`<h1[^>]*>[^<]*${h1.source}`));
     assert.ok(home.html.includes(`property="og:image" content="https://aimanjack.com${OG_CARD[lang]}"`), `${lang} home OG card`);
-    assert.match(home.html, /Book a Workshop|预约团队培训/);
+    assert.match(home.html, /Book a Workflow Call|预约工作流咨询/);
     for (const p of ['/tools/', '/use-cases/', '/workflows/', '/ai-training/']) assert.match(home.html, new RegExp(`href="(?:/zh)?${p}`), `${lang} home links ${p}`);
     for (const re of BANNED) assert.doesNotMatch(body(home.html) + ld(home.html), re, `${lang} home contains ${re}`);
   }
@@ -94,7 +94,8 @@ test('global navigation links training and booking, never the receptionist clust
   const chrome = home.html.slice(home.html.indexOf('<header'), home.html.indexOf('<main')) + home.html.slice(home.html.indexOf('<footer'));
   assert.match(chrome, /href="\/ai-training\/"/);
   assert.match(chrome, /href="\/book\/"/);
-  assert.match(chrome, /Book a Workshop/);
+  assert.match(chrome, /Book a Workflow Call/);
+  assert.doesNotMatch(chrome, /Book a Workshop/);
   for (const p of ['/use-cases/', '/tools/', '/templates/', '/workflows/', '/blog/', '/about/']) assert.match(chrome, new RegExp(`href="${p}"`), `chrome links ${p}`);
   for (const bad of ['/ai-receptionist/', '/pricing/', '/industries/', '/integrations/', '/tools/missed-call-calculator/', 'tel:+14695172968']) assert.doesNotMatch(chrome, new RegExp(bad.replace(/[/+]/g, '\\$&')), `chrome links ${bad}`);
   assert.doesNotMatch(home.html, /<dialog/, 'AI demo dialog is no longer injected');
@@ -118,6 +119,7 @@ test('legacy receptionist routes still render but are noindex and out of the sit
 test('llms.txt describes training and nothing about the receptionist', () => {
   const t = llms();
   assert.match(t, /corporate AI training/i);
+  assert.match(t, /\$499 per person/);
   assert.match(t, /\$1,500/);
   assert.match(t, /aimanjack\.com\/ai-training\//);
   for (const re of [/receptionist/i, /\$199/, /517-2968/, /demo line/i]) assert.doesNotMatch(t, re);
@@ -252,4 +254,25 @@ test('case studies: the index and the livestream case are indexable proof pages;
   const t = llms();
   assert.match(t, /case-studies\/livestream-agency-scheduling\//); assert.match(t, /still reviews, edits and publishes/);
   for (const o of OLD) assert.ok(!t.includes(o));
+});
+
+test('the four-session program is the primary offer on Home and Training; the client program is in progress, unnamed and claims no results', async () => {
+  const pages = await allPages();
+  for (const path of ['/', '/ai-training/']) {
+    const b = body(find(pages, path, 'en').html), z = body(find(pages, path, 'zh').html);
+    for (const re of [/\$499\/person/, /4 × 90 min/, /Custom team pricing available|Custom pricing available/, /Remote across the U\.S\./, /Dallas–Fort Worth onsite/]) assert.match(b, re, `${path} shows ${re}`);
+    for (const re of [/\$499/, /4 × 90 分钟/, /定制报价/, /全美远程/]) assert.match(z, re, `zh ${path} shows ${re}`);
+    // the primary (dark) programme card is the four-session program; the half-day is a quieter card
+    const cards = [...b.matchAll(/<div class="prog([^"]*)">([\s\S]*?)<\/div>/g)];
+    assert.ok(cards.length === 3 && / dark/.test(cards[0][1]) && /4 sessions/.test(cards[0][2]), `${path} program card is first and primary`);
+    assert.ok(!/ dark/.test(cards[2][1]) && /Half day/.test(cards[2][2]), `${path} half-day is secondary`);
+    assert.doesNotMatch(b, /Scoped after the half-day|Three ways to/, `${path} old hierarchy gone`);
+    assert.match(b, /In progress/); assert.match(z, /进行中/);
+    for (const x of [b, z]) assert.doesNotMatch(x, /gun|firearm|枪|California retail|hours? saved|ROI of|省了 ?\d+ ?小时/i, `${path} client proof stays unnamed and claims nothing`);
+  }
+  for (const lang of ['en', 'zh']) {
+    const book = body(find(pages, '/book/', lang).html);
+    assert.doesNotMatch(book, /workshop in one call|规划团队的工作坊/);
+    assert.match(ld(find(pages, '/ai-training/', lang).html), /"price":"499"/);
+  }
 });

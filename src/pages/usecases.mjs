@@ -8,18 +8,18 @@ import { SITE, R, L, href, loc, card, secHead, band, crumbs, ticks, page } from 
 import { workflowCard, templateCard } from './workflows.mjs';
 import { caseProof } from './cases.mjs';
 
-const PRICE = `$${TRAINING.halfDayFrom.toLocaleString()}`;
+const PRICE = `$${TRAINING.programFrom}`, LEN = `${TRAINING.sessions} × ${TRAINING.sessionMin}`;
 const S = {
   en: { answerK: 'The short answer', fitK: 'Where AI fits', fitH: (team) => `The work, grouped the way ${team} runs it`, fitLead: 'Linked items have a full workflow with steps, a prompt and a review checklist.',
     startK: 'Start here', startH: (d) => `${d} workflows to run this week`, chargeK: 'Where a person stays in charge', chargeH: 'AI drafts. A person signs.',
-    trainK: 'Training', trainH: (team) => `Train ${team} on these workflows`, trainP: 'A half-day workshop where each person builds one of these on their own real work, and catches one deliberately flawed output.', trainTags: ['Half day', `From ${PRICE}`],
+    trainK: 'Training', trainH: (team) => `Train ${team} on these workflows`, trainP: 'A four-session program where each person builds these on their own real work, uses them between sessions, and catches deliberately flawed outputs.', trainTags: [`${LEN} min`, `From ${PRICE}/person`],
     suffix: 'Practical Workflows and Templates', heroAlt: 'A team demonstrating what it built at a Dallas session',
     hubTitle: 'AI Use Cases for Real Teams: Sales, Marketing, Operations, Leadership | AI Man Jack', hubDesc: 'See where AI saves time and improves quality in everyday work, by team: sales, marketing, operations and leadership. Every use case links to a step-by-step workflow.',
     hubK: 'Use cases', hubH: 'AI use cases for <em>real</em> teams', hubP: 'See where AI can save time, improve quality and change how everyday work gets done. Pick a team; every linked use case opens a workflow with steps, a prompt and a review checklist.',
     rowsK: 'Explore by team', rowsH: 'Where does your team start?', more: 'Search all workflows →', count: (n) => `${n} workflows` },
   zh: { answerK: '核心结论', fitK: '适用环节', fitH: (team) => `按${team}的工作方式分组`, fitLead: '带箭头的条目提供完整工作流，包括操作步骤、提示词和核验清单。',
     startK: '从这里开始', startH: (d) => `本周即可上手的${d}工作流`, chargeK: '由人把关的环节', chargeH: 'AI 负责起草，人负责签字。',
-    trainK: '培训', trainH: (team) => `为${team}培训这些工作流`, trainP: '半天工作坊中，每位学员基于自己的真实工作搭建其中一条工作流，并找出一个刻意设置的错误输出。', trainTags: ['半天', `${PRICE} 起`],
+    trainK: '培训', trainH: (team) => `为${team}培训这些工作流`, trainP: '四次课程项目中，每位学员基于自己的真实工作搭建这些工作流，课间实际使用，并找出刻意设置的错误输出。', trainTags: [`${LEN} 分钟`, `每人 ${PRICE} 起`],
     suffix: '实用工作流与模板', heroAlt: '达拉斯的一场课程中，一个小组正在演示自己搭建的成果',
     hubTitle: '面向真实团队的 AI 应用场景：销售、市场、运营、管理层 | AI Man Jack', hubDesc: '按团队了解 AI 在日常工作中节省时间、提升质量的环节：销售、市场、运营与管理层。每个应用场景都关联到一条分步骤的工作流。',
     hubK: '应用场景', hubH: '面向<em>真实</em>团队的 AI 应用场景', hubP: '了解 AI 能在哪些环节节省时间、提升质量，并改变日常工作的方式。选择一个团队；每个带链接的应用场景都会打开一条包含步骤、提示词与核验清单的工作流。',

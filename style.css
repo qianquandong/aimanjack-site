@@ -787,3 +787,12 @@ html[lang=zh] .nums .why{font-style:normal}
     @keyframes unmask{from{clip-path:inset(0 0 100% 0)}to{clip-path:inset(0 0 0 0)}}
   }
 }
+
+/* Offer 2026-09-28: four-session program cards, owners row, in-progress client card, price line in the CTA band */
+.prog p.grow{flex-grow:1}
+.prog .more{align-self:flex-start;font-weight:700}
+.oak.wide{grid-column:1 / -1}
+@media(min-width:721px){.oak.wide .ticks{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));column-gap:24px}}
+.rows-more{margin-top:24px;font-size:16.5px}.rows-more a{color:var(--accent-text);font-weight:700;text-decoration:none}.rows-more a:hover{text-decoration:underline}
+.client-card{display:flex;flex-direction:column;gap:14px;padding:32px}.client-card .note{font-size:14px;color:var(--muted)}.client-card .ticks{margin:0}
+.cta-band .band-price{margin-top:4px}

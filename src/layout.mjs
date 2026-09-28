@@ -12,7 +12,7 @@ export const pageOf = (p, lang) => ({ path: p.path, ...p[lang], langs: langsOf(p
 
 export const href = (lang, p) => L(lang, p);   // kept as a seam: a route without a zh twin would be special-cased here
 
-// ── Primary CTA: Book a Workshop → /book/ ────────────────────────────
+// ── Primary CTA: Book a Workflow Call → /book/ ────────────────────────────
 export const planBtn = (lang, { pos = '', cls = '', id = '', label } = {}) =>
   `<a class="btn btn-primary ${cls}"${id ? ` id="${id}"` : ''} href="${L(lang, BOOK_URL)}" data-event="workshop_cta_click" data-pos="${pos}">${label || T[lang].cta.plan}</a>`;
 
@@ -79,7 +79,7 @@ export function photoHero({ photo, alt, size = '', inner, stats }) {
 export function ctaBand(lang, { h, sub, pos = 'band' } = {}) {
   const b = T[lang].band;
   return `<section class="cta-band on-dark" id="start"><img src="${PHOTOS.classroom.src}" width="${PHOTOS.classroom.w}" height="${PHOTOS.classroom.h}" loading="lazy" decoding="async" alt="">
-<div><h2>${h || b.h}</h2><p>${sub || b.sub}</p>${planBtn(lang, { pos, cls: 'btn-lg' })}
+<div><h2>${h || b.h}</h2><p>${sub || b.sub}</p>${planBtn(lang, { pos, cls: 'btn-lg' })}<p class="alt band-price">${b.price}</p>
 <p class="alt">${b.email} <a href="mailto:${EMAIL}" data-event="email_training_click" data-pos="${pos}">${EMAIL}</a> · ${b.text} <a href="sms:${SMS_TEL}?body=TRAINING%20-%20" data-event="sms_training_click" data-pos="${pos}">${SMS_DISPLAY}</a></p></div></section>`;
 }
 
