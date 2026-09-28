@@ -41,21 +41,21 @@ export const post = {
 </ol>
 
 <h2>Which of the three formats fits your office</h2>
-<table>
+<div class="table-wrap"><table>
 <thead><tr><th>Format</th><th>What each person does</th><th>Choose it when</th></tr></thead>
 <tbody>
 <tr><td>90-minute session</td><td>Watches one live build on a task taken from your team, and leaves with the five-part instruction template and a one-page verification checklist</td><td>A whole department needs to see the same thing once, before anyone commits budget</td></tr>
 <tr><td>Half-day workshop</td><td>Brings a laptop and one real task, builds a workflow that runs by the end, catches a deliberately flawed output, and leaves with a pilot plan that has an owner and a first test date</td><td>People need to leave with something that works on their own week, not a set of notes</td></tr>
 <tr><td>Multi-week program</td><td>Works through one workflow at a time in weekly sessions, reviews what actually ran between sessions and what broke, and keeps a written playbook</td><td>Workflows keep getting built and then quietly dropped</td></tr>
 </tbody>
-</table>
+</table></div>
 <p>All three run the same five parts: choose a suitable task, give the AI useful context, move from chat to workflow, verify the output, and set data and approval guardrails. What changes is how much each person does with their own hands. The detail on each one is on the <a href="/ai-training/#formats">training page</a>, and the workflows each kind of team builds are listed under <a href="/ai-training/#teams">who it is for</a>.</p>
 
 <h2>When AI training for office managers does not work</h2>
 <p>It does not work when the office does not repeat anything. Some offices are genuinely one-off: every project has a different shape, every client is handled differently on purpose. Those teams score low on the frequency question for every candidate task, and a workshop turns back into a product discussion. A short briefing is more honest for them than a half day.</p>
 <p>It does not work when the approved source does not exist. If the price list, the policy and the current procedure live in three peoples heads, there is nothing to point the AI at. That is a documentation problem, and no amount of training solves it. Write the source down first; it is usually a smaller job than it feels.</p>
 <p>It also does not work when the office manager has no authority to change how work gets done. If every change needs a partner meeting, the session ends with good intentions and a calendar that looks the same. Get the decision-maker into the room, even for the last thirty minutes.</p>
-<p>And if the real problem is that the phone rings while everyone is with a customer, training the team is the wrong fix. That is a staffing gap during working hours, and an <a href="/ai-receptionist/">AI receptionist</a> answers it directly. Training teaches people to use AI on work they already do; it does not add a person to the front desk.</p>
+<p>And if the real problem is that the phone rings while everyone is with a customer, training the team is the wrong fix. That is a staffing gap during working hours, and it needs a staffing answer. Training teaches people to use AI on work they already do; it does not add a person to the front desk.</p>
 
 <h2>What to do in the next 14 days</h2>
 <ul>
@@ -110,21 +110,21 @@ export const post = {
 </ol>
 
 <h2>三种形式，哪种适合你的办公室</h2>
-<table>
+<div class="table-wrap"><table>
 <thead><tr><th>形式</th><th>每个人做什么</th><th>什么情况下选它</th></tr></thead>
 <tbody>
 <tr><td>90 分钟专题</td><td>看一遍现场搭建，用的是你们团队自己的任务；带走五要素指令模板和一页纸的核对清单</td><td>整个部门需要先一起看明白同一件事，再谈要不要花钱</td></tr>
 <tr><td>半天工作坊</td><td>带电脑、带一项真实任务来，下课前把工作流跑通；现场还要从输出里挑出一个故意做错的地方；走的时候手上有试点计划，写明负责人和第一次测试的日期</td><td>希望同事带走的是下周就能用的东西，不是一堆笔记</td></tr>
 <tr><td>多周项目</td><td>每周一次，一次啃一条工作流；回头看这一周真正跑起来的是哪些、哪里出了问题；最后留下一份团队自己长期保留的书面操作手册</td><td>工作流老是搭起来又慢慢没人用了</td></tr>
 </tbody>
-</table>
+</table></div>
 <p>三种形式走的是同一套五个环节：挑合适的任务、把上下文交代清楚、从聊天变成工作流、核对输出、定好数据和审批的规矩。区别在于每个人自己动手做到什么程度。每种形式具体讲什么，<a href="/zh/ai-training/#formats">培训页面</a>上有；各个岗位在课上会搭出什么工作流，见<a href="/zh/ai-training/#teams">适用团队</a>那一节。</p>
 
 <h2>什么情况下这套不灵</h2>
 <p>办公室本身没什么重复的活儿，这套就不灵。有的团队确实是这样：每个项目形态都不一样，每个客户都刻意区别对待。这种团队的候选任务在"频率"那一问上全是低分，工作坊最后又会变成讨论买哪个工具。对他们来说，做一场简短的分享比上半天课实在。</p>
 <p>没有可靠的资料来源，这套也不灵。价目表、规定、现行流程分别装在三个人脑子里，AI 就没有地方可读。这是文档的问题，再多培训也补不上。先把来源写下来，这件事通常比想象中小。</p>
 <p>行政主管没有权力改动干活的方式，同样不灵。什么都要等合伙人开会定，课上完只剩一腔热情，日历还是原样。想办法让拍板的人进教室，哪怕只来最后半小时。</p>
-<p>还有一种情况：真正的麻烦是大家都在招呼客人的时候电话一直响。那就不是培训能解决的，那是上班时间人手不够，<a href="/zh/ai-receptionist/">AI 前台</a>才是对症的那一个。培训教的是让同事把 AI 用在本来就在做的事情上，它不会给前台多添一个人。</p>
+<p>还有一种情况：真正的麻烦是大家都在招呼客人的时候电话一直响。那就不是培训能解决的，那是上班时间人手不够，得从人手上想办法。培训教的是让同事把 AI 用在本来就在做的事情上，它不会给前台多添一个人。</p>
 
 <h2>接下来 14 天能做的</h2>
 <ul>
