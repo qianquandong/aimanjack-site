@@ -4,192 +4,192 @@
   {
    "id": "up:/",
    "status": "PASS",
-   "detail": "HTTP 200 220ms"
+   "detail": "HTTP 200 323ms"
   },
   {
    "id": "perf:home-fetch",
    "status": "PASS",
-   "detail": "220ms full fetch (PSI weekly gives the real CWV)"
+   "detail": "323ms full fetch (PSI weekly gives the real CWV)"
   },
   {
    "id": "up:/zh/",
    "status": "PASS",
-   "detail": "HTTP 200 55ms"
+   "detail": "HTTP 200 61ms"
   },
   {
    "id": "up:/ai-training/",
    "status": "PASS",
-   "detail": "HTTP 200 64ms"
+   "detail": "HTTP 200 57ms"
   },
   {
    "id": "up:/zh/ai-training/",
    "status": "PASS",
-   "detail": "HTTP 200 60ms"
+   "detail": "HTTP 200 62ms"
   },
   {
    "id": "up:/blog/",
    "status": "PASS",
-   "detail": "HTTP 200 53ms"
+   "detail": "HTTP 200 47ms"
   },
   {
    "id": "up:/zh/blog/",
    "status": "PASS",
-   "detail": "HTTP 200 111ms"
+   "detail": "HTTP 200 53ms"
   },
   {
    "id": "up:/about/",
    "status": "PASS",
-   "detail": "HTTP 200 70ms"
+   "detail": "HTTP 200 60ms"
   },
   {
    "id": "up:/zh/about/",
    "status": "PASS",
-   "detail": "HTTP 200 55ms"
+   "detail": "HTTP 200 59ms"
   },
   {
    "id": "up:/contact/",
    "status": "PASS",
-   "detail": "HTTP 200 67ms"
+   "detail": "HTTP 200 45ms"
   },
   {
    "id": "up:/zh/contact/",
    "status": "PASS",
-   "detail": "HTTP 200 56ms"
+   "detail": "HTTP 200 54ms"
   },
   {
    "id": "up:/book/",
    "status": "PASS",
-   "detail": "HTTP 200 56ms"
+   "detail": "HTTP 200 44ms"
   },
   {
    "id": "up:/zh/book/",
    "status": "PASS",
-   "detail": "HTTP 200 58ms"
+   "detail": "HTTP 200 44ms"
   },
   {
    "id": "up:/tools/",
    "status": "PASS",
-   "detail": "HTTP 200 52ms"
+   "detail": "HTTP 200 44ms"
   },
   {
    "id": "up:/zh/tools/",
    "status": "PASS",
-   "detail": "HTTP 200 54ms"
+   "detail": "HTTP 200 44ms"
   },
   {
    "id": "up:/tools/ai-readiness-assessment/",
    "status": "PASS",
-   "detail": "HTTP 200 57ms"
+   "detail": "HTTP 200 44ms"
   },
   {
    "id": "up:/zh/tools/ai-readiness-assessment/",
    "status": "PASS",
-   "detail": "HTTP 200 58ms"
+   "detail": "HTTP 200 48ms"
   },
   {
    "id": "up:/use-cases/",
    "status": "PASS",
-   "detail": "HTTP 200 54ms"
+   "detail": "HTTP 200 43ms"
   },
   {
    "id": "up:/zh/use-cases/",
    "status": "PASS",
-   "detail": "HTTP 200 55ms"
+   "detail": "HTTP 200 40ms"
   },
   {
    "id": "up:/use-cases/sales/",
    "status": "PASS",
-   "detail": "HTTP 200 58ms"
+   "detail": "HTTP 200 44ms"
   },
   {
    "id": "up:/zh/use-cases/sales/",
    "status": "PASS",
-   "detail": "HTTP 200 56ms"
+   "detail": "HTTP 200 45ms"
   },
   {
    "id": "up:/workflows/",
    "status": "PASS",
-   "detail": "HTTP 200 58ms"
+   "detail": "HTTP 200 42ms"
   },
   {
    "id": "up:/zh/workflows/",
    "status": "PASS",
-   "detail": "HTTP 200 77ms"
+   "detail": "HTTP 200 45ms"
   },
   {
    "id": "up:/workflows/prospect-research/",
    "status": "PASS",
-   "detail": "HTTP 200 93ms"
+   "detail": "HTTP 200 44ms"
   },
   {
    "id": "up:/zh/workflows/prospect-research/",
    "status": "PASS",
-   "detail": "HTTP 200 101ms"
+   "detail": "HTTP 200 43ms"
   },
   {
    "id": "up:/templates/",
    "status": "PASS",
-   "detail": "HTTP 200 72ms"
+   "detail": "HTTP 200 44ms"
   },
   {
    "id": "up:/zh/templates/",
    "status": "PASS",
-   "detail": "HTTP 200 63ms"
+   "detail": "HTTP 200 56ms"
   },
   {
    "id": "up:/templates/sales-meeting-prep/",
    "status": "PASS",
-   "detail": "HTTP 200 57ms"
+   "detail": "HTTP 200 39ms"
   },
   {
    "id": "up:/zh/templates/sales-meeting-prep/",
    "status": "PASS",
-   "detail": "HTTP 200 71ms"
+   "detail": "HTTP 200 43ms"
   },
   {
    "id": "up:/templates/ai-data-boundaries-one-pager/",
    "status": "PASS",
-   "detail": "HTTP 200 47ms"
+   "detail": "HTTP 200 39ms"
   },
   {
    "id": "up:/zh/templates/ai-data-boundaries-one-pager/",
    "status": "PASS",
-   "detail": "HTTP 200 53ms"
+   "detail": "HTTP 200 48ms"
   },
   {
    "id": "up:/case-studies/",
    "status": "PASS",
-   "detail": "HTTP 200 75ms"
+   "detail": "HTTP 200 44ms"
   },
   {
    "id": "up:/zh/case-studies/",
    "status": "PASS",
-   "detail": "HTTP 200 62ms"
+   "detail": "HTTP 200 53ms"
   },
   {
    "id": "up:/case-studies/livestream-agency-scheduling/",
    "status": "PASS",
-   "detail": "HTTP 200 70ms"
+   "detail": "HTTP 200 44ms"
   },
   {
    "id": "up:/zh/case-studies/livestream-agency-scheduling/",
    "status": "PASS",
-   "detail": "HTTP 200 68ms"
+   "detail": "HTTP 200 46ms"
   },
   {
    "id": "up:/sitemap.xml",
    "status": "PASS",
-   "detail": "HTTP 200 139ms"
+   "detail": "HTTP 200 28ms"
   },
   {
    "id": "up:/robots.txt",
    "status": "PASS",
-   "detail": "HTTP 200 74ms"
+   "detail": "HTTP 200 39ms"
   },
   {
    "id": "up:/llms.txt",
    "status": "PASS",
-   "detail": "HTTP 200 55ms"
+   "detail": "HTTP 200 35ms"
   },
   {
    "id": "up:404",
@@ -339,7 +339,7 @@
   {
    "id": "page:/ai-training/:cta",
    "status": "PASS",
-   "detail": "10 links to /book/ (Book a Workflow Call)"
+   "detail": "8 links to /book/ (Book a Workflow Call)"
   },
   {
    "id": "page:/ai-training/:cta-labels",
@@ -369,7 +369,7 @@
   {
    "id": "page:/zh/ai-training/:cta",
    "status": "PASS",
-   "detail": "10 links to /book/ (Book a Workflow Call)"
+   "detail": "8 links to /book/ (Book a Workflow Call)"
   },
   {
    "id": "page:/zh/ai-training/:cta-labels",
