@@ -59,7 +59,7 @@ export const post = {
       ['Is the training available in Chinese?', 'Yes. Sessions run in English or Chinese, in person anywhere in the Dallas–Fort Worth metroplex (Dallas, Fort Worth, Plano, Richardson, Frisco, McKinney, Arlington and the rest of the metroplex).'],
     ],
     pillar: ['hands-on AI training for Dallas teams', '/ai-training/'],
-    related: [['Corporate AI training: curriculum and formats', '/ai-training/'], ['The workflows each team builds', '/ai-training/#teams'], ['About Jack', '/about/']],
+    related: [['Corporate AI training: curriculum and formats', '/ai-training/'], ['The workflows each team builds', '/ai-training/#teams'], ['About Jack', '/about/'], ['Choosing AI training for office managers', '/blog/ai-training-for-office-managers/']],
     sources: [],
   },
   zh: {
@@ -116,7 +116,7 @@ export const post = {
       ['提供中文培训吗？', '提供。课程可使用英文或中文，并可在达拉斯—沃斯堡都会区（Dallas、Fort Worth、Plano、Richardson、Frisco、McKinney、Arlington 及周边地区）上门授课。'],
     ],
     pillar: ['面向团队的企业 AI 培训', '/ai-training/'],
-    related: [['企业 AI 培训：课程内容与形式', '/ai-training/'], ['各团队搭建的工作流', '/ai-training/#teams'], ['关于 Jack', '/about/']],
+    related: [['企业 AI 培训：课程内容与形式', '/ai-training/'], ['各团队搭建的工作流', '/ai-training/#teams'], ['关于 Jack', '/about/'], ['行政主管 AI 培训：三种形式怎么选', '/blog/ai-training-for-office-managers/']],
     sources: [],
   },
 };
