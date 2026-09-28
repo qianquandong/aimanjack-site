@@ -212,7 +212,7 @@ alter table booking.coupon_rate_limits enable row level security;
 insert into booking.businesses (id, name, tz, min_lead_min, max_days_ahead, cancel_window_hours, owner_phone)
   values ('aimanjack', 'AI Man Jack', 'America/Chicago', 60, 30, 2, '+18328886016') on conflict do nothing;
 insert into booking.services (business_id, id, name, duration_min, buffer_min, capacity)
-  values ('aimanjack', 'demo-call', '30-minute demo call with Jack', 30, 0, 1)
+  values ('aimanjack', 'demo-call', '20-Minute AI Workflow Call', 20, 0, 1)
   on conflict (business_id, id) do update set name = excluded.name, duration_min = excluded.duration_min;
 insert into booking.staff (business_id, id, name) values ('aimanjack', 'jack', 'Jack Qian') on conflict do nothing;
 insert into booking.availability_rules (business_id, staff_id, weekday, start_hm, end_hm)

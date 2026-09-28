@@ -29,9 +29,9 @@ export const FEATURES = {
 
 // Training proof and price anchor. Real counts only — never bump these for marketing.
 export const PROOF = { talks: 5, perTalk: '50+', hackathon: 37, reviews: 10, rating: '5.0' };
-// Primary offer since 2026-09-28: the four-session program, priced per person (programFrom). The half-day workshop is still
-// sold but secondary. Every page, schema node and llms.txt reads these; change a price here only.
-export const TRAINING = { programFrom: 499, sessions: 4, sessionMin: 90, halfDayFrom: 1500, halfDayMax: 10 };
+// The only public offer since 2026-09-28: the four-session program, priced per person. The half-day workshop was taken off the
+// site (not repriced); a 90-minute session is mentioned only as a shorter first step. Change a price here only.
+export const TRAINING = { programFrom: 499, sessions: 4, sessionMin: 90 };
 export const PROGRAM_PRICE = `$${TRAINING.programFrom}`;
 
 export const BUSINESS_SAME_AS = [GBP_URL, 'https://nextdoor.com/page/ai-man-jack-melissa-tx/', 'https://www.linkedin.com/in/quandong-qian-156563191/', 'https://www.youtube.com/@JackBuildAI', 'https://x.com/JackQianAI', 'https://www.facebook.com/profile.php?id=100084925451350'];

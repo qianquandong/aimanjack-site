@@ -789,13 +789,14 @@ html[lang=zh] .nums .why{font-style:normal}
 }
 
 /* Offer 2026-09-28: four-session program cards, owners row, in-progress client card, price line in the CTA band */
-.prog p.grow{flex-grow:1}
-.prog .more{align-self:flex-start;font-weight:700}
 .oak.wide{grid-column:1 / -1}
 @media(min-width:721px){.oak.wide .ticks{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));column-gap:24px}}
 .rows-more{margin-top:24px;font-size:16.5px}.rows-more a{color:var(--accent-text);font-weight:700;text-decoration:none}.rows-more a:hover{text-decoration:underline}
 .client-card{display:flex;flex-direction:column;gap:14px;padding:32px}.client-card .note{font-size:14px;color:var(--muted)}.client-card .ticks{margin:0}
 .cta-band .band-price{margin-top:4px}
-/* primary program card on the left, the two shorter formats stacked beside it */
-.prog-grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:20px}.prog-grid>:first-child{grid-row:span 2}
-@media(max-width:720px){.prog-grid{grid-template-columns:1fr;gap:12px}.prog-grid>:first-child{grid-row:auto}}
+/* the one program card: name, price and CTA left; what is included right. Shorter formats are a line of text below. */
+.prog.solo{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:56px;padding:48px}
+.prog.solo .prog-main{display:flex;flex-direction:column;gap:18px}.prog.solo .btn{align-self:flex-start;padding-left:32px;padding-right:32px}
+.prog.solo .ticks{padding:0 0 0 40px;border-top:0;border-left:1px solid var(--dark-line);align-self:stretch;justify-content:center}
+.prog-alt{margin-top:18px;font-size:16px;color:var(--muted)}
+@media(max-width:720px){.prog.solo{grid-template-columns:1fr;row-gap:24px;padding:28px 24px}.prog.solo .btn{align-self:stretch}.prog.solo .ticks{padding:22px 0 0;border-left:0;border-top:1px solid var(--dark-line)}}

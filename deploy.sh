@@ -1,10 +1,16 @@
 #!/bin/sh
 # Stage a clean copy (internal notes must not ship), deploy to Cloudflare Pages,
-# then ping IndexNow (Bing) with all sitemap URLs. Run `node scripts/build.mjs` first.
+# then ping IndexNow (Bing) with all sitemap URLs. Builds and runs the test suite first; refuses to deploy on any failure.
 #   sh deploy.sh            production branch → aimanjack.com + IndexNow
 #   sh deploy.sh --preview  any branch → <branch>.aimanjack.pages.dev, no IndexNow
 set -e
 cd "$(dirname "$0")"
+
+# Gate (2026-09-28): never ship what the test suite rejects. Every deploy path goes through here — Jack, Claude, and the
+# scheduled blog routine, which once published a post that linked a hidden page and overflowed on phones.
+# There is no package.json or linter in this repo, so build + node --test is the whole gate.
+node scripts/build.mjs >/dev/null
+out=$(node --test tests/ 2>&1) || { printf '%s\n' "$out" | grep -E 'not ok|AssertionError|ℹ (pass|fail)' | head -30; echo 'deploy.sh: tests failed, nothing deployed'; exit 1; }
 
 rm -rf .deploy && mkdir .deploy
 rsync -a --exclude-from=.deployignore ./ .deploy/

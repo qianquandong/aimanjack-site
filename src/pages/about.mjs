@@ -17,7 +17,7 @@ const C = {
     how: [['Task first, tool second.', 'Every session starts with work the team already does, not with a product tour.'], ['Everyone builds.', 'No one leaves with slides alone; each person leaves with a workflow that ran.'], ['Verification is part of the exercise.', 'One output in every session is deliberately flawed, and the room has to catch it.'], ['Follow up before claiming.', 'Two weeks after a session he checks whether the workflow was tested and whether it should continue, change or stop.']],
     strip: ['The 37-person Dallas AI hackathon', 'Jack presenting at a Dallas session', 'A team demonstrating what it built'],
     whereK: 'Where', whereH: 'Onsite across Dallas–Fort Worth. Remote anywhere.', remote: 'Remote',
-    contactK: 'Contact', contactH: 'Three ways to reach Jack', rows: [['Book', 'A 30-minute call'], ['Email', EMAIL], ['Text', `TRAINING to ${SMS_DISPLAY}`]],
+    contactK: 'Contact', contactH: 'Three ways to reach Jack', rows: [['Book', 'A 20-minute call'], ['Email', EMAIL], ['Text', `TRAINING to ${SMS_DISPLAY}`]],
   },
   zh: {
     title: '关于 Jack Qian 与 AI Man Jack LLC | AI Man Jack',
@@ -30,7 +30,7 @@ const C = {
     how: [['先定任务，再选工具。', '每一次课程都从团队已有的工作开始，而不是从产品介绍开始。'], ['人人动手。', '没有人只带着幻灯片离开；每位学员都带走一条实际运行过的工作流。'], ['核验是练习的一部分。', '每场课程都有一个刻意设置的错误输出，需要学员自己找出来。'], ['先回访，再下结论。', '课程两周后回访，确认工作流是否经过实测，以及应继续、调整还是停止。']],
     strip: ['37 人参与的达拉斯 AI 黑客松', 'Jack 在达拉斯的一场课程中讲解', '一个小组正在演示自己搭建的成果'],
     whereK: '服务地区', whereH: '达拉斯—沃斯堡地区上门授课，其他地区远程授课。', remote: '远程',
-    contactK: '联系方式', contactH: '三种方式联系 Jack', rows: [['预约', '30 分钟通话'], ['邮件', EMAIL], ['短信', `发送 TRAINING 至 ${SMS_DISPLAY}`]],
+    contactK: '联系方式', contactH: '三种方式联系 Jack', rows: [['预约', '20 分钟通话'], ['邮件', EMAIL], ['短信', `发送 TRAINING 至 ${SMS_DISPLAY}`]],
   },
 };
 const STRIP = [['dallas-ai-hackathon-group', 1200, 910], ['dallas-session3-jack-presenting', 1600, 1066], ['dallas-ai-hackathon-live-demo', 1200, 900]];

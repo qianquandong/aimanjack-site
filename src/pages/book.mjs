@@ -7,10 +7,10 @@ const BUSINESS = 'aimanjack', SERVICE = 'demo-call', TZ = 'America/Chicago';
 
 const copy = {
   en: {
-    title: 'Book a 30-Minute Workflow Call About AI Training | AI Man Jack',
-    description: 'Pick a time for a 30-minute call with Jack. Bring one task and get a recommendation: the 4-session program, a shorter session or a team workshop. Times are US Central. Change or cancel from your confirmation link.',
-    crumb: 'Book a call', eyebrow: 'Book a call · 30 minutes · free', h1: 'Bring one task. Let’s see where AI can actually help.',
-    sub: 'Tell me what you or your team does every week. I’ll recommend where to start and whether the 4-session program, a shorter session or a team workshop makes the most sense. I’ll call you at the time you pick.',
+    title: 'Book a 20-Minute Workflow Call About AI Training | AI Man Jack',
+    description: 'Pick a time for a 20-minute call with Jack. Bring one task and get a recommendation on which workflows to start with and how the 4-session program would fit. Times are US Central. Change or cancel from your confirmation link.',
+    crumb: 'Book a call', eyebrow: 'Book a call · 20 minutes · free', h1: 'Bring one task. Let’s see where AI can actually help.',
+    sub: 'Tell me what you or your team does every week. I’ll recommend which workflows to start with and how the 4-session program would fit your business or team. I’ll call you at the time you pick.',
     s: {
       day: 'Pick a day', time: 'Pick a time', you: 'Your details', tz: 'All times are US Central (Dallas).',
       name: 'Your name', phone: 'Mobile number', email: 'Email (optional, for a confirmation)', biz: 'Company (optional)', goal: 'What work do you want AI to help with? Add team size if it’s for a team (optional)', goalPh: 'e.g. weekly reports, website updates, sales research, content, SOPs, operations', submit: 'Confirm booking', working: 'Booking…',
@@ -24,10 +24,10 @@ const copy = {
     },
   },
   zh: {
-    title: '预约 30 分钟工作流咨询，规划你的 AI 培训 | AI Man Jack',
-    description: '选择一个时间，与 Jack 进行 30 分钟通话。带上一项任务，Jack 会建议合适的形式：四次课程项目、较短的专题分享，或团队工作坊。时间均为美国中部时间，可通过确认链接改期或取消。',
-    crumb: '预约通话', eyebrow: '预约通话 · 30 分钟 · 免费', h1: '带一项任务来，<br>看看 AI 到底能帮上什么。',
-    sub: '说说你或团队每周都在做什么，我会建议从哪里开始，以及四次课程项目、较短的专题分享和团队工作坊，哪一种最合适。到了约定时间，我会给你打电话。',
+    title: '预约 20 分钟工作流咨询，规划你的 AI 培训 | AI Man Jack',
+    description: '选择一个时间，与 Jack 进行 20 分钟通话。带上一项任务，Jack 会建议先从哪几条工作流开始，以及四次课程项目怎么安排最合适。时间均为美国中部时间，可通过确认链接改期或取消。',
+    crumb: '预约通话', eyebrow: '预约通话 · 20 分钟 · 免费', h1: '带一项任务来，<br>看看 AI 到底能帮上什么。',
+    sub: '说说你或团队每周都在做什么，我会建议先从哪几条工作流开始，以及四次课程项目怎么安排最适合你的企业或团队。到了约定时间，我会给你打电话。',
     s: {
       day: '选择日期', time: '选择时间', you: '填写信息', tz: '所有时间均为美国中部时间（达拉斯）',
       name: '姓名', phone: '手机号码', email: '邮箱（选填）', biz: '公司（选填）', goal: '希望 AI 帮你做哪些工作？如果是团队，请写上人数（选填）', goalPh: '例如：周报、网站更新、销售调研、内容、SOP、日常运营', submit: '确认预约', working: '正在预约…',
@@ -44,8 +44,8 @@ const copy = {
 
 // Left column of the page (design: Book / ZH-Book).
 const INFO = {
-  en: { top: '30-minute call with Jack', steps: [['On the call:', 'what you or your team does every week, which tools you already use, and where work keeps repeating.'], ['Within 24 hours:', 'a recommended plan (who should attend and which workflows to start with) and a written price.'], ['Then:', 'live sessions on your real work, remote anywhere in the U.S. or onsite in Dallas–Fort Worth.']], alt: ['Rather text? Send <strong>TRAINING</strong> to', ', or email', '.'] },
-  zh: { top: '与 Jack 的 30 分钟通话', steps: [['通话中：', '了解你或团队每周的工作、已经在用的工具，以及哪些工作总在重复。'], ['24 小时内：', '给出推荐方案（谁来参加、从哪几条工作流开始）和书面报价。'], ['之后：', '围绕你的真实工作实时授课，全美远程或在达拉斯—沃斯堡上门。']], alt: ['更习惯短信？发送 <strong>TRAINING</strong> 至', '，或发邮件至', '。'] },
+  en: { top: '20-minute call with Jack', steps: [['On the call:', 'what you or your team does every week, which tools you already use, and where work keeps repeating.'], ['Within 24 hours:', 'a recommended plan (who should attend and which workflows to start with) and a written price.'], ['Then:', 'live sessions on your real work, remote anywhere in the U.S. or onsite in Dallas–Fort Worth.']], alt: ['Rather text? Send <strong>TRAINING</strong> to', ', or email', '.'] },
+  zh: { top: '与 Jack 的 20 分钟通话', steps: [['通话中：', '了解你或团队每周的工作、已经在用的工具，以及哪些工作总在重复。'], ['24 小时内：', '给出推荐方案（谁来参加、从哪几条工作流开始）和书面报价。'], ['之后：', '围绕你的真实工作实时授课，全美远程或在达拉斯—沃斯堡上门。']], alt: ['更习惯短信？发送 <strong>TRAINING</strong> 至', '，或发邮件至', '。'] },
 };
 
 // One script for both languages; strings come from window.BK.

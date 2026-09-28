@@ -120,17 +120,17 @@ test('llms.txt describes training and nothing about the receptionist', () => {
   const t = llms();
   assert.match(t, /corporate AI training/i);
   assert.match(t, /\$499 per person/);
-  assert.match(t, /\$1,500/);
+  assert.doesNotMatch(t, /\$1,500|half-day/i);
   assert.match(t, /aimanjack\.com\/ai-training\//);
   for (const re of [/receptionist/i, /\$199/, /517-2968/, /demo line/i]) assert.doesNotMatch(t, re);
 });
 
-test('all consultation copy and booking source use 30 minutes', async () => {
+test('all consultation copy and the booking seed use 20 minutes', async () => {
   const files = ['src/config.mjs', 'src/i18n.mjs', 'src/components.mjs', 'src/pages/book.mjs', 'src/pages/contact.mjs', 'src/pages/training.mjs', 'src/pages/home.mjs', 'db/schema.sql'];
   const text = (await Promise.all(files.map(async (f) => readFile(new URL(`../${f}`, import.meta.url), 'utf8')))).join('\n');
-  assert.doesNotMatch(text, /(?:15|20)[ -]minute|(?:15|20) 分钟|15-min/i);
-  assert.match(text, /30-minute call/);
-  assert.match(text, /duration_min[^\n]*30|30-minute demo call with Jack', 30/);
+  assert.doesNotMatch(text, /(?:15|30)[ -]minute|(?:15|30) 分钟|15-min|demo call with Jack/i);
+  assert.match(text, /20-minute workflow call/i);
+  assert.match(text, /'20-Minute AI Workflow Call', 20,/);
 });
 
 test('privacy policy discloses coupon email storage and delivery use in both languages', async () => {
@@ -256,23 +256,24 @@ test('case studies: the index and the livestream case are indexable proof pages;
   for (const o of OLD) assert.ok(!t.includes(o));
 });
 
-test('the four-session program is the primary offer on Home and Training; the client program is in progress, unnamed and claims no results', async () => {
+test('the four-session program is the only offer on Home and Training; the client program is in progress, unnamed and claims no results', async () => {
   const pages = await allPages();
   for (const path of ['/', '/ai-training/']) {
     const b = body(find(pages, path, 'en').html), z = body(find(pages, path, 'zh').html);
-    for (const re of [/\$499\/person/, /4 × 90 min/, /Custom team pricing available|Custom pricing available/, /Remote across the U\.S\./, /Dallas–Fort Worth onsite/]) assert.match(b, re, `${path} shows ${re}`);
+    for (const re of [/\$499\/person/, /4 × 90 min/, /Custom (?:team )?pricing available/, /Remote across the U\.S\./, /Dallas–Fort Worth onsite/]) assert.match(b, re, `${path} shows ${re}`);
     for (const re of [/\$499/, /4 × 90 分钟/, /定制报价/, /全美远程/]) assert.match(z, re, `zh ${path} shows ${re}`);
-    // the primary (dark) programme card is the four-session program; the half-day is a quieter card
-    const cards = [...b.matchAll(/<div class="prog((?: [^"]*)?)">([\s\S]*?)<\/div>/g)];
-    assert.ok(cards.length === 3 && / dark/.test(cards[0][1]) && /4 sessions/.test(cards[0][2]), `${path} program card is first and primary`);
-    assert.ok(!/ dark/.test(cards[2][1]) && /Half day/.test(cards[2][2]), `${path} half-day is secondary`);
-    assert.doesNotMatch(b, /Scoped after the half-day|Three ways to/, `${path} old hierarchy gone`);
+    for (const x of [b, z]) {
+      assert.equal((x.match(/<div class="prog[ "]/g) || []).length, 1, `${path} has exactly one offer card`);
+      assert.match(x, /class="prog dark on-dark solo"/);
+      assert.doesNotMatch(x, /\$1,500|Half day|half-day workshop|半天工作坊|Scoped after|Three ways to|Ways to work together/, `${path} shows no competing format`);
+      assert.doesNotMatch(x, /gun|firearm|枪|California retail|hours? saved|ROI of|省了 ?\d+ ?小时/i, `${path} client proof stays unnamed and claims nothing`);
+    }
     assert.match(b, /In progress/); assert.match(z, /进行中/);
-    for (const x of [b, z]) assert.doesNotMatch(x, /gun|firearm|枪|California retail|hours? saved|ROI of|省了 ?\d+ ?小时/i, `${path} client proof stays unnamed and claims nothing`);
   }
+  // every primary CTA on the money pages goes to /book/ or to the program; no page-level CTA points at a workshop
+  for (const x of pages.filter((x) => !x.page.noindex && !x.p.path.startsWith('/blog/'))) assert.doesNotMatch(body(x.html) + ld(x.html), /\$1,500|Book a Workshop|预约团队培训/, `${x.lang}:${x.p.path}`);
   for (const lang of ['en', 'zh']) {
-    const book = body(find(pages, '/book/', lang).html);
-    assert.doesNotMatch(book, /workshop in one call|规划团队的工作坊/);
+    assert.doesNotMatch(body(find(pages, '/book/', lang).html), /workshop in one call|规划团队的工作坊|team workshop|团队工作坊/);
     assert.match(ld(find(pages, '/ai-training/', lang).html), /"price":"499"/);
   }
 });
