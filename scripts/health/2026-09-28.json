@@ -4,192 +4,192 @@
   {
    "id": "up:/",
    "status": "PASS",
-   "detail": "HTTP 200 332ms"
+   "detail": "HTTP 200 220ms"
   },
   {
    "id": "perf:home-fetch",
    "status": "PASS",
-   "detail": "332ms full fetch (PSI weekly gives the real CWV)"
+   "detail": "220ms full fetch (PSI weekly gives the real CWV)"
   },
   {
    "id": "up:/zh/",
    "status": "PASS",
-   "detail": "HTTP 200 105ms"
+   "detail": "HTTP 200 55ms"
   },
   {
    "id": "up:/ai-training/",
    "status": "PASS",
-   "detail": "HTTP 200 81ms"
+   "detail": "HTTP 200 64ms"
   },
   {
    "id": "up:/zh/ai-training/",
    "status": "PASS",
-   "detail": "HTTP 200 118ms"
+   "detail": "HTTP 200 60ms"
   },
   {
    "id": "up:/blog/",
    "status": "PASS",
-   "detail": "HTTP 200 124ms"
+   "detail": "HTTP 200 53ms"
   },
   {
    "id": "up:/zh/blog/",
    "status": "PASS",
-   "detail": "HTTP 200 99ms"
+   "detail": "HTTP 200 111ms"
   },
   {
    "id": "up:/about/",
    "status": "PASS",
-   "detail": "HTTP 200 98ms"
+   "detail": "HTTP 200 70ms"
   },
   {
    "id": "up:/zh/about/",
    "status": "PASS",
-   "detail": "HTTP 200 139ms"
+   "detail": "HTTP 200 55ms"
   },
   {
    "id": "up:/contact/",
    "status": "PASS",
-   "detail": "HTTP 200 63ms"
+   "detail": "HTTP 200 67ms"
   },
   {
    "id": "up:/zh/contact/",
    "status": "PASS",
-   "detail": "HTTP 200 120ms"
+   "detail": "HTTP 200 56ms"
   },
   {
    "id": "up:/book/",
    "status": "PASS",
-   "detail": "HTTP 200 167ms"
+   "detail": "HTTP 200 56ms"
   },
   {
    "id": "up:/zh/book/",
    "status": "PASS",
-   "detail": "HTTP 200 114ms"
+   "detail": "HTTP 200 58ms"
   },
   {
    "id": "up:/tools/",
    "status": "PASS",
-   "detail": "HTTP 200 62ms"
+   "detail": "HTTP 200 52ms"
   },
   {
    "id": "up:/zh/tools/",
    "status": "PASS",
-   "detail": "HTTP 200 93ms"
+   "detail": "HTTP 200 54ms"
   },
   {
    "id": "up:/tools/ai-readiness-assessment/",
    "status": "PASS",
-   "detail": "HTTP 200 72ms"
+   "detail": "HTTP 200 57ms"
   },
   {
    "id": "up:/zh/tools/ai-readiness-assessment/",
    "status": "PASS",
-   "detail": "HTTP 200 66ms"
+   "detail": "HTTP 200 58ms"
   },
   {
    "id": "up:/use-cases/",
    "status": "PASS",
-   "detail": "HTTP 200 157ms"
+   "detail": "HTTP 200 54ms"
   },
   {
    "id": "up:/zh/use-cases/",
    "status": "PASS",
-   "detail": "HTTP 200 68ms"
+   "detail": "HTTP 200 55ms"
   },
   {
    "id": "up:/use-cases/sales/",
    "status": "PASS",
-   "detail": "HTTP 200 75ms"
+   "detail": "HTTP 200 58ms"
   },
   {
    "id": "up:/zh/use-cases/sales/",
    "status": "PASS",
-   "detail": "HTTP 200 210ms"
+   "detail": "HTTP 200 56ms"
   },
   {
    "id": "up:/workflows/",
    "status": "PASS",
-   "detail": "HTTP 200 83ms"
+   "detail": "HTTP 200 58ms"
   },
   {
    "id": "up:/zh/workflows/",
    "status": "PASS",
-   "detail": "HTTP 200 123ms"
+   "detail": "HTTP 200 77ms"
   },
   {
    "id": "up:/workflows/prospect-research/",
    "status": "PASS",
-   "detail": "HTTP 200 77ms"
+   "detail": "HTTP 200 93ms"
   },
   {
    "id": "up:/zh/workflows/prospect-research/",
    "status": "PASS",
-   "detail": "HTTP 200 66ms"
+   "detail": "HTTP 200 101ms"
   },
   {
    "id": "up:/templates/",
    "status": "PASS",
-   "detail": "HTTP 200 123ms"
+   "detail": "HTTP 200 72ms"
   },
   {
    "id": "up:/zh/templates/",
    "status": "PASS",
-   "detail": "HTTP 200 95ms"
+   "detail": "HTTP 200 63ms"
   },
   {
    "id": "up:/templates/sales-meeting-prep/",
    "status": "PASS",
-   "detail": "HTTP 200 54ms"
+   "detail": "HTTP 200 57ms"
   },
   {
    "id": "up:/zh/templates/sales-meeting-prep/",
    "status": "PASS",
-   "detail": "HTTP 200 42ms"
+   "detail": "HTTP 200 71ms"
   },
   {
    "id": "up:/templates/ai-data-boundaries-one-pager/",
    "status": "PASS",
-   "detail": "HTTP 200 67ms"
+   "detail": "HTTP 200 47ms"
   },
   {
    "id": "up:/zh/templates/ai-data-boundaries-one-pager/",
    "status": "PASS",
-   "detail": "HTTP 200 47ms"
+   "detail": "HTTP 200 53ms"
   },
   {
    "id": "up:/case-studies/",
    "status": "PASS",
-   "detail": "HTTP 200 145ms"
+   "detail": "HTTP 200 75ms"
   },
   {
    "id": "up:/zh/case-studies/",
    "status": "PASS",
-   "detail": "HTTP 200 61ms"
+   "detail": "HTTP 200 62ms"
   },
   {
    "id": "up:/case-studies/livestream-agency-scheduling/",
    "status": "PASS",
-   "detail": "HTTP 200 122ms"
+   "detail": "HTTP 200 70ms"
   },
   {
    "id": "up:/zh/case-studies/livestream-agency-scheduling/",
    "status": "PASS",
-   "detail": "HTTP 200 80ms"
+   "detail": "HTTP 200 68ms"
   },
   {
    "id": "up:/sitemap.xml",
    "status": "PASS",
-   "detail": "HTTP 200 64ms"
+   "detail": "HTTP 200 139ms"
   },
   {
    "id": "up:/robots.txt",
    "status": "PASS",
-   "detail": "HTTP 200 52ms"
+   "detail": "HTTP 200 74ms"
   },
   {
    "id": "up:/llms.txt",
    "status": "PASS",
-   "detail": "HTTP 200 52ms"
+   "detail": "HTTP 200 55ms"
   },
   {
    "id": "up:404",
@@ -269,7 +269,7 @@
   {
    "id": "page:/:cta",
    "status": "PASS",
-   "detail": "6 links to /book/ (Book a Workshop)"
+   "detail": "6 links to /book/ (Book a Workflow Call)"
   },
   {
    "id": "page:/:cta-labels",
@@ -309,7 +309,7 @@
   {
    "id": "page:/zh/:cta",
    "status": "PASS",
-   "detail": "6 links to /book/ (Book a Workshop)"
+   "detail": "6 links to /book/ (Book a Workflow Call)"
   },
   {
    "id": "page:/zh/:cta-labels",
@@ -339,7 +339,7 @@
   {
    "id": "page:/ai-training/:cta",
    "status": "PASS",
-   "detail": "10 links to /book/ (Book a Workshop)"
+   "detail": "10 links to /book/ (Book a Workflow Call)"
   },
   {
    "id": "page:/ai-training/:cta-labels",
@@ -369,7 +369,7 @@
   {
    "id": "page:/zh/ai-training/:cta",
    "status": "PASS",
-   "detail": "10 links to /book/ (Book a Workshop)"
+   "detail": "10 links to /book/ (Book a Workflow Call)"
   },
   {
    "id": "page:/zh/ai-training/:cta-labels",
@@ -399,7 +399,7 @@
   {
    "id": "page:/blog/:cta",
    "status": "PASS",
-   "detail": "5 links to /book/ (Book a Workshop)"
+   "detail": "5 links to /book/ (Book a Workflow Call)"
   },
   {
    "id": "page:/blog/:cta-labels",
@@ -429,7 +429,7 @@
   {
    "id": "page:/zh/blog/:cta",
    "status": "PASS",
-   "detail": "5 links to /book/ (Book a Workshop)"
+   "detail": "5 links to /book/ (Book a Workflow Call)"
   },
   {
    "id": "page:/zh/blog/:cta-labels",
@@ -459,7 +459,7 @@
   {
    "id": "page:/about/:cta",
    "status": "PASS",
-   "detail": "5 links to /book/ (Book a Workshop)"
+   "detail": "5 links to /book/ (Book a Workflow Call)"
   },
   {
    "id": "page:/about/:cta-labels",
@@ -489,7 +489,7 @@
   {
    "id": "page:/zh/about/:cta",
    "status": "PASS",
-   "detail": "5 links to /book/ (Book a Workshop)"
+   "detail": "5 links to /book/ (Book a Workflow Call)"
   },
   {
    "id": "page:/zh/about/:cta-labels",
@@ -519,7 +519,7 @@
   {
    "id": "page:/contact/:cta",
    "status": "PASS",
-   "detail": "5 links to /book/ (Book a Workshop)"
+   "detail": "5 links to /book/ (Book a Workflow Call)"
   },
   {
    "id": "page:/contact/:cta-labels",
@@ -549,7 +549,7 @@
   {
    "id": "page:/zh/contact/:cta",
    "status": "PASS",
-   "detail": "5 links to /book/ (Book a Workshop)"
+   "detail": "5 links to /book/ (Book a Workflow Call)"
   },
   {
    "id": "page:/zh/contact/:cta-labels",
@@ -579,7 +579,7 @@
   {
    "id": "page:/book/:cta",
    "status": "PASS",
-   "detail": "7 links to /book/ (Book a Workshop)"
+   "detail": "7 links to /book/ (Book a Workflow Call)"
   },
   {
    "id": "page:/book/:cta-labels",
@@ -609,7 +609,7 @@
   {
    "id": "page:/zh/book/:cta",
    "status": "PASS",
-   "detail": "7 links to /book/ (Book a Workshop)"
+   "detail": "7 links to /book/ (Book a Workflow Call)"
   },
   {
    "id": "page:/zh/book/:cta-labels",
@@ -639,7 +639,7 @@
   {
    "id": "page:/tools/:cta",
    "status": "PASS",
-   "detail": "5 links to /book/ (Book a Workshop)"
+   "detail": "5 links to /book/ (Book a Workflow Call)"
   },
   {
    "id": "page:/tools/:cta-labels",
@@ -669,7 +669,7 @@
   {
    "id": "page:/zh/tools/:cta",
    "status": "PASS",
-   "detail": "5 links to /book/ (Book a Workshop)"
+   "detail": "5 links to /book/ (Book a Workflow Call)"
   },
   {
    "id": "page:/zh/tools/:cta-labels",
@@ -699,7 +699,7 @@
   {
    "id": "page:/tools/ai-readiness-assessment/:cta",
    "status": "PASS",
-   "detail": "6 links to /book/ (Book a Workshop)"
+   "detail": "6 links to /book/ (Book a Workflow Call)"
   },
   {
    "id": "page:/tools/ai-readiness-assessment/:cta-labels",
@@ -729,7 +729,7 @@
   {
    "id": "page:/zh/tools/ai-readiness-assessment/:cta",
    "status": "PASS",
-   "detail": "6 links to /book/ (Book a Workshop)"
+   "detail": "6 links to /book/ (Book a Workflow Call)"
   },
   {
    "id": "page:/zh/tools/ai-readiness-assessment/:cta-labels",
@@ -759,7 +759,7 @@
   {
    "id": "page:/use-cases/:cta",
    "status": "PASS",
-   "detail": "5 links to /book/ (Book a Workshop)"
+   "detail": "5 links to /book/ (Book a Workflow Call)"
   },
   {
    "id": "page:/use-cases/:cta-labels",
@@ -789,7 +789,7 @@
   {
    "id": "page:/zh/use-cases/:cta",
    "status": "PASS",
-   "detail": "5 links to /book/ (Book a Workshop)"
+   "detail": "5 links to /book/ (Book a Workflow Call)"
   },
   {
    "id": "page:/zh/use-cases/:cta-labels",
@@ -819,7 +819,7 @@
   {
    "id": "page:/use-cases/sales/:cta",
    "status": "PASS",
-   "detail": "5 links to /book/ (Book a Workshop)"
+   "detail": "5 links to /book/ (Book a Workflow Call)"
   },
   {
    "id": "page:/use-cases/sales/:cta-labels",
@@ -849,7 +849,7 @@
   {
    "id": "page:/zh/use-cases/sales/:cta",
    "status": "PASS",
-   "detail": "5 links to /book/ (Book a Workshop)"
+   "detail": "5 links to /book/ (Book a Workflow Call)"
   },
   {
    "id": "page:/zh/use-cases/sales/:cta-labels",
@@ -879,7 +879,7 @@
   {
    "id": "page:/workflows/:cta",
    "status": "PASS",
-   "detail": "5 links to /book/ (Book a Workshop)"
+   "detail": "5 links to /book/ (Book a Workflow Call)"
   },
   {
    "id": "page:/workflows/:cta-labels",
@@ -909,7 +909,7 @@
   {
    "id": "page:/zh/workflows/:cta",
    "status": "PASS",
-   "detail": "5 links to /book/ (Book a Workshop)"
+   "detail": "5 links to /book/ (Book a Workflow Call)"
   },
   {
    "id": "page:/zh/workflows/:cta-labels",
@@ -939,7 +939,7 @@
   {
    "id": "page:/workflows/prospect-research/:cta",
    "status": "PASS",
-   "detail": "5 links to /book/ (Book a Workshop)"
+   "detail": "5 links to /book/ (Book a Workflow Call)"
   },
   {
    "id": "page:/workflows/prospect-research/:cta-labels",
@@ -969,7 +969,7 @@
   {
    "id": "page:/zh/workflows/prospect-research/:cta",
    "status": "PASS",
-   "detail": "5 links to /book/ (Book a Workshop)"
+   "detail": "5 links to /book/ (Book a Workflow Call)"
   },
   {
    "id": "page:/zh/workflows/prospect-research/:cta-labels",
@@ -999,7 +999,7 @@
   {
    "id": "page:/templates/:cta",
    "status": "PASS",
-   "detail": "5 links to /book/ (Book a Workshop)"
+   "detail": "5 links to /book/ (Book a Workflow Call)"
   },
   {
    "id": "page:/templates/:cta-labels",
@@ -1029,7 +1029,7 @@
   {
    "id": "page:/zh/templates/:cta",
    "status": "PASS",
-   "detail": "5 links to /book/ (Book a Workshop)"
+   "detail": "5 links to /book/ (Book a Workflow Call)"
   },
   {
    "id": "page:/zh/templates/:cta-labels",
@@ -1059,7 +1059,7 @@
   {
    "id": "page:/templates/sales-meeting-prep/:cta",
    "status": "PASS",
-   "detail": "5 links to /book/ (Book a Workshop)"
+   "detail": "5 links to /book/ (Book a Workflow Call)"
   },
   {
    "id": "page:/templates/sales-meeting-prep/:cta-labels",
@@ -1089,7 +1089,7 @@
   {
    "id": "page:/zh/templates/sales-meeting-prep/:cta",
    "status": "PASS",
-   "detail": "5 links to /book/ (Book a Workshop)"
+   "detail": "5 links to /book/ (Book a Workflow Call)"
   },
   {
    "id": "page:/zh/templates/sales-meeting-prep/:cta-labels",
@@ -1119,7 +1119,7 @@
   {
    "id": "page:/templates/ai-data-boundaries-one-pager/:cta",
    "status": "PASS",
-   "detail": "5 links to /book/ (Book a Workshop)"
+   "detail": "5 links to /book/ (Book a Workflow Call)"
   },
   {
    "id": "page:/templates/ai-data-boundaries-one-pager/:cta-labels",
@@ -1149,7 +1149,7 @@
   {
    "id": "page:/zh/templates/ai-data-boundaries-one-pager/:cta",
    "status": "PASS",
-   "detail": "5 links to /book/ (Book a Workshop)"
+   "detail": "5 links to /book/ (Book a Workflow Call)"
   },
   {
    "id": "page:/zh/templates/ai-data-boundaries-one-pager/:cta-labels",
@@ -1179,7 +1179,7 @@
   {
    "id": "page:/case-studies/:cta",
    "status": "PASS",
-   "detail": "5 links to /book/ (Book a Workshop)"
+   "detail": "5 links to /book/ (Book a Workflow Call)"
   },
   {
    "id": "page:/case-studies/:cta-labels",
@@ -1209,7 +1209,7 @@
   {
    "id": "page:/zh/case-studies/:cta",
    "status": "PASS",
-   "detail": "5 links to /book/ (Book a Workshop)"
+   "detail": "5 links to /book/ (Book a Workflow Call)"
   },
   {
    "id": "page:/zh/case-studies/:cta-labels",
@@ -1239,7 +1239,7 @@
   {
    "id": "page:/case-studies/livestream-agency-scheduling/:cta",
    "status": "PASS",
-   "detail": "6 links to /book/ (Book a Workshop)"
+   "detail": "6 links to /book/ (Book a Workflow Call)"
   },
   {
    "id": "page:/case-studies/livestream-agency-scheduling/:cta-labels",
@@ -1269,7 +1269,7 @@
   {
    "id": "page:/zh/case-studies/livestream-agency-scheduling/:cta",
    "status": "PASS",
-   "detail": "6 links to /book/ (Book a Workshop)"
+   "detail": "6 links to /book/ (Book a Workflow Call)"
   },
   {
    "id": "page:/zh/case-studies/livestream-agency-scheduling/:cta-labels",
@@ -1294,7 +1294,7 @@
   {
    "id": "geo:llms-current",
    "status": "PASS",
-   "detail": "llms.txt must describe corporate AI training + $1,500 half-day + SMS number, and nothing about the receptionist"
+   "detail": "llms.txt must describe corporate AI training + $499/person program + SMS number, and nothing about the receptionist"
   },
   {
    "id": "creds:google-api",
