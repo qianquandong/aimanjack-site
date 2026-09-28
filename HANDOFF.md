@@ -607,12 +607,15 @@ Next step: Plan a Team Workshop
 - Amends the redesign rule "colour-only transitions". Still banned: glitch/terminal/particle/cursor effects.
 - `scripts/shots.sh` output near the bottom edge of the tall window can now show elements mid-reveal; compare with that in mind.
 
-## Offer change (2026-09-28): four-session program is the primary offer
+## Offer (2026-09-28): the four-session program is the only public offer
 
-- Source of truth: `TRAINING` in `src/config.mjs` (`programFrom: 499` per person, `sessions: 4`, `sessionMin: 90`; half-day still `1500` / `10`). `PROGRAM_PRICE` is the formatted price. Home, Training, schema Offer (`price` 499 + `UnitPriceSpecification` per person), llms.txt, blog CTA and use-case CTAs all read it.
-- Global CTA label: **Book a Workflow Call** / **预约工作流咨询**. GA4 event names are unchanged (`workshop_cta_click`, `book_workshop_click`, `booking_complete`) so existing key events keep counting; new secondary link event: `training_program_click`.
-- Booking length stays **30 minutes**. The handoff allowed 20 only if the backend supports it cleanly; `functions/v1` and `db/schema.sql` are wired to 30 and are outside the page-edit scope.
-- Program cards: `progCard()` / `askLink()` in `src/pages/training.mjs`, used by Home and Training. Primary card left and dark; 90-minute and half-day stacked on the right as quieter cards (text link, price in the note). Layout class `.prog-grid`.
-- In-progress client proof: `CLIENT_PROGRAM` in `src/content/cases.mjs`, rendered by `clientProof(lang, 'home' | 'training')`. Public descriptor is **"A U.S. small business"**; switch `who` to "A California retail business" only after the client agrees. Never name the client or its line of business. No outcomes until session 4 + follow-up, then a full case study with permission.
-- Count-up animation skips prices and formats (`$`, `×`); only counts and ratings animate.
-- Not done (P1/P2 in the handoff): Owners & Operators use-case page (Home links to `/ai-training/#team-owners` instead), LinkedIn Insight Tag (needs `LINKEDIN_PARTNER_ID`, and `_headers` CSP must allow `snap.licdn.com` + `px.ads.linkedin.com` before it can load), new event taxonomy, lead magnet.
+- Source of truth: `TRAINING` in `src/config.mjs` (`programFrom: 499` per person, `sessions: 4`, `sessionMin: 90`) and `PROGRAM_PRICE`. Home, Training, schema Offer (`price` 499 + `UnitPriceSpecification` per person), llms.txt, blog CTA and use-case CTAs read it.
+- One offer card on the whole site: `progCard()` in `src/pages/training.mjs`, used by Home and Training (`.prog.solo`). The half-day workshop was removed from every public surface, not repriced. A 90-minute session appears only as a "shorter first step" line under the Training card and in the FAQ. A test fails if a second offer card, `$1,500` or a half-day workshop reappears on a non-blog indexable page.
+- Conversion path: LinkedIn / organic → Home or `/ai-training/` → the four-session program card → **Book a Workflow Call** (`/book/`).
+- Booking is a **20-minute AI workflow call**. Production row `booking.services (aimanjack, demo-call)` = name `20-Minute AI Workflow Call`, `duration_min` 20 (migration `db/migrations/2026-09-28-workflow-call-20min.sql`, same values in `db/schema.sql`). The id stays `demo-call` because `/book/`, `scripts/booking-smoke.mjs` and past bookings use it. Customer confirmation emails take their wording from that name.
+- GA4 event names unchanged (`workshop_cta_click`, `book_workshop_click`, `booking_complete`); added `training_program_click` for links to the program section.
+- In-progress client proof: `CLIENT_PROGRAM` in `src/content/cases.mjs`, rendered by `clientProof(lang, 'home' | 'training')`. Public descriptor stays **"A U.S. small business"**; never name the client or its line of business; no outcomes until session 4 + follow-up and the client's permission.
+- Count-up animation skips prices and formats (`$`, `×`).
+- `deploy.sh` now builds and runs `node --test tests/` first and refuses to deploy on any failure. The `seo-blog-write-publish` routine also runs the tests before committing (added 2026-09-28).
+- Left on purpose: two blog posts (`ai-training-for-office-managers`, `ai-training-for-employees-start-with-one-task`) still describe the older three formats in their text; `/terms` still describes the receptionist service and links `/pricing/`; `/privacy`, `/sms-terms` and the footer SMS paragraph keep their A2P-approved wording.
+- Not done (P1/P2 in the handoff): Owners & Operators use-case page, LinkedIn Insight Tag (needs `LINKEDIN_PARTNER_ID`; `_headers` CSP must allow `snap.licdn.com` and `px.ads.linkedin.com`), new event taxonomy, lead magnet.
