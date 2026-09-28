@@ -54,7 +54,7 @@ def ga4(dims, metric="sessions"):
                                           dimensions=[Dimension(name=x) for x in dims], metrics=[Metric(name=metric)], limit=500))
     return [([v.value for v in r.dimension_values], int(r.metric_values[0].value)) for r in resp.rows]
 
-CTA = {"header_call_click", "demo_call_click", "sms_click", "book_demo_click", "form_submit", "cta_click"}
+CTA = {"workshop_cta_click", "booking_start", "header_call_click", "demo_call_click", "sms_click", "book_demo_click", "form_submit", "cta_click"}  # post-2026-09-18: workshop_cta_click/booking_start are the live ones
 a = {"window": f"{D(gs)}..{D(ge)}"}
 a["sessions_by_day"] = dict(sorted((k[0], v) for k, v in ga4(["date"])))
 a["sessions_total"] = sum(a["sessions_by_day"].values())
@@ -67,6 +67,9 @@ ev = ga4(["eventName", "city"], "eventCount")
 a["cta_events"] = {}
 for (name, city), n in ev:
     if name in CTA: a["cta_events"][name] = a["cta_events"].get(name, 0) + n
+a["events_all"] = {}
+for (name, city), n in ev: a["events_all"][name] = a["events_all"].get(name, 0) + n
+a["booking_complete"] = a["events_all"].get("booking_complete", 0)
 a["cta_clicks_total"] = sum(a["cta_events"].values())
 a["cta_clicks_external"] = sum(n for (name, city), n in ev if name in CTA and city != "Melissa")
 ext_sessions = a["sessions_total"] - a["jack_melissa_sessions"]
