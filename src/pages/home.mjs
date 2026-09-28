@@ -102,7 +102,7 @@ ${caseProof(lang)}
 <div class="rows">${USE_CASES.map((u, i) => { const x = loc(u, lang); return `<a href="${href(lang, `/use-cases/${u.slug}/`)}" data-event="use_case_click" data-pos="home"><span class="n">${n2(i)}</span><h3>${x.title}</h3><p>${x.card}</p><span class="go" aria-hidden="true">→</span></a>`; }).join('')}</div><p class="rows-more"><a href="${L(lang, '/ai-training/')}#team-owners" data-event="use_case_click" data-pos="home-owners">${c.owners}</a></p></div></section>
 
 <section class="sec tight" id="programs"><div class="wrap">${head(c.progK, c.progH, [L(lang, '/ai-training/') + '#formats', c.progMore])}
-<div class="g3" style="align-items:stretch">${c.prog.map((x, i) => progCard(x, i === 0 ? `<a class="btn btn-primary" href="${L(lang, '/ai-training/')}#formats" data-event="training_program_click" data-pos="home-programs">${x.cta}</a>` : askLink(lang, x.cta, 'home-programs'), i === 0)).join('')}</div></div></section>
+<div class="prog-grid">${c.prog.map((x, i) => progCard(x, i === 0 ? `<a class="btn btn-primary" href="${L(lang, '/ai-training/')}#formats" data-event="training_program_click" data-pos="home-programs">${x.cta}</a>` : askLink(lang, x.cta, 'home-programs'), i === 0)).join('')}</div></div></section>
 
 <section class="sec tight" id="tools"><div class="wrap">${head(c.toolsK, c.toolsH, [href(lang, '/tools/'), c.toolsMore])}
 <div class="g2">${TOOLS.map((x) => toolCard(x, lang)).join('')}${templateCard(templateBySlug['ai-use-case-discovery-worksheet'], lang)}</div></div></section>

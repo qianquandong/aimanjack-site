@@ -90,7 +90,7 @@ const page = (lang) => {
 
 ${caseProof(lang)}
 <section class="sec" id="formats"><div class="wrap">${head(c.fmtK, c.fmtH, c.fmtP)}
-<div class="g3" style="align-items:stretch">${c.fmt.map((x, i) => progCard(x, i === 0 ? planBtn(lang, { pos: 'training-format' }) : askLink(lang, x.cta, 'training-format'), i === 0)).join('')}</div></div></section>
+<div class="prog-grid">${c.fmt.map((x, i) => progCard(x, i === 0 ? planBtn(lang, { pos: 'training-format' }) : askLink(lang, x.cta, 'training-format'), i === 0)).join('')}</div></div></section>
 ${clientProof(lang, 'training')}
 
 <section class="sec tight" id="testimonials"><div class="wrap">${head(c.revK, c.revH, c.revP, `<a class="more" href="${GBP_URL}" target="_blank" rel="noopener">${c.revMore}</a>`)}

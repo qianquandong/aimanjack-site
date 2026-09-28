@@ -796,3 +796,6 @@ html[lang=zh] .nums .why{font-style:normal}
 .rows-more{margin-top:24px;font-size:16.5px}.rows-more a{color:var(--accent-text);font-weight:700;text-decoration:none}.rows-more a:hover{text-decoration:underline}
 .client-card{display:flex;flex-direction:column;gap:14px;padding:32px}.client-card .note{font-size:14px;color:var(--muted)}.client-card .ticks{margin:0}
 .cta-band .band-price{margin-top:4px}
+/* primary program card on the left, the two shorter formats stacked beside it */
+.prog-grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:20px}.prog-grid>:first-child{grid-row:span 2}
+@media(max-width:720px){.prog-grid{grid-template-columns:1fr;gap:12px}.prog-grid>:first-child{grid-row:auto}}

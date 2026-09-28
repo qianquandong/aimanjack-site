@@ -78,3 +78,13 @@ P1: training detail pages under `/ai-training/`; AI Use Case Finder; AI ROI Calc
 - **llms.txt** (via `src/llms.mjs`) carries the case facts and URL; also corrected the stale line that said the library was English-only.
 - **health.mjs:** `/case-studies/` moved from `LEGACY` to the monitored indexable set together with the new case; the two old case details are now the legacy canaries.
 - **Not done on purpose:** no spin-off blog/workflow/city pages from this case. Create related content later from real query data.
+
+## 2026-09-28 — Offer alignment: four-session program first
+
+Implements P0 of `aimanjack-website-handoff.md`. Same design system; copy, hierarchy and a few sections changed.
+- Home: eyebrow and hero sub (remote U.S. first), secondary CTA to the program, stat strip `$499/person · 4 × 90 min · 37 · 5.0 ★`, in-progress client card, "Real rooms" heading, owners link under the team rows, program section ("Choose how deep you want to go"), four engagement steps (steps 4 and 5 of the handoff combined because the step line is a four-column component), final CTA band with the price line.
+- Training: title/description/OG, hero, stat strip, Owners & operators card, formats and pricing (program primary, the "scoped after the half-day" logic removed), in-progress client block, FAQ (cost, who, remote, what people build, how success is judged).
+- Booking: title, H1, sub, left-column steps, goal field label + placeholder. Still 30 minutes.
+- About, assessment result/band, use-case training card, blog CTA, training-brief worksheet, schema Offer and areaServed (+ United States), llms.txt.
+- Fixed on the way: today's post `ai-training-for-office-managers` linked `/ai-receptionist/` from an indexable page and had unwrapped tables; both already failed the test suite on production.
+- Tests: one new test pins the new hierarchy (program primary, half-day secondary, $499 and 4 × 90 visible EN/ZH, client card in progress and unnamed, schema price 499).

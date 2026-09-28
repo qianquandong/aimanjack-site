@@ -263,7 +263,7 @@ test('the four-session program is the primary offer on Home and Training; the cl
     for (const re of [/\$499\/person/, /4 × 90 min/, /Custom team pricing available|Custom pricing available/, /Remote across the U\.S\./, /Dallas–Fort Worth onsite/]) assert.match(b, re, `${path} shows ${re}`);
     for (const re of [/\$499/, /4 × 90 分钟/, /定制报价/, /全美远程/]) assert.match(z, re, `zh ${path} shows ${re}`);
     // the primary (dark) programme card is the four-session program; the half-day is a quieter card
-    const cards = [...b.matchAll(/<div class="prog([^"]*)">([\s\S]*?)<\/div>/g)];
+    const cards = [...b.matchAll(/<div class="prog((?: [^"]*)?)">([\s\S]*?)<\/div>/g)];
     assert.ok(cards.length === 3 && / dark/.test(cards[0][1]) && /4 sessions/.test(cards[0][2]), `${path} program card is first and primary`);
     assert.ok(!/ dark/.test(cards[2][1]) && /Half day/.test(cards[2][2]), `${path} half-day is secondary`);
     assert.doesNotMatch(b, /Scoped after the half-day|Three ways to/, `${path} old hierarchy gone`);
