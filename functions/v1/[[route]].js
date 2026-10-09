@@ -12,6 +12,8 @@
 // Cloudflare Email Sending REST API (Pages Functions have no send_email binding) — env.CF_ACCOUNT_ID + env.CF_EMAIL_TOKEN
 // + env.EMAIL_FROM. No token = no email, booking still succeeds. Sent in waitUntil so the response never waits on it.
 // Instants are timestamptz; responses render them in the business tz with an offset (ISO 8601).
+// Revenue OS: AI Man Jack sales-call bookings (aimanjack/demo-call) also emit a signed aimanjack.booking.v1 event when
+// ROS_BOOKING_WEBHOOK_URL + ROS_BOOKING_WEBHOOK_SECRET are set (see emitBookingEvent). No name, phone, note or raw email.
 
 const SOURCES = new Set(['web', 'voice', 'sms', 'admin']);
 const json = (data, status = 200) => new Response(JSON.stringify(data), { status, headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' } });
@@ -324,13 +326,18 @@ function validateIntake(b) {
   const fv = str('form_version');
   v.form_version = /^intake-\d{4}-\d{2}-\d{2}$/.test(fv) ? fv : 'unknown';
   // First-touch attribution from sessionStorage (hidden ft_* fields). Self-reported "how did you hear" is stored separately.
+  v.utm = firstTouchOf(b);
+  return { errors: [...new Set(errors)], v };
+}
+
+// First-touch attribution from ft_* fields (see src/layout.mjs). Campaign tags, referring host, landing path, first-seen time. No PII.
+function firstTouchOf(b) {
   const utm = {};
   for (const k of ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term']) { const s = clean(b[`ft_${k}`], 120); if (s) utm[k] = s; }
   const ref = hostOf(clean(b.ft_ref, 120)); if (ref) utm.referrer_host = ref;
   const landing = clean(b.ft_landing, 200); if (landing.startsWith('/')) utm.landing_path = landing;
   const ts = Number(b.ft_ts); if (Number.isFinite(ts) && ts > 0) utm.first_touch_at = new Date(ts).toISOString();
-  v.utm = utm;
-  return { errors: [...new Set(errors)], v };
+  return utm;
 }
 
 async function intakeRateLimit(env, req, email) {
@@ -350,10 +357,11 @@ async function intakeRateLimit(env, req, email) {
 
 // Signed event for the Revenue OS operational store: x-ros-signature = sha256=<hex HMAC-SHA256 of "${t}.${body}">.
 // The event carries the receipt minus any IP data. Failure is logged by status only and never fails the request.
-async function postRosEvent(env, event) {
+// Also used for booking events (own URL + secret; header id = event.event_id). The header id is informational: ROS takes the id from the signed body.
+async function postRosEvent(env, event, { url = env.ROS_WEBHOOK_URL, secret = env.ROS_WEBHOOK_SECRET } = {}) {
   const body = JSON.stringify(event), t = String(Math.floor(Date.now() / 1000));
-  const signature = await hmacHex(env.ROS_WEBHOOK_SECRET, `${t}.${body}`);
-  const r = await fetch(env.ROS_WEBHOOK_URL, { method: 'POST', body, headers: { 'content-type': 'application/json', 'x-ros-timestamp': t, 'x-ros-signature': `sha256=${signature}`, 'x-ros-event-id': event.receipt_id } });
+  const signature = await hmacHex(secret, `${t}.${body}`);
+  const r = await fetch(url, { method: 'POST', body, headers: { 'content-type': 'application/json', 'x-ros-timestamp': t, 'x-ros-signature': `sha256=${signature}`, 'x-ros-event-id': event.event_id || event.receipt_id } });
   if (!r.ok) console.error('ros webhook rejected', r.status);
 }
 
@@ -423,6 +431,51 @@ async function intake(env, req, ctx) {
   return reply(rec.deduped ? 200 : 201, { ok: true, receipt_id: receiptId }, 'received');
 }
 
+// ── Booking events for Revenue OS (contract aimanjack.booking.v1) ──
+// After a successful create / reschedule / cancel of an AI Man Jack sales call (business 'aimanjack', service 'demo-call', the
+// ids /book/ posts: src/pages/book.mjs, db/schema.sql seed), a signed event goes to ROS_BOOKING_WEBHOOK_URL in waitUntil — only
+// when ROS_BOOKING_WEBHOOK_URL + ROS_BOOKING_WEBHOOK_SECRET are both set. Receptionist-client bookings on the same API never
+// leave the site (they are not sales meetings). Signature: same scheme as the intake event, with its own secret.
+// Data minimization: no name, phone, note or raw email. email_hmac = HMAC-SHA256(EMAIL_HASH_SECRET, `email|${normalized}`) with
+// the Revenue OS subjectKey normalization (lowercase, +tag stripped), so `email:${email_hmac}` equals a ROS contact email_key
+// when EMAIL_HASH_SECRET is the ROS salt; null when the secret is unset. company_domain = email domain unless free-mail, else null.
+// Failures are logged by status/code only and never change the booking response.
+const ROS_BOOKING_BUSINESS = 'aimanjack', ROS_BOOKING_SERVICE = 'demo-call';
+const ROS_BOOKING_TYPES = { created: 'booking.created', rescheduled: 'booking.rescheduled', cancelled: 'booking.canceled' };
+// Keep equal to FREE_MAIL_DOMAINS in revenue-os lib/util.mjs.
+const FREE_MAIL = new Set(['gmail.com', 'googlemail.com', 'yahoo.com', 'outlook.com', 'hotmail.com', 'live.com', 'msn.com', 'icloud.com', 'me.com', 'aol.com', 'proton.me', 'protonmail.com', 'gmx.com', 'mail.com', 'yandex.com', 'qq.com', '163.com', '126.com', 'zoho.com']);
+const rosLinkEmail = (raw) => {
+  const e = clean(raw, 254).toLowerCase();
+  if (!emailOk(e)) return null;
+  const [local, domain] = e.split('@');
+  return `${local.split('+')[0]}@${domain}`;
+};
+
+async function bookingRosEvent(env, b, kind, utm) {
+  const email = rosLinkEmail(b.customer_email), domain = email ? email.split('@')[1] : null;
+  const changedAt = b.updated_at || b.created_at || new Date().toISOString();
+  return {
+    schema: 'aimanjack.booking.v1', event_type: ROS_BOOKING_TYPES[kind],
+    event_id: `booking:${b.id}:${kind}:${Date.parse(changedAt) || changedAt}`,
+    booking_id: b.id, business_id: b.business_id, service_id: b.service_id,
+    starts_at: new Date(b.start_at).toISOString(), duration_min: b.duration_min, timezone: b.tz,
+    email_hmac: email && env.EMAIL_HASH_SECRET ? await hmacHex(env.EMAIL_HASH_SECRET, `email|${email}`) : null,
+    company_domain: domain && !FREE_MAIL.has(domain) ? domain : null,
+    utm: utm && Object.keys(utm).length ? utm : null,
+    occurred_at: new Date(changedAt).toISOString(),
+  };
+}
+
+function emitBookingEvent(env, ctx, b, kind, utm = null) {
+  if (!env.ROS_BOOKING_WEBHOOK_URL || !env.ROS_BOOKING_WEBHOOK_SECRET || !ctx?.waitUntil) return;
+  if (b?.business_id !== ROS_BOOKING_BUSINESS || b?.service_id !== ROS_BOOKING_SERVICE || !ROS_BOOKING_TYPES[kind]) return;
+  const job = (async () => {
+    const event = await bookingRosEvent(env, b, kind, utm);
+    await postRosEvent(env, event, { url: env.ROS_BOOKING_WEBHOOK_URL, secret: env.ROS_BOOKING_WEBHOOK_SECRET });
+  })().catch((e) => console.error('ros booking webhook failed', errInfo(e)));
+  ctx.waitUntil(job);
+}
+
 // kind: created | rescheduled | cancelled. Customer gets a confirmation, the owner a one-line notice.
 function notify(env, ctx, b, kind, source) {
   if (!env.CF_EMAIL_TOKEN || !env.EMAIL_FROM) return;
@@ -490,6 +543,7 @@ async function create(env, req, origin, ctx) {
   const b = await getBooking(env, id);
   await logEvent(env, b, 'created', source, { start_at: b.start_at, service: b.service_id, staff: b.staff_id });
   notify(env, ctx, b, 'created', source);
+  emitBookingEvent(env, ctx, b, 'created', firstTouchOf(body));
   return json(view(b, origin), 201);
 }
 
@@ -509,6 +563,7 @@ async function reschedule(env, req, b, origin, ctx) {
   const nb = await getBooking(env, b.id);
   await logEvent(env, nb, 'rescheduled', source, { from: b.start_at, to: nb.start_at });
   notify(env, ctx, nb, 'rescheduled', source);
+  emitBookingEvent(env, ctx, nb, 'rescheduled');
   return json(view(nb, origin));
 }
 
@@ -520,6 +575,7 @@ async function cancel(env, req, b, origin, ctx) {
   const nb = await getBooking(env, b.id);
   await logEvent(env, nb, 'cancelled', source, { start_at: b.start_at });
   notify(env, ctx, nb, 'cancelled', source);
+  emitBookingEvent(env, ctx, nb, 'cancelled');
   return json(view(nb, origin));
 }
 
