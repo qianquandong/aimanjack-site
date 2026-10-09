@@ -7,7 +7,7 @@ Key facts:
 - Service: customized AI training and AI workflow training for business owners and teams. Taught in English or Chinese. Remote anywhere in the U.S.; onsite anywhere in Dallas–Fort Worth (Dallas, Fort Worth, Plano, Richardson, Frisco, McKinney, Arlington).
 - Method, five parts: choose a suitable task, give the AI useful context, move from chat to workflow, verify the output, apply data and approval guardrails. Each session starts with what was used on real work since the last one; two weeks after the last session Jack checks whether each workflow should continue, change or stop.
 - Tools: whichever the company has approved — ChatGPT, Claude, Gemini, Microsoft Copilot. The method is tool-agnostic. No coding.
-- Pricing: the 4-session program (4 × 90 minutes, live) starts at $499 per person; team pricing is customized by group size, goals and preparation. Prices are confirmed in writing within 24 hours of one 20-minute workflow call.
+- Pricing: the 4-session program (4 × 90 minutes, live) starts at $499 per person; team pricing is customized by group size, goals and preparation. Prices are confirmed in writing by email after one 20-minute workflow call.
 - Current client: one paying program is in progress with a U.S. small business applying Claude to day-to-day operations and website management. No results are claimed until it is complete and verified.
 - Proof: 5 community talks (50+ attendees each), one 37-person hackathon, 10 Google reviews at 5.0, all from workshop attendees. No client ROI figures are claimed.
 - Sister site: https://realagentusecases.com/ — Jack's weekly newsletter on AI agents and workflows working professionals actually run (learn there; train with AI Man Jack).

@@ -157,14 +157,30 @@ const acquireFailedCoupon = async (env, coupon) => (await sb(env, 'coupons?' + q
 }))[0] ?? null;
 const adminOk = (env, req) => env.ADMIN_TOKEN && req.headers.get('authorization') === `Bearer ${env.ADMIN_TOKEN}`;
 const sha256 = async (value) => [...new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(value)))].map((byte) => byte.toString(16).padStart(2, '0')).join('');
+const hmacHex = async (secret, message) => {
+  const key = await crypto.subtle.importKey('raw', new TextEncoder().encode(secret), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']);
+  return [...new Uint8Array(await crypto.subtle.sign('HMAC', key, new TextEncoder().encode(message)))].map((x) => x.toString(16).padStart(2, '0')).join('');
+};
+// Keyed hashes for anything derived from an email or IP (lifecycle/privacy review 2026-10-08: no unsalted email or IP hash).
+//   emailHmac: HMAC-SHA256(EMAIL_HASH_SECRET, `${purpose}:${email}`), or null when the secret is unset (never a bare sha256).
+//   ipHmac:    HMAC-SHA256(IP_HASH_SALT, `${purpose}:${ip}`), or null when the salt is unset.
+//   rateKey:   rate-limit window keys only (rows expire within a day). Keyed with EMAIL_HASH_SECRET, else the service
+//              secret SB_SECRET_KEY (always present when the database is reachable) so limiting still works unconfigured.
+const emailHmac = (env, purpose, email) => (env.EMAIL_HASH_SECRET ? hmacHex(env.EMAIL_HASH_SECRET, `${purpose}:${email}`) : null);
+const ipHmac = (env, purpose, ip) => (env.IP_HASH_SALT && ip ? hmacHex(env.IP_HASH_SALT, `${purpose}:${ip}`) : null);
+const rateKey = async (env, key) => {
+  const secret = env.EMAIL_HASH_SECRET || env.SB_SECRET_KEY;
+  if (!secret) throw Object.assign(new Error('no rate-limit key'), { code: 'rate_key_unavailable' });   // callers fail closed
+  return hmacHex(secret, `rate:${key}`);
+};
 
 async function couponRateLimit(env, req, normalizedEmail) {
   const ip = clean(req.headers.get('cf-connecting-ip'), 64);
   if (!ip) return fail(503, 'rate_limit_unavailable', 'Coupon requests are temporarily unavailable.');
   try {
-    const ipAllowed = await sb(env, 'rpc/take_coupon_rate_limit', { method: 'POST', body: { p_key_hash: await sha256(`coupon-ip:${ip}`), p_limit: 5, p_window_seconds: 60 } });
+    const ipAllowed = await sb(env, 'rpc/take_coupon_rate_limit', { method: 'POST', body: { p_key_hash: await rateKey(env, `coupon-ip:${ip}`), p_limit: 5, p_window_seconds: 60 } });
     if (ipAllowed !== true) return fail(429, 'rate_limited', 'Too many coupon requests. Try again in a minute.');
-    const emailAllowed = await sb(env, 'rpc/take_coupon_rate_limit', { method: 'POST', body: { p_key_hash: await sha256(`coupon-email:${normalizedEmail}`), p_limit: 5, p_window_seconds: 60 } });
+    const emailAllowed = await sb(env, 'rpc/take_coupon_rate_limit', { method: 'POST', body: { p_key_hash: await rateKey(env, `coupon-email:${normalizedEmail}`), p_limit: 5, p_window_seconds: 60 } });
     if (emailAllowed !== true) return fail(429, 'rate_limited', 'Too many coupon requests. Try again in a minute.');
   } catch (e) {
     console.error('coupon rate limiter', e);
@@ -241,7 +257,11 @@ async function redeemCoupon(env, req, code) {
 // POST /v1/intake — JSON from the inline script on /contact/quote/, or a plain form POST without JS (answered with
 // 303 → /contact/quote/#received or #not-sent, which the page shows with :target).
 // Order: origin allowlist → honeypot / fill-time (silent drop) → consent → field validation → fail-closed rate limit →
-// revenue.record_intake RPC (one receipt per dedupe_key = sha256(lower(email)|company_domain|UTC day) + append-only consent ledger).
+// revenue.record_intake RPC (one receipt per dedupe_key per (lower(email), company_domain, UTC day) + append-only consent ledger).
+// Hashes (see emailHmac / ipHmac): subject_email_hash and ip_hash are keyed HMACs or null — never unsalted. dedupe_key is an
+// HMAC with EMAIL_HASH_SECRET; only when that secret is unset does it fall back to the day-scoped sha256, which is guessable
+// by someone who already knows email + domain + day, so it is kept only in the receipt row (stripped from the ROS event, never
+// logged, erased with the receipt). Missing secrets log a code-only warning.
 // Then, never blocking the response: owner notice via sendMail (only if configured) and a signed event to the Revenue OS
 // operational store (only if ROS_WEBHOOK_URL + ROS_WEBHOOK_SECRET are set).
 // PII rule: responses carry only ok / receipt_id / error codes / field NAMES; console output carries only codes and statuses.
@@ -318,7 +338,7 @@ async function intakeRateLimit(env, req, email) {
   if (!ip) return 'unavailable';
   try {
     for (const [key, limit] of [[`intake-ip:${ip}`, 10], [`intake-email:${email}`, 5]]) {
-      const allowed = await sb(env, 'rpc/take_intake_rate_limit', { method: 'POST', schema: 'revenue', body: { p_key_hash: await sha256(key), p_limit: limit, p_window_seconds: 600 } });
+      const allowed = await sb(env, 'rpc/take_intake_rate_limit', { method: 'POST', schema: 'revenue', body: { p_key_hash: await rateKey(env, key), p_limit: limit, p_window_seconds: 600 } });
       if (allowed !== true) return 'limited';
     }
   } catch (e) {
@@ -327,11 +347,6 @@ async function intakeRateLimit(env, req, email) {
   }
   return null;
 }
-
-const hmacHex = async (secret, message) => {
-  const key = await crypto.subtle.importKey('raw', new TextEncoder().encode(secret), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']);
-  return [...new Uint8Array(await crypto.subtle.sign('HMAC', key, new TextEncoder().encode(message)))].map((x) => x.toString(16).padStart(2, '0')).join('');
-};
 
 // Signed event for the Revenue OS operational store: x-ros-signature = sha256=<hex HMAC-SHA256 of "${t}.${body}">.
 // The event carries the receipt minus any IP data. Failure is logged by status only and never fails the request.
@@ -373,14 +388,19 @@ async function intake(env, req, ctx) {
 
   const day = new Date().toISOString().slice(0, 10);
   const companyDomain = v.company_website || v.email.split('@')[1];
-  const dedupeKey = await sha256(`${v.email}|${companyDomain}|${day}`);
+  const dedupeBasis = `${v.email}|${companyDomain}|${day}`;
+  const dedupeKey = (await emailHmac(env, 'dedupe', dedupeBasis)) ?? (await sha256(dedupeBasis));   // fallback: day-scoped, receipt row only
+  const subjectHash = await emailHmac(env, 'subject', v.email);
+  if (!subjectHash) console.warn('intake: EMAIL_HASH_SECRET unset; subject_email_hash stored as null');
   const ip = clean(req.headers.get('cf-connecting-ip'), 64);
+  const ipHash = await ipHmac(env, 'intake-ip', ip);
+  if (!ipHash) console.warn('intake: IP_HASH_SALT unset; ip_hash stored as null');
   const payload = { name: v.name, email: v.email, company: v.company, company_website: v.company_website || null, company_domain: companyDomain, industry: v.industry, headcount: v.headcount,
     attendees: v.attendees, format: v.format, location: v.location, location_city: v.location_city || null, workflows: v.workflows, tools: v.tools || null,
     timing: v.timing, source: v.source, source_detail: v.source_detail || null, lang: v.lang, fill_ms: fill, timer: fill === null ? 'absent' : 'ok' };
   const receipt = { dedupe_key: dedupeKey, form_version: v.form_version, payload, consent_request: true, consent_newsletter: v.consent_newsletter,
-    consent_notice_version: INTAKE_CONSENT_NOTICE_VERSION, utm: v.utm, self_reported_source: v.source, ip_hash: ip ? await sha256(`intake-ip:${ip}|${env.IP_HASH_SALT || ''}`) : null,
-    subject_email_hash: await sha256(`email:${v.email}`) };
+    consent_notice_version: INTAKE_CONSENT_NOTICE_VERSION, utm: v.utm, self_reported_source: v.source, ip_hash: ipHash,
+    subject_email_hash: subjectHash };
   const consents = [{ consent_type: 'request_contact', granted: true }, { consent_type: 'newsletter', granted: v.consent_newsletter }];
   let rec;
   try {
@@ -396,7 +416,7 @@ async function intake(env, req, ctx) {
     const later = (p, what) => { const job = p.catch((e) => console.error(what, errInfo(e))); if (ctx.waitUntil) ctx.waitUntil(job); };
     if (env.CF_EMAIL_TOKEN && env.EMAIL_FROM && env.OWNER_EMAIL) later(sendMail(env, { to: env.OWNER_EMAIL, subject: `[quote request] ${v.company} · ${v.format}`, text: intakeOwnerText(v, receiptId), reply_to: v.email }), 'intake owner email failed');
     if (env.ROS_WEBHOOK_URL && env.ROS_WEBHOOK_SECRET) {
-      const { ip_hash, subject_email_hash, ...rest } = receipt;   // the operational store gets no IP data
+      const { ip_hash, subject_email_hash, dedupe_key, ...rest } = receipt;   // the operational store gets no IP data or hashes
       later(postRosEvent(env, { event_type: 'intake.received', receipt_id: receiptId, received_at: rec.received_at || new Date().toISOString(), ...rest }), 'ros webhook failed');
     }
   }

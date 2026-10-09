@@ -35,7 +35,7 @@ export const T = {
       plan: '预约工作流咨询', how: '了解培训方式', tools: '浏览免费工具', email: '发送邮件', book: '预约 20 分钟通话', text: '发送短信',
       call: '拨打 AI 演示', callNow: '立即拨打', seeHow: '了解运作方式', viewPricing: '查看价格', readCase: '查看完整案例', noSignup: '无需注册，直接拨打。', callYourself: '亲自拨打体验',
     },
-    demo: { try: '体验 AI 演示线路', alwaysOn: '全天 24 小时在线', langs: '中文 · 英文 · 西班牙语', live: '通话中', role: 'AI 演示 · 24 小时', customer: '顾客', ai: 'AI', booked: '预约已确认', example: '示例对话' },
+    demo: { try: '体验 AI 演示线路', alwaysOn: '全天候在线', langs: '中文 · 英文 · 西班牙语', live: '通话中', role: 'AI 演示 · 全天候', customer: '顾客', ai: 'AI', booked: '预约已确认', example: '示例对话' },
     sticky: '预约工作流咨询',
     band: { h: '带一项真实任务来，<br>带一条<em>可用的工作流</em>走。', sub: '预约一次简短沟通，带上一项真实任务。我们一起判断这项任务适不适合交给 AI，以及四次课程项目应该从哪里开始。', price: `四次课程项目每人 ${PROGRAM_PRICE} 起，团队可定制报价。`, email: '或发送邮件至', text: '短信发送 TRAINING 至' },
     footer: {

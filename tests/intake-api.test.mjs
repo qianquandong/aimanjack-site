@@ -2,6 +2,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import { createHash, createHmac } from 'node:crypto';
+import { readFileSync, readdirSync } from 'node:fs';
 import { onRequest } from '../functions/v1/[[route]].js';
 import { pages as contactPages } from '../src/pages/contact.mjs';
 import { render, pageOf } from '../src/layout.mjs';
@@ -11,11 +12,15 @@ const env = {
   SUPABASE_URL: 'https://db.test', SB_SECRET_KEY: 'test-key',
   CF_ACCOUNT_ID: 'account', CF_EMAIL_TOKEN: '', EMAIL_FROM: 'bookings@aimanjack.com', OWNER_EMAIL: 'jack@aimanjack.com',
   SITE_ORIGIN: 'https://aimanjack.com', ADMIN_TOKEN: 'admin-token',
+  EMAIL_HASH_SECRET: 'email-hash-test-secret', IP_HASH_SALT: 'ip-salt-test',
 };
+const { EMAIL_HASH_SECRET: _s, IP_HASH_SALT: _i, ...unsalted } = env;   // production before the secrets are set
 const IP = '203.0.113.77';
 const PII = ['Dana', 'Reyes', 'dana.reyes', 'Northwind', 'northwind', 'dispatch spreadsheet', IP];
 const response = (body, status = 200) => new Response(typeof body === 'string' ? body : JSON.stringify(body), { status });
 const sha = (s) => createHash('sha256').update(s).digest('hex');
+const hmac = (k, s) => createHmac('sha256', k).update(s).digest('hex');
+const EMAIL = 'dana.reyes@northwind-example.com';
 const today = () => new Date().toISOString().slice(0, 10);
 
 const valid = (over = {}) => ({
@@ -74,7 +79,9 @@ test('a valid submission makes exactly one receipt with normalized fields, separ
   assert.deepEqual(Object.keys(j).sort(), ['ok', 'receipt_id'], 'nothing echoed back');
   assert.equal(db.records.length, 1, 'one insert');
   const { p, p_consents } = db.records[0];
-  assert.equal(p.dedupe_key, sha(`dana.reyes@northwind-example.com|northwind-example.com|${today()}`));
+  assert.equal(p.dedupe_key, hmac(env.EMAIL_HASH_SECRET, `dedupe:${EMAIL}|northwind-example.com|${today()}`), 'dedupe key is keyed (HMAC)');
+  assert.equal(p.subject_email_hash, hmac(env.EMAIL_HASH_SECRET, `subject:${EMAIL}`), 'subject hash = HMAC(EMAIL_HASH_SECRET, subject:email)');
+  assert.equal(p.ip_hash, hmac(env.IP_HASH_SALT, `intake-ip:${IP}`), 'ip hash = HMAC(IP_HASH_SALT, intake-ip:ip)');
   assert.equal(p.payload.email, 'dana.reyes@northwind-example.com');
   assert.equal(p.payload.company_website, 'northwind-example.com');
   assert.equal(p.payload.attendees, 12);
@@ -240,6 +247,7 @@ test('ROS webhook: signed with HMAC-SHA256 over "${t}.${body}", event id = recei
   assert.equal(event.receipt_id, j.receipt_id);
   assert.equal(event.consent_request, true); assert.equal(event.consent_newsletter, false);
   assert.ok(!('ip_hash' in event) && !('subject_email_hash' in event) && !body.includes(IP), 'no IP data in the event');
+  assert.ok(!('dedupe_key' in event), 'no dedupe key in the event (it may be the guessable fallback)');
   await send(valid(), { e });
   assert.equal(db.ros.length, 1, 'a deduped retry is not re-sent');
   const quiet = fake(t);
@@ -263,4 +271,72 @@ test('no PII reaches console output on any path, including store, email and webh
   assert.ok(lines.length >= 4, 'failures were logged');
   const out = lines.join('\n');
   for (const s of PII) assert.ok(!out.toLowerCase().includes(s.toLowerCase()), `console output contains ${s}`);
+});
+
+// ── Hashing and erasure (lifecycle/privacy review 2026-10-08) ──
+const UNSALTED = (email) => [email, `email:${email}`, `subject:${email}`, `intake-email:${email}`, `coupon-email:${email}`].map(sha);
+
+test('EMAIL_HASH_SECRET / IP_HASH_SALT unset: subject and IP hashes are null, dedupe falls back to the day-scoped sha256 (receipt row only), warnings are code-only', async (t) => {
+  const lines = [];
+  t.mock.method(console, 'warn', (...a) => lines.push(a.join(' ')));
+  const e = { ...unsalted, ROS_WEBHOOK_URL: 'https://ros.test/hook', ROS_WEBHOOK_SECRET: 's' };
+  const db = fake(t);
+  const r = await send(valid(), { e });
+  assert.equal(r.status, 201, 'intake still works without the secrets');
+  const { p } = db.records[0];
+  assert.equal(p.subject_email_hash, null, 'no unsalted subject hash');
+  assert.equal(p.ip_hash, null, 'no unsalted IP hash');
+  assert.equal(p.dedupe_key, sha(`${EMAIL}|northwind-example.com|${today()}`), 'documented fallback');
+  assert.ok(!db.ros[0].body.includes(p.dedupe_key), 'fallback dedupe key never leaves the receipt row');
+  assert.ok(lines.some((l) => /EMAIL_HASH_SECRET unset/.test(l)) && lines.some((l) => /IP_HASH_SALT unset/.test(l)), 'warned');
+  for (const s of PII) assert.ok(!lines.join('\n').toLowerCase().includes(s.toLowerCase()), `warning contains ${s}`);
+});
+
+test('no unsalted sha256 of the email (or of the IP) is sent anywhere, with or without the secrets', async (t) => {
+  for (const e of [env, unsalted]) {
+    t.mock.method(console, 'warn', () => {});
+    const sent = [];
+    const db = fake(t);
+    const inner = globalThis.fetch;
+    globalThis.fetch = async (url, o = {}) => { sent.push(String(o.body ?? '')); return inner(url, o); };
+    await send(valid(), { e: { ...e, ROS_WEBHOOK_URL: 'https://ros.test/hook', ROS_WEBHOOK_SECRET: 's' } });
+    assert.ok(db.records.length === 1);
+    const all = sent.join('\n');
+    for (const h of [...UNSALTED(EMAIL), sha(IP), sha(`intake-ip:${IP}`), sha(`intake-ip:${IP}|`)]) assert.ok(!all.includes(h), `unsalted hash ${h.slice(0, 8)}… sent`);
+    if (e.EMAIL_HASH_SECRET) assert.ok(!all.includes(sha(`${EMAIL}|northwind-example.com|${today()}`)), 'with the secret, not even the day-scoped fallback is computed');
+  }
+});
+
+test('functions/v1 source: the only sha256() call is the documented day-scoped dedupe fallback', () => {
+  for (const file of readdirSync(new URL('../functions/v1/', import.meta.url)).filter((f) => f.endsWith('.js'))) {
+    const src = readFileSync(new URL(`../functions/v1/${file}`, import.meta.url), 'utf8');
+    const calls = [...src.matchAll(/\bsha256\(([^)]*)\)/g)].map((m) => m[1]).filter((arg) => arg !== 'value');   // skip the definition
+    assert.deepEqual(calls, ['dedupeBasis'], `${file}: unexpected sha256 call sites ${JSON.stringify(calls)}`);
+    assert.match(src, /emailHmac\(env, 'dedupe', dedupeBasis\)\)\s*\?\?\s*\(await sha256\(dedupeBasis\)\)/, 'fallback only when the HMAC is unavailable');
+    assert.doesNotMatch(src, /sha256\(`[^`]*(email|ip)/i, 'no template-literal sha256 over an email or IP');
+    assert.doesNotMatch(src, /IP_HASH_SALT \|\| ''/, 'no empty-salt IP hash');
+  }
+});
+
+test('migration: consent ledger has no FK to receipts, erase_subject is a service-role-only SECURITY DEFINER function, RLS on with no policies', () => {
+  const sql = readFileSync(new URL('../db/migrations/2026-10-08-revenue-intake.sql', import.meta.url), 'utf8');
+  const code = sql.split('\n').map((l) => l.replace(/--.*$/, '')).join('\n');   // ignore comments
+  assert.doesNotMatch(code, /references\s+revenue\.intake_receipts/i, 'no foreign key from the append-only ledger');
+  assert.match(code, /drop constraint if exists consent_events_receipt_id_fkey/);
+  const ce = code.match(/create table if not exists revenue\.consent_events \(([\s\S]*?)\n\);/)[1];
+  assert.doesNotMatch(ce, /\b(payload|email text|name text|company)\b/i, 'no PII columns in the ledger');
+  assert.match(ce, /subject_email_hash text check \(subject_email_hash is null or/);
+  assert.match(code, /create table if not exists revenue\.intake_receipts \([\s\S]*?subject_email_hash text/);
+  const fn = code.match(/create or replace function revenue\.erase_subject\(p_subject_hash text\) returns jsonb([\s\S]*?)\$\$;/)[1];
+  assert.match(fn, /security definer/);
+  assert.match(fn, /set search_path = revenue, pg_temp/);
+  assert.match(fn, /delete from revenue\.intake_receipts where subject_email_hash = p_subject_hash/);
+  assert.match(fn, /insert into revenue\.consent_events[\s\S]*'erasure'[\s\S]*'dsar_erasure'/);
+  assert.match(code, /grant execute on function revenue\.erase_subject\(text\) to service_role;/);
+  assert.match(code, /revoke execute on function revenue\.erase_subject\(text\) from public, anon, authenticated;/);
+  assert.match(code, /revoke update, delete, truncate on revenue\.intake_receipts from service_role;/, 'receipts are deleted only via the erase functions');
+  assert.match(code, /where c->>'consent_type' in \('request_contact', 'newsletter'\)/, 'the form cannot forge an erasure event');
+  for (const tbl of ['intake_receipts', 'consent_events', 'intake_rate_limits']) assert.match(code, new RegExp(`alter table revenue\\.${tbl} enable row level security;`));
+  assert.doesNotMatch(code, /create policy/i, 'no anon/authenticated policies');
+  assert.doesNotMatch(code, /grant [^;]* to (anon|authenticated)/i);
 });

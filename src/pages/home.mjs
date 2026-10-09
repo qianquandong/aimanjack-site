@@ -40,7 +40,7 @@ const C = {
     toolsK: 'Free tools', toolsH: 'Get something useful in three minutes', toolsMore: 'All free tools →',
     strip: ['The 37-person Dallas AI hackathon', 'Jack presenting at a Dallas session', 'A team demonstrating what it built'],
     howK: 'How engagement works', howH: 'From first call to a workflow that survives', step: 'Step',
-    how: [['A short workflow call', 'Tell me what you or your team does every week, which tools you already use, and where work keeps repeating.'], ['A recommended training plan', 'Who should attend, which workflows to start with, and a written price, within 24 hours.'], ['Four live sessions on real work', 'We build and improve workflows using work you actually do, not canned demos.'], ['Use it, then keep, change or stop', 'Each session starts with what worked, what broke and what should change. Keep the workflows that are accurate and useful; change or stop the rest.']],
+    how: [['A short workflow call', 'Tell me what you or your team does every week, which tools you already use, and where work keeps repeating.'], ['A recommended training plan', 'Who should attend, which workflows to start with, and a written price, sent by email.'], ['Four live sessions on real work', 'We build and improve workflows using work you actually do, not canned demos.'], ['Use it, then keep, change or stop', 'Each session starts with what worked, what broke and what should change. Keep the workflows that are accurate and useful; change or stop the rest.']],
     bandH: 'Bring one task.<br>We’ll make it <em>work.</em>',
   },
   zh: {
@@ -66,7 +66,7 @@ const C = {
     toolsK: '免费工具', toolsH: '三分钟，获得一份可用的结果', toolsMore: '全部免费工具 →',
     strip: ['37 人参与的达拉斯 AI 黑客松', 'Jack 在达拉斯的一场课程中讲解', '一个小组正在演示自己搭建的成果'],
     howK: '合作流程', howH: '从首次沟通，到真正落地的工作流', step: '第 {n} 步',
-    how: [['一次简短的工作流沟通', '说说你或团队每周都在做什么、已经在用哪些工具，以及哪些工作总在重复。'], ['一份推荐的培训方案', '24 小时内给出建议：谁来参加、从哪几条工作流开始，以及书面报价。'], ['四节围绕真实工作的实时课程', '用你实际在做的工作来搭建、改进工作流，不用预设的演示案例。'], ['课间使用，再决定保留、调整或停止', '每节课都从上次以来哪些有效、哪些出了问题、哪些要调整开始。准确又有用的工作流留下，其余的调整或停用。']],
+    how: [['一次简短的工作流沟通', '说说你或团队每周都在做什么、已经在用哪些工具，以及哪些工作总在重复。'], ['一份推荐的培训方案', '通过邮件给出建议：谁来参加、从哪几条工作流开始，以及书面报价。'], ['四节围绕真实工作的实时课程', '用你实际在做的工作来搭建、改进工作流，不用预设的演示案例。'], ['课间使用，再决定保留、调整或停止', '每节课都从上次以来哪些有效、哪些出了问题、哪些要调整开始。准确又有用的工作流留下，其余的调整或停用。']],
     bandH: '带一项任务来，<br>我们让它<em>真正运转</em>。',
   },
 };

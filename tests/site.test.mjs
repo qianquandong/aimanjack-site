@@ -486,3 +486,12 @@ test('deploy gate runs the test suite with a glob (node --test tests/ fails on N
   assert.match(sh, /node --test tests\/\*\.mjs/);
   assert.doesNotMatch(sh, /node --test tests\/(?:\s|\))/);
 });
+
+// Unsourced service promises (revenue-os config/claims_inventory.json: promise-written-price-24h, promise-same-or-next-business-day).
+// Removed 2026-10-08; restore only with an owner-approved, sourced commitment (and update this list deliberately).
+test('no built page or llms.txt makes a 24-hour or same/next-business-day response promise', async () => {
+  const PROMISES = [/24 hours/i, /24 ?小时/, /same or next business day/i, /当天或下一个工作日/];
+  const outputs = (await allPages()).map(({ p, lang, html }) => [`${lang} ${p.path}`, html]).concat([['llms.txt', llms()]]);
+  assert.ok(outputs.length > 50);
+  for (const [where, text] of outputs) for (const re of PROMISES) assert.doesNotMatch(text, re, `${where} contains ${re}`);
+});

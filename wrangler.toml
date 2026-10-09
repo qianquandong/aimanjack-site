@@ -20,4 +20,13 @@ SITE_ORIGIN = "https://aimanjack.com"
 #   npx wrangler pages secret put ADMIN_TOKEN   --project-name aimanjack   bearer for GET /v1/bookings?business=…
 #   npx wrangler pages secret put CF_EMAIL_TOKEN --project-name aimanjack   API token, permission Account → Email Sending → Edit
 #     (unset = no emails, bookings still work)
-# Local: .dev.vars (gitignored) with the same two names.
+#   Quote intake (POST /v1/intake, Revenue OS v6) — all optional, but set the first two before go-live:
+#   npx wrangler pages secret put EMAIL_HASH_SECRET --project-name aimanjack   random 32+ bytes (e.g. `openssl rand -hex 32`).
+#     Keys HMAC-SHA256 for revenue.intake_receipts/consent_events.subject_email_hash ('subject:'+email), the receipt
+#     dedupe_key and rate-limit keys. Unset = subject_email_hash stored as null (never an unsalted email hash), dedupe falls
+#     back to a day-scoped sha256 kept only in the receipt row, and a code-only warning is logged per submission.
+#     Rotating it breaks the link between old and new hashes (erasure of old receipts then needs revenue.erase_receipt).
+#     Operators compute a DSAR subject hash as hex HMAC-SHA256(EMAIL_HASH_SECRET, 'subject:' + lower(trim(email))).
+#   npx wrangler pages secret put IP_HASH_SALT --project-name aimanjack   random 32+ bytes. Unset = ip_hash stored as null.
+#   npx wrangler pages secret put ROS_WEBHOOK_URL / ROS_WEBHOOK_SECRET   signed intake event to the Revenue OS store.
+# Local: .dev.vars (gitignored) with the same names.
