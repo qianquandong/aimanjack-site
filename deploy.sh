@@ -28,7 +28,8 @@ npx --yes clean-css-cli -O1 style.css -o .deploy/style.css
 hash_of() { md5 -q "$1" 2>/dev/null || md5sum "$1" | cut -d' ' -f1; }
 for asset in style.css; do
   h=$(hash_of ".deploy/$asset" | cut -c1-8)
-  find .deploy -name '*.html' -exec sed -i '' "s|/$asset?v=[0-9a-f]*|/$asset?v=$h|g" {} +
+  find .deploy -name '*.html' -exec sed -i.bak "s|/$asset?v=[0-9a-f]*|/$asset?v=$h|g" {} +
+  find .deploy -name '*.html.bak' -delete   # sed -i.bak works on both macOS and GNU sed
 done
 
 npx wrangler pages deploy .deploy --project-name aimanjack
