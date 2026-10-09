@@ -800,3 +800,34 @@ html[lang=zh] .nums .why{font-style:normal}
 .prog.solo .ticks{padding:0 0 0 40px;border-top:0;border-left:1px solid var(--dark-line);align-self:stretch;justify-content:center}
 .prog-alt{margin-top:18px;font-size:16px;color:var(--muted)}
 @media(max-width:720px){.prog.solo{grid-template-columns:1fr;row-gap:24px;padding:28px 24px}.prog.solo .btn{align-self:stretch}.prog.solo .ticks{padding:22px 0 0;border-left:0;border-top:1px solid var(--dark-line)}}
+
+/* ── TEAM FORMATS + QUOTE FORM (Revenue OS v6, 2026-10) ──
+   .chooser/.choose: three-path navigation cards on / and /ai-training/ (deliberately not .prog — that stays the only offer card).
+   .qf: quote-intake form on /contact/quote/. .qf-note: receipt / error panels; :target shows them for the no-JS POST → 303 path. */
+.chooser{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.choose{display:flex;flex-direction:column;gap:12px;padding:28px;background:var(--card);border:1px solid transparent;border-radius:var(--r);color:var(--ink);text-decoration:none;transition:border-color .15s}
+.choose:hover{border-color:var(--ink);text-decoration:none}.choose:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.choose h3{font-size:24px}.choose p{flex-grow:1;font-size:16px;line-height:1.6;color:var(--muted)}
+.choose .price{font-size:15px;font-weight:700}.choose .go{font-size:15px;font-weight:600;color:var(--accent-text)}
+.quote-grid-2{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:32px;align-items:start}
+.qf{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 16px;padding:40px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg)}
+.qf[hidden]{display:none}.qf .full{grid-column:1 / -1}
+.qf .field{display:flex;flex-direction:column;gap:6px;font-size:14.5px;font-weight:600}
+.qf input:not([type=checkbox]),.qf select,.qf textarea{min-height:52px;padding:0 16px;font:inherit;font-size:16px;font-weight:400;color:var(--ink);border:1px solid var(--line);border-radius:12px;background:var(--bg)}
+.qf textarea{min-height:132px;padding:12px 16px;resize:vertical}
+.qf input:focus-visible,.qf select:focus-visible,.qf textarea:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.qf [aria-invalid=true]{border-color:var(--amber-ink);border-width:2px}
+.qf .hint{font-size:13.5px;font-weight:400;line-height:1.5;color:var(--muted)}
+.qf fieldset{grid-column:1 / -1;display:flex;flex-direction:column;gap:12px;margin:0;padding:0;border:0}
+.qf legend{margin-bottom:8px;font-size:14.5px;font-weight:600}
+.qf .check{display:flex;gap:12px;align-items:flex-start;font-size:15.5px;font-weight:400;line-height:1.5}
+.qf .check input{flex:none;width:20px;height:20px;margin-top:2px;accent-color:var(--accent)}
+.qf .btn{grid-column:1 / -1;justify-self:start}.qf button:disabled{opacity:.5;cursor:not-allowed}
+.qf .privacy{grid-column:1 / -1;font-size:14px;color:var(--muted)}
+.qf-hp{position:absolute!important;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden}
+.qf-msg{grid-column:1 / -1;min-height:1.5em;margin:0;font-size:15.5px;font-weight:600;color:var(--amber-ink)}
+.qf-note{display:none;margin-bottom:24px;padding:28px;border-radius:var(--r);background:var(--card)}
+.qf-note.ok{background:var(--green-tint)}.qf-note:target,.qf-note[data-show]{display:block}.qf-note h2{margin-bottom:8px;font-size:24px}
+#received:target~.qf{display:none}
+@media (max-width:900px){.chooser,.quote-grid-2{grid-template-columns:1fr}}
+@media (max-width:720px){.qf{grid-template-columns:1fr;padding:24px 20px}.qf .btn{width:100%}.choose{padding:24px 20px}}

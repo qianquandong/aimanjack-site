@@ -3,7 +3,7 @@ import { SITE, LEGAL_NAME, EMAIL, SMS_DISPLAY, PROOF, TRAINING, JACK_SAME_AS } f
 
 export const llms = () => `# AI Man Jack
 
-> ${LEGAL_NAME} (aimanjack.com) is Jack Qian's Dallas, Texas company for customized corporate AI training and practical AI workflow training. Jack teaches business owners and non-technical teams — sales, operations, marketing, managers — in English or Chinese, remote anywhere in the U.S. or onsite in Dallas–Fort Worth. The training is built around the work people already do: each participant leaves with working AI workflows (ChatGPT, Claude, Gemini or Copilot) plus a checklist for verifying the output. Primary offer: a ${TRAINING.sessions}-session program of live ${TRAINING.sessionMin}-minute sessions, starting at $${TRAINING.programFrom} per person, with custom team pricing. A 90-minute team session is available on request as a shorter first step. Evidence shown on the site: ${PROOF.talks} community AI talks in Plano and Dallas with ${PROOF.perTalk} people each, one ${PROOF.hackathon}-person AI hackathon, and ${PROOF.reviews} Google reviews averaging ${PROOF.rating}. To plan a team workshop, book a 20-minute call at ${SITE}/book/, email ${EMAIL}, or text TRAINING to ${SMS_DISPLAY}.
+> ${LEGAL_NAME} (aimanjack.com) is Jack Qian's Dallas, Texas company for customized corporate AI training and practical AI workflow training. Jack teaches business owners and non-technical teams — sales, operations, marketing, managers — in English or Chinese, remote anywhere in the U.S. or onsite in Dallas–Fort Worth. The training is built around the work people already do: each participant leaves with working AI workflows (ChatGPT, Claude, Gemini or Copilot) plus a checklist for verifying the output. Primary offer: a ${TRAINING.sessions}-session program of live ${TRAINING.sessionMin}-minute sessions, starting at $${TRAINING.programFrom} per person, with custom team pricing. A 90-minute team workshop and a full-day onsite day in Texas are also available, priced by scoped quote. This is AI training, not a custom ERP or CRM build. Evidence shown on the site: ${PROOF.talks} community AI talks in Plano and Dallas with ${PROOF.perTalk} people each, one ${PROOF.hackathon}-person AI hackathon, and ${PROOF.reviews} Google reviews averaging ${PROOF.rating}. To plan a team workshop, book a 20-minute call at ${SITE}/book/, email ${EMAIL}, or text TRAINING to ${SMS_DISPLAY}.
 
 Key facts:
 - Company: ${LEGAL_NAME}, Dallas, Texas. Founder and trainer: Jack Qian. One person designs, teaches and follows up.
@@ -29,6 +29,8 @@ Real workflow case study (${SITE}/case-studies/livestream-agency-scheduling/):
 
 - [Home](${SITE}/): what AI Man Jack helps teams do, entry points to tools, use cases, workflows and training
 - [Corporate AI training](${SITE}/ai-training/): the five-part curriculum, who it is for, formats and pricing, Google reviews, FAQ
+- [90-minute team workshop](${SITE}/ai-training/team-workshop/): one live session for one team on one or two real workflows; remote or Dallas–Fort Worth onsite; priced by scoped quote (no public price)
+- [Full-day onsite AI training, Texas](${SITE}/ai-training/onsite-texas/): one onsite day — fundamentals, data safety, department use cases, guided labs; Dallas–Fort Worth, elsewhere in Texas with travel quoted separately; priced by scoped quote (no public price)
 - [Free AI tools](${SITE}/tools/): the AI Readiness Assessment — 10 questions, deterministic score across people, usage, processes, knowledge, tools, governance, leadership and measurement; no email required
 - [AI use cases by team](${SITE}/use-cases/): sales, marketing, operations, leadership
 - [AI workflows](${SITE}/workflows/): step-by-step workflows, each with the prompt, an illustrative example, a human review checklist and when not to use it
@@ -37,7 +39,7 @@ Real workflow case study (${SITE}/case-studies/livestream-agency-scheduling/):
 - [Resources](${SITE}/blog/): field notes on training employees to use AI and on AI workflows
 - [About](${SITE}/about/): Jack Qian and ${LEGAL_NAME}
 - [Book a 20-minute workflow call](${SITE}/book/): choose a US Central time; bring one task and get a recommended training plan
-- [Contact](${SITE}/contact/): book, email or text
+- [Contact](${SITE}/contact/): book, email, text, or request a written training quote
 
 Every page above also has a Chinese version under ${SITE}/zh/ (for example ${SITE}/zh/case-studies/livestream-agency-scheduling/).
 

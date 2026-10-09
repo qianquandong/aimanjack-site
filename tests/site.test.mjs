@@ -277,3 +277,212 @@ test('the four-session program is the only offer on Home and Training; the clien
     assert.match(ld(find(pages, '/ai-training/', lang).html), /"price":"499"/);
   }
 });
+
+// ── Revenue OS v6 (2026-10-08): team formats, quote intake, consent-aware analytics ─────────────────────────────────────
+const { OFFERS, QUOTE_URL, INTAKE_FORM_VERSION, CONSENT_NOTICE_VERSION, GA4_ID } = await import('../src/config.mjs');
+const urlOf = (path, lang) => (lang === 'zh' ? (path === '/' ? '/zh/' : '/zh' + path) : path);
+// Owner-UNAPPROVED amounts (revenue-os config/offer_catalog.json proposals) and the retired half-day offer. None may be public.
+const UNAPPROVED_PRICES = [/\$\s?1,?500(?!\d)/, /\$\s?4,?900(?!\d)/, /\$\s?95(?![\d,])/, /"price":"?(?:1500|4900|95)\b/, /\b(?:1,?500|4,?900) ?美元/, /半天 ?\$/];
+// Retired half-day format: banned everywhere except two older blog posts that still describe it as advice (HANDOFF "Offer
+// (2026-09-28)", left on purpose; owner decision pending). Prices above are banned on blog posts too.
+const RETIRED_FORMAT = [/半天工作坊/, /half[- ]day workshop/i];
+const UNAPPROVED = [...UNAPPROVED_PRICES, ...RETIRED_FORMAT];
+const bannedFor = (path) => (/^\/(?:zh\/)?blog\//.test(path) ? UNAPPROVED_PRICES : UNAPPROVED);
+
+test('team workshop and onsite pages are indexable, bilingual, self-canonical, in the sitemap, and priced only by scoped quote', async () => {
+  const pages = await allPages();
+  const sitemap = await readFile(new URL('../sitemap.xml', import.meta.url), 'utf8');
+  for (const key of ['workshop', 'onsite']) {
+    const o = OFFERS[key];
+    for (const lang of ['en', 'zh']) {
+      const x = find(pages, o.path, lang), route = `${lang}:${o.path}`;
+      assert.ok(x && !x.page.noindex, `${route} indexable`);
+      assert.deepEqual(x.page.langs, ['en', 'zh'], `${route} bilingual`);
+      const self = `https://aimanjack.com${urlOf(o.path, lang)}`;
+      assert.ok(x.html.includes(`<link rel="canonical" href="${self}">`), `${route} self canonical`);
+      assert.ok(head(x.html).includes(`hreflang="en" href="https://aimanjack.com${o.path}"`) && head(x.html).includes(`hreflang="zh" href="https://aimanjack.com/zh${o.path}"`), `${route} hreflang pair`);
+      assert.ok(sitemap.includes(`<loc>${self}</loc>`), `${route} in sitemap`);
+      assert.equal((x.html.match(/<h1[\s>]/g) || []).length, 1, `${route} one H1`);
+      const b = body(x.html), j = ld(x.html);
+      assert.ok(b.includes(`href="${urlOf(QUOTE_URL, lang)}?format=${o.format}"`), `${route} quote CTA`);
+      assert.ok(b.includes(`href="${urlOf('/book/', lang)}"`), `${route} workflow-call CTA`);
+      assert.match(b, lang === 'zh' ? /按需报价/ : /Scoped quote/, `${route} pricing status`);
+      assert.match(b, lang === 'zh' ? /价格取决于团队人数、授课地点和准备工作量/ : /Pricing depends on team size, location and preparation/, `${route} pricing drivers`);
+      assert.match(b, lang === 'zh' ? /不是 ERP 或 CRM 定制开发/ : /not a custom ERP or CRM build/, `${route} says training, not an ERP/CRM build`);
+      assert.deepEqual([...new Set([...b.matchAll(/\$\s?\d[\d,.]*/g)].map((m) => m[0]))], ['$499'], `${route} shows no amount except the approved program price`);
+      for (const re of UNAPPROVED) assert.doesNotMatch(b + j, re, `${route} ${re}`);
+      assert.match(b, /<div class="faq"><details/, `${route} FAQ is plain HTML`);
+      assert.match(j, /"@type":"Service"/);
+      assert.doesNotMatch(j, /"@type":"(?:Review|AggregateRating|FAQPage|Offer|HowTo)"|"price"|ratingValue/, `${route} JSON-LD stays within guideline-safe types`);
+      assert.ok(x.html.includes(`data-offer="${o.id}"`), `${route} view_offer id`);
+      if (key === 'onsite') { const t = b.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' '); for (const m of t.matchAll(/Odessa/g)) assert.match(t.slice(m.index, m.index + 160), /quoted separately|另行报价/, `${route} Odessa only next to a separate travel quote`); }
+    }
+  }
+  for (const path of ['/', '/ai-training/']) for (const lang of ['en', 'zh']) {
+    const b = body(find(pages, path, lang).html);
+    assert.match(b, /id="team-paths"/, `${lang}:${path} has the three-path chooser`);
+    for (const p of [OFFERS.workshop.path, OFFERS.onsite.path]) assert.ok(b.includes(`href="${urlOf(p, lang)}"`), `${lang}:${path} links ${p}`);
+    assert.doesNotMatch(b.slice(b.indexOf('id="team-paths"')).split('</section>')[0], /class="prog/, `${lang}:${path} chooser cards are not offer cards`);
+  }
+});
+
+test('no owner-unapproved price or retired half-day offer appears on any indexable page, built file, or llms.txt', async () => {
+  const pages = await allPages();
+  for (const x of pages.filter((x) => !x.page.noindex)) for (const re of bannedFor(x.p.path)) assert.doesNotMatch(body(x.html) + ld(x.html) + head(x.html), re, `${x.lang}:${x.p.path} ${re}`);
+  for (const re of UNAPPROVED) assert.doesNotMatch(llms(), re, `llms.txt ${re}`);
+  // Built HTML on disk, including anything hand-written outside src/: an indexable file must come from a src route and carry no unapproved price.
+  const { readdirSync, readFileSync, statSync } = await import('node:fs');
+  const root = new URL('../', import.meta.url).pathname, SKIP = new Set(['.git', '.claude', '.deploy', 'scripts', 'design-system', 'output', 'docs', 'src', 'db', 'functions', 'state', 'tests', 'node_modules']);
+  const files = [], walk = (d) => { for (const f of readdirSync(root + d)) { const rel = d + f; if (SKIP.has(rel)) continue; if (statSync(root + rel).isDirectory()) walk(rel + '/'); else if (f.endsWith('.html')) files.push(rel); } };
+  walk('');
+  const routes = new Set(pages.map((x) => urlOf(x.p.path, x.lang)));
+  let indexable = 0;
+  for (const f of files) {
+    const html = readFileSync(root + f, 'utf8');
+    if (/<meta name="robots" content="noindex/.test(html)) continue;
+    indexable += 1;
+    const url = '/' + f.replace(/index\.html$/, '').replace(/\.html$/, '');
+    assert.ok(routes.has(url), `${f} is indexable but no src/pages route generates it (hand-written pages drift; add a route or noindex it)`);
+    for (const re of bannedFor(url)) assert.doesNotMatch(html, re, `${f} ${re}`);
+  }
+  assert.ok(indexable >= 98, `scanned ${indexable} indexable files`);
+});
+
+test('the two Chinese buyer guides are generated, current, and free of retired prices and rating schema', async () => {
+  const pages = await allPages();
+  const sitemap = await readFile(new URL('../sitemap.xml', import.meta.url), 'utf8');
+  for (const path of ['/ai-peixun-shi/', '/ai-peixun-najia-zuihao/']) {
+    const x = find(pages, path, 'zh'), url = `https://aimanjack.com/zh${path}`;
+    assert.ok(x && !x.page.noindex, `zh${path} indexable`);
+    assert.ok(!find(pages, path, 'en'), `zh${path} has no EN twin`);
+    const h = head(x.html), b = body(x.html), j = ld(x.html);
+    assert.ok(h.includes(`<link rel="alternate" hreflang="zh" href="${url}">`) && h.includes(`<link rel="alternate" hreflang="x-default" href="${url}">`), `zh${path} hreflang zh + x-default → itself`);
+    assert.doesNotMatch(h, /hreflang="(?:en|zh-CN)"/, `zh${path} advertises no EN twin`);
+    assert.ok(sitemap.includes(`<loc>${url}</loc>`), `zh${path} in sitemap`);
+    assert.ok(b.includes('href="/zh/contact/quote/"') && b.includes('href="/zh/book/"'), `zh${path} CTAs point at the quote form and the workflow call`);
+    assert.match(b, /\$499/, `zh${path} states the approved program price`);
+    for (const re of [...UNAPPROVED, /半天/, /30 ?分钟/, /24 ?小时/, /9 月 24/, /AI 前台/, /\/zh\/pricing\//]) assert.doesNotMatch(b + j, re, `zh${path} ${re}`);
+    assert.doesNotMatch(j, /AggregateRating|"Review"|ratingValue|"price"/, `zh${path} carries no rating or price schema`);
+  }
+});
+
+test('quote form: plain POST to /v1/intake, labelled fields, honeypot, two separate consents, newsletter never pre-checked', async () => {
+  const pages = await allPages();
+  for (const lang of ['en', 'zh']) {
+    const x = find(pages, QUOTE_URL, lang), route = `${lang}:${QUOTE_URL}`;
+    assert.ok(x, `${route} exists`);
+    assert.equal(x.page.noindex, true, `${route} is a form page: noindex,follow`);
+    const b = body(x.html), form = b.slice(b.indexOf('<form'), b.indexOf('</form>'));
+    assert.match(form, /<form class="qf" id="quote-form" action="\/v1\/intake" method="post"/, `${route} works without JS`);
+    const tags = [...form.matchAll(/<(input|select|textarea)\b[^>]*>/g)].map((m) => m[0]);
+    const named = (n) => tags.find((t) => t.includes(`name="${n}"`)) || '';
+    for (const n of ['name', 'email', 'company', 'company_website', 'industry', 'headcount', 'attendees', 'format', 'location', 'location_city', 'workflows', 'tools', 'timing', 'source', 'consent_request', 'consent_newsletter']) {
+      const t = named(n), id = (t.match(/id="([^"]+)"/) || [])[1];
+      assert.ok(t && id, `${route} has field ${n}`);
+      assert.ok(form.includes(`<label for="${id}"`) || form.includes(`<label class="check" for="${id}"`), `${route} ${n} has a label`);
+    }
+    for (const n of ['name', 'email', 'company', 'industry', 'headcount', 'attendees', 'format', 'location', 'workflows', 'timing', 'consent_request']) assert.match(named(n), /\srequired/, `${route} ${n} required`);
+    assert.match(named('email'), /type="email"/);
+    const hp = named('company_url');
+    assert.match(hp, /tabindex="-1"/, `${route} honeypot out of tab order`); assert.match(hp, /autocomplete="off"/);
+    assert.match(form, /<div class="qf-hp" aria-hidden="true"><label for="qf-hp">[^<]+<\/label><input id="qf-hp" name="company_url"/, `${route} honeypot hidden from assistive tech`);
+    const req = named('consent_request'), news = named('consent_newsletter');
+    assert.notEqual(req, news, 'two separate consent inputs');
+    assert.match(req, /type="checkbox"/); assert.match(news, /type="checkbox"/);
+    assert.doesNotMatch(news, /\schecked|\srequired/, `${route} newsletter consent is optional and never pre-checked`);
+    assert.doesNotMatch(req, /\schecked/, `${route} request consent is not pre-checked either`);
+    assert.doesNotMatch(form, /\schecked[\s>=]/, `${route} nothing pre-checked`);
+    for (const k of ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'ref', 'landing', 'ts']) assert.ok(form.includes(`type="hidden" name="ft_${k}" value=""`), `${route} first-touch field ${k}`);
+    assert.ok(form.includes(`name="form_version" value="${INTAKE_FORM_VERSION}"`) && form.includes(`name="lang" value="${lang}"`) && form.includes('name="fill_ms" value=""'));
+    assert.match(form, /id="qf-msg" class="qf-msg" role="status" aria-live="polite"/, `${route} errors are announced`);
+    assert.match(b, /id="received" class="qf-note ok" role="status"/); assert.match(b, /id="not-sent" class="qf-note" role="alert"/);
+    // The receipt confirms receipt only: no booked meeting, no response-time promise.
+    const receipt = b.slice(b.indexOf('id="received"'), b.indexOf('id="not-sent"')).replace(/<[^>]+>/g, '');
+    assert.match(receipt, lang === 'zh' ? /并不代表已预约会议/ : /does not book a meeting/);
+    assert.doesNotMatch(receipt, /(?:meeting|call) (?:is|has been) (?:booked|confirmed|scheduled)|within \d|business day|hours?\b|已预约成功|小时内|工作日/i, `${route} receipt makes no booking claim or response-time promise`);
+    // Every format a CTA can preselect exists as an option.
+    for (const key of ['workshop', 'onsite', 'program']) assert.ok(named('format') && form.includes(`<option value="${OFFERS[key].format}">`), `${route} format ${OFFERS[key].format}`);
+    assert.match(x.html, /amjTrack\('submit_enterprise_inquiry'|tr\('submit_enterprise_inquiry'/, `${route} fires submit_enterprise_inquiry`);
+    assert.match(x.html, /if\(r\.ok&&j\.ok\)\{[^}]*j\.receipt_id\)\{[^]*?tr\('submit_enterprise_inquiry',\{receipt_id:j\.receipt_id,offer_format:o\.format\|\|''\}\)/, `${route} inquiry event only after the server accepted, with no PII`);
+  }
+  for (const lang of ['en', 'zh']) assert.ok(body(find(pages, '/contact/', lang).html).includes(`href="${urlOf(QUOTE_URL, lang)}"`), `${lang} contact links the quote form`);
+  const cfg = await readFile(new URL('../functions/v1/[[route]].js', import.meta.url), 'utf8');
+  assert.ok(cfg.includes(`INTAKE_CONSENT_NOTICE_VERSION = '${CONSENT_NOTICE_VERSION}'`), 'server consent notice version matches src/config.mjs');
+});
+
+// Runs the site-wide inline script in a sandbox, as a browser would on load, and returns what it pushed to dataLayer.
+async function runSiteScript(html, { url, referrer = '', gpc = false, session = {}, local = {} }) {
+  const vm = await import('node:vm');
+  const src = html.match(/<script>\n(\(function\(\)\{var D=document;[\s\S]*?)<\/script>/)[1];
+  const u = new URL(url), load = [], appended = [], ss = new Map(Object.entries(session)), ls = new Map(Object.entries(local));
+  const store = (m) => ({ getItem: (k) => (m.has(k) ? m.get(k) : null), setItem: (k, v) => m.set(k, String(v)) });
+  const dataset = {}; for (const [, k, v] of (html.match(/<body([^>]*)>/)[1]).matchAll(/data-([a-z]+)="([^"]*)"/g)) dataset[k] = v;
+  const ctx = {
+    document: { referrer, documentElement: { lang: 'en' }, body: { dataset }, head: { appendChild: (s) => appended.push(s.src) }, createElement: () => ({}), getElementById: () => null, querySelectorAll: () => [], addEventListener() {} },
+    location: { href: u.href, pathname: u.pathname, search: u.search, hostname: u.hostname, origin: u.origin },
+    navigator: { maxTouchPoints: 1, globalPrivacyControl: gpc }, matchMedia: () => ({ matches: true }),
+    sessionStorage: store(ss), localStorage: store(ls), addEventListener: (t, f) => { if (t === 'load') load.push(f); }, URL, URLSearchParams,
+  };
+  ctx.window = ctx;
+  vm.createContext(ctx);
+  vm.runInContext(src, ctx);
+  load.forEach((f) => f());
+  return { calls: (ctx.dataLayer || []).map((a) => Array.from(a)), appended, ss, ls };
+}
+
+test('GA4 never receives a booking manage token; GPC and the opt-out switch keep GA4 off; first-touch attribution is first-party', async () => {
+  const pages = await allPages();
+  const book = find(pages, '/book/', 'en').html, home = find(pages, '/', 'en').html;
+  // /book/?id=… : page_location is stripped, nothing in dataLayer carries the token
+  const r = await runSiteScript(book, { url: 'https://aimanjack.com/book/?id=SECRETTOKEN0123' });
+  assert.ok(r.appended.some((s) => s.includes(`id=${GA4_ID}`)), 'GA loads on the booking page');
+  assert.doesNotMatch(JSON.stringify(r.calls), /SECRETTOKEN0123/, 'booking id never reaches GA4');
+  const config = r.calls.find((c) => c[0] === 'config');
+  assert.equal(config[2].page_location, 'https://aimanjack.com/book/');
+  assert.ok(r.calls.some((c) => c[0] === 'set' && c[1].page_location === 'https://aimanjack.com/book/'), 'stripped location applies to every event');
+  const zh = await runSiteScript(find(pages, '/book/', 'zh').html, { url: 'https://aimanjack.com/zh/book/?id=SECRETTOKEN0123' });
+  assert.doesNotMatch(JSON.stringify(zh.calls), /SECRETTOKEN0123/, 'zh booking id never reaches GA4');
+  // the next page after a manage link: referrer stripped too
+  const after = await runSiteScript(home, { url: 'https://aimanjack.com/', referrer: 'https://aimanjack.com/book/?id=SECRETTOKEN0123' });
+  assert.doesNotMatch(JSON.stringify(after.calls), /SECRETTOKEN0123/, 'booking id never leaks through page_referrer');
+  // ordinary pages keep their address (campaign tags stay visible to GA4)
+  const plain = await runSiteScript(home, { url: 'https://aimanjack.com/?utm_source=linkedin' });
+  assert.equal(plain.calls.find((c) => c[0] === 'config')[2].page_location, undefined);
+  // opt-outs: Global Privacy Control, or the switch on /privacy (localStorage)
+  for (const opts of [{ gpc: true }, { local: { amj_analytics_off: '1' } }]) {
+    const o = await runSiteScript(home, { url: 'https://aimanjack.com/', ...opts });
+    assert.equal(o.appended.length, 0, `GA not loaded with ${JSON.stringify(opts)}`);
+    assert.ok(!o.calls.some((c) => c[0] === 'config'), 'no GA config');
+  }
+  // view_offer carries only the offer id
+  const offer = await runSiteScript(find(pages, OFFERS.workshop.path, 'en').html, { url: `https://aimanjack.com${OFFERS.workshop.path}` });
+  const v = offer.calls.find((c) => c[0] === 'event' && c[1] === 'view_offer');
+  assert.ok(v && v[2].offer_id === OFFERS.workshop.id, 'view_offer with offer_id');
+  // first-touch attribution: stored once per tab in sessionStorage, no cookies, never overwritten by later pages
+  const first = await runSiteScript(home, { url: 'https://aimanjack.com/?utm_source=linkedin&utm_medium=social&utm_campaign=q4-launch', referrer: 'https://www.linkedin.com/feed/' });
+  const ft = JSON.parse(first.ss.get('amj_ft'));
+  assert.deepEqual({ s: ft.utm_source, m: ft.utm_medium, c: ft.utm_campaign, ref: ft.ref, landing: ft.landing }, { s: 'linkedin', m: 'social', c: 'q4-launch', ref: 'www.linkedin.com', landing: '/' });
+  assert.deepEqual(Object.keys(ft).sort(), ['landing', 'ref', 'ts', 'utm_campaign', 'utm_medium', 'utm_source']);
+  const second = await runSiteScript(find(pages, '/about/', 'en').html, { url: 'https://aimanjack.com/about/?utm_source=other', referrer: 'https://aimanjack.com/', session: { amj_ft: first.ss.get('amj_ft') } });
+  assert.equal(JSON.parse(second.ss.get('amj_ft')).utm_source, 'linkedin', 'first touch is kept');
+  assert.doesNotMatch(home, /document\.cookie/, 'no first-party cookies');
+  // previews and local copies never load GA
+  assert.equal((await runSiteScript(home, { url: 'https://feat.aimanjack.pages.dev/' })).appended.length, 0);
+});
+
+test('privacy policy discloses the quote form, Supabase, GA4 and how to opt out, marked for legal review, with no invented address', async () => {
+  const pages = await allPages();
+  for (const lang of ['en', 'zh']) {
+    const b = body(find(pages, '/privacy', lang).html);
+    for (const re of lang === 'zh' ? [/培训报价/, /Supabase/, /Google Analytics/, /Global Privacy Control/, /退订/, /data-analytics-off/] : [/training quote form/, /Supabase/, /Google Analytics/, /Global Privacy Control/, /unsubscribe/, /data-analytics-off/]) assert.match(b, re, `${lang} privacy ${re}`);
+    assert.doesNotMatch(b, /\b\d{2,5} [A-Z][a-z]+ (?:St|Street|Ave|Avenue|Rd|Road|Blvd|Dr|Drive|Pkwy|Suite)\b|\bTX \d{5}\b|P\.?O\.? Box/, `${lang} privacy states no mailing address`);
+  }
+  const src = await readFile(new URL('../src/pages/legal.mjs', import.meta.url), 'utf8');
+  assert.match(src, /DRAFT_REQUIRES_OWNER_LEGAL_REVIEW/);
+});
+
+test('deploy gate runs the test suite with a glob (node --test tests/ fails on Node 22)', async () => {
+  const sh = await readFile(new URL('../deploy.sh', import.meta.url), 'utf8');
+  assert.match(sh, /node --test tests\/\*\.mjs/);
+  assert.doesNotMatch(sh, /node --test tests\/(?:\s|\))/);
+});

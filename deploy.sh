@@ -10,7 +10,8 @@ cd "$(dirname "$0")"
 # scheduled blog routine, which once published a post that linked a hidden page and overflowed on phones.
 # There is no package.json or linter in this repo, so build + node --test is the whole gate.
 node scripts/build.mjs >/dev/null
-out=$(node --test tests/ 2>&1) || { printf '%s\n' "$out" | grep -E 'not ok|AssertionError|ℹ (pass|fail)' | head -30; echo 'deploy.sh: tests failed, nothing deployed'; exit 1; }
+# Glob, not the directory: on Node 22 `node --test tests/` fails with "Cannot find module …/tests" (audit 2026-10-08).
+out=$(node --test tests/*.mjs 2>&1) || { printf '%s\n' "$out" | grep -E 'not ok|AssertionError|ℹ (pass|fail)' | head -30; echo 'deploy.sh: tests failed, nothing deployed'; exit 1; }
 
 rm -rf .deploy && mkdir .deploy
 rsync -a --exclude-from=.deployignore ./ .deploy/

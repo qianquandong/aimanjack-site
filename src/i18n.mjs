@@ -18,7 +18,7 @@ export const T = {
     footer: {
       tagline: 'Hands-on AI training for teams in Dallas–Fort Worth and remotely, in English or Chinese.',
       training: 'AI Training', teams: 'Teams', resources: 'Resources', company: 'Company',
-      corporate: 'Corporate training', workshops: 'Workshops', tools: 'Free tools', templates: 'Templates', workflows: 'Workflows',
+      corporate: 'Corporate training', workshops: '90-minute workshop', onsite: 'Onsite in Texas', tools: 'Free tools', templates: 'Templates', workflows: 'Workflows',
       sales: 'Sales', marketing: 'Marketing', operations: 'Operations', leadership: 'Leadership',
       guides: 'Guides', cases: 'Case studies', newsletter: 'Real Agent Use Cases ↗', about: 'About', contact: 'Contact', book: 'Book a call',
       privacy: 'Privacy', terms: 'Terms', sms: 'SMS Terms', integrations: 'Integrations',
@@ -41,7 +41,7 @@ export const T = {
     footer: {
       tagline: '为达拉斯—沃斯堡地区及远程团队提供实操型 AI 培训，支持中英文授课。',
       training: 'AI 培训', teams: '按团队', resources: '资源', company: '公司',
-      corporate: '企业培训', workshops: '工作坊', tools: '免费工具', templates: '模板', workflows: '工作流',
+      corporate: '企业培训', workshops: '90 分钟工作坊', onsite: '德州上门培训', tools: '免费工具', templates: '模板', workflows: '工作流',
       sales: '销售', marketing: '市场', operations: '运营', leadership: '管理层',
       guides: '实践指南', cases: '案例', newsletter: 'Real Agent Use Cases ↗', about: '关于', contact: '联系', book: '预约通话',
       privacy: '隐私政策', terms: '服务条款', sms: '短信条款', integrations: '系统对接',

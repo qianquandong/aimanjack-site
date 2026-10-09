@@ -34,6 +34,19 @@ export const PROOF = { talks: 5, perTalk: '50+', hackathon: 37, reviews: 10, rat
 export const TRAINING = { programFrom: 499, sessions: 4, sessionMin: 90 };
 export const PROGRAM_PRICE = `$${TRAINING.programFrom}`;
 
+// Team formats (Revenue OS v6, W-001, 2026-10-08). Only custom-four has an owner-approved public price. The 90-minute team workshop
+// and the full-day onsite day are OWNER-UNAPPROVED: they are published with NO price — "Request a scoped quote" only. Proposed
+// amounts live in revenue-os config/offer_catalog.json and must never be copied here or into any page (tests/site.test.mjs fails).
+// Routes are a reversible decision: rename the path here and in src/pages/offers.mjs if the owner prefers another slug.
+export const OFFERS = {
+  workshop: { id: 'team-intro-90', path: '/ai-training/team-workshop/', format: 'workshop_90', minutes: 90 },
+  onsite: { id: 'onsite-day', path: '/ai-training/onsite-texas/', format: 'onsite_day' },
+  program: { id: 'custom-four', path: '/ai-training/', format: 'four_session' },
+};
+export const QUOTE_URL = '/contact/quote/';   // quote-intake form (src/pages/contact.mjs) → POST /v1/intake
+export const INTAKE_FORM_VERSION = 'intake-2026-10-08';
+export const CONSENT_NOTICE_VERSION = 'privacy-2026-10-08-draft';   // bump with every change to the quote-form consent wording or /privacy
+
 export const BUSINESS_SAME_AS = [GBP_URL, 'https://nextdoor.com/page/ai-man-jack-melissa-tx/', 'https://www.linkedin.com/in/quandong-qian-156563191/', 'https://www.youtube.com/@JackBuildAI', 'https://x.com/JackQianAI', 'https://www.facebook.com/profile.php?id=100084925451350'];
 export const JACK_SAME_AS = ['https://realagentusecases.com/', 'https://luma.com/user/usr-FlERJUF6Mcrie58', 'https://github.com/qianquandong', 'https://www.linkedin.com/in/quandong-qian-156563191/', 'https://www.youtube.com/@JackBuildAI', 'https://x.com/JackQianAI', 'https://www.threads.com/@jack_qian616', 'https://www.facebook.com/profile.php?id=100084925451350', 'https://nextdoor.com/page/ai-man-jack-melissa-tx/'];
 

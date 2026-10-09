@@ -1,9 +1,10 @@
 // /ai-training/ — the corporate AI training pillar (design canvas: Training / ZH-Training). Indexable, self-canonical.
-import { SITE, EMAIL, SMS_TEL, SMS_DISPLAY, GBP_URL, TRAINING, PROOF, PROGRAM_PRICE } from '../config.mjs';
+import { SITE, EMAIL, SMS_TEL, SMS_DISPLAY, GBP_URL, TRAINING, PROOF, PROGRAM_PRICE, OFFERS } from '../config.mjs';
 import { planBtn, photoHero, ctaBand, L } from '../layout.mjs';
 import { breadcrumb } from '../components.mjs';
 import { caseProof, clientProof } from './cases.mjs';
 import { business, person, faqPage } from '../schema.mjs';
+import { chooser } from './offers.mjs';
 
 const SMS = `sms:${SMS_TEL}?body=TRAINING%20-%20`;
 const S = TRAINING.sessions, M = TRAINING.sessionMin;
@@ -21,7 +22,7 @@ const C = {
     teams: [['sales', 'Sales', ['Account research before a first call, from the prospect’s site and your CRM notes', 'Meeting prep: five points to raise, drafted from last call’s notes', 'Follow-up emails drafted from call notes, in your voice', 'First-draft proposals from an approved template']], ['operations', 'Operations', ['The same weekly report, built from the same spreadsheet, every week', 'Process documentation from a recorded walkthrough', 'Meeting notes turned into action items with owners', 'Fields pulled out of invoices, forms and PDFs into a table']], ['marketing', 'Marketing', ['Research synthesis from a stack of articles into one brief', 'Campaign briefs from a filled-in template', 'One piece of content repurposed into three formats', 'Performance summaries from exported numbers']], ['leaders', 'Leaders & managers', ['Which tasks are worth AI, scored on four questions', 'Where a human must sign off before an output is used', 'What data may go into a tool and what may not', 'A two-week check: keep, change or stop each workflow']], ['owners', 'Owners & operators', ['Website updates and content', 'Research and decision support', 'SOPs and recurring admin', 'Marketing workflows', 'Day-to-day business operations']]],
     curK: 'What we cover', curH: 'Task first, tool second.', curP: 'Non-technical teams arrive overwhelmed by AI products, or with an impressive chatbot answer that doesn’t fit their job. A product tour makes both worse. So every session works through one real task in five parts.', curNote: 'Two weeks later: was it tested, was it accurate enough to use, should it continue, change or stop?',
     cur: [['Choose a suitable task', 'Each person lists three things they repeat every week and scores them: often enough to matter, clear input and output, quick to check, testable without sensitive information.', '“Prepare a five-point meeting brief from these approved notes” is teachable. “Run my department” is not.'], ['Give the AI useful context', 'A prompt is a work instruction, not a secret formula: a goal, an approved source, constraints, a usable format, and what to flag for a person to verify.'], ['Move from chat to workflow', 'A chat produces an answer. A workflow moves information through steps: collect approved notes, extract decisions, identify owners, draft follow-ups, put the result in a review queue.', 'This is where a team learns the difference between a chatbot and an agent.'], ['Verify the output', 'Can every claim be traced to the source? What context is missing? Who approves it before use? At least one output in every session is deliberately flawed — finding it teaches more than another perfect demo.'], ['Apply data and approval guardrails', 'Every participant leaves with a clear answer to three questions: which tools are approved, which information is off-limits, and where a human must sign off.']],
-    fmtK: 'Program and pricing', fmtH: 'The 4-session program', fmtP: `Four live ${M}-minute sessions built on your work, one workflow at a time. You use the workflows between sessions, and the next session fixes what broke.`, shorter: 'Want a shorter first step? A 90-minute team session is available on request. Ask about it on the call.',
+    fmtK: 'Program and pricing', fmtH: 'The 4-session program', fmtP: `Four live ${M}-minute sessions built on your work, one workflow at a time. You use the workflows between sessions, and the next session fixes what broke.`, shorter: `Want a shorter first step? See the <a href="${OFFERS.workshop.path}" data-event="offer_path_click" data-pos="training-shorter">90-minute team workshop</a> (scoped quote).`,
     fmt: { k: 'Core program', big: `${S} sessions`, sub: `${S} × ${M}-minute live sessions`, chip: `Starting at ${PROGRAM_PRICE}/person`,
         p: 'This is the core AI Man Jack program. Instead of following a fixed curriculum, the sessions are designed around the work you or your team already does.',
         items: ['Session 1: identify the right tasks and build the first workflow', 'Session 2: improve context, inputs and repeatability', 'Session 3: connect the workflow to the way the business actually operates', 'Session 4: review what worked, fix what broke and create a repeatable playbook'],
@@ -45,7 +46,7 @@ const C = {
     teams: [['sales', '销售', ['首次通话前的客户调研：基于对方官网与 CRM 记录', '会前准备：根据上次通话记录整理五个要点', '根据通话记录起草跟进邮件，保持个人风格', '基于已审批模板生成方案初稿']], ['operations', '运营', ['基于同一份表格，每周生成固定格式的周报', '根据操作录屏整理流程文档', '将会议纪要转化为明确负责人的待办事项', '从发票、表单和 PDF 中提取字段并整理成表格']], ['marketing', '市场', ['将大量文章综合为一份研究简报', '根据模板生成投放简报', '将一篇内容改编为三种形式', '根据导出的数据撰写效果总结']], ['leaders', '管理者', ['用四个问题评估哪些任务值得引入 AI', '明确哪些输出在使用前必须由人审批', '规定哪些数据可以输入工具、哪些不可以', '两周复盘：每条工作流是保留、调整还是停止']], ['owners', '老板与经营者', ['网站更新与内容', '调研与决策支持', 'SOP 与日常行政', '市场营销工作流', '日常经营']]],
     curK: '课程内容', curH: '先定任务，再选工具。', curP: '非技术团队通常面临两种困境：要么被层出不穷的 AI 产品弄得无所适从，要么试过聊天机器人、得到了令人印象深刻的回答，却不知道如何融入自己的工作。产品演示只会让问题更严重。因此，每一次课程都围绕一项真实任务，分五个部分展开。', curNote: '两周后回访：是否经过实测？结果是否足够准确？应继续、调整还是停止？',
     cur: [['选择合适的任务', '每位学员列出三项每周重复的工作，并按四个标准打分：频率是否足够高、输入输出能否清晰描述、能否快速核验、能否在不涉及敏感信息的情况下测试。', '“根据这份已批准的会议记录整理五点会议简报”可以教；“帮我管理整个部门”则不行。'], ['为 AI 提供有效上下文', '提示词是一份工作指令，而不是什么秘诀：明确目标、指定可信来源、设定约束、规定输出格式，并标出需要人工核验的内容。'], ['从对话升级为工作流', '对话产出的是一个回答；工作流则让信息按步骤流转：收集已批准的记录、提取决策、明确负责人、起草跟进、进入审核队列。', '团队会在这一步理解聊天机器人与智能体（Agent）的区别。'], ['核验输出结果', '每条结论能否追溯到来源？缺少哪些上下文？使用前由谁审批？每场课程至少有一个刻意设置的错误输出——找出它，比再看一次完美演示更有价值。'], ['落实数据与审批规范', '每位学员都能明确回答三个问题：哪些工具已获批准、哪些信息不得输入、哪些环节必须由人签字确认。']],
-    fmtK: '项目与价格', fmtH: '四次课程项目', fmtP: `四节 ${M} 分钟实时课程，围绕你的工作展开，一次落地一条工作流。课间你会实际使用这些工作流，下一节课再修正出问题的地方。`, shorter: '想先从更短的开始？也可以安排一次 90 分钟的团队专题，通话时提出即可。',
+    fmtK: '项目与价格', fmtH: '四次课程项目', fmtP: `四节 ${M} 分钟实时课程，围绕你的工作展开，一次落地一条工作流。课间你会实际使用这些工作流，下一节课再修正出问题的地方。`, shorter: `想先从更短的开始？可以看看 <a href="/zh${OFFERS.workshop.path}" data-event="offer_path_click" data-pos="training-shorter">90 分钟团队工作坊</a>（按需报价）。`,
     fmt: { k: '核心项目', big: `${S} 节课`, sub: `${S} 节 ${M} 分钟实时课程`, chip: `每人 ${PROGRAM_PRICE} 起`,
         p: '这是 AI Man Jack 的核心项目。不照固定大纲走，每节课都围绕你或团队已经在做的工作来设计。',
         items: ['第 1 节：找准任务，搭建第一条工作流', '第 2 节：完善上下文和输入，让结果稳定可复用', '第 3 节：把工作流接进企业实际的运作方式', '第 4 节：复盘哪些有效、修正出错的地方，沉淀一份可复用的操作手册'],
@@ -68,7 +69,7 @@ const page = (lang) => {
   const c = C[lang], bc = breadcrumb(lang, [[c.crumb, '/ai-training/']]);
   const head = (k, h, p, more) => `<div class="sec-head"><div><div class="eyebrow">${k}</div><h2>${h}</h2>${p ? `<p class="lead">${p}</p>` : ''}</div>${more || ''}</div>`;
   return {
-    title: c.title, description: c.description, og: c.og, view: 'training_page_view', hero: 'photo',
+    title: c.title, description: c.description, og: c.og, view: 'training_page_view', offer: OFFERS.program.id, hero: 'photo',
     body: `${photoHero({ photo: 'workshop', alt: c.heroAlt, size: 'md', stats: c.stats, inner: `<div class="hero-main stack">${bc.html}<div class="eyebrow">${c.eyebrow}</div><h1 class="lg" style="font-size:clamp(44px,6.4vw,92px)">${c.h1}</h1><p style="max-width:720px">${c.sub}</p>
 <div class="cta-row" style="gap:20px">${planBtn(lang, { pos: 'training-hero', id: 'hero-cta' })}<a class="btn btn-secondary" href="#formats" data-event="training_program_click" data-pos="training-hero">${c.seePricing}</a><span style="font-size:15px;color:var(--on-photo)">${c.text} <a href="${SMS}" data-event="sms_training_click" data-pos="training-hero">${SMS_DISPLAY}</a></span></div></div>` })}
 
@@ -82,6 +83,7 @@ const page = (lang) => {
 ${caseProof(lang)}
 <section class="sec" id="formats"><div class="wrap">${head(c.fmtK, c.fmtH, c.fmtP)}
 ${progCard(c.fmt, planBtn(lang, { pos: 'training-format' }))}<p class="prog-alt">${c.shorter}</p></div></section>
+${chooser(lang, { pos: 'training', programHref: '#formats' })}
 ${clientProof(lang, 'training')}
 
 <section class="sec tight" id="testimonials"><div class="wrap">${head(c.revK, c.revH, c.revP, `<a class="more" href="${GBP_URL}" target="_blank" rel="noopener">${c.revMore}</a>`)}

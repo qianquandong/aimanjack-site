@@ -5,6 +5,7 @@
 //   PATCH  /v1/bookings/:id        { start_at }                      reschedule
 //   DELETE /v1/bookings/:id                                          cancel
 //   GET    /v1/bookings?business=[&phone=&status=&from=]  (Authorization: Bearer ADMIN_TOKEN) read-only list; phone= finds a caller's bookings
+//   POST   /v1/intake              training quote request (JSON or form POST) → revenue.intake_receipts (see intake() below)
 // Writes take an Idempotency-Key header and an X-Source header (web | voice | sms | admin; default web).
 // Data: Supabase Postgres (schema `booking`, db/schema.sql) via PostgREST with the secret key — env.SUPABASE_URL + env.SB_SECRET_KEY.
 // Email: after every write, a confirmation goes to customer_email (if given) and a notice to OWNER_EMAIL, via the
@@ -18,12 +19,15 @@ const fail = (status, error, message) => json({ error, message }, status);
 
 // ── Supabase (PostgREST, schema `booking`) ──
 const q = (o) => new URLSearchParams(o).toString();
-async function sb(env, path, { method = 'GET', body, headers } = {}) {
+// `schema` picks the PostgREST profile: 'booking' (default, every existing call) or 'revenue' (quote intake, 2026-10).
+async function sb(env, path, { method = 'GET', body, headers, schema = 'booking' } = {}) {
   const r = await fetch(`${env.SUPABASE_URL}/rest/v1/${path}`, { method, body: body && JSON.stringify(body), headers: {
     apikey: env.SB_SECRET_KEY, authorization: `Bearer ${env.SB_SECRET_KEY}`, 'content-type': 'application/json',
-    'accept-profile': 'booking', 'content-profile': 'booking', prefer: 'return=representation', ...headers } });
-  const text = await r.text(), data = text ? JSON.parse(text) : null;
-  if (!r.ok) { const e = new Error(`supabase ${r.status} ${path}: ${text}`); e.code = data?.code; throw e; }
+    'accept-profile': schema, 'content-profile': schema, prefer: 'return=representation', ...headers } });
+  const text = await r.text();
+  let data = null;
+  try { data = text ? JSON.parse(text) : null; } catch { if (r.ok) throw new Error(`supabase ${r.status} ${path}: non-JSON body`); }
+  if (!r.ok) { const e = new Error(`supabase ${r.status} ${path}: ${text}`); e.code = data?.code; e.status = r.status; throw e; }
   return data;
 }
 const one = async (env, path) => (await sb(env, path + '&limit=1'))[0] ?? null;
@@ -233,6 +237,172 @@ async function redeemCoupon(env, req, code) {
   return json({ code, redeemed_at });
 }
 
+// ── Training quote intake (Revenue OS v6, W-002) ──
+// POST /v1/intake — JSON from the inline script on /contact/quote/, or a plain form POST without JS (answered with
+// 303 → /contact/quote/#received or #not-sent, which the page shows with :target).
+// Order: origin allowlist → honeypot / fill-time (silent drop) → consent → field validation → fail-closed rate limit →
+// revenue.record_intake RPC (one receipt per dedupe_key = sha256(lower(email)|company_domain|UTC day) + append-only consent ledger).
+// Then, never blocking the response: owner notice via sendMail (only if configured) and a signed event to the Revenue OS
+// operational store (only if ROS_WEBHOOK_URL + ROS_WEBHOOK_SECRET are set).
+// PII rule: responses carry only ok / receipt_id / error codes / field NAMES; console output carries only codes and statuses.
+// Option values must match the <select>s rendered by src/pages/contact.mjs (tests/intake-api.test.mjs submits every one).
+const INTAKE_ENUMS = {
+  industry: ['professional_services', 'manufacturing', 'distribution', 'construction', 'healthcare', 'finance', 'real_estate', 'retail', 'technology', 'nonprofit_education', 'public_sector', 'other'],
+  headcount: ['1-19', '20-49', '50-99', '100-249', '250-999', '1000+'],
+  format: ['workshop_90', 'onsite_day', 'four_session', 'not_sure'],
+  location: ['remote', 'dfw_onsite', 'other_texas'],
+  timing: ['within_month', 'one_to_three', 'three_plus', 'exploring'],
+  source: ['search', 'ai_assistant', 'linkedin', 'referral', 'event', 'social_other', 'other'],
+};
+const INTAKE_CONSENT_NOTICE_VERSION = 'privacy-2026-10-08-draft';   // keep equal to CONSENT_NOTICE_VERSION in src/config.mjs (tested)
+const INTAKE_MIN_FILL_MS = 3000;
+const yes = (v) => v === true || v === 'yes' || v === 'on' || v === 'true';
+const errInfo = (e) => `${e?.status ?? ''} ${e?.code ?? e?.name ?? 'error'}`.trim();   // never the message: it may quote a row
+
+const hostOf = (raw) => {
+  if (!raw) return '';
+  try {
+    const h = new URL(/^https?:\/\//i.test(raw) ? raw : `https://${raw}`).hostname.toLowerCase().replace(/^www\./, '');
+    return /^[a-z0-9-]+(\.[a-z0-9-]+)+$/.test(h) ? h : null;
+  } catch { return null; }
+};
+
+async function readIntakeBody(req) {
+  const type = (req.headers.get('content-type') || '').toLowerCase();
+  if (type.includes('application/json')) return { form: false, body: await req.json().catch(() => null) };
+  if (type.includes('application/x-www-form-urlencoded') || type.includes('multipart/form-data')) {
+    const fd = await req.formData().catch(() => null);
+    return { form: true, body: fd ? Object.fromEntries([...fd.entries()].filter(([, v]) => typeof v === 'string')) : null };
+  }
+  return { form: false, body: null };
+}
+
+// Returns { errors: [field names], v: normalized values }. Lengths match the maxlength attributes on the form.
+function validateIntake(b) {
+  const errors = [], v = {};
+  const str = (k) => (typeof b[k] === 'string' ? b[k].trim() : typeof b[k] === 'number' ? String(b[k]) : '');
+  const text = (k, max, required) => { const s = str(k); if (s.length > max || (required && !s)) errors.push(k); return s.slice(0, max); };
+  const pick = (k, required) => { const s = str(k); if (s ? !INTAKE_ENUMS[k].includes(s) : required) errors.push(k); return INTAKE_ENUMS[k].includes(s) ? s : null; };
+  v.name = text('name', 100, true);
+  v.email = str('email').toLowerCase();
+  if (!emailOk(v.email)) errors.push('email');
+  v.company = text('company', 120, true);
+  const site = text('company_website', 200, false), host = hostOf(site);
+  if (host === null) errors.push('company_website');
+  v.company_website = host || '';
+  v.industry = pick('industry', true); v.headcount = pick('headcount', true); v.format = pick('format', true); v.location = pick('location', true);
+  const n = Number(str('attendees'));
+  if (!Number.isInteger(n) || n < 1 || n > 500) errors.push('attendees');
+  v.attendees = Number.isInteger(n) ? n : null;
+  v.location_city = text('location_city', 80, v.location === 'other_texas');
+  v.workflows = text('workflows', 2000, true);
+  v.tools = text('tools', 300, false);
+  v.timing = pick('timing', true);
+  v.source = pick('source', false);
+  v.source_detail = text('source_detail', 120, false);
+  v.lang = str('lang') === 'zh' ? 'zh' : 'en';
+  const fv = str('form_version');
+  v.form_version = /^intake-\d{4}-\d{2}-\d{2}$/.test(fv) ? fv : 'unknown';
+  // First-touch attribution from sessionStorage (hidden ft_* fields). Self-reported "how did you hear" is stored separately.
+  const utm = {};
+  for (const k of ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term']) { const s = clean(b[`ft_${k}`], 120); if (s) utm[k] = s; }
+  const ref = hostOf(clean(b.ft_ref, 120)); if (ref) utm.referrer_host = ref;
+  const landing = clean(b.ft_landing, 200); if (landing.startsWith('/')) utm.landing_path = landing;
+  const ts = Number(b.ft_ts); if (Number.isFinite(ts) && ts > 0) utm.first_touch_at = new Date(ts).toISOString();
+  v.utm = utm;
+  return { errors: [...new Set(errors)], v };
+}
+
+async function intakeRateLimit(env, req, email) {
+  const ip = clean(req.headers.get('cf-connecting-ip'), 64);
+  if (!ip) return 'unavailable';
+  try {
+    for (const [key, limit] of [[`intake-ip:${ip}`, 10], [`intake-email:${email}`, 5]]) {
+      const allowed = await sb(env, 'rpc/take_intake_rate_limit', { method: 'POST', schema: 'revenue', body: { p_key_hash: await sha256(key), p_limit: limit, p_window_seconds: 600 } });
+      if (allowed !== true) return 'limited';
+    }
+  } catch (e) {
+    console.error('intake rate limiter unavailable', errInfo(e));
+    return 'unavailable';
+  }
+  return null;
+}
+
+const hmacHex = async (secret, message) => {
+  const key = await crypto.subtle.importKey('raw', new TextEncoder().encode(secret), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']);
+  return [...new Uint8Array(await crypto.subtle.sign('HMAC', key, new TextEncoder().encode(message)))].map((x) => x.toString(16).padStart(2, '0')).join('');
+};
+
+// Signed event for the Revenue OS operational store: x-ros-signature = sha256=<hex HMAC-SHA256 of "${t}.${body}">.
+// The event carries the receipt minus any IP data. Failure is logged by status only and never fails the request.
+async function postRosEvent(env, event) {
+  const body = JSON.stringify(event), t = String(Math.floor(Date.now() / 1000));
+  const signature = await hmacHex(env.ROS_WEBHOOK_SECRET, `${t}.${body}`);
+  const r = await fetch(env.ROS_WEBHOOK_URL, { method: 'POST', body, headers: { 'content-type': 'application/json', 'x-ros-timestamp': t, 'x-ros-signature': `sha256=${signature}`, 'x-ros-event-id': event.receipt_id } });
+  if (!r.ok) console.error('ros webhook rejected', r.status);
+}
+
+function intakeOwnerText(v, receiptId) {
+  const label = (k, x) => `${k}: ${x ?? ''}`;
+  return [`New training quote request (${receiptId})`, '', label('Name', v.name), label('Email', v.email), label('Company', v.company), label('Website', v.company_website),
+    label('Industry', v.industry), label('Company size', v.headcount), label('Attendees', v.attendees), label('Format', v.format),
+    label('Location', v.location + (v.location_city ? ` (${v.location_city})` : '')), label('Timing', v.timing), label('Tools', v.tools),
+    label('Heard about us', [v.source, v.source_detail].filter(Boolean).join(' — ')), label('Newsletter opt-in', v.consent_newsletter ? 'yes' : 'no'), '', 'Workflows:', v.workflows,
+    '', 'This is a quote request, not a booked meeting. Reply to the sender directly.'].join('\n');
+}
+
+async function intake(env, req, ctx) {
+  const origin = req.headers.get('origin'), allowed = env.SITE_ORIGIN || 'https://aimanjack.com';
+  if (!origin || (origin !== allowed && !/^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin))) return fail(403, 'origin_not_allowed', 'Use the quote form on aimanjack.com.');
+  const { form, body } = await readIntakeBody(req);
+  const back = (anchor, lang) => new Response(null, { status: 303, headers: { location: `${lang === 'zh' ? '/zh' : ''}/contact/quote/#${anchor}`, 'cache-control': 'no-store' } });
+  const lang = body?.lang === 'zh' ? 'zh' : 'en';
+  const reply = (status, data, anchor) => (form ? back(anchor, lang) : json(data, status));
+  if (!body || typeof body !== 'object') return reply(400, { ok: false, error: 'bad_body' }, 'not-sent');
+  // Bots: honeypot filled, or submitted faster than a person can fill the form. Answer like a success; store nothing.
+  const fill = body.fill_ms === undefined || body.fill_ms === '' ? null : Number(body.fill_ms);
+  if (clean(body.company_url, 200) || (fill !== null && Number.isFinite(fill) && fill < INTAKE_MIN_FILL_MS)) return reply(200, { ok: true }, 'received');
+  if (!yes(body.consent_request)) return reply(400, { ok: false, error: 'consent_required', fields: ['consent_request'] }, 'not-sent');
+  const { errors, v } = validateIntake(body);
+  if (errors.length) return reply(400, { ok: false, error: 'invalid', fields: errors }, 'not-sent');
+  v.consent_newsletter = yes(body.consent_newsletter);   // optional, never assumed: absent or unticked = false
+
+  const limited = await intakeRateLimit(env, req, v.email);
+  if (limited === 'limited') return reply(429, { ok: false, error: 'rate_limited' }, 'not-sent');
+  if (limited) return reply(503, { ok: false, error: 'intake_unavailable' }, 'not-sent');
+
+  const day = new Date().toISOString().slice(0, 10);
+  const companyDomain = v.company_website || v.email.split('@')[1];
+  const dedupeKey = await sha256(`${v.email}|${companyDomain}|${day}`);
+  const ip = clean(req.headers.get('cf-connecting-ip'), 64);
+  const payload = { name: v.name, email: v.email, company: v.company, company_website: v.company_website || null, company_domain: companyDomain, industry: v.industry, headcount: v.headcount,
+    attendees: v.attendees, format: v.format, location: v.location, location_city: v.location_city || null, workflows: v.workflows, tools: v.tools || null,
+    timing: v.timing, source: v.source, source_detail: v.source_detail || null, lang: v.lang, fill_ms: fill, timer: fill === null ? 'absent' : 'ok' };
+  const receipt = { dedupe_key: dedupeKey, form_version: v.form_version, payload, consent_request: true, consent_newsletter: v.consent_newsletter,
+    consent_notice_version: INTAKE_CONSENT_NOTICE_VERSION, utm: v.utm, self_reported_source: v.source, ip_hash: ip ? await sha256(`intake-ip:${ip}|${env.IP_HASH_SALT || ''}`) : null,
+    subject_email_hash: await sha256(`email:${v.email}`) };
+  const consents = [{ consent_type: 'request_contact', granted: true }, { consent_type: 'newsletter', granted: v.consent_newsletter }];
+  let rec;
+  try {
+    rec = await sb(env, 'rpc/record_intake', { method: 'POST', schema: 'revenue', body: { p: receipt, p_consents: consents } });
+  } catch (e) {
+    console.error('intake store unavailable', errInfo(e));
+    return reply(503, { ok: false, error: 'intake_unavailable' }, 'not-sent');
+  }
+  const receiptId = rec?.receipt_id;
+  if (!receiptId) { console.error('intake store returned no receipt'); return reply(503, { ok: false, error: 'intake_unavailable' }, 'not-sent'); }
+
+  if (!rec.deduped) {
+    const later = (p, what) => { const job = p.catch((e) => console.error(what, errInfo(e))); if (ctx.waitUntil) ctx.waitUntil(job); };
+    if (env.CF_EMAIL_TOKEN && env.EMAIL_FROM && env.OWNER_EMAIL) later(sendMail(env, { to: env.OWNER_EMAIL, subject: `[quote request] ${v.company} · ${v.format}`, text: intakeOwnerText(v, receiptId), reply_to: v.email }), 'intake owner email failed');
+    if (env.ROS_WEBHOOK_URL && env.ROS_WEBHOOK_SECRET) {
+      const { ip_hash, subject_email_hash, ...rest } = receipt;   // the operational store gets no IP data
+      later(postRosEvent(env, { event_type: 'intake.received', receipt_id: receiptId, received_at: rec.received_at || new Date().toISOString(), ...rest }), 'ros webhook failed');
+    }
+  }
+  return reply(rec.deduped ? 200 : 201, { ok: true, receipt_id: receiptId }, 'received');
+}
+
 // kind: created | rescheduled | cancelled. Customer gets a confirmation, the owner a one-line notice.
 function notify(env, ctx, b, kind, source) {
   if (!env.CF_EMAIL_TOKEN || !env.EMAIL_FROM) return;
@@ -365,6 +535,10 @@ export async function onRequest(ctx) {
       if (req.method === 'GET') return await listCoupons(env, req, url);
     }
     if (res === 'coupons' && id && !extra && req.method === 'PATCH') return await redeemCoupon(env, req, id);
+    if (res === 'intake' && !id && req.method === 'POST') {
+      try { return await intake(env, req, ctx); }
+      catch (e) { console.error('intake api', errInfo(e)); return fail(500, 'internal', 'Something went wrong on our side.'); }   // codes only: no PII in logs
+    }
     return fail(404, 'not_found', 'No such route.');
   } catch (e) {
     console.error('booking api', e);
