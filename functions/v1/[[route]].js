@@ -8,11 +8,23 @@
 // Writes take an Idempotency-Key header and an X-Source header (web | voice | sms | admin; default web).
 // Data: Supabase Postgres (schema `booking`, db/schema.sql) via PostgREST with the secret key — env.SUPABASE_URL + env.SB_SECRET_KEY.
 // Email: after every write, a confirmation goes to customer_email (if given) and a notice to OWNER_EMAIL, via the
-// Cloudflare Email Sending REST API (Pages Functions have no send_email binding) — env.CF_ACCOUNT_ID + env.CF_EMAIL_TOKEN
-// + env.EMAIL_FROM. No token = no email, booking still succeeds. Sent in waitUntil so the response never waits on it.
+// Cloudflare Email Sending REST API (Pages Functions have no send_email binding). Booking mail goes through a durable
+// ledger (booking.notifications, src/booking-notify.mjs): From BOOKING_EMAIL_FROM (booking-no-reply@aimanjack.com),
+// Reply-To BOOKING_REPLY_TO (jack@aimanjack.com); per-recipient provider result, bounded retries, no double send, alerts.
+// An email problem never fails or undoes a booking. The coupon lane is separate (EMAIL_FROM, unchanged).
+//   GET  /v1/admin/email-config                 (admin) effective sender settings, owner address masked
+//   GET  /v1/bookings?business=…&with=notifications (admin) adds per-message email states (owner page)
+//   GET  /v1/notifications?status=&booking=     (admin) ledger rows
+//   POST /v1/notifications/process              (admin) mark stale sends uncertain, send everything due
+//   POST /v1/notifications/requeue {ids:[…], include_bounced?}  (admin) owner-requested resend (bounced only if explicit)
 // Instants are timestamptz; responses render them in the business tz with an offset (ISO 8601).
 
+import { createNotifier, composeMessages, describeMailConfig, alertFromEnv, bookingMailConfig } from '../../src/booking-notify.mjs';
+
 const SOURCES = new Set(['web', 'voice', 'sms', 'admin']);
+// 'admin' suppresses the owner's own notice, so it is honoured only with the admin token; anything else is 'web'.
+const sourceOf = (env, req) => { const s = req.headers.get('x-source'); if (s === 'admin') return adminOk(env, req) ? 'admin' : 'web'; return SOURCES.has(s) ? s : 'web'; };
+const errCode = (e) => String(e?.code ?? e?.message ?? e).split(':')[0].slice(0, 60);   // logs: status/code only, never ids or addresses
 const json = (data, status = 200) => new Response(JSON.stringify(data), { status, headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' } });
 const fail = (status, error, message) => json({ error, message }, status);
 
@@ -120,8 +132,8 @@ function view(b, origin) {
   };
 }
 
-const logEvent = (env, b, type, source, payload) =>
-  sb(env, 'events', { method: 'POST', body: { business_id: b.business_id, booking_id: b.id, type, source, payload }, headers: { prefer: 'return=minimal' } });
+const logEvent = async (env, b, type, source, payload) =>
+  (await sb(env, 'events', { method: 'POST', body: { business_id: b.business_id, booking_id: b.id, type, source, payload }, headers: { prefer: 'return=representation' } }))?.[0]?.id ?? null;
 
 // ── email (Cloudflare Email Sending, REST) ──
 const whenFmt = {};
@@ -202,7 +214,7 @@ async function claimCoupon(env, req, ctx) {
 
   const text = `Your $25 coupon for any AI Man Jack service\n\nCoupon code: ${coupon.code}\n\nUse this coupon once on any AI Man Jack service. No minimum spend, expiration or new-customer restriction. Reply to this email when you are ready to use it.\n\nJack\nAI Man Jack`;
   try {
-    await sendMail(env, { to: email, subject: `Your $25 AI Man Jack coupon: ${coupon.code}`, text, reply_to: env.OWNER_EMAIL });
+    await sendMail(env, { to: email, subject: `Your $25 AI Man Jack coupon: ${coupon.code}`, text, reply_to: env.OWNER_EMAIL || env.BOOKING_REPLY_TO });
   } catch (e) {
     await couponPatch(env, coupon.code, { issuance_status: 'failed', delivery_attempts: (coupon.delivery_attempts || 0) + 1, last_error: String(e.message || e).slice(0, 240) }).catch((dbError) => console.error('coupon failure persistence', dbError.message));
     return fail(502, 'email_failed', 'The coupon email was not accepted by the email provider.');
@@ -234,19 +246,30 @@ async function redeemCoupon(env, req, code) {
 }
 
 // kind: created | rescheduled | cancelled. Customer gets a confirmation, the owner a one-line notice.
-function notify(env, ctx, b, kind, source) {
-  if (!env.CF_EMAIL_TOKEN || !env.EMAIL_FROM) return;
-  const v = view(b, env.SITE_ORIGIN || 'https://aimanjack.com'), when = fmtWhen(b), phone = prettyPhone(b.customer_phone), who = `${b.customer_name} · ${phone}${b.customer_email ? ' · ' + b.customer_email : ''}`;
-  const subj = { created: `Confirmed: your ${b.service_name} with Jack, ${when}`, rescheduled: `Moved: your ${b.service_name} is now ${when}`, cancelled: `Cancelled: your ${b.service_name} on ${when}` }[kind];
-  const line = { created: `You're booked. Jack will call ${phone} on ${when}.`, rescheduled: `Your call is moved. Jack will call ${phone} on ${when}.`, cancelled: `Your call on ${when} is cancelled. Book a new time any time.` }[kind];
-  const manage = kind === 'cancelled' ? `Book again: ${env.SITE_ORIGIN || 'https://aimanjack.com'}/book/` : `Change or cancel (up to ${b.cancel_window_hours}h before): ${v.manage_url}`;
-  const customer = `Hi ${b.customer_name},\n\n${line}\n\n${manage}\n\nQuestions? Just reply to this email.\n\nJack\nAI Man Jack`;
-  const head = `${kind} (${source}): ${b.service_name} ${when}`;
-  const owner = [head, who, b.note, v.manage_url].filter(Boolean).join('\n');
-  const jobs = [];
-  if (b.customer_email) jobs.push(sendMail(env, { to: b.customer_email, subject: subj, text: customer, reply_to: env.OWNER_EMAIL }));
-  if (env.OWNER_EMAIL && source !== 'admin') jobs.push(sendMail(env, { to: env.OWNER_EMAIL, subject: `[booking] ${head}`, text: owner, reply_to: b.customer_email || undefined }));
-  ctx.waitUntil(Promise.allSettled(jobs).then((rs) => rs.forEach((r, i) => r.status === 'rejected' && console.error('booking email', i, r.reason?.message))));
+// Durable: rows are written to booking.notifications first, then sent in waitUntil (src/booking-notify.mjs).
+const notifierFor = (env) => createNotifier({ db: (path, o) => sb(env, path, o), env, alert: alertFromEnv(env) });
+async function notify(env, ctx, b, kind, source, eventId, meta) {
+  const origin = env.SITE_ORIGIN || 'https://aimanjack.com';
+  const messages = composeMessages(env, b, kind, source, { fmtWhen, prettyPhone, manageUrl: view(b, origin).manage_url, siteOrigin: origin });
+  if (!messages.length) return;
+  const n = notifierFor(env);
+  let rows = null;
+  try { rows = await n.enqueue(b, eventId, kind, messages, meta); }
+  catch (e) { console.error('booking notification ledger unavailable', errCode(e)); }
+  if (rows) { ctx.waitUntil(Promise.allSettled(rows.map((r) => n.attempt(r))).then(() => n.processDue({ limit: 5 })).catch(() => {})); return; }
+  // Ledger unavailable (migration not applied / DB error): still try to send, loudly logged — never silently dropped.
+  const c = bookingMailConfig(env);
+  if (!env.CF_EMAIL_TOKEN) { console.error('booking email NOT sent (no ledger): config_missing:CF_EMAIL_TOKEN'); return; }
+  messages.filter((m) => !m.to).forEach((m) => console.error('booking email NOT sent (no ledger):', m.role === 'owner' ? 'config_missing:OWNER_EMAIL' : 'no_customer_email'));
+  ctx.waitUntil(Promise.allSettled(messages.filter((m) => m.to).map((m) => sendMail({ ...env, EMAIL_FROM: c.from }, { to: m.to, subject: m.subject, text: m.text, reply_to: m.reply_to })))
+    .then((rs) => rs.forEach((r, i) => r.status === 'rejected' && console.error('booking email (no ledger) failed', messages.filter((m) => m.to)[i].role, errCode(r.reason)))));
+}
+
+// Post-commit side effects (event log, notifications) must never turn a committed booking into an error response.
+async function afterWrite(env, ctx, b, kind, source, payload, meta = {}) {
+  let eventId = null;
+  try { eventId = await logEvent(env, b, kind, source, payload); } catch (e) { console.error('booking event log failed', errCode(e)); }
+  try { await notify(env, ctx, b, kind, source, eventId, meta); } catch (e) { console.error('booking notify failed', errCode(e)); }
 }
 
 function normPhone(raw) {
@@ -263,6 +286,10 @@ function windowClosed(b) {
 const windowMsg = (b) => `Changes must be made at least ${b.cancel_window_hours} hour${b.cancel_window_hours === 1 ? '' : 's'} before the appointment. Contact ${b.business_name} directly.`;
 
 // ── handlers ──
+// Pages Functions have no cron: public availability traffic also drives retries (at most once a minute per isolate).
+let lastSweep = 0;
+const sweep = (env, ctx) => { if (!ctx?.waitUntil || !env.CF_EMAIL_TOKEN || Date.now() - lastSweep < 60000) return; lastSweep = Date.now(); ctx.waitUntil(notifierFor(env).processDue({ limit: 10 }).catch(() => {})); };
+
 async function availability(env, url) {
   const q = url.searchParams, r = await loadBizSvc(env, q.get('business'), q.get('service'));
   if (r.error) return r.error;
@@ -276,7 +303,7 @@ async function create(env, req, origin, ctx) {
   if (!body) return fail(400, 'bad_json', 'Body must be JSON.');
   const r = await loadBizSvc(env, body.business, body.service);
   if (r.error) return r.error;
-  const { biz, svc } = r, source = SOURCES.has(req.headers.get('x-source')) ? req.headers.get('x-source') : 'web';
+  const { biz, svc } = r, source = sourceOf(env, req);
   const idem = clean(req.headers.get('idempotency-key'), 128) || null;
   if (idem) { const ex = await byIdem(env, biz.id, idem); if (ex) return json(view(ex, origin), 200); }
   const name = clean(body.customer_name, 80), phone = normPhone(body.customer_phone);
@@ -298,8 +325,7 @@ async function create(env, req, origin, ctx) {
   }
   if (!ok) return fail(409, 'slot_unavailable', 'That time was just taken. Pick another one.');
   const b = await getBooking(env, id);
-  await logEvent(env, b, 'created', source, { start_at: b.start_at, service: b.service_id, staff: b.staff_id });
-  notify(env, ctx, b, 'created', source);
+  await afterWrite(env, ctx, b, 'created', source, { start_at: b.start_at, service: b.service_id, staff: b.staff_id });
   return json(view(b, origin), 201);
 }
 
@@ -308,7 +334,7 @@ async function reschedule(env, req, b, origin, ctx) {
   if (!body?.start_at) return fail(400, 'start_at_required', 'start_at is required.');
   if (b.status !== 'confirmed') return fail(409, 'booking_cancelled', 'This appointment was cancelled. Book a new one.');
   if (windowClosed(b)) return fail(409, 'cancel_window', windowMsg(b));
-  const source = SOURCES.has(req.headers.get('x-source')) ? req.headers.get('x-source') : 'web';
+  const source = sourceOf(env, req);
   const { biz, svc } = await loadBizSvc(env, b.business_id, b.service_id);
   const slot = await findSlot(env, biz, svc, body.start_at, { staffId: body.staff || b.staff_id, excludeId: b.id });
   if (!slot) return fail(409, 'slot_unavailable', 'That time is not available. Pick another one.');
@@ -317,23 +343,22 @@ async function reschedule(env, req, b, origin, ctx) {
   const ok = await sb(env, 'rpc/move_booking', { method: 'POST', body: { p: { id: b.id, business_id: b.business_id, staff_id: slot.staff_id, start_at: start, end_at: end, lo, hi, capacity: b.capacity } } });
   if (!ok) return fail(409, 'slot_unavailable', 'That time was just taken. Pick another one.');
   const nb = await getBooking(env, b.id);
-  await logEvent(env, nb, 'rescheduled', source, { from: b.start_at, to: nb.start_at });
-  notify(env, ctx, nb, 'rescheduled', source);
+  if (Date.parse(nb.start_at) !== Date.parse(b.start_at)) await afterWrite(env, ctx, nb, 'rescheduled', source, { from: b.start_at, to: nb.start_at }, { from: b.start_at });
   return json(view(nb, origin));
 }
 
 async function cancel(env, req, b, origin, ctx) {
   if (b.status !== 'confirmed') return json(view(b, origin));
   if (windowClosed(b)) return fail(409, 'cancel_window', windowMsg(b));
-  const source = SOURCES.has(req.headers.get('x-source')) ? req.headers.get('x-source') : 'web';
-  await sb(env, 'bookings?' + q({ id: 'eq.' + b.id, status: 'eq.confirmed' }), { method: 'PATCH', body: { status: 'cancelled', updated_at: new Date().toISOString() }, headers: { prefer: 'return=minimal' } });
+  const source = sourceOf(env, req);
+  const changed = await sb(env, 'bookings?' + q({ id: 'eq.' + b.id, status: 'eq.confirmed' }), { method: 'PATCH', body: { status: 'cancelled', updated_at: new Date().toISOString() }, headers: { prefer: 'return=representation' } });
   const nb = await getBooking(env, b.id);
-  await logEvent(env, nb, 'cancelled', source, { start_at: b.start_at });
-  notify(env, ctx, nb, 'cancelled', source);
+  // A concurrent second cancel changes no row: it returns the cancelled booking but sends nothing.
+  if (changed?.length) await afterWrite(env, ctx, nb, 'cancelled', source, { start_at: b.start_at });
   return json(view(nb, origin));
 }
 
-async function list(env, req, url, origin) {
+async function list(env, req, url, origin, ctx) {
   const auth = req.headers.get('authorization') || '';
   if (!env.ADMIN_TOKEN || auth !== `Bearer ${env.ADMIN_TOKEN}`) return fail(401, 'unauthorized', 'Bearer token required.');
   const biz = url.searchParams.get('business');
@@ -341,17 +366,44 @@ async function list(env, req, url, origin) {
   const from = url.searchParams.get('from'), status = url.searchParams.get('status'), phone = normPhone(url.searchParams.get('phone'));
   const rows = await sb(env, 'bookings_full?' + q({ business_id: 'eq.' + biz, start_at: 'gte.' + (isDate(from) ? from : new Date(Date.now() - 864e5).toISOString().slice(0, 10)),
     ...(status ? { status: 'eq.' + status } : {}), ...(phone ? { customer_phone: 'eq.' + phone } : {}), order: 'start_at.asc', limit: '500' }));
-  return json({ business: biz, count: rows.length, bookings: rows.map((b) => view(b, origin)) });
+  const withNotes = url.searchParams.get('with') === 'notifications';   // owner page only; agents keep the old shape
+  let notes = [];
+  if (withNotes && rows.length) {
+    try { notes = await sb(env, 'notifications?' + q({ booking_id: `in.(${rows.map((b) => b.id).join(',')})`, select: 'id,booking_id,kind,role,status,attempts,last_error,sent_at,updated_at', order: 'id.asc' })); }
+    catch { notes = null; }
+  }
+  if (!withNotes) return json({ business: biz, count: rows.length, bookings: rows.map((b) => view(b, origin)) });
+  return json({ business: biz, count: rows.length, notifications_ledger: notes === null ? 'unavailable' : 'ok',
+    bookings: rows.map((b) => ({ ...view(b, origin), notifications: (notes || []).filter((n) => n.booking_id === b.id).map(({ booking_id, ...n }) => n) })) });
+}
+
+async function notificationsApi(env, req, url, id, ctx) {
+  if (!adminOk(env, req)) return fail(401, 'unauthorized', 'Bearer token required.');
+  const n = notifierFor(env);
+  if (!id && req.method === 'GET') {
+    const status = url.searchParams.get('status'), booking = url.searchParams.get('booking');
+    const rows = await sb(env, 'notifications?' + q({ select: 'id,booking_id,kind,role,status,attempts,last_error,sent_at,next_attempt_at,created_at,updated_at',
+      ...(status ? { status: 'eq.' + status } : {}), ...(booking ? { booking_id: 'eq.' + booking } : {}), order: 'id.desc', limit: '200' }));
+    return json({ count: rows.length, notifications: rows });
+  }
+  if (id === 'process' && req.method === 'POST') return json(await n.processDue({ limit: 25 }));
+  if (id === 'requeue' && req.method === 'POST') {
+    const body = await req.json().catch(() => null);
+    const rows = await n.requeue(Array.isArray(body?.ids) ? body.ids : [], { includeBounced: body?.include_bounced === true });
+    if (ctx?.waitUntil) ctx.waitUntil(n.processDue({ limit: 25 }).catch(() => {}));
+    return json({ requeued: rows.map((r) => r.id) });
+  }
+  return fail(404, 'not_found', 'No such route.');
 }
 
 export async function onRequest(ctx) {
   const { request: req, env, params } = ctx;
   const url = new URL(req.url), origin = url.origin, [res, id, extra] = params.route || [];
   try {
-    if (res === 'availability' && req.method === 'GET') return await availability(env, url);
+    if (res === 'availability' && req.method === 'GET') { sweep(env, ctx); return await availability(env, url); }
     if (res === 'bookings' && !id) {
       if (req.method === 'POST') return await create(env, req, origin, ctx);
-      if (req.method === 'GET') return await list(env, req, url, origin);
+      if (req.method === 'GET') return await list(env, req, url, origin, ctx);
     }
     if (res === 'bookings' && id && !extra) {
       const b = await getBooking(env, id);
@@ -359,6 +411,11 @@ export async function onRequest(ctx) {
       if (req.method === 'GET') return json(view(b, origin));
       if (req.method === 'PATCH') return await reschedule(env, req, b, origin, ctx);
       if (req.method === 'DELETE') return await cancel(env, req, b, origin, ctx);
+    }
+    if (res === 'notifications' && !extra) return await notificationsApi(env, req, url, id, ctx);
+    if (res === 'admin' && id === 'email-config' && req.method === 'GET') {
+      if (!adminOk(env, req)) return fail(401, 'unauthorized', 'Bearer token required.');
+      return json(describeMailConfig(env));
     }
     if (res === 'coupons' && !id) {
       if (req.method === 'POST') return await claimCoupon(env, req, ctx);

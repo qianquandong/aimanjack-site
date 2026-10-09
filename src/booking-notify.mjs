@@ -1,0 +1,218 @@
+// Booking notifications with a durable ledger (GitHub qianquandong/revenue-os#2).
+//
+// Before: notify() fired emails inside waitUntil and only console.error'd failures — a booking could succeed while every
+// email silently failed, and a 200 from the provider was treated as delivered even when the address bounced.
+//
+// Now:
+//   * every notification is a row in booking.notifications BEFORE anything is sent (dedupe_key = event id + recipient
+//     role ⇒ one message per event per recipient, ever); the booking itself never depends on email;
+//   * a row is CLAIMED with an optimistic-concurrency update before sending, so two workers can never both send it;
+//   * the provider's per-recipient result is recorded: delivered (accepted by the recipient's mail server — NOT proof it
+//     reached the inbox), queued, bounced (permanent, alert, never retried); transport/HTTP errors retry with backoff
+//     up to MAX_ATTEMPTS, then 'dead' (alert);
+//   * a row stuck in 'sending' (worker died mid-send), or whose request died on the network, becomes 'uncertain' and is
+//     NOT retried automatically — the message may already have gone out; the owner decides (no duplicate emails);
+//   * a newer message to the same recipient about the same booking supersedes an unsent older one (never out of order);
+//   * missing configuration (token, sender, OWNER_EMAIL) is recorded as a failure with the missing name — never silent.
+// Addresses live only in the database (like the bookings themselves); logs and alerts carry ids and codes only.
+
+export const BOOKING_FROM_DEFAULT = 'booking-no-reply@aimanjack.com';
+export const BOOKING_REPLY_TO_DEFAULT = 'jack@aimanjack.com';
+export const MAX_ATTEMPTS = 5;
+export const BACKOFF_MIN = [1, 5, 30, 120];             // minutes before attempts 2..5
+export const STALE_SENDING_MIN = 10;
+export const CONFIG_RETRY_MIN = 30;                      // configuration gaps wait (without using up attempts) until fixed
+export const ALERT_FAILED_AFTER_MIN = 30;                // a row still failing after this long alerts the owner once
+// Explicit choice (issue #2 §5): when the OWNER makes a change from the admin side, the customer is still told; the
+// owner does not get a notice about their own action. Every other source notifies both.
+export const OWNER_NOTIFIED_SOURCES = new Set(['web', 'voice', 'sms']);
+
+const nowIso = (ms = Date.now()) => new Date(ms).toISOString();
+const plusMin = (ms, m) => nowIso(ms + m * 60000);
+const short = (s, n = 240) => String(s ?? '').replace(/[\r\n]+/g, ' ').slice(0, n);
+
+/** Effective sender settings (booking lane only; the coupon lane keeps EMAIL_FROM — see docs). */
+export function bookingMailConfig(env) {
+  return {
+    from: env.BOOKING_EMAIL_FROM || BOOKING_FROM_DEFAULT,
+    replyTo: env.BOOKING_REPLY_TO || BOOKING_REPLY_TO_DEFAULT,
+    ownerTo: env.OWNER_EMAIL || null,
+    token: !!env.CF_EMAIL_TOKEN, account: !!env.CF_ACCOUNT_ID,
+  };
+}
+
+/** Owner-safe view of the effective configuration (no secrets, owner address masked). */
+export function describeMailConfig(env) {
+  const c = bookingMailConfig(env);
+  const mask = (a) => { if (!a) return null; const [l, d] = String(a).split('@'); return d ? `${l.slice(0, 1)}***${l.length > 1 ? l.slice(-1) : ''}@${d}` : '***'; };
+  return { booking_from: c.from, booking_reply_to: c.replyTo, owner_email: mask(c.ownerTo), owner_email_domain: c.ownerTo?.split('@')[1] ?? null,
+    coupon_from: env.EMAIL_FROM || null, cf_email_token_present: c.token, cf_account_id_present: c.account,
+    note: 'owner_email is masked; compare it with the address you expect. Values come from the running deployment.' };
+}
+
+/** Build the messages for one booking event. Pure; returns [{role, to, subject, text, reply_to}] (to may be null ⇒ config gap). */
+export function composeMessages(env, b, kind, source, { fmtWhen, prettyPhone, manageUrl, siteOrigin }) {
+  const c = bookingMailConfig(env);
+  const when = fmtWhen(b), phone = prettyPhone(b.customer_phone);
+  const out = [];
+  if (b.customer_email) {
+    const subject = { created: `Confirmed: your ${b.service_name} with Jack, ${when}`, rescheduled: `Moved: your ${b.service_name} is now ${when}`, cancelled: `Cancelled: your ${b.service_name} on ${when}` }[kind];
+    const line = { created: `You're booked. Jack will call ${phone} on ${when}.`, rescheduled: `Your call is moved. Jack will call ${phone} on ${when}.`, cancelled: `Your call on ${when} is cancelled. Book a new time any time.` }[kind];
+    const manage = kind === 'cancelled' ? `Book again: ${siteOrigin}/book/` : `Change or cancel (up to ${b.cancel_window_hours}h before): ${manageUrl}`;
+    out.push({ role: 'customer', to: b.customer_email, reply_to: c.replyTo, subject,
+      text: `Hi ${b.customer_name},\n\n${line}\n\n${manage}\n\nQuestions? Just reply to this email.\n\nJack\nAI Man Jack` });
+  }
+  if (OWNER_NOTIFIED_SOURCES.has(source)) {
+    const head = `${kind} (${source}): ${b.service_name} ${when}`;
+    const who = `${b.customer_name} · ${phone}${b.customer_email ? ' · ' + b.customer_email : ''}`;
+    out.push({ role: 'owner', to: c.ownerTo, reply_to: b.customer_email || undefined, subject: `[booking] ${head}`,
+      text: [head, who, b.note, manageUrl, `All upcoming bookings: ${siteOrigin}/admin/bookings/`].filter(Boolean).join('\n') });
+  }
+  return out;
+}
+
+/** Interpret Cloudflare Email Sending's response for one recipient. */
+export function classifyProviderResult(status, body) {
+  // One recipient per call, so a non-empty list is about that recipient (no fragile address matching).
+  const n = (arr) => Array.isArray(arr) && arr.length > 0;
+  if (status >= 200 && status < 300 && body?.success !== false) {
+    const r = body?.result ?? {};
+    if (n(r.permanent_bounces)) return { status: 'bounced', retry: false, error: 'permanent_bounce' };
+    if (n(r.delivered)) return { status: 'delivered', retry: false };
+    if (n(r.queued)) return { status: 'queued', retry: false };
+    return { status: 'queued', retry: false, error: 'accepted_without_per_recipient_result' };
+  }
+  const code = body?.errors?.[0]?.code ?? null; const msg = body?.errors?.[0]?.message ?? '';
+  // 429 / 5xx ⇒ the provider says it did not take the message: retry. 4xx (bad sender, token, schema, disabled zone) ⇒
+  // retried too because the usual fix is configuration, but it dies after MAX_ATTEMPTS.
+  return { status: 'failed', retry: true, error: short(`http_${status}${code ? ' code_' + code : ''} ${msg}`) };
+}
+
+async function cfSend(env, msg, fetchImpl) {
+  const c = bookingMailConfig(env);
+  let r;
+  try {
+    r = await fetchImpl(`https://api.cloudflare.com/client/v4/accounts/${env.CF_ACCOUNT_ID}/email/sending/send`, {
+      method: 'POST', headers: { authorization: `Bearer ${env.CF_EMAIL_TOKEN}`, 'content-type': 'application/json' },
+      body: JSON.stringify({ to: msg.to, from: { address: c.from, name: 'AI Man Jack' }, reply_to: msg.reply_to, subject: msg.subject, text: msg.text,
+        html: `<pre style="font:15px/1.5 -apple-system,Segoe UI,sans-serif;white-space:pre-wrap;margin:0">${String(msg.text).replace(/[&<>"]/g, (ch) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[ch]))}</pre>` }),
+    });
+  } catch (e) {
+    // The request may have reached the provider before the connection failed, and the API has no idempotency key or
+    // message id: resending could duplicate. Never auto-retry — the owner decides (no duplicate emails).
+    return { status: 'uncertain', retry: false, error: short('network_error_after_request ' + (e?.name || 'Error')) };
+  }
+  let body = null; const text = await r.text().catch(() => '');
+  try { body = text ? JSON.parse(text) : null; } catch { body = null; }
+  return { ...classifyProviderResult(r.status, body), provider: body?.result ? { delivered: (body.result.delivered || []).length, queued: (body.result.queued || []).length, permanent_bounces: (body.result.permanent_bounces || []).length } : null };
+}
+
+const configGap = (env, msg) => {
+  if (!env.CF_EMAIL_TOKEN) return 'config_missing:CF_EMAIL_TOKEN';
+  if (!env.CF_ACCOUNT_ID) return 'config_missing:CF_ACCOUNT_ID';
+  if (!msg.to) return msg.role === 'owner' ? 'config_missing:OWNER_EMAIL' : 'no_customer_email';
+  return null;
+};
+
+/**
+ * Ledger operations over an injected `db` (the Supabase PostgREST helper `sb`, or a fake in tests):
+ *   db(path, {method, body, headers}) → rows
+ */
+export function createNotifier({ db, env, fetchImpl = (...a) => fetch(...a), alert = null, log = (...a) => console.error(...a) }) {
+  /**
+   * dedupe_key is derived from the BOOKING STATE, not the event: a double-submitted cancel or two identical concurrent
+   * reschedules map to the same key, so the customer never gets two copies.
+   *   created   → <booking>:created:<role>                      (once per booking)
+   *   cancelled → <booking>:cancelled:<role>                    (terminal, once)
+   *   rescheduled → <booking>:rescheduled:<from>-><to>:<minute>:<role>
+   */
+  const dedupeKey = (b, kind, role, meta = {}) => kind === 'rescheduled'
+    ? `${b.id}:rescheduled:${meta.from ?? ''}->${b.start_at}:${Math.floor(Date.now() / 60000)}:${role}` : `${b.id}:${kind}:${role}`;
+  const enqueue = async (b, eventId, kind, messages, meta = {}) => {
+    if (!messages.length) return [];
+    const rows = messages.map((m) => ({ business_id: b.business_id, booking_id: b.id, event_id: eventId ?? null, kind, role: m.role,
+      dedupe_key: dedupeKey(b, kind, m.role, meta), to_address: m.to, reply_to: m.reply_to ?? null, subject: m.subject, body_text: m.text,
+      status: 'pending', attempts: 0, next_attempt_at: nowIso() }));
+    // on_conflict + ignore-duplicates: a replayed or double-submitted event never creates a second message.
+    return db('notifications?on_conflict=dedupe_key', { method: 'POST', body: rows, headers: { prefer: 'resolution=ignore-duplicates,return=representation' } });
+  };
+
+  async function claim(row) {
+    const got = await db(`notifications?id=eq.${row.id}&status=eq.${row.status}&attempts=eq.${row.attempts}`, {
+      method: 'PATCH', body: { status: 'sending', attempts: row.attempts + 1, claimed_at: nowIso(), updated_at: nowIso() }, headers: { prefer: 'return=representation' } });
+    return got?.[0] ?? null;
+  }
+
+  async function finish(row, res) {
+    let attempts = row.attempts; // already incremented by claim
+    let status = res.status; let next = null;
+    if (res.configGap) { attempts -= 1; next = plusMin(Date.now(), CONFIG_RETRY_MIN); }   // waits for the fix; never dies of it
+    else if (res.retry) { if (attempts >= MAX_ATTEMPTS) status = 'dead'; else next = plusMin(Date.now(), BACKOFF_MIN[attempts - 1] ?? BACKOFF_MIN.at(-1)); }
+    await db(`notifications?id=eq.${row.id}&status=eq.sending`, { method: 'PATCH', headers: { prefer: 'return=minimal' },
+      body: { status, attempts, last_error: res.error ?? null, provider_result: res.provider ?? null, next_attempt_at: next ?? row.next_attempt_at,
+        sent_at: ['delivered', 'queued', 'bounced'].includes(status) ? nowIso() : null, updated_at: nowIso() } });
+    if ((status === 'bounced' || status === 'dead' || status === 'uncertain') && alert) {
+      try { await alert(`Booking email ${status}: notification #${row.id} (${row.role}, ${row.kind}) — ${String(res.error ?? '').split(' ')[0]}. Open /admin/bookings/.`); } catch { /* best effort */ }
+    }
+    if (status !== 'delivered' && status !== 'queued') log('booking notification', row.id, row.role, row.kind, status, String(res.error ?? '').split(' ')[0]);
+    return status;
+  }
+
+  /** Send one claimed-able row. Never throws. */
+  async function attempt(row) {
+    try {
+      // A newer message to the same recipient about the same booking makes this one obsolete (e.g. a "Confirmed" retry
+      // after the booking was cancelled): never send it out of order.
+      const newer = await db(`notifications?booking_id=eq.${row.booking_id}&role=eq.${row.role}&id=gt.${row.id}&select=id&limit=1`);
+      if (newer?.length) {
+        await db(`notifications?id=eq.${row.id}&status=in.(pending,failed)`, { method: 'PATCH', headers: { prefer: 'return=minimal' }, body: { status: 'superseded', updated_at: nowIso() } });
+        return 'superseded';
+      }
+      const claimed = await claim(row);
+      if (!claimed) return 'skipped_claimed_elsewhere';
+      const msg = { role: claimed.role, to: claimed.to_address, reply_to: claimed.reply_to ?? undefined, subject: claimed.subject, text: claimed.body_text };
+      const gap = configGap(env, msg);
+      const res = gap ? { status: 'failed', retry: true, configGap: true, error: gap } : await cfSend(env, msg, fetchImpl);
+      return await finish(claimed, res);
+    } catch (e) { log('booking notification error', row?.id, short(e?.message, 80)); return 'error'; }
+  }
+
+  /** Mark rows stuck in 'sending' as 'uncertain' (no automatic resend), then send everything due. */
+  async function processDue({ limit = 20 } = {}) {
+    const stale = nowIso(Date.now() - STALE_SENDING_MIN * 60000);
+    const stuck = await db(`notifications?status=eq.sending&claimed_at=lt.${stale}`, { method: 'PATCH', headers: { prefer: 'return=representation' },
+      body: { status: 'uncertain', last_error: 'worker_stopped_mid_send_may_have_been_sent', updated_at: nowIso() } }).catch(() => []);
+    if (stuck?.length && alert) { try { await alert(`Booking email uncertain: ${stuck.length} notification(s) may or may not have been sent. Review /admin/bookings/.`); } catch { /* best effort */ } }
+    const old = nowIso(Date.now() - ALERT_FAILED_AFTER_MIN * 60000);
+    const lingering = await db(`notifications?status=eq.failed&created_at=lt.${old}&alerted_at=is.null`, { method: 'PATCH', headers: { prefer: 'return=representation' },
+      body: { alerted_at: nowIso() } }).catch(() => []);
+    if (lingering?.length && alert) {
+      const codes = [...new Set(lingering.map((r) => String(r.last_error ?? '').split(' ')[0]))].join(', ');
+      try { await alert(`Booking email still failing: ${lingering.length} notification(s) (${codes}). Open /admin/bookings/.`); } catch { /* best effort */ }
+    }
+    const due = await db(`notifications?status=in.(pending,failed)&next_attempt_at=lte.${nowIso()}&order=next_attempt_at.asc&limit=${limit}`);
+    const results = [];
+    for (const row of due) results.push({ id: row.id, status: await attempt(row) });
+    return { uncertain: stuck?.length ?? 0, processed: results };
+  }
+
+  /** Requeue specific rows by id (owner action from the admin page), including 'dead' and 'uncertain' ones. */
+  async function requeue(ids, { includeBounced = false } = {}) {
+    const clean = ids.map(Number).filter(Number.isInteger);
+    if (!clean.length) return [];
+    // Bounced addresses are not resent unless the owner explicitly says so (repeated hard bounces hurt the sender).
+    const states = includeBounced ? 'dead,uncertain,failed,bounced' : 'dead,uncertain,failed';
+    return db(`notifications?id=in.(${clean.join(',')})&status=in.(${states})`, { method: 'PATCH', headers: { prefer: 'return=representation' },
+      body: { status: 'pending', attempts: 0, alerted_at: null, next_attempt_at: nowIso(), last_error: 'requeued_by_owner', updated_at: nowIso() } });
+  }
+
+  return { enqueue, attempt, processDue, requeue };
+}
+
+/** ntfy-compatible alert (optional): POST text to env.ALERT_NTFY_URL with optional bearer. Carries no personal data. */
+export function alertFromEnv(env, fetchImpl = (...a) => fetch(...a)) {
+  if (!env.ALERT_NTFY_URL) return null;
+  return async (text) => {
+    await fetchImpl(env.ALERT_NTFY_URL, { method: 'POST', body: text, headers: { title: 'AI Man Jack booking email', ...(env.ALERT_NTFY_TOKEN ? { authorization: `Bearer ${env.ALERT_NTFY_TOKEN}` } : {}) } });
+  };
+}

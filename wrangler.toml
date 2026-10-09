@@ -11,13 +11,22 @@ SUPABASE_URL = "https://lalmvbxibkozmtnpfbcw.supabase.co"
 # Booking emails (Cloudflare Email Sending, REST API — Pages Functions have no send_email binding).
 # aimanjack.com must be onboarded under Email Service → Email Sending in the dashboard (adds SPF/DKIM).
 CF_ACCOUNT_ID = "6e58305e2e9f1f725ce66d0746f740e5"
+# Booking lane (owner decision 2026-10-09, revenue-os#2): transactional booking mail only. Cold outbound never uses
+# aimanjack.com (it lives on getaimanjack.com).
+BOOKING_EMAIL_FROM = "booking-no-reply@aimanjack.com"
+BOOKING_REPLY_TO = "jack@aimanjack.com"
+# Coupon lane — unchanged by revenue-os#2 (inventoried, not silently moved).
 EMAIL_FROM = "bookings@aimanjack.com"
-OWNER_EMAIL = "jack@aimanjack.com"
 SITE_ORIGIN = "https://aimanjack.com"
+# OWNER_EMAIL is NOT a [vars] entry any more: this file is the source of truth for vars, so a dashboard change could
+# never take effect while it lived here. Set it as a secret (below) and verify the effective value (masked) with
+#   curl -H "authorization: Bearer $ADMIN_TOKEN" https://aimanjack.com/v1/admin/email-config
 
 # Secrets (not here) — set for production AND preview (`--env preview`):
 #   npx wrangler pages secret put SB_SECRET_KEY --project-name aimanjack   Supabase secret (service-role) key
 #   npx wrangler pages secret put ADMIN_TOKEN   --project-name aimanjack   bearer for GET /v1/bookings?business=…
 #   npx wrangler pages secret put CF_EMAIL_TOKEN --project-name aimanjack   API token, permission Account → Email Sending → Edit
-#     (unset = no emails, bookings still work)
+#     (unset = no emails, bookings still work — every unsent notification is recorded as config_missing:CF_EMAIL_TOKEN)
+#   npx wrangler pages secret put OWNER_EMAIL    --project-name aimanjack   where owner booking notices go
+#   optional: ALERT_NTFY_URL (+ ALERT_NTFY_TOKEN)   ntfy topic URL for bounced/dead/uncertain booking-email alerts
 # Local: .dev.vars (gitignored) with the same two names.

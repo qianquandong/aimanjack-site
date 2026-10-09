@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<title>Bookings · AI Man Jack (owner)</title>
+<style>
+  :root{--bg:#fff;--fg:#14171a;--muted:#5b6670;--line:#e3e7eb;--card:#f7f9fa;--ok:#137333;--warn:#a05a00;--bad:#b3261e;--accent:#1a56db}
+  @media (prefers-color-scheme:dark){:root{--bg:#0f1214;--fg:#e8ecef;--muted:#9aa5ae;--line:#263038;--card:#161b1f;--ok:#57c27a;--warn:#e0a24a;--bad:#f2867e;--accent:#7aa2ff}}
+  *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;padding:16px;padding-bottom:calc(16px + env(safe-area-inset-bottom))}
+  h1{font-size:20px;margin:0 0 4px}h2{font-size:15px;color:var(--muted);margin:22px 0 8px;text-transform:uppercase;letter-spacing:.04em}
+  .muted{color:var(--muted);font-size:14px}.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  input,button{font:inherit;border-radius:10px;border:1px solid var(--line);padding:10px 12px;background:var(--card);color:var(--fg)}
+  input{flex:1;min-width:0}button{cursor:pointer;background:var(--accent);color:#fff;border:0}button.secondary{background:var(--card);color:var(--fg);border:1px solid var(--line)}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin:8px 0}
+  .time{font-weight:600;font-size:17px}.who{margin:2px 0}.note{white-space:pre-wrap;color:var(--muted);font-size:14px;margin-top:4px}
+  a{color:var(--accent)}.chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+  .chip{font-size:12px;border-radius:999px;padding:3px 9px;border:1px solid var(--line)}
+  .ok{color:var(--ok);border-color:var(--ok)}.warn{color:var(--warn);border-color:var(--warn)}.bad{color:var(--bad);border-color:var(--bad)}
+  .cancelled{opacity:.6}.banner{border-radius:12px;padding:10px 12px;margin:10px 0;border:1px solid var(--bad);color:var(--bad)}
+  pre{white-space:pre-wrap;font-size:13px;margin:0}
+</style>
+</head>
+<body>
+<h1>Upcoming bookings</h1>
+<p class="muted">Owner-only. The admin token stays in this browser tab (session storage) and is sent only to aimanjack.com.</p>
+
+<form id="login" class="row" autocomplete="off">
+  <input id="token" type="password" placeholder="Admin token" aria-label="Admin token" autocomplete="current-password">
+  <button type="submit">Open</button>
+</form>
+
+<div id="app" hidden>
+  <div class="row"><button id="refresh" class="secondary" type="button">Refresh</button><button id="process" class="secondary" type="button">Retry due emails now</button><button id="logout" class="secondary" type="button">Lock</button></div>
+  <div id="alerts"></div>
+  <div id="list"></div>
+  <h2>Email settings in effect</h2>
+  <div id="config" class="card muted">…</div>
+</div>
+
+<script>
+(function () {
+  var KEY = 'amj-admin-token', BIZ = 'aimanjack';
+  var $ = function (id) { return document.getElementById(id); };
+  var esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); };
+  var token = function () { try { return sessionStorage.getItem(KEY) || ''; } catch (e) { return ''; } };
+  function api(path, opts) {
+    opts = opts || {};
+    return fetch(path, { method: opts.method || 'GET', headers: { authorization: 'Bearer ' + token(), 'content-type': 'application/json' }, body: opts.body ? JSON.stringify(opts.body) : undefined, cache: 'no-store', referrerPolicy: 'no-referrer' })
+      .then(function (r) { if (r.status === 401) { lock(); throw new Error('Token rejected'); } return r.json(); });
+  }
+  var cls = { delivered: 'ok', queued: 'ok', superseded: '', pending: 'warn', sending: 'warn', failed: 'warn', bounced: 'bad', dead: 'bad', uncertain: 'bad' };
+  var label = { delivered: 'delivered to mail server', queued: 'queued by provider', superseded: 'replaced by a newer message', pending: 'pending', sending: 'sending', failed: 'retrying', bounced: 'BOUNCED (address rejected)', dead: 'FAILED', uncertain: 'UNCERTAIN (may have been sent)' };
+  function chip(n) {
+    var t = n.role + ' · ' + n.kind + ': ' + (label[n.status] || n.status) + (n.attempts > 1 ? ' (' + n.attempts + ')' : '');
+    var err = n.last_error ? ' title="' + esc(n.last_error) + '"' : '';
+    var btn = /^(dead|uncertain|failed)$/.test(n.status) ? ' <button class="secondary resend" type="button" data-id="' + esc(n.id) + '" data-status="' + esc(n.status) + '">Resend</button>' : '';
+    return '<span class="chip ' + (cls[n.status] || '') + '"' + err + '>' + esc(t) + '</span>' + btn;
+  }
+  function render(data) {
+    var bad = [];
+    var days = {};
+    data.bookings.forEach(function (b) { (days[b.start_at.slice(0, 10)] = days[b.start_at.slice(0, 10)] || []).push(b); (b.notifications || []).forEach(function (n) { if (/^(bounced|dead|uncertain)$/.test(n.status)) bad.push(n.id); }); });
+    $('alerts').innerHTML = (data.notifications_ledger !== 'ok' ? '<div class="banner">Email ledger unavailable — the notifications migration may not be applied. Emails are not tracked.</div>' : '')
+      + (bad.length ? '<div class="banner">' + bad.length + ' email(s) bounced, failed or are uncertain — see the red items below.</div>' : '');
+    var html = '';
+    Object.keys(days).sort().forEach(function (d) {
+      html += '<h2>' + esc(new Date(d + 'T12:00:00').toLocaleDateString(undefined, { weekday: 'long', month: 'short', day: 'numeric' })) + '</h2>';
+      days[d].forEach(function (b) {
+        var t = new Date(b.start_at).toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
+        html += '<div class="card ' + (b.status === 'cancelled' ? 'cancelled' : '') + '">'
+          + '<div class="time">' + esc(t) + ' · ' + esc(b.service_name) + (b.status === 'cancelled' ? ' · cancelled' : '') + '</div>'
+          + '<div class="who">' + esc(b.customer_name) + '</div>'
+          + '<div class="row muted"><a href="tel:' + esc(b.customer_phone) + '">' + esc(b.customer_phone) + '</a>' + (b.customer_email ? '<a href="mailto:' + esc(b.customer_email) + '">' + esc(b.customer_email) + '</a>' : '') + '<span>via ' + esc(b.source) + '</span></div>'
+          + (b.note ? '<div class="note">' + esc(b.note) + '</div>' : '')
+          + '<div class="chips">' + (b.notifications || []).map(chip).join('') + '</div></div>';
+      });
+    });
+    $('list').innerHTML = html || '<p class="muted">No upcoming bookings.</p>';
+    Array.prototype.forEach.call(document.querySelectorAll('.resend'), function (b) {
+      b.onclick = function () {
+        var msg = b.dataset.status === 'uncertain' ? 'This email may already have been delivered. Send it again anyway?' : 'Send this email again?';
+        if (!confirm(msg)) return;
+        b.disabled = true; api('/v1/notifications/requeue', { method: 'POST', body: { ids: [Number(b.dataset.id)] } }).then(load).catch(show);
+      };
+    });
+  }
+  function show(e) { $('alerts').innerHTML = '<div class="banner">' + esc(e.message || e) + '</div>'; }
+  function load() {
+    api('/v1/bookings?business=' + BIZ + '&with=notifications').then(render).catch(show);
+    api('/v1/admin/email-config').then(function (c) { $('config').innerHTML = '<pre>' + esc(JSON.stringify(c, null, 2)) + '</pre>'; }).catch(function () {});
+  }
+  function lock() { try { sessionStorage.removeItem(KEY); } catch (e) {} $('app').hidden = true; $('login').hidden = false; }
+  $('login').onsubmit = function (e) { e.preventDefault(); try { sessionStorage.setItem(KEY, $('token').value.trim()); } catch (x) {} $('token').value = ''; $('login').hidden = true; $('app').hidden = false; load(); };
+  $('refresh').onclick = load;
+  $('process').onclick = function () { api('/v1/notifications/process', { method: 'POST' }).then(load).catch(show); };
+  $('logout').onclick = lock;
+  if (token()) { $('login').hidden = true; $('app').hidden = false; load(); }
+})();
+</script>
+</body>
+</html>
