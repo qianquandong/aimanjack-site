@@ -87,7 +87,8 @@ Every message sent through M365 is also saved in the mailbox's **Sent Items**.
 - **When retries run.** Pages Functions have no cron, so due rows are retried:
   - right after each write;
   - on public `/v1/availability` traffic (at most once a minute per isolate);
-  - on `POST /v1/notifications/process` (admin; the owner page has a button). **With no traffic, retries wait.** A scheduled caller, for example a Revenue OS scheduler job hitting `/process` every 10 min, is the recommended follow-up. It is not built yet.
+  - on `POST /v1/notifications/process` (admin; the owner page has a button).
+  - an **optional, explicitly enabled** GitHub Actions 15-minute schedule (`.github/workflows/booking-notification-retries.yml`). It has no production effect until the owner provisions matching scoped tokens AND sets `BOOKING_EMAIL_RETRY_ENABLED=true`. The default is **off**. GitHub schedules can run late; this is not a strict 15-minute delivery SLA.
 - **Alerts.** Optional `ALERT_NTFY_URL` (ntfy topic) alerts on `bounced`, `dead` and `uncertain`. Alerts carry ids and codes only, never addresses or names.
 - **Owner view.** `https://aimanjack.com/admin/bookings/` is iPhone-friendly. Enter the admin token once per tab (stored in session storage). It shows upcoming bookings by day with:
   - name, phone, email, note and source;
@@ -102,6 +103,18 @@ Every message sent through M365 is also saved in the mailbox's **Sent Items**.
 - **`deploy.sh` and `.deployignore`.**
   - The test gate now runs `node --test tests/*.test.mjs`. The old `tests/` directory form fails on Node 22, which made every deploy refuse.
   - `tests/` is no longer copied into the published site.
+
+### Optional automated retry scheduler (off by default)
+
+This is a separate, later owner-authorized activation step, **not part of merging a PR**:
+
+1. Generate one high-entropy secret (minimum 32 characters) in a secure local shell. Do not print it or commit it to GitHub.
+2. Add it in the Cloudflare Pages **production** environment as `NOTIFICATION_PROCESS_TOKEN`. This key is accepted **only** for `POST /v1/notifications/process`; it cannot list appointments, requeue arbitrary messages or connect a mailbox. The existing `ADMIN_TOKEN` still works for the owner UI.
+3. Configure the matching GitHub Actions repository secret `BOOKING_NOTIFICATION_PROCESS_TOKEN`. Never put `ADMIN_TOKEN` into this scheduled workflow.
+4. After the production PR is approved and deployed, M365 is connected, DB migrations are applied, and the real E2E confirms both owner and customer inbox receipt, explicitly approve enablement and set the repository variable `BOOKING_EMAIL_RETRY_ENABLED=true`.
+5. Run the workflow manually once, inspect its status and the restricted notification ledger, then monitor scheduled workflow failures. Turn the repository variable back to `false` to stop it immediately; revoke both tokens to disable the credential.
+
+The workflow calls only `https://aimanjack.com/v1/notifications/process`; it never queries personal booking data, never requeues `bounced` or `uncertain` records, and never retries HTTP POSTs at the client. The server's idempotent ledger remains authoritative. A GitHub Actions outage or delayed schedule can delay retries, so failure monitoring is still necessary.
 
 ## 4. Owner setup and deployment (each production step needs Jack's explicit OK)
 
