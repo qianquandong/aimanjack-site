@@ -15,8 +15,10 @@ MAIL_TRANSPORT = "m365"
 M365_AUTH = "delegated"
 M365_TENANT_ID = "7b2782a2-fd4d-42e2-b5e5-97d3999d2f0f"   # aimanjack.com (GoDaddy-federated Microsoft 365)
 M365_SENDER = "jack@aimanjack.com"
-# M365_CLIENT_ID = "…"   ← Application (client) ID of the "aimanjack-site mail" app registration (not a secret). Until it
-#                          is set, every notification is recorded as config_missing:M365_CLIENT_ID (nothing is lost).
+# Application (client) ID of the "aimanjack-site mail" app registration (Entra, registered 2026-10-09; not a secret).
+# The device-code connect also needs, on that app: Authentication → Allow public client flows = Yes, and API permissions
+# → Microsoft Graph → Delegated → Mail.Send (docs/BOOKING-EMAIL.md §4A steps 4–5).
+M365_CLIENT_ID = "7248926a-349c-4b2a-8ba0-81084086e966"
 # Legacy Cloudflare transport (MAIL_TRANSPORT = "cloudflare"; needs Workers Paid + aimanjack.com onboarded):
 CF_ACCOUNT_ID = "6e58305e2e9f1f725ce66d0746f740e5"
 # Booking lane (owner decision 2026-10-09, revenue-os#2): transactional booking mail only. Cold outbound never uses
