@@ -249,3 +249,27 @@ test('coupon: several owner inboxes (comma-separated OWNER_EMAIL) each get a not
   assert.equal(sends.find((s) => s.to === 'team@example.com').reply_to, 'jack@aimanjack.com');
   assert.deepEqual(sends.filter((s) => s.subject.startsWith('[coupon]')).map((s) => s.to).sort(), ['jack@aimanjack.com', 'second@example.net']);
 });
+
+test('coupon with MAIL_TRANSPORT=m365: sent through Microsoft Graph as the mailbox (Cloudflare never called)', async (t) => {
+  const { _resetM365CacheForTests } = await import('../src/m365-mail.mjs');
+  _resetM365CacheForTests();
+  const original = globalThis.fetch, sends = [], pending = [];
+  t.after(() => { globalThis.fetch = original; });
+  globalThis.fetch = async (url, options = {}) => {
+    const s = String(url);
+    if (isRateLimitCall(url)) return response(true);
+    if (s.includes('/rest/v1/coupons?') && (!options.method || options.method === 'GET')) return response([]);
+    if (s.endsWith('/rest/v1/coupons') && options.method === 'POST') return response([JSON.parse(options.body)], 201);
+    if (s.includes('/rest/v1/coupons?') && options.method === 'PATCH') return response([]);
+    if (s.startsWith('https://login.microsoftonline.com/t/oauth2/v2.0/token')) return response({ access_token: 'app-at', expires_in: 3600 });
+    if (s.startsWith('https://graph.microsoft.com/v1.0/users/jack%40aimanjack.com/sendMail')) { sends.push(JSON.parse(options.body)); return new Response(null, { status: 202 }); }
+    throw new Error(`unexpected fetch ${options.method || 'GET'} ${url}`);
+  };
+  const m365env = { ...env, CF_EMAIL_TOKEN: '', MAIL_TRANSPORT: 'm365', M365_AUTH: 'app', M365_TENANT_ID: 't', M365_CLIENT_ID: 'c', M365_CLIENT_SECRET: 's', M365_SENDER: 'jack@aimanjack.com' };
+  const r = await onRequest({ request: request({ email: 'team@example.com' }), env: m365env, params: { route: ['coupons'] }, waitUntil: (p) => pending.push(p) });
+  await Promise.all(pending);
+  assert.equal(r.status, 201);
+  const toCustomer = sends.find((m) => m.message.toRecipients[0].emailAddress.address === 'team@example.com');
+  assert.match(toCustomer.message.subject, /\$25/); assert.equal(toCustomer.message.replyTo, undefined, 'Reply-To equals the sending mailbox, so it is omitted');
+  assert.ok(sends.some((m) => m.message.subject.startsWith('[coupon]')));
+});

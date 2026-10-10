@@ -3,6 +3,8 @@
 --   status: pending → sending → delivered | queued | bounced | failed (retried) → dead
 --           sending rows that outlive a worker, or whose request died on the network, become 'uncertain' (never auto-resent)
 --           an unsent row made obsolete by a newer message to the same recipient becomes 'superseded'
+--           'held'    = a customer address already got RECIPIENT_DAILY_CAP emails in 24 h (abuse guard; owner can release)
+--           'expired' = a customer email still unsent after 24 h (e.g. before the mailbox was connected): not sent late
 --   'delivered' = accepted by the recipient's mail server per Cloudflare's per-recipient result — NOT proof of inbox.
 --
 -- Run (owner-authorized production change):  node scripts/supabase-sql.mjs db/migrations/2026-10-09-booking-notifications.sql
@@ -22,7 +24,7 @@ create table if not exists booking.notifications (
   subject text not null,
   body_text text not null,
   status text not null default 'pending'
-    check (status in ('pending', 'sending', 'delivered', 'queued', 'bounced', 'failed', 'dead', 'uncertain', 'superseded')),
+    check (status in ('pending', 'sending', 'delivered', 'queued', 'bounced', 'failed', 'dead', 'uncertain', 'superseded', 'held', 'expired')),
   attempts int not null default 0,
   next_attempt_at timestamptz not null default now(),
   claimed_at timestamptz,
@@ -36,6 +38,7 @@ create table if not exists booking.notifications (
 
 create index if not exists notifications_due on booking.notifications (status, next_attempt_at);
 create index if not exists notifications_booking on booking.notifications (booking_id);
+create index if not exists notifications_sent on booking.notifications (sent_at);   -- daily send cap
 
 alter table booking.notifications enable row level security;
 

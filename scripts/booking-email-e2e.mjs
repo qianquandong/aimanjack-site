@@ -39,8 +39,10 @@ console.log(`approval: ${approved}`);
 const cfg = await call('GET', '/v1/admin/email-config', null, admin);
 assert.equal(cfg.status, 200, 'admin token rejected');
 console.log('effective email config:', cfg.body);
-assert.equal(cfg.body.booking_from, 'booking-no-reply@aimanjack.com');
+const m365 = cfg.body.transport === 'm365';
+assert.equal(cfg.body.booking_from, m365 ? 'jack@aimanjack.com' : 'booking-no-reply@aimanjack.com');
 assert.equal(cfg.body.booking_reply_to, 'jack@aimanjack.com');
+if (m365) assert.equal(cfg.body.m365?.connected, true, 'Microsoft 365 is not connected — use "Connect Microsoft 365" on /admin/bookings/ first');
 assert.ok(cfg.body.owner_email, 'OWNER_EMAIL is not set in this deployment');
 
 const av = await call('GET', `/v1/availability?business=${B}&service=${S}`);
@@ -59,12 +61,13 @@ assert.equal(x.body.status, 'cancelled');
 console.log('cancelled →', (await settle(id, 'cancelled', ['customer', 'owner'])).map((n) => `${n.role}:${n.status}`).join(' '));
 
 console.log(`
-Ledger states above are the PROVIDER's view ("delivered" = accepted by the recipient's mail server), not inbox proof.
+Ledger states above are the PROVIDER's view (${m365 ? '"queued" = accepted by Microsoft 365' : '"delivered" = accepted by the recipient\'s mail server'}), not inbox proof.
 Now verify by hand, in BOTH inboxes (${testEmail} and the owner inbox), for all three messages:
   [ ] arrived (not spam/quarantine — check Proofpoint quarantine for the owner inbox)
-  [ ] From: AI Man Jack <booking-no-reply@aimanjack.com>
-  [ ] Reply-To: jack@aimanjack.com on the customer copies; the customer's address on the owner copies
-  [ ] Show original / message headers: spf=pass (smtp.mailfrom=cf-bounce.aimanjack.com), dkim=pass header.d=aimanjack.com, dmarc=pass
+  [ ] From: ${m365 ? 'jack@aimanjack.com (your Microsoft 365 mailbox); copies are in its Sent Items' : 'AI Man Jack <booking-no-reply@aimanjack.com>'}
+  [ ] Reply-To: ${m365 ? 'none on the customer copies (replies go to jack@aimanjack.com itself)' : 'jack@aimanjack.com on the customer copies'}; the customer's address on the owner copies
+  [ ] Show original / message headers: spf=pass, dkim=pass header.d=aimanjack.com${m365 ? ' (or the tenant\'s onmicrosoft.com domain)' : ''}, dmarc=pass
+  [ ] no NDR (bounce) arrived in jack@aimanjack.com
   [ ] reply to the customer copy lands in jack@aimanjack.com
 Record the result (with the approval quote) in docs/AGENT_ACTIVITY_LOG.md of revenue-os and on issue #2.
 The test booking is cancelled and labelled; nothing else was touched.`);

@@ -17,6 +17,8 @@
 //   * missing configuration (token, sender, OWNER_EMAIL) is recorded as a failure with the missing name — never silent.
 // Addresses live only in the database (like the bookings themselves); logs and alerts carry ids and codes only.
 
+import { m365Config, m365ConfigGap, m365Send, m365KeepAlive } from './m365-mail.mjs';
+
 export const BOOKING_FROM_DEFAULT = 'booking-no-reply@aimanjack.com';
 export const BOOKING_REPLY_TO_DEFAULT = 'jack@aimanjack.com';
 export const MAX_ATTEMPTS = 5;
@@ -27,6 +29,12 @@ export const ALERT_FAILED_AFTER_MIN = 30;                // a row still failing 
 // Explicit choice (issue #2 §5): when the OWNER makes a change from the admin side, the customer is still told; the
 // owner does not get a notice about their own action. Every other source notifies both.
 export const OWNER_NOTIFIED_SOURCES = new Set(['web', 'voice', 'sms']);
+// Abuse guard (the site now sends from Jack's real mailbox — a flood would get the whole mailbox blocked):
+export const MAIL_DAILY_CAP_DEFAULT = 40;                // all site mail per rolling 24 h (env MAIL_DAILY_CAP overrides)
+export const RECIPIENT_DAILY_CAP = 4;                    // per customer address per rolling 24 h (owner inboxes exempt)
+export const CUSTOMER_STALE_HOURS = 24;                  // a customer email still unsent after this is expired, not sent late
+// Batch sizes keep one invocation under the Workers Free limit of 50 subrequests (≈5–8 per message).
+export const BATCH = { afterWrite: 1, sweep: 3, process: 6 };
 
 const nowIso = (ms = Date.now()) => new Date(ms).toISOString();
 const plusMin = (ms, m) => nowIso(ms + m * 60000);
@@ -37,6 +45,7 @@ const short = (s, n = 240) => String(s ?? '').replace(/[\r\n]+/g, ' ').slice(0, 
 // never hide or block the other.
 export const MAX_OWNER_RECIPIENTS = 5;
 const EMAIL_RE = /^[^\s@,;<>"]+@[^\s@,;<>"]+\.[^\s@,;<>"]{2,}$/;
+export const isEmail = (a) => typeof a === 'string' && a.length <= 254 && EMAIL_RE.test(a.trim());
 
 /** Parse OWNER_EMAIL → { list (valid, de-duplicated case-insensitively, at most MAX_OWNER_RECIPIENTS), invalid, dropped }. */
 export function parseOwnerEmails(raw) {
@@ -69,11 +78,27 @@ export function recipientTag(addr) {
   return h.toString(16).padStart(8, '0');
 }
 
-/** Effective sender settings (booking lane only; the coupon lane keeps EMAIL_FROM — see docs). */
+/**
+ * Mail transport: 'm365' (owner decision 2026-10-09: Jack's Microsoft 365 mailbox via Graph, see src/m365-mail.mjs) or
+ * 'cloudflare' (Cloudflare Email Sending REST; needs Workers Paid — not used).
+ */
+export const mailTransport = (env) => (env.MAIL_TRANSPORT === 'm365' ? 'm365' : 'cloudflare');
+
+/** Static setup gap of the active transport (null = settings complete; an M365 connection is checked at send time). */
+export function transportGap(env) {
+  if (mailTransport(env) === 'm365') return m365ConfigGap(env);
+  if (!env.CF_EMAIL_TOKEN) return 'config_missing:CF_EMAIL_TOKEN';
+  if (!env.CF_ACCOUNT_ID) return 'config_missing:CF_ACCOUNT_ID';
+  return null;
+}
+
+/** Effective sender settings (booking lane). With M365 the sender is always the connected mailbox (M365_SENDER). */
 export function bookingMailConfig(env) {
   const owners = parseOwnerEmails(env.OWNER_EMAIL).list;
+  const m365 = mailTransport(env) === 'm365';
   return {
-    from: env.BOOKING_EMAIL_FROM || BOOKING_FROM_DEFAULT,
+    transport: mailTransport(env),
+    from: m365 ? m365Config(env).sender : (env.BOOKING_EMAIL_FROM || BOOKING_FROM_DEFAULT),
     replyTo: env.BOOKING_REPLY_TO || BOOKING_REPLY_TO_DEFAULT,
     ownerTos: owners,
     token: !!env.CF_EMAIL_TOKEN, account: !!env.CF_ACCOUNT_ID,
@@ -84,12 +109,13 @@ export function bookingMailConfig(env) {
 export function describeMailConfig(env) {
   const c = bookingMailConfig(env);
   const o = parseOwnerEmails(env.OWNER_EMAIL);
-  return { booking_from: c.from, booking_reply_to: c.replyTo,
+  return { transport: c.transport, booking_from: c.from, booking_reply_to: c.replyTo,
     owner_email: maskEmail(o.list[0]), owner_emails: o.list.map(maskEmail), owner_email_count: o.list.length,
     owner_email_domain: o.list[0]?.split('@')[1] ?? null,
     ...(o.invalid ? { owner_email_invalid_entries: o.invalid } : {}),
     ...(o.dropped ? { owner_email_over_limit_ignored: o.dropped } : {}),
-    coupon_from: env.EMAIL_FROM || null, cf_email_token_present: c.token, cf_account_id_present: c.account,
+    coupon_from: c.transport === 'm365' ? c.from : (env.EMAIL_FROM || null), transport_setup_gap: transportGap(env),
+    ...(c.transport === 'cloudflare' ? { cf_email_token_present: c.token, cf_account_id_present: c.account } : {}),
     note: `owner_emails are masked; compare them with the addresses you expect (comma-separated in OWNER_EMAIL, at most ${MAX_OWNER_RECIPIENTS}). Values come from the running deployment.` };
 }
 
@@ -98,20 +124,21 @@ export function composeMessages(env, b, kind, source, { fmtWhen, prettyPhone, ma
   const c = bookingMailConfig(env);
   const when = fmtWhen(b), phone = prettyPhone(b.customer_phone);
   const out = [];
-  if (b.customer_email) {
+  const custEmail = isEmail(b.customer_email) ? b.customer_email.trim() : null;   // never send to / reply to a malformed address
+  if (custEmail) {
     const subject = { created: `Confirmed: your ${b.service_name} with Jack, ${when}`, rescheduled: `Moved: your ${b.service_name} is now ${when}`, cancelled: `Cancelled: your ${b.service_name} on ${when}` }[kind];
     const line = { created: `You're booked. Jack will call ${phone} on ${when}.`, rescheduled: `Your call is moved. Jack will call ${phone} on ${when}.`, cancelled: `Your call on ${when} is cancelled. Book a new time any time.` }[kind];
     const manage = kind === 'cancelled' ? `Book again: ${siteOrigin}/book/` : `Change or cancel (up to ${b.cancel_window_hours}h before): ${manageUrl}`;
-    out.push({ role: 'customer', to: b.customer_email, reply_to: c.replyTo, subject,
+    out.push({ role: 'customer', to: custEmail, reply_to: c.replyTo, subject,
       text: `Hi ${b.customer_name},\n\n${line}\n\n${manage}\n\nQuestions? Just reply to this email.\n\nJack\nAI Man Jack` });
   }
   if (OWNER_NOTIFIED_SOURCES.has(source)) {
     const head = `${kind} (${source}): ${b.service_name} ${when}`;
-    const who = `${b.customer_name} · ${phone}${b.customer_email ? ' · ' + b.customer_email : ''}`;
+    const who = `${b.customer_name} · ${phone}${b.customer_email ? ' · ' + b.customer_email : ''}${b.customer_email && !custEmail ? ' (invalid address — no confirmation sent)' : ''}`;
     const text = [head, who, b.note, manageUrl, `All upcoming bookings: ${siteOrigin}/admin/bookings/`].filter(Boolean).join('\n');
     // One message per owner inbox; none configured ⇒ one row with to=null, recorded as config_missing (never silent).
     for (const to of (c.ownerTos.length ? c.ownerTos : [null])) {
-      out.push({ role: 'owner', to, reply_to: b.customer_email || undefined, subject: `[booking] ${head}`, text });
+      out.push({ role: 'owner', to, reply_to: custEmail || undefined, subject: `[booking] ${head}`, text });
     }
   }
   return out;
@@ -144,6 +171,7 @@ async function cfSend(env, msg, fetchImpl) {
         html: `<pre style="font:15px/1.5 -apple-system,Segoe UI,sans-serif;white-space:pre-wrap;margin:0">${String(msg.text).replace(/[&<>"]/g, (ch) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[ch]))}</pre>` }),
     });
   } catch (e) {
+    if (/too many subrequests/i.test(String(e?.message ?? ''))) return { status: 'failed', retry: true, error: 'subrequest_limit_not_sent' };
     // The request may have reached the provider before the connection failed, and the API has no idempotency key or
     // message id: resending could duplicate. Never auto-retry — the owner decides (no duplicate emails).
     return { status: 'uncertain', retry: false, error: short('network_error_after_request ' + (e?.name || 'Error')) };
@@ -154,8 +182,7 @@ async function cfSend(env, msg, fetchImpl) {
 }
 
 const configGap = (env, msg) => {
-  if (!env.CF_EMAIL_TOKEN) return 'config_missing:CF_EMAIL_TOKEN';
-  if (!env.CF_ACCOUNT_ID) return 'config_missing:CF_ACCOUNT_ID';
+  const t = transportGap(env); if (t) return t;
   if (!msg.to) return msg.role === 'owner' ? 'config_missing:OWNER_EMAIL' : 'no_customer_email';
   return null;
 };
@@ -224,6 +251,8 @@ export function createNotifier({ db, env, fetchImpl = (...a) => fetch(...a), ale
     return status;
   }
 
+  const reconnectAlert = alert ? (code) => alert(`Microsoft 365 connection needs renewing (${String(code).split(' ')[0]}): booking emails are waiting. Open /admin/bookings/ → Reconnect.`) : null;
+
   /** Send one claimed-able row. Never throws. */
   async function attempt(row) {
     try {
@@ -240,17 +269,41 @@ export function createNotifier({ db, env, fetchImpl = (...a) => fetch(...a), ale
         const owners = bookingMailConfig(env).ownerTos;
         if (owners.length) return await readdressOwnerGap(row, owners);
       }
+      const byOwner = row.last_error === 'requeued_by_owner';
+      // A customer email that could not go out for a day (e.g. before the mailbox was connected) is not sent late:
+      // "Confirmed" for an appointment that may already be over helps nobody. The owner can still resend it.
+      if (row.role === 'customer' && !byOwner && Date.parse(row.created_at) < Date.now() - CUSTOMER_STALE_HOURS * 3600000) {
+        await db(`notifications?id=eq.${row.id}&status=in.(pending,failed)`, { method: 'PATCH', headers: { prefer: 'return=minimal' }, body: { status: 'expired', last_error: 'too_old_not_sent', updated_at: nowIso() } });
+        return 'expired';
+      }
+      if (row.to_address) {
+        const cap = Math.max(1, Number(env.MAIL_DAILY_CAP) || MAIL_DAILY_CAP_DEFAULT);
+        const recent = await db(`notifications?select=to_address&status=in.(queued,delivered,bounced)&sent_at=gte.${nowIso(Date.now() - 86400000)}&limit=${cap + 1}`);
+        if ((recent?.length ?? 0) >= cap) {
+          await db(`notifications?id=eq.${row.id}&status=in.(pending,failed)`, { method: 'PATCH', headers: { prefer: 'return=minimal' },
+            body: { status: 'failed', last_error: 'daily_send_cap_reached', next_attempt_at: plusMin(Date.now(), CONFIG_RETRY_MIN), updated_at: nowIso() } });
+          return 'deferred_daily_cap';
+        }
+        const toSame = (recent ?? []).filter((r) => String(r.to_address ?? '').toLowerCase() === row.to_address.toLowerCase()).length;
+        if (row.role === 'customer' && !byOwner && toSame >= RECIPIENT_DAILY_CAP) {
+          const held = await db(`notifications?id=eq.${row.id}&status=in.(pending,failed)`, { method: 'PATCH', headers: { prefer: 'return=representation' }, body: { status: 'held', last_error: 'recipient_daily_cap', updated_at: nowIso() } });
+          if (held?.length && alert) { try { await alert(`Booking email held: notification #${row.id} — this address already got ${toSame} emails in 24 h (possible abuse). Open /admin/bookings/ to release it.`); } catch { /* best effort */ } }
+          return 'held';
+        }
+      }
       const claimed = await claim(row);
       if (!claimed) return 'skipped_claimed_elsewhere';
       const msg = { role: claimed.role, to: claimed.to_address, reply_to: claimed.reply_to ?? undefined, subject: claimed.subject, text: claimed.body_text };
       const gap = configGap(env, msg);
-      const res = gap ? { status: 'failed', retry: true, configGap: true, error: gap } : await cfSend(env, msg, fetchImpl);
+      const res = gap ? { status: 'failed', retry: true, configGap: true, error: gap }
+        : mailTransport(env) === 'm365' ? await m365Send(env, msg, { db, fetchImpl, onReconnectRequired: reconnectAlert }) : await cfSend(env, msg, fetchImpl);
       return await finish(claimed, res);
     } catch (e) { log('booking notification error', row?.id, short(e?.message, 80)); return 'error'; }
   }
 
   /** Mark rows stuck in 'sending' as 'uncertain' (no automatic resend), then send everything due. */
-  async function processDue({ limit = 20 } = {}) {
+  async function processDue({ limit = BATCH.process } = {}) {
+    if (mailTransport(env) === 'm365') await m365KeepAlive(env, db, fetchImpl, { onReconnectRequired: reconnectAlert }).catch(() => {});
     const stale = nowIso(Date.now() - STALE_SENDING_MIN * 60000);
     const stuck = await db(`notifications?status=eq.sending&claimed_at=lt.${stale}`, { method: 'PATCH', headers: { prefer: 'return=representation' },
       body: { status: 'uncertain', last_error: 'worker_stopped_mid_send_may_have_been_sent', updated_at: nowIso() } }).catch(() => []);
@@ -273,7 +326,7 @@ export function createNotifier({ db, env, fetchImpl = (...a) => fetch(...a), ale
     const clean = ids.map(Number).filter(Number.isInteger);
     if (!clean.length) return [];
     // Bounced addresses are not resent unless the owner explicitly says so (repeated hard bounces hurt the sender).
-    const states = includeBounced ? 'dead,uncertain,failed,bounced' : 'dead,uncertain,failed';
+    const states = includeBounced ? 'dead,uncertain,failed,held,expired,bounced' : 'dead,uncertain,failed,held,expired';
     return db(`notifications?id=in.(${clean.join(',')})&status=in.(${states})`, { method: 'PATCH', headers: { prefer: 'return=representation' },
       body: { status: 'pending', attempts: 0, alerted_at: null, next_attempt_at: nowIso(), last_error: 'requeued_by_owner', updated_at: nowIso() } });
   }

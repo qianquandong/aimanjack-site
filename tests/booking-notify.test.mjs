@@ -13,7 +13,7 @@ function fakeDb({ failNotifications = false, failEvents = false } = {}) {
     services: [{ business_id: 'aimanjack', id: 'demo-call', name: '20-Minute AI Workflow Call', duration_min: 20, buffer_min: 0, capacity: 1, active: true }],
     staff: [{ business_id: 'aimanjack', id: 'jack', name: 'Jack Qian', active: true }],
     availability_rules: [0, 1, 2, 3, 4, 5, 6].map((w) => ({ business_id: 'aimanjack', staff_id: null, weekday: w, start_hm: '08:00', end_hm: '20:00' })),
-    blocks: [], bookings: [], events: [], notifications: [] };
+    blocks: [], bookings: [], events: [], notifications: [], mail_tokens: [], rate: {} };
   let seq = 0;
   const cmp = (a, b) => (typeof a === 'number' && typeof b === 'number' ? a - b : String(a ?? '').localeCompare(String(b ?? '')));
   const match = (row, k, v) => {
@@ -24,6 +24,7 @@ function fakeDb({ failNotifications = false, failEvents = false } = {}) {
     if (v.startsWith('gte.')) return cmp(row[k], v.slice(4)) >= 0;
     if (v.startsWith('gt.')) return cmp(row[k], v.slice(3)) > 0;
     if (v === 'is.true') return row[k] === true;
+    if (v === 'is.false') return row[k] === false;
     if (v === 'is.null') return row[k] == null;
     throw new Error('op ' + v);
   };
@@ -36,6 +37,7 @@ function fakeDb({ failNotifications = false, failEvents = false } = {}) {
     const filters = [...u.searchParams].filter(([k]) => !SKIP.has(k));
     const ok = (data, status = 200) => new Response(data == null ? '' : JSON.stringify(data), { status });
     if (path === 'rpc/create_booking') { const p = body.p; t.bookings.push({ ...p, status: 'confirmed', created_at: new Date().toISOString(), updated_at: new Date().toISOString() }); return ok(true); }
+    if (path === 'rpc/take_coupon_rate_limit') { const n = (t.rate[body.p_key_hash] ?? 0) + 1; t.rate[body.p_key_hash] = n; return ok(n <= body.p_limit); }
     if (path === 'rpc/move_booking') { const p = body.p; const b = t.bookings.find((x) => x.id === p.id); Object.assign(b, { start_at: p.start_at, end_at: p.end_at }); return ok(true); }
     const table = path === 'bookings_full' ? 'bookings' : path;
     if (!(table in t)) return ok({ message: 'not found' }, 404);
@@ -50,7 +52,10 @@ function fakeDb({ failNotifications = false, failEvents = false } = {}) {
     }
     if (method === 'POST') {
       const list = Array.isArray(body) ? body : [body]; const out = [];
-      for (const r of list) {
+      for (let r of list) {
+        const oc = u.searchParams.get('on_conflict');
+        if (oc && prefer.includes('merge-duplicates')) { const ex = t[table].find((x) => x[oc] === r[oc]); if (ex) { Object.assign(ex, r); out.push({ ...ex }); continue; } }
+        if (table === 'mail_tokens') r = { generation: 0, needs_reconnect: false, ...r };
         if (table === 'notifications' && t.notifications.some((x) => x.dedupe_key === r.dedupe_key)) { if (prefer.includes('ignore-duplicates')) continue; return ok({ code: '23505' }, 409); }
         const row = { id: ++seq, created_at: new Date().toISOString(), ...r }; t[table].push(row); out.push({ ...row });
       }
@@ -79,7 +84,7 @@ function fakeMail(script = []) {
 const ENV = { SUPABASE_URL: 'https://db.test', SB_SECRET_KEY: 'k', CF_ACCOUNT_ID: 'acct', CF_EMAIL_TOKEN: 'mail-token', OWNER_EMAIL: 'owner-inbox@example.com',
   BOOKING_EMAIL_FROM: 'booking-no-reply@aimanjack.com', BOOKING_REPLY_TO: 'jack@aimanjack.com', EMAIL_FROM: 'bookings@aimanjack.com', SITE_ORIGIN: 'https://aimanjack.com', ADMIN_TOKEN: 'admin' };
 
-function harness(t, { env = ENV, db = fakeDb(), mail = fakeMail(), alerts = [] } = {}) {
+function harness(t, { env = ENV, db = fakeDb(), mail = fakeMail(), alerts = [], ms = null } = {}) {
   const original = globalThis.fetch; const errors = [];
   t.after(() => { globalThis.fetch = original; });
   t.mock.method(console, 'error', (...a) => { errors.push(a.join(' ')); });
@@ -88,6 +93,7 @@ function harness(t, { env = ENV, db = fakeDb(), mail = fakeMail(), alerts = [] }
     if (s.startsWith('https://db.test/')) return db.handle(s, init);
     if (s.includes('/email/sending/send')) return mail.handle(s, init);
     if (s.startsWith('https://ntfy.test/')) { alerts.push(init.body); return new Response('ok'); }
+    if (ms && (s.startsWith('https://login.microsoftonline.com/') || s.startsWith('https://graph.microsoft.com/'))) return ms.handle(s, init);
     throw new Error('unexpected fetch ' + s);
   };
   const pending = [];
@@ -99,7 +105,7 @@ function harness(t, { env = ENV, db = fakeDb(), mail = fakeMail(), alerts = [] }
     await settle();
     return { status: r.status, body: await r.json() };
   };
-  return { db, mail, call, errors, alerts };
+  return { db, mail, call, errors, alerts, ms };
 }
 const slot = async (h) => (await h.call('GET', '/v1/availability?business=aimanjack&service=demo-call')).body.days[1].slots[0].start_at;
 const book = async (h, extra = {}, headers = {}) => h.call('POST', '/v1/bookings', { business: 'aimanjack', service: 'demo-call', start_at: await slot(h), customer_name: 'Test Person', customer_phone: '(469) 555-0100', customer_email: 'customer@example.com', ...extra }, headers);
@@ -427,4 +433,320 @@ test('admin: email-config lists every owner inbox masked and reports invalid ent
   assert.deepEqual(notes.filter((n) => n.role === 'owner').map((n) => n.recipient).sort(), ['O***B@example.net', 'o***a@example.com']);
   assert.ok(notes.every((n) => !('to_address' in n)) && !JSON.stringify(r.body.bookings[0].notifications).includes('owner-a@'));
   assert.equal(notes.find((n) => n.role === 'customer').recipient, undefined);
+});
+
+// ── Microsoft 365 transport (owner decision 2026-10-09: no Workers Paid; send as jack@aimanjack.com via Graph) ────────
+import { seal, unseal, _resetM365CacheForTests } from '../src/m365-mail.mjs';
+const KEY = Buffer.alloc(32, 7).toString('base64');
+const { CF_EMAIL_TOKEN: _cf, ...NO_CF } = ENV;
+const M365 = { ...NO_CF, MAIL_TRANSPORT: 'm365', M365_AUTH: 'delegated', M365_TENANT_ID: 'tenant-guid', M365_CLIENT_ID: 'client-1',
+  M365_SENDER: 'jack@aimanjack.com', M365_TOKEN_KEY: KEY, OWNER_EMAIL: 'jack@aimanjack.com' };
+const msJson = (b, status = 200) => new Response(JSON.stringify(b), { status, headers: { 'content-type': 'application/json' } });
+function fakeMs({ me = 'jack@aimanjack.com', send = [], refresh = 'ok', device = ['authorization_pending', 'ok'], onRefresh = null } = {}) {
+  const calls = []; const st = { rt: 'rt-1', n: 0 };
+  const handle = async (url, init = {}) => {
+    const u = new URL(url);
+    if (u.pathname === '/tenant-guid/oauth2/v2.0/devicecode') { calls.push({ kind: 'devicecode', p: new URLSearchParams(init.body) }); return msJson({ device_code: 'DEV-SECRET-123', user_code: 'ABCD-EFGH', verification_uri: 'https://microsoft.com/devicelogin', expires_in: 900, interval: 5 }); }
+    if (u.pathname === '/tenant-guid/oauth2/v2.0/token') {
+      const p = new URLSearchParams(init.body); calls.push({ kind: 'token', grant: p.get('grant_type'), p });
+      const issue = () => { st.n += 1; st.rt = `rt-${st.n + 1}`; return msJson({ access_token: `at-${st.n}`, refresh_token: st.rt, expires_in: 3600 }); };
+      if (p.get('grant_type') !== 'client_credentials') assert.equal(p.get('client_secret'), null, 'a public client never sends a secret');
+      if (p.get('grant_type') === 'urn:ietf:params:oauth:grant-type:device_code') { assert.equal(p.get('device_code'), 'DEV-SECRET-123'); const step = device.shift() ?? 'ok'; return step === 'ok' ? issue() : typeof step === 'object' ? msJson(step.body, step.status) : msJson({ error: step }, 400); }
+      if (p.get('grant_type') === 'refresh_token') { if (onRefresh) await onRefresh(); if (refresh !== 'ok') return msJson({ error: refresh }, 400); assert.equal(p.get('refresh_token'), st.rt, 'always presents the latest (rotated) refresh token'); return issue(); }
+      if (p.get('grant_type') === 'client_credentials') { assert.equal(p.get('client_secret'), 'app-secret'); return msJson({ access_token: 'app-at', expires_in: 3600 }); }
+    }
+    if (u.hostname === 'graph.microsoft.com' && u.pathname === '/v1.0/me') return msJson({ mail: me, userPrincipalName: me });
+    if (u.hostname === 'graph.microsoft.com' && u.pathname.endsWith('/sendMail')) {
+      calls.push({ kind: 'send', path: u.pathname, auth: init.headers.authorization, body: JSON.parse(init.body) });
+      const next = send.length ? send.shift() : 202;
+      if (next instanceof Error) throw next;
+      return typeof next === 'object' ? msJson(next.body, next.status) : new Response(null, { status: next });
+    }
+    throw new Error('unexpected Microsoft call ' + url);
+  };
+  return { calls, handle, st, sends: () => calls.filter((c) => c.kind === 'send') };
+}
+const ADMIN = { authorization: 'Bearer admin' };
+async function connect(h) {
+  const start = await h.call('POST', '/v1/admin/m365/connect', null, ADMIN);
+  assert.equal(start.status, 200); assert.equal(start.body.user_code, 'ABCD-EFGH');
+  assert.equal((await h.call('POST', '/v1/admin/m365/poll', null, ADMIN)).body.status, 'pending');
+  return (await h.call('POST', '/v1/admin/m365/poll', null, ADMIN)).body;
+}
+
+test('M365 not connected yet: booking still 201, nothing sent, every row recorded as config_missing:M365_CONNECTION', async (t) => {
+  _resetM365CacheForTests();
+  const ms = fakeMs(); const h = harness(t, { env: M365, ms });
+  assert.equal((await book(h)).status, 201);
+  assert.equal(ms.sends().length, 0); assert.equal(h.mail.calls.length, 0, 'Cloudflare is never called');
+  assert.ok(h.db.t.notifications.every((n) => n.status === 'failed' && n.last_error === 'config_missing:M365_CONNECTION' && n.attempts === 0));
+});
+
+test('M365 connect (device code): the device code never reaches the browser; only the sender mailbox can connect; tokens are sealed', async (t) => {
+  _resetM365CacheForTests();
+  const ms = fakeMs(); const h = harness(t, { env: M365, ms });
+  assert.equal((await h.call('POST', '/v1/admin/m365/connect')).status, 401, 'admin token required');
+  const start = await h.call('POST', '/v1/admin/m365/connect', null, ADMIN);
+  assert.ok(!JSON.stringify(start.body).includes('DEV-SECRET'), 'device code stays server-side');
+  assert.equal(ms.calls.find((c) => c.kind === 'devicecode').p.get('scope'), 'offline_access User.Read Mail.Send');
+  const row = h.db.t.mail_tokens[0];
+  assert.ok(row.pending_device_enc.startsWith('v1.') && !row.pending_device_enc.includes('DEV-SECRET'));
+  assert.equal((await h.call('POST', '/v1/admin/m365/poll', null, ADMIN)).body.status, 'pending');
+  const done = (await h.call('POST', '/v1/admin/m365/poll', null, ADMIN)).body;
+  assert.equal(done.status, 'connected'); assert.equal(done.account, 'jack@aimanjack.com');
+  assert.equal(row.pending_device_enc, null); assert.ok(!row.refresh_token_enc.includes('rt-'));
+  assert.equal(await unseal(KEY, 'refresh', row.refresh_token_enc), ms.st.rt);
+  await assert.rejects(unseal(KEY, 'device', row.refresh_token_enc), 'field-bound: a refresh token cannot be read as a device code');
+  const cfg = (await h.call('GET', '/v1/admin/email-config', null, ADMIN)).body;
+  assert.equal(cfg.transport, 'm365'); assert.equal(cfg.booking_from, 'jack@aimanjack.com'); assert.equal(cfg.m365.connected, true);
+  assert.ok(!JSON.stringify(cfg).includes(KEY) && !JSON.stringify(cfg).includes('rt-'));
+});
+
+test('M365 connect refuses a different mailbox (the site would send as whoever signed in)', async (t) => {
+  _resetM365CacheForTests();
+  const ms = fakeMs({ me: 'someone.else@aimanjack.com' }); const h = harness(t, { env: M365, ms });
+  const r = await connect(h);
+  assert.equal(r.status, 'wrong_account'); assert.equal(r.expected, 'jack@aimanjack.com');
+  assert.equal(h.db.t.mail_tokens[0].refresh_token_enc ?? null, null, 'nothing stored');
+});
+
+test('M365 connected: booking emails go out via Graph /me/sendMail as the mailbox; owner Reply-To is the customer; ledger says queued (accepted, not proof of inbox)', async (t) => {
+  _resetM365CacheForTests();
+  const ms = fakeMs(); const h = harness(t, { env: M365, ms });
+  assert.equal((await connect(h)).status, 'connected');
+  assert.equal((await book(h)).status, 201);
+  const sends = ms.sends(); assert.equal(sends.length, 2);
+  assert.ok(sends.every((c) => c.path === '/v1.0/me/sendMail' && c.body.saveToSentItems === true && /^Bearer at-/.test(c.auth)));
+  const cust = sends.find((c) => c.body.message.toRecipients[0].emailAddress.address === 'customer@example.com');
+  const own = sends.find((c) => c.body.message.toRecipients[0].emailAddress.address === 'jack@aimanjack.com');
+  assert.equal(cust.body.message.replyTo, undefined, 'customer replies go to the sending mailbox itself (jack@aimanjack.com)');
+  assert.deepEqual(own.body.message.replyTo, [{ emailAddress: { address: 'customer@example.com' } }]);
+  assert.match(cust.body.message.subject, /^Confirmed:/); assert.equal(cust.body.message.body.contentType, 'Text');
+  assert.ok(h.db.t.notifications.every((n) => n.status === 'queued'));
+});
+
+test('M365 refresh-token rotation: a cold isolate refreshes with the stored token and stores the rotated one (sealed)', async (t) => {
+  _resetM365CacheForTests();
+  const ms = fakeMs(); const h = harness(t, { env: M365, ms });
+  await connect(h);
+  _resetM365CacheForTests();                                                // new isolate: no cached access token
+  await book(h, { customer_email: null });
+  assert.equal(ms.calls.filter((c) => c.grant === 'refresh_token').length, 1, 'one refresh, then the access token is cached');
+  assert.equal(await unseal(KEY, 'refresh', h.db.t.mail_tokens[0].refresh_token_enc), ms.st.rt, 'rotated token stored');
+  _resetM365CacheForTests();
+  await book(h, { customer_email: null, start_at: (await h.call('GET', '/v1/availability?business=aimanjack&service=demo-call')).body.days[2].slots[0].start_at });
+  assert.equal(ms.sends().length, 2);
+});
+
+test('M365 sign-in revoked (invalid_grant): recorded as m365_reconnect_required, no attempts used, nothing sent', async (t) => {
+  _resetM365CacheForTests();
+  const ms = fakeMs(); const h = harness(t, { env: M365, ms });
+  await connect(h); _resetM365CacheForTests(); ms.calls.length = 0;
+  const ms2 = fakeMs({ refresh: 'invalid_grant' }); ms2.st.rt = ms.st.rt; h.ms.handle = ms2.handle;
+  Object.assign(ms, { handle: ms2.handle });
+  await book(h, { customer_email: null });
+  const row = h.db.t.notifications[0];
+  assert.equal(row.status, 'failed'); assert.equal(row.last_error, 'm365_reconnect_required:invalid_grant'); assert.equal(row.attempts, 0);
+  assert.equal(ms2.sends().length, 0);
+});
+
+test('M365 provider results: 429 retried, 400 ErrorInvalidRecipients = bounced (never retried), network error = uncertain', async (t) => {
+  _resetM365CacheForTests();
+  const ms = fakeMs({ send: [{ status: 429, body: { error: { code: 'ApplicationThrottled', message: 'x' } } }, 202] });
+  const h = harness(t, { env: M365, ms });
+  await connect(h);
+  await book(h, { customer_email: null });
+  const row = h.db.t.notifications[0]; assert.equal(row.status, 'failed'); assert.match(row.last_error, /http_429 code_ApplicationThrottled/);
+  row.next_attempt_at = '2000-01-01T00:00:00.000Z';
+  await h.call('POST', '/v1/notifications/process', null, ADMIN);
+  assert.equal(row.status, 'queued');
+
+  _resetM365CacheForTests();
+  const ms2 = fakeMs({ send: [{ status: 400, body: { error: { code: 'ErrorInvalidRecipients', message: 'bad' } } }, new TypeError('fetch failed')] });
+  const h2 = harness(t, { env: M365, ms: ms2 });
+  await connect(h2);
+  await book(h2);
+  const st = h2.db.t.notifications.map((n) => n.status).sort();
+  assert.deepEqual(st, ['bounced', 'uncertain']);
+  assert.ok(h2.db.t.notifications.every((n) => !/bad|@/.test(n.last_error)), 'only codes stored, never provider messages or addresses');
+});
+
+test('M365 setup incomplete (no client id): recorded as config_missing:M365_CLIENT_ID; email-config says so; connect refused', async (t) => {
+  _resetM365CacheForTests();
+  const { M365_CLIENT_ID, ...env } = M365; const ms = fakeMs(); const h = harness(t, { env, ms });
+  await book(h, { customer_email: null });
+  assert.equal(h.db.t.notifications[0].last_error, 'config_missing:M365_CLIENT_ID');
+  assert.equal((await h.call('GET', '/v1/admin/email-config', null, ADMIN)).body.m365.setup_gap, 'config_missing:M365_CLIENT_ID');
+  const c = await h.call('POST', '/v1/admin/m365/connect', null, ADMIN);
+  assert.equal(c.status, 409); assert.equal(c.body.error, 'config_missing:M365_CLIENT_ID');
+  assert.equal(ms.calls.length, 0);
+});
+
+test('M365 app permission (fallback): client credentials, sends via /users/{sender}/sendMail, no token table needed', async (t) => {
+  _resetM365CacheForTests();
+  const ms = fakeMs(); const h = harness(t, { env: { ...M365, M365_AUTH: 'app', M365_CLIENT_SECRET: 'app-secret', M365_TOKEN_KEY: '' }, ms });
+  await book(h, { customer_email: null });
+  assert.equal(ms.sends()[0].path, '/v1.0/users/jack%40aimanjack.com/sendMail'); assert.equal(ms.sends()[0].auth, 'Bearer app-at');
+  assert.equal(h.db.t.notifications[0].status, 'queued'); assert.equal(h.db.t.mail_tokens.length, 0);
+});
+
+test('sealing: wrong key or tampered ciphertext fails closed', async () => {
+  const sealed = await seal(KEY, 'refresh', 'secret-token');
+  assert.equal(await unseal(KEY, 'refresh', sealed), 'secret-token');
+  await assert.rejects(unseal(Buffer.alloc(32, 9).toString('base64'), 'refresh', sealed));
+  await assert.rejects(unseal(KEY, 'refresh', sealed.slice(0, -4) + 'AAAA'));
+});
+
+// ── review fixes: abuse guards, disconnect, budget, stale mail, reconnect visibility ──────────────────────────────
+test('H1: a malformed customer_email is refused at booking (400) instead of reaching the mailbox', async (t) => {
+  const h = harness(t);
+  const r = await book(h, { customer_email: 'john at gmail' });
+  assert.equal(r.status, 400); assert.equal(r.body.error, 'email_invalid');
+  assert.equal(h.db.t.bookings.length, 0);
+});
+
+test('H1: public bookings are rate-limited per IP (the 7th within an hour is refused); admin bookings are not', async (t) => {
+  const h = harness(t);
+  const avail = (await h.call('GET', '/v1/availability?business=aimanjack&service=demo-call')).body;
+  const slots = avail.days.flatMap((d) => d.slots.map((x) => x.start_at));
+  const statuses = [];
+  for (let i = 0; i < 7; i += 1) statuses.push((await h.call('POST', '/v1/bookings', { business: 'aimanjack', service: 'demo-call', start_at: slots[i], customer_name: 'P', customer_phone: '4695550100' }, { 'cf-connecting-ip': '198.51.100.7' })).status);
+  assert.deepEqual(statuses, [201, 201, 201, 201, 201, 201, 429]);
+  assert.equal((await h.call('POST', '/v1/bookings', { business: 'aimanjack', service: 'demo-call', start_at: slots[8], customer_name: 'P', customer_phone: '4695550100' }, { 'cf-connecting-ip': '198.51.100.7', 'x-source': 'admin', authorization: 'Bearer admin' })).status, 201);
+});
+
+test('H1: one customer address gets at most RECIPIENT_DAILY_CAP emails per 24 h; the next is HELD with an alert; owner can release', async (t) => {
+  const alerts = []; const h = harness(t, { env: { ...ENV, ALERT_NTFY_URL: 'https://ntfy.test/amj' }, alerts });
+  const slots = (await h.call('GET', '/v1/availability?business=aimanjack&service=demo-call')).body.days.flatMap((d) => d.slots.map((x) => x.start_at));
+  for (let i = 0; i < 5; i += 1) await h.call('POST', '/v1/bookings', { business: 'aimanjack', service: 'demo-call', start_at: slots[i], customer_name: 'P', customer_phone: '4695550100', customer_email: 'target@example.com' });
+  const cust = h.db.t.notifications.filter((n) => n.role === 'customer');
+  assert.deepEqual(cust.map((n) => n.status), ['delivered', 'delivered', 'delivered', 'delivered', 'held']);
+  assert.equal(h.db.t.notifications.filter((n) => n.role === 'owner' && n.status === 'delivered').length, 5, 'owner notices are not capped per recipient');
+  assert.ok(alerts.some((a) => /held/.test(a) && !/target@/.test(a)));
+  await h.call('POST', '/v1/notifications/requeue', { ids: [cust[4].id] }, ADMIN);
+  assert.equal(cust[4].status, 'delivered', 'an explicit owner release overrides the per-address cap');
+});
+
+test('H1: global daily cap defers sending (no attempts used) once MAIL_DAILY_CAP sends happened in 24 h', async (t) => {
+  const h = harness(t, { env: { ...ENV, MAIL_DAILY_CAP: '2' } });
+  await book(h);                                                            // customer + owner = 2 sends
+  const slots = (await h.call('GET', '/v1/availability?business=aimanjack&service=demo-call')).body.days.flatMap((d) => d.slots.map((x) => x.start_at));
+  await h.call('POST', '/v1/bookings', { business: 'aimanjack', service: 'demo-call', start_at: slots[3], customer_name: 'P', customer_phone: '4695550100' });
+  const last = h.db.t.notifications.at(-1);
+  assert.equal(last.status, 'failed'); assert.equal(last.last_error, 'daily_send_cap_reached'); assert.equal(last.attempts, 0);
+  assert.equal(h.mail.calls.length, 2);
+});
+
+test('M4: a stored malformed customer email (legacy row) gets no confirmation and is not used as the owner Reply-To', async (t) => {
+  const { composeMessages } = await import('../src/booking-notify.mjs');
+  const fmt = { fmtWhen: () => 'Mon', prettyPhone: (p) => p, manageUrl: 'https://x/m', siteOrigin: 'https://x' };
+  const msgs = composeMessages(ENV, { customer_email: 'john at gmail', customer_name: 'J', customer_phone: '1', service_name: 'Call', cancel_window_hours: 2 }, 'created', 'voice', fmt);
+  assert.deepEqual(msgs.map((m) => m.role), ['owner']); assert.equal(msgs[0].reply_to, undefined); assert.match(msgs[0].text, /invalid address/);
+});
+
+test('M1: a disconnect elsewhere stops sending even where an access token is still cached', async (t) => {
+  _resetM365CacheForTests();
+  const ms = fakeMs(); const h = harness(t, { env: M365, ms });
+  await connect(h);                                                         // this "isolate" now has a cached access token
+  Object.assign(h.db.t.mail_tokens[0], { refresh_token_enc: null, account: null, generation: h.db.t.mail_tokens[0].generation + 1 });  // disconnected by another isolate
+  await book(h, { customer_email: null });
+  assert.equal(ms.sends().length, 0); assert.equal(h.db.t.notifications[0].last_error, 'config_missing:M365_CONNECTION');
+});
+
+test('M1: a refresh racing a disconnect cannot write its rotated token back (no resurrection, nothing sent)', async (t) => {
+  _resetM365CacheForTests();
+  let h; const ms = fakeMs({ onRefresh: async () => { await h.call('POST', '/v1/admin/m365/disconnect', null, ADMIN); } });
+  h = harness(t, { env: M365, ms });
+  await connect(h); _resetM365CacheForTests();
+  await book(h, { customer_email: null });
+  assert.equal(h.db.t.mail_tokens[0].refresh_token_enc, null, 'stays disconnected');
+  assert.equal(ms.sends().length, 0);
+});
+
+test('M2: the runtime refusing a request (subrequest limit) is a retryable failure, not "uncertain"', async (t) => {
+  _resetM365CacheForTests();
+  const ms = fakeMs({ send: [new Error('Too many subrequests.')] }); const h = harness(t, { env: M365, ms });
+  await connect(h);
+  await book(h, { customer_email: null });
+  const row = h.db.t.notifications[0];
+  assert.equal(row.status, 'failed'); assert.equal(row.last_error, 'subrequest_limit_not_sent');
+});
+
+test('M3: customer emails stuck for over a day (e.g. before connecting) expire instead of arriving late; owner notices still go', async (t) => {
+  _resetM365CacheForTests();
+  const ms = fakeMs(); const h = harness(t, { env: M365, ms });
+  await book(h);                                                            // not connected: both rows wait
+  h.db.t.notifications.forEach((n) => { n.created_at = '2000-01-01T00:00:00.000Z'; n.next_attempt_at = '2000-01-01T00:00:00.000Z'; });
+  await connect(h);
+  await h.call('POST', '/v1/notifications/process', null, ADMIN);
+  const st = Object.fromEntries(h.db.t.notifications.map((n) => [n.role, n.status]));
+  assert.deepEqual(st, { customer: 'expired', owner: 'queued' });
+  assert.equal(ms.sends().length, 1);
+});
+
+test('M5: a revoked sign-in is flagged on the connection, alerted once, and shown as not connected', async (t) => {
+  _resetM365CacheForTests();
+  const alerts = []; const ms = fakeMs(); const h = harness(t, { env: { ...M365, ALERT_NTFY_URL: 'https://ntfy.test/amj' }, ms, alerts });
+  await connect(h); _resetM365CacheForTests();
+  const ms2 = fakeMs({ refresh: 'invalid_grant' }); ms.handle = ms2.handle;
+  await book(h, { customer_email: null });
+  const slots = (await h.call('GET', '/v1/availability?business=aimanjack&service=demo-call')).body.days.flatMap((d) => d.slots.map((x) => x.start_at));
+  await h.call('POST', '/v1/bookings', { business: 'aimanjack', service: 'demo-call', start_at: slots[4], customer_name: 'P', customer_phone: '4695550100' });
+  assert.equal(h.db.t.mail_tokens[0].needs_reconnect, true);
+  assert.equal(alerts.filter((a) => /needs renewing/.test(a)).length, 1, 'one alert, not one per message');
+  const cfg = (await h.call('GET', '/v1/admin/email-config', null, ADMIN)).body.m365;
+  assert.equal(cfg.connected, false); assert.equal(cfg.needs_reconnect, true); assert.equal(cfg.last_error, 'invalid_grant');
+  assert.equal(ms2.calls.filter((c) => c.grant === 'refresh_token').length, 1, 'stops asking Microsoft once flagged');
+});
+
+test('M5: keep-alive refreshes an idle connection weekly (so it never reaches the 90-day expiry)', async (t) => {
+  _resetM365CacheForTests();
+  const ms = fakeMs(); const h = harness(t, { env: M365, ms });
+  await connect(h);
+  h.db.t.mail_tokens[0].last_refresh_at = '2000-01-01T00:00:00.000Z';
+  await h.call('POST', '/v1/notifications/process', null, ADMIN);
+  assert.equal(ms.calls.filter((c) => c.grant === 'refresh_token').length, 1);
+  assert.ok(h.db.t.mail_tokens[0].last_refresh_at > '2026-01-01');
+  await h.call('POST', '/v1/notifications/process', null, ADMIN);
+  assert.equal(ms.calls.filter((c) => c.grant === 'refresh_token').length, 1, 'fresh: no second refresh');
+});
+
+test('L1/L10: a stale-token 401 is retried at once with a fresh token; 504 is uncertain (may have been accepted)', async (t) => {
+  _resetM365CacheForTests();
+  const ms = fakeMs({ send: [{ status: 401, body: { error: { code: 'InvalidAuthenticationToken' } } }, 202, { status: 504, body: {} }] });
+  const h = harness(t, { env: M365, ms });
+  await connect(h);
+  await book(h, { customer_email: null });
+  assert.equal(h.db.t.notifications[0].status, 'queued'); assert.equal(ms.sends().length, 2);
+  const slots = (await h.call('GET', '/v1/availability?business=aimanjack&service=demo-call')).body.days.flatMap((d) => d.slots.map((x) => x.start_at));
+  await h.call('POST', '/v1/bookings', { business: 'aimanjack', service: 'demo-call', start_at: slots[4], customer_name: 'P', customer_phone: '4695550100' });
+  assert.equal(h.db.t.notifications.at(-1).status, 'uncertain');
+});
+
+test('L4: a temporary Microsoft error while signing in keeps the sign-in alive', async (t) => {
+  _resetM365CacheForTests();
+  const ms = fakeMs({ device: [{ status: 503, body: { error: 'temporarily_unavailable' } }, 'ok'] }); const h = harness(t, { env: M365, ms });
+  await h.call('POST', '/v1/admin/m365/connect', null, ADMIN);
+  assert.equal((await h.call('POST', '/v1/admin/m365/poll', null, ADMIN)).body.status, 'pending');
+  assert.equal((await h.call('POST', '/v1/admin/m365/poll', null, ADMIN)).body.status, 'connected');
+});
+
+test('L5: if M365_SENDER changes after connecting, nothing is sent as the old mailbox', async (t) => {
+  _resetM365CacheForTests();
+  const ms = fakeMs(); const h = harness(t, { env: M365, ms });
+  await connect(h);
+  const h2 = harness(t, { env: { ...M365, M365_SENDER: 'bookings@aimanjack.com' }, db: h.db, ms });
+  await book(h2, { customer_email: null });
+  assert.equal(h.db.t.notifications[0].last_error, 'm365_connected_account_mismatch'); assert.equal(ms.sends().length, 0);
+});
+
+test('L7: coupon form says "temporarily unavailable" (503, no coupon row) while the mailbox is not connected', async (t) => {
+  _resetM365CacheForTests();
+  const h = harness(t, { env: M365, ms: fakeMs() });
+  const req = new Request('https://aimanjack.com/v1/coupons', { method: 'POST', headers: { 'content-type': 'application/json', origin: 'https://aimanjack.com', 'cf-connecting-ip': '203.0.113.9' }, body: JSON.stringify({ email: 'team@example.com' }) });
+  const fetchBefore = globalThis.fetch;
+  globalThis.fetch = async (url, init) => (String(url).includes('/rest/v1/coupon') ? new Response('[]', { status: 200 }) : fetchBefore(url, init));
+  const r = await onRequest({ request: req, env: M365, params: { route: ['coupons'] }, waitUntil() {} });
+  globalThis.fetch = fetchBefore;
+  assert.equal(r.status, 503); assert.equal((await r.json()).error, 'email_unavailable');
 });

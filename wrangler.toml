@@ -8,26 +8,35 @@ compatibility_date = "2026-06-01"
 [vars]
 # Booking data lives in Supabase (project aimanjack-crm, schema `booking`; db/schema.sql).
 SUPABASE_URL = "https://lalmvbxibkozmtnpfbcw.supabase.co"
-# Booking emails (Cloudflare Email Sending, REST API — Pages Functions have no send_email binding).
-# aimanjack.com must be onboarded under Email Service → Email Sending in the dashboard (adds SPF/DKIM).
+# Site mail transport (owner decision 2026-10-09, revenue-os#2): NO Cloudflare Workers Paid ⇒ no Cloudflare Email
+# Sending. All site mail (booking + coupon) goes out through Jack's Microsoft 365 mailbox via Microsoft Graph, as
+# M365_SENDER, delegated permission Mail.Send (one-time "Connect Microsoft 365" on /admin/bookings/). src/m365-mail.mjs.
+MAIL_TRANSPORT = "m365"
+M365_AUTH = "delegated"
+M365_TENANT_ID = "7b2782a2-fd4d-42e2-b5e5-97d3999d2f0f"   # aimanjack.com (GoDaddy-federated Microsoft 365)
+M365_SENDER = "jack@aimanjack.com"
+# M365_CLIENT_ID = "…"   ← Application (client) ID of the "aimanjack-site mail" app registration (not a secret). Until it
+#                          is set, every notification is recorded as config_missing:M365_CLIENT_ID (nothing is lost).
+# Legacy Cloudflare transport (MAIL_TRANSPORT = "cloudflare"; needs Workers Paid + aimanjack.com onboarded):
 CF_ACCOUNT_ID = "6e58305e2e9f1f725ce66d0746f740e5"
 # Booking lane (owner decision 2026-10-09, revenue-os#2): transactional booking mail only. Cold outbound never uses
 # aimanjack.com (it lives on getaimanjack.com).
-BOOKING_EMAIL_FROM = "booking-no-reply@aimanjack.com"
+BOOKING_EMAIL_FROM = "booking-no-reply@aimanjack.com"   # Cloudflare transport only; with M365 the From is M365_SENDER
 BOOKING_REPLY_TO = "jack@aimanjack.com"
-# Coupon lane — unchanged by revenue-os#2 (inventoried, not silently moved).
+# Coupon lane From for the Cloudflare transport only; with MAIL_TRANSPORT = "m365" coupons also go out as M365_SENDER.
 EMAIL_FROM = "bookings@aimanjack.com"
 SITE_ORIGIN = "https://aimanjack.com"
-# OWNER_EMAIL is NOT a [vars] entry any more: this file is the source of truth for vars, so a dashboard change could
-# never take effect while it lived here. Set it as a secret (below) and verify the effective value (masked) with
+# Owner booking notices (owner decision 2026-10-09 20:32 CT: "那就jack@aimanjack.com吧"). This file is the source of
+# truth for vars — a dashboard edit of OWNER_EMAIL cannot take effect; change it HERE (comma-separated for several
+# inboxes, max 5, each gets its own message). Verify the effective value (masked) with
 #   curl -H "authorization: Bearer $ADMIN_TOKEN" https://aimanjack.com/v1/admin/email-config
+OWNER_EMAIL = "jack@aimanjack.com"
 
 # Secrets (not here) — set for production AND preview (`--env preview`):
 #   npx wrangler pages secret put SB_SECRET_KEY --project-name aimanjack   Supabase secret (service-role) key
 #   npx wrangler pages secret put ADMIN_TOKEN   --project-name aimanjack   bearer for GET /v1/bookings?business=…
-#   npx wrangler pages secret put CF_EMAIL_TOKEN --project-name aimanjack   API token, permission Account → Email Sending → Edit
-#     (unset = no emails, bookings still work — every unsent notification is recorded as config_missing:CF_EMAIL_TOKEN)
-#   npx wrangler pages secret put OWNER_EMAIL    --project-name aimanjack   where owner booking notices go
-#     (several inboxes: comma-separated, e.g. "jack@aimanjack.com, other@example.com", max 5 — each gets its own message)
+#   npx wrangler pages secret put M365_TOKEN_KEY --project-name aimanjack   32 random bytes, base64 (`openssl rand -base64 32`);
+#     seals the Microsoft 365 refresh token in booking.mail_tokens. Changing it disconnects the mailbox (reconnect once).
+#   (Cloudflare transport only) CF_EMAIL_TOKEN   API token, Account → Email Sending → Edit
 #   optional: ALERT_NTFY_URL (+ ALERT_NTFY_TOKEN)   ntfy topic URL for bounced/dead/uncertain booking-email alerts
 # Local: .dev.vars (gitignored) with the same two names.

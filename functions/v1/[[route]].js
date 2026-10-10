@@ -7,19 +7,21 @@
 //   GET    /v1/bookings?business=[&phone=&status=&from=]  (Authorization: Bearer ADMIN_TOKEN) read-only list; phone= finds a caller's bookings
 // Writes take an Idempotency-Key header and an X-Source header (web | voice | sms | admin; default web).
 // Data: Supabase Postgres (schema `booking`, db/schema.sql) via PostgREST with the secret key — env.SUPABASE_URL + env.SB_SECRET_KEY.
-// Email: after every write, a confirmation goes to customer_email (if given) and a notice to OWNER_EMAIL, via the
-// Cloudflare Email Sending REST API (Pages Functions have no send_email binding). Booking mail goes through a durable
-// ledger (booking.notifications, src/booking-notify.mjs): From BOOKING_EMAIL_FROM (booking-no-reply@aimanjack.com),
-// Reply-To BOOKING_REPLY_TO (jack@aimanjack.com); per-recipient provider result, bounded retries, no double send, alerts.
-// An email problem never fails or undoes a booking. The coupon lane is separate (EMAIL_FROM, unchanged).
+// Email: after every write, a confirmation goes to customer_email (if given) and a notice to OWNER_EMAIL. Transport
+// (MAIL_TRANSPORT): 'm365' = Jack's Microsoft 365 mailbox via Graph, sent as M365_SENDER (owner decision 2026-10-09,
+// src/m365-mail.mjs); 'cloudflare' = Cloudflare Email Sending REST (needs Workers Paid; not used). Booking mail goes
+// through a durable ledger (booking.notifications, src/booking-notify.mjs): per-recipient result, bounded retries, no
+// double send, alerts. An email problem never fails or undoes a booking. Coupons use the same transport.
 //   GET  /v1/admin/email-config                 (admin) effective sender settings, owner address masked
+//   POST /v1/admin/m365/connect | poll | disconnect  (admin) one-time Microsoft 365 sign-in (device code) from the owner page
 //   GET  /v1/bookings?business=…&with=notifications (admin) adds per-message email states (owner page)
 //   GET  /v1/notifications?status=&booking=     (admin) ledger rows
 //   POST /v1/notifications/process              (admin) mark stale sends uncertain, send everything due
 //   POST /v1/notifications/requeue {ids:[…], include_bounced?}  (admin) owner-requested resend (bounced only if explicit)
 // Instants are timestamptz; responses render them in the business tz with an offset (ISO 8601).
 
-import { createNotifier, composeMessages, describeMailConfig, alertFromEnv, bookingMailConfig, parseOwnerEmails, maskEmail } from '../../src/booking-notify.mjs';
+import { createNotifier, composeMessages, describeMailConfig, alertFromEnv, bookingMailConfig, parseOwnerEmails, maskEmail, mailTransport, transportGap, BATCH } from '../../src/booking-notify.mjs';
+import { m365Send, m365Status, m365StartConnect, m365PollConnect, m365Disconnect, m365Ready } from '../../src/m365-mail.mjs';
 
 const SOURCES = new Set(['web', 'voice', 'sms', 'admin']);
 // 'admin' suppresses the owner's own notice, so it is honoured only with the admin token; anything else is 'web'.
@@ -142,6 +144,12 @@ const prettyPhone = (p) => { const m = /^\+1(\d{3})(\d{3})(\d{4})$/.exec(p || ''
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
 async function sendMail(env, { to, subject, text, reply_to }) {
+  if (mailTransport(env) === 'm365') {
+    // Owner decision 2026-10-09: all site mail goes out through the Microsoft 365 mailbox (From = M365_SENDER).
+    const res = await m365Send(env, { to, subject, text, reply_to }, { db: (p, o) => sb(env, p, o) });
+    if (res.status !== 'queued') throw new Error(`email m365 ${res.status}: ${res.error ?? ''}`);
+    return;
+  }
   const r = await fetch(`https://api.cloudflare.com/client/v4/accounts/${env.CF_ACCOUNT_ID}/email/sending/send`, {
     method: 'POST', headers: { authorization: `Bearer ${env.CF_EMAIL_TOKEN}`, 'content-type': 'application/json' },
     body: JSON.stringify({ to, from: { address: env.EMAIL_FROM, name: 'AI Man Jack' }, reply_to, subject, text, html: `<pre style="font:15px/1.5 -apple-system,Segoe UI,sans-serif;white-space:pre-wrap;margin:0">${esc(text)}</pre>` }),
@@ -192,7 +200,7 @@ async function claimCoupon(env, req, ctx) {
   if (!emailOk(normalized)) return fail(400, 'email_invalid', 'Enter a valid email address.');
   const limited = await couponRateLimit(env, req, normalized);
   if (limited) return limited;
-  if (!env.CF_EMAIL_TOKEN || !env.EMAIL_FROM) return fail(503, 'email_unavailable', 'Coupon email is temporarily unavailable.');
+  if (mailTransport(env) === 'm365' ? !(await m365Ready(env, (p, o) => sb(env, p, o))) : (!env.CF_EMAIL_TOKEN || !env.EMAIL_FROM)) return fail(503, 'email_unavailable', 'Coupon email is temporarily unavailable.');
 
   let coupon = await couponByEmail(env, normalized);
   if (coupon) {
@@ -259,10 +267,11 @@ async function notify(env, ctx, b, kind, source, eventId, meta) {
   let rows = null;
   try { rows = await n.enqueue(b, eventId, kind, messages, meta); }
   catch (e) { console.error('booking notification ledger unavailable', errCode(e)); }
-  if (rows) { ctx.waitUntil(Promise.allSettled(rows.map((r) => n.attempt(r))).then(() => n.processDue({ limit: 5 })).catch(() => {})); return; }
+  if (rows) { ctx.waitUntil(Promise.allSettled(rows.map((r) => n.attempt(r))).then(() => n.processDue({ limit: BATCH.afterWrite })).catch(() => {})); return; }
   // Ledger unavailable (migration not applied / DB error): still try to send, loudly logged — never silently dropped.
   const c = bookingMailConfig(env);
-  if (!env.CF_EMAIL_TOKEN) { console.error('booking email NOT sent (no ledger): config_missing:CF_EMAIL_TOKEN'); return; }
+  const gap = transportGap(env);
+  if (gap) { console.error('booking email NOT sent (no ledger):', gap); return; }
   messages.filter((m) => !m.to).forEach((m) => console.error('booking email NOT sent (no ledger):', m.role === 'owner' ? 'config_missing:OWNER_EMAIL' : 'no_customer_email'));
   ctx.waitUntil(Promise.allSettled(messages.filter((m) => m.to).map((m) => sendMail({ ...env, EMAIL_FROM: c.from }, { to: m.to, subject: m.subject, text: m.text, reply_to: m.reply_to })))
     .then((rs) => rs.forEach((r, i) => r.status === 'rejected' && console.error('booking email (no ledger) failed', messages.filter((m) => m.to)[i].role, errCode(r.reason)))));
@@ -291,7 +300,7 @@ const windowMsg = (b) => `Changes must be made at least ${b.cancel_window_hours}
 // ── handlers ──
 // Pages Functions have no cron: public availability traffic also drives retries (at most once a minute per isolate).
 let lastSweep = 0;
-const sweep = (env, ctx) => { if (!ctx?.waitUntil || !env.CF_EMAIL_TOKEN || Date.now() - lastSweep < 60000) return; lastSweep = Date.now(); ctx.waitUntil(notifierFor(env).processDue({ limit: 10 }).catch(() => {})); };
+const sweep = (env, ctx) => { if (!ctx?.waitUntil || transportGap(env) || Date.now() - lastSweep < 60000) return; lastSweep = Date.now(); ctx.waitUntil(notifierFor(env).processDue({ limit: BATCH.sweep }).catch(() => {})); };
 
 async function availability(env, url) {
   const q = url.searchParams, r = await loadBizSvc(env, q.get('business'), q.get('service'));
@@ -312,6 +321,20 @@ async function create(env, req, origin, ctx) {
   const name = clean(body.customer_name, 80), phone = normPhone(body.customer_phone);
   if (!name) return fail(400, 'name_required', 'customer_name is required.');
   if (!phone) return fail(400, 'phone_invalid', 'customer_phone must be a valid phone number.');
+  const email = clean(body.customer_email, 120);
+  if (email && !emailOk(email.toLowerCase())) return fail(400, 'email_invalid', 'customer_email must be a valid email address (or leave it out).');
+  // Public bookings are rate-limited per IP: each booking makes the owner's real mailbox send email, so a scripted
+  // book/cancel loop must not be able to spam through it. Fails open (a booking matters more); the email ledger also
+  // caps sends per address and per day.
+  if (source === 'web' && !adminOk(env, req)) {
+    const ip = clean(req.headers.get('cf-connecting-ip'), 64);
+    if (ip) {
+      try {
+        const allowed = await sb(env, 'rpc/take_coupon_rate_limit', { method: 'POST', body: { p_key_hash: await sha256(`booking-ip:${ip}`), p_limit: 6, p_window_seconds: 3600 } });
+        if (allowed === false) return fail(429, 'rate_limited', 'Too many bookings from this connection. Try again later or call us.');
+      } catch (e) { console.error('booking rate limiter unavailable', errCode(e)); }
+    }
+  }
   const slot = await findSlot(env, biz, svc, body.start_at, { staffId: body.staff || undefined });
   if (!slot) return fail(409, 'slot_unavailable', 'That time is not available. Pick another one.');
   const id = crypto.randomUUID().replace(/-/g, '').slice(0, 16);
@@ -321,7 +344,7 @@ async function create(env, req, origin, ctx) {
   try {
     // booking.create_booking(): advisory lock + capacity check + insert in one transaction.
     ok = await sb(env, 'rpc/create_booking', { method: 'POST', body: { p: { id, business_id: biz.id, service_id: svc.id, staff_id: slot.staff_id, start_at: start, end_at: end, lo, hi, capacity: svc.capacity,
-      customer_name: name, customer_phone: phone, customer_email: clean(body.customer_email, 120) || null, note: clean(body.note, 500) || null, source, idempotency_key: idem } } });
+      customer_name: name, customer_phone: phone, customer_email: email || null, note: clean(body.note, 500) || null, source, idempotency_key: idem } } });
   } catch (e) {
     if (idem && e.code === '23505') { const ex = await byIdem(env, biz.id, idem); if (ex) return json(view(ex, origin), 200); }
     throw e;
@@ -391,11 +414,11 @@ async function notificationsApi(env, req, url, id, ctx) {
       ...(status ? { status: 'eq.' + status } : {}), ...(booking ? { booking_id: 'eq.' + booking } : {}), order: 'id.desc', limit: '200' }));
     return json({ count: rows.length, notifications: rows });
   }
-  if (id === 'process' && req.method === 'POST') return json(await n.processDue({ limit: 25 }));
+  if (id === 'process' && req.method === 'POST') return json(await n.processDue({ limit: BATCH.process }));
   if (id === 'requeue' && req.method === 'POST') {
     const body = await req.json().catch(() => null);
     const rows = await n.requeue(Array.isArray(body?.ids) ? body.ids : [], { includeBounced: body?.include_bounced === true });
-    if (ctx?.waitUntil) ctx.waitUntil(n.processDue({ limit: 25 }).catch(() => {}));
+    if (ctx?.waitUntil) ctx.waitUntil(n.processDue({ limit: BATCH.process }).catch(() => {}));
     return json({ requeued: rows.map((r) => r.id) });
   }
   return fail(404, 'not_found', 'No such route.');
@@ -420,7 +443,16 @@ export async function onRequest(ctx) {
     if (res === 'notifications' && !extra) return await notificationsApi(env, req, url, id, ctx);
     if (res === 'admin' && id === 'email-config' && req.method === 'GET') {
       if (!adminOk(env, req)) return fail(401, 'unauthorized', 'Bearer token required.');
-      return json(describeMailConfig(env));
+      const cfg = describeMailConfig(env);
+      return json(mailTransport(env) === 'm365' ? { ...cfg, m365: await m365Status(env, (p, o) => sb(env, p, o)) } : cfg);
+    }
+    // One-time Microsoft 365 connection (delegated sign-in from the owner page): connect → poll until connected.
+    if (res === 'admin' && id === 'm365' && req.method === 'POST' && ['connect', 'poll', 'disconnect'].includes(extra)) {
+      if (!adminOk(env, req)) return fail(401, 'unauthorized', 'Bearer token required.');
+      const db = (p, o) => sb(env, p, o);
+      if (extra === 'connect') { const r = await m365StartConnect(env, db); return json(r, r.ok ? 200 : 409); }
+      if (extra === 'poll') return json(await m365PollConnect(env, db));
+      return json(await m365Disconnect(env, db));
     }
     if (res === 'coupons' && !id) {
       if (req.method === 'POST') return await claimCoupon(env, req, ctx);
