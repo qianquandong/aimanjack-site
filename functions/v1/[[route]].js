@@ -172,6 +172,11 @@ const acquireFailedCoupon = async (env, coupon) => (await sb(env, 'coupons?' + q
   method: 'PATCH', body: { issuance_status: 'pending', updated_at: new Date().toISOString() }, headers: { prefer: 'return=representation' },
 }))[0] ?? null;
 const adminOk = (env, req) => env.ADMIN_TOKEN && req.headers.get('authorization') === `Bearer ${env.ADMIN_TOKEN}`;
+// Dedicated, least-privilege scheduler credential: can ONLY process due notifications, never list bookings,
+// requeue arbitrary messages, connect M365, or access any other admin endpoint.
+const notificationProcessorOk = (env, req) => typeof env.NOTIFICATION_PROCESS_TOKEN === 'string' &&
+  env.NOTIFICATION_PROCESS_TOKEN.length >= 32 &&
+  req.headers.get('authorization') === `Bearer ${env.NOTIFICATION_PROCESS_TOKEN}`;
 const sha256 = async (value) => [...new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(value)))].map((byte) => byte.toString(16).padStart(2, '0')).join('');
 
 async function couponRateLimit(env, req, normalizedEmail) {
@@ -406,7 +411,8 @@ async function list(env, req, url, origin, ctx) {
 }
 
 async function notificationsApi(env, req, url, id, ctx) {
-  if (!adminOk(env, req)) return fail(401, 'unauthorized', 'Bearer token required.');
+  const scheduledProcessOnly = id === 'process' && req.method === 'POST' && notificationProcessorOk(env, req);
+  if (!adminOk(env, req) && !scheduledProcessOnly) return fail(401, 'unauthorized', 'Bearer token required.');
   const n = notifierFor(env);
   if (!id && req.method === 'GET') {
     const status = url.searchParams.get('status'), booking = url.searchParams.get('booking');
