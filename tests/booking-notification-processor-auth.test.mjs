@@ -20,7 +20,7 @@ const request = async (method, path, token, fields = {}) => onRequest({
     ...(method === 'POST' && Object.keys(fields).length ? { body: JSON.stringify(fields) } : {}),
   }),
   env,
-  params: { route: path.split('/') },
+  params: { route: path.split('?')[0].split('/') },
 });
 
 test('scoped scheduler key processes only due booking notifications; no PII is returned', async (t) => {
