@@ -10,7 +10,9 @@ Tracked in GitHub `qianquandong/revenue-os#2`.
   - Customer email goes through **Jack's Microsoft 365 mailbox, sent as `jack@aimanjack.com`**. Chosen option: "用 M365 邮箱发 — 以 jack@aimanjack.com 发".
   - Owner notices go to `jack@aimanjack.com` ("那就jack@aimanjack.com吧").
   - Built in `src/m365-mail.mjs`, selected by `MAIL_TRANSPORT = "m365"` in `wrangler.toml`.
-- **Coupon emails** use the same transport. The Cloudflare path cannot send on Free, so without this they cannot go out at all. *To confirm with the owner:* the decision above named booking email. If coupons should stay off instead, set the coupon form to unavailable.
+- 2026-10-09 21:55 CT, owner: "可以，预约就aimanjack一个吧".
+  - **Coupon emails** use the same M365 transport (confirmed). The Cloudflare path cannot send on Free, so without this they could not go out at all.
+  - Owner booking notices go **only** to `jack@aimanjack.com` (confirmed). No second inbox.
 
 Cold outbound never uses `aimanjack.com`; it lives on `getaimanjack.com`.
 
