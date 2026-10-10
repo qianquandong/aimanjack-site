@@ -5,7 +5,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import { onRequest } from '../functions/v1/[[route]].js';
-import { createNotifier, classifyProviderResult, describeMailConfig, MAX_ATTEMPTS } from '../src/booking-notify.mjs';
+import { createNotifier, classifyProviderResult, describeMailConfig, parseOwnerEmails, MAX_ATTEMPTS, MAX_OWNER_RECIPIENTS } from '../src/booking-notify.mjs';
 
 // ── in-memory PostgREST (only what the booking API uses) ───────────────────────────────────────────────────────────
 function fakeDb({ failNotifications = false, failEvents = false } = {}) {
@@ -339,4 +339,92 @@ test('provider result classification: delivered vs queued vs bounced vs error (i
   assert.equal(classifyProviderResult(200, ok('permanent_bounces')).status, 'bounced');
   assert.equal(classifyProviderResult(200, { success: false, errors: [{ code: 9 }] }).status, 'failed');
   assert.equal(classifyProviderResult(429, null).retry, true);
+});
+
+// ── several owner inboxes (OWNER_EMAIL comma-separated) ─────────────────────────────────────────────────────────────
+const TWO = 'owner-a@example.com, Owner-B@example.net';
+function mailBy(decide) {           // provider fake that answers per recipient (order-independent)
+  const calls = [];
+  const handle = async (url, init) => {
+    const body = JSON.parse(init.body); calls.push(body);
+    const next = decide(body.to, calls.filter((c) => c.to === body.to).length);
+    if (typeof next === 'object') return new Response(JSON.stringify(next.body), { status: next.status });
+    const result = { delivered: [], queued: [], permanent_bounces: [] }; result[next === 'bounce' ? 'permanent_bounces' : next].push(body.to);
+    return new Response(JSON.stringify({ success: true, result }), { status: 200 });
+  };
+  return { calls, handle };
+}
+
+test('parseOwnerEmails: commas/semicolons/spaces, case-insensitive de-dupe, invalid entries counted, capped', () => {
+  assert.deepEqual(parseOwnerEmails(' a@x.com ,b@y.org; A@X.com  c@z.io ').list, ['a@x.com', 'b@y.org', 'c@z.io']);
+  assert.deepEqual(parseOwnerEmails('a@x.com, not-an-address, "Jack" <j@x.com>'), { list: ['a@x.com'], invalid: 3, dropped: 0 });
+  const many = parseOwnerEmails(Array.from({ length: MAX_OWNER_RECIPIENTS + 2 }, (_, i) => `o${i}@x.com`).join(','));
+  assert.equal(many.list.length, MAX_OWNER_RECIPIENTS); assert.equal(many.dropped, 2);
+  assert.deepEqual(parseOwnerEmails(undefined).list, []);
+});
+
+test('two owner inboxes: each gets its OWN message and ledger row (single `to` per provider call)', async (t) => {
+  const h = harness(t, { env: { ...ENV, OWNER_EMAIL: TWO } });
+  assert.equal((await book(h)).status, 201);
+  assert.deepEqual(h.mail.calls.map((c) => c.to).sort(), ['Owner-B@example.net', 'customer@example.com', 'owner-a@example.com']);
+  assert.ok(h.mail.calls.every((c) => typeof c.to === 'string'));
+  const owners = h.db.t.notifications.filter((n) => n.role === 'owner');
+  assert.equal(owners.length, 2); assert.ok(owners.every((n) => n.status === 'delivered'));
+  assert.equal(new Set(owners.map((n) => n.dedupe_key)).size, 2);
+  assert.ok(owners.every((n) => !n.dedupe_key.includes('@')), 'addresses stay out of dedupe keys');
+});
+
+test('two owner inboxes: one bounces, the other is unaffected; neither supersedes the other', async (t) => {
+  const mail = mailBy((to) => (to === 'owner-a@example.com' ? 'bounce' : 'delivered'));
+  const h = harness(t, { env: { ...ENV, OWNER_EMAIL: TWO }, mail });
+  await book(h, { customer_email: null });
+  const byTo = Object.fromEntries(h.db.t.notifications.map((n) => [n.to_address, n.status]));
+  assert.deepEqual(byTo, { 'owner-a@example.com': 'bounced', 'Owner-B@example.net': 'delivered' });
+});
+
+test('two owner inboxes: a failed "Confirmed" to one inbox is superseded by its own "Cancelled", the other inbox keeps both', async (t) => {
+  const busy = { status: 503, body: { success: false, errors: [{ code: 1, message: 'busy' }] } };
+  const mail = mailBy((to, n) => (to === 'owner-a@example.com' && n === 1 ? busy : 'delivered'));
+  const h = harness(t, { env: { ...ENV, OWNER_EMAIL: TWO }, mail });
+  const c = await book(h, { customer_email: null });
+  await h.call('DELETE', '/v1/bookings/' + c.body.id);
+  const createdA = h.db.t.notifications.find((n) => n.kind === 'created' && n.to_address === 'owner-a@example.com');
+  assert.equal(createdA.status, 'failed');
+  createdA.next_attempt_at = '2000-01-01T00:00:00.000Z';
+  await h.call('POST', '/v1/notifications/process', null, { authorization: 'Bearer admin' });
+  assert.equal(createdA.status, 'superseded');
+  const st = (kind, to) => h.db.t.notifications.find((n) => n.kind === kind && n.to_address === to).status;
+  assert.equal(st('created', 'Owner-B@example.net'), 'delivered'); assert.equal(st('cancelled', 'Owner-B@example.net'), 'delivered');
+  assert.equal(st('cancelled', 'owner-a@example.com'), 'delivered');
+  assert.equal(mail.calls.filter((m) => m.to === 'owner-a@example.com').length, 2, 'A: the failed attempt + the cancellation, never a late "Confirmed"');
+});
+
+test('owner notice recorded while OWNER_EMAIL was unset is re-addressed once the setting exists (once, no duplicates)', async (t) => {
+  const { OWNER_EMAIL, ...base } = ENV; const env = { ...base };
+  const h = harness(t, { env });
+  await book(h, { customer_email: null });
+  const gap = h.db.t.notifications[0];
+  assert.equal(gap.last_error, 'config_missing:OWNER_EMAIL'); assert.equal(h.mail.calls.length, 0);
+  env.OWNER_EMAIL = TWO;                                                    // owner fixes the setting
+  gap.next_attempt_at = '2000-01-01T00:00:00.000Z';
+  await Promise.all([h.call('POST', '/v1/notifications/process', null, { authorization: 'Bearer admin' }),
+    h.call('POST', '/v1/notifications/process', null, { authorization: 'Bearer admin' })]);
+  assert.equal(gap.status, 'superseded'); assert.equal(gap.last_error, 'readdressed_to_configured_owner_email');
+  assert.deepEqual(h.mail.calls.map((c) => c.to).sort(), ['Owner-B@example.net', 'owner-a@example.com']);
+  await h.call('POST', '/v1/notifications/process', null, { authorization: 'Bearer admin' });
+  assert.equal(h.mail.calls.length, 2, 'sent once per inbox, never again');
+  assert.ok(h.db.t.notifications.filter((n) => n.to_address).every((n) => n.status === 'delivered' && n.kind === 'created'));
+});
+
+test('admin: email-config lists every owner inbox masked and reports invalid entries; list shows a masked recipient per owner row', async (t) => {
+  const h = harness(t, { env: { ...ENV, OWNER_EMAIL: TWO + ', oops' } });
+  const cfg = (await h.call('GET', '/v1/admin/email-config', null, { authorization: 'Bearer admin' })).body;
+  assert.deepEqual(cfg.owner_emails, ['o***a@example.com', 'O***B@example.net']);
+  assert.equal(cfg.owner_email, 'o***a@example.com'); assert.equal(cfg.owner_email_count, 2); assert.equal(cfg.owner_email_invalid_entries, 1);
+  await book(h);
+  const r = await h.call('GET', '/v1/bookings?business=aimanjack&with=notifications', null, { authorization: 'Bearer admin' });
+  const notes = r.body.bookings[0].notifications;
+  assert.deepEqual(notes.filter((n) => n.role === 'owner').map((n) => n.recipient).sort(), ['O***B@example.net', 'o***a@example.com']);
+  assert.ok(notes.every((n) => !('to_address' in n)) && !JSON.stringify(r.body.bookings[0].notifications).includes('owner-a@'));
+  assert.equal(notes.find((n) => n.role === 'customer').recipient, undefined);
 });

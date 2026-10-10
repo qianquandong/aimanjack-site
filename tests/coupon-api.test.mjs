@@ -231,3 +231,21 @@ test('manual redemption fails closed when another admin wins the update race', a
   assert.equal(r.status, 409);
   assert.equal((await r.json()).error, 'coupon_already_redeemed');
 });
+
+test('coupon: several owner inboxes (comma-separated OWNER_EMAIL) each get a notice; the customer Reply-To is the first one', async (t) => {
+  const original = globalThis.fetch, sends = [], pending = [];
+  t.after(() => { globalThis.fetch = original; });
+  globalThis.fetch = async (url, options = {}) => {
+    if (isRateLimitCall(url)) return response(true);
+    if (String(url).includes('/rest/v1/coupons?') && (!options.method || options.method === 'GET')) return response([]);
+    if (String(url).endsWith('/rest/v1/coupons') && options.method === 'POST') return response([JSON.parse(options.body)], 201);
+    if (String(url).includes('/email/sending/send')) { sends.push(JSON.parse(options.body)); return response({ success: true }); }
+    if (String(url).includes('/rest/v1/coupons?') && options.method === 'PATCH') return response([]);
+    throw new Error(`unexpected fetch ${options.method || 'GET'} ${url}`);
+  };
+  const r = await onRequest({ request: request({ email: 'team@example.com' }), env: { ...env, OWNER_EMAIL: 'jack@aimanjack.com, second@example.net' }, params: { route: ['coupons'] }, waitUntil: (p) => pending.push(p) });
+  await Promise.all(pending);
+  assert.equal(r.status, 201);
+  assert.equal(sends.find((s) => s.to === 'team@example.com').reply_to, 'jack@aimanjack.com');
+  assert.deepEqual(sends.filter((s) => s.subject.startsWith('[coupon]')).map((s) => s.to).sort(), ['jack@aimanjack.com', 'second@example.net']);
+});

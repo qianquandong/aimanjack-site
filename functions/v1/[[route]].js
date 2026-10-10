@@ -19,7 +19,7 @@
 //   POST /v1/notifications/requeue {ids:[…], include_bounced?}  (admin) owner-requested resend (bounced only if explicit)
 // Instants are timestamptz; responses render them in the business tz with an offset (ISO 8601).
 
-import { createNotifier, composeMessages, describeMailConfig, alertFromEnv, bookingMailConfig } from '../../src/booking-notify.mjs';
+import { createNotifier, composeMessages, describeMailConfig, alertFromEnv, bookingMailConfig, parseOwnerEmails, maskEmail } from '../../src/booking-notify.mjs';
 
 const SOURCES = new Set(['web', 'voice', 'sms', 'admin']);
 // 'admin' suppresses the owner's own notice, so it is honoured only with the admin token; anything else is 'web'.
@@ -214,13 +214,16 @@ async function claimCoupon(env, req, ctx) {
 
   const text = `Your $25 coupon for any AI Man Jack service\n\nCoupon code: ${coupon.code}\n\nUse this coupon once on any AI Man Jack service. No minimum spend, expiration or new-customer restriction. Reply to this email when you are ready to use it.\n\nJack\nAI Man Jack`;
   try {
-    await sendMail(env, { to: email, subject: `Your $25 AI Man Jack coupon: ${coupon.code}`, text, reply_to: env.OWNER_EMAIL || env.BOOKING_REPLY_TO });
+    await sendMail(env, { to: email, subject: `Your $25 AI Man Jack coupon: ${coupon.code}`, text, reply_to: parseOwnerEmails(env.OWNER_EMAIL).list[0] || env.BOOKING_REPLY_TO });
   } catch (e) {
     await couponPatch(env, coupon.code, { issuance_status: 'failed', delivery_attempts: (coupon.delivery_attempts || 0) + 1, last_error: String(e.message || e).slice(0, 240) }).catch((dbError) => console.error('coupon failure persistence', dbError.message));
     return fail(502, 'email_failed', 'The coupon email was not accepted by the email provider.');
   }
   await couponPatch(env, coupon.code, { issuance_status: 'sent', delivery_attempts: (coupon.delivery_attempts || 0) + 1, delivered_at: new Date().toISOString(), last_error: null }).catch((e) => console.error('coupon sent persistence', e.message));
-  if (env.OWNER_EMAIL && ctx.waitUntil) ctx.waitUntil(sendMail(env, { to: env.OWNER_EMAIL, subject: `[coupon] ${coupon.code} issued`, text: `${coupon.code} issued to ${email}. Manual redemption is still required.`, reply_to: email }).catch((e) => console.error('coupon owner email', e.message)));
+  // OWNER_EMAIL may list several inboxes (comma-separated); each gets its own notice (the provider call takes one address).
+  const owners = parseOwnerEmails(env.OWNER_EMAIL).list;
+  if (owners.length && ctx.waitUntil) ctx.waitUntil(Promise.allSettled(owners.map((to) => sendMail(env, { to, subject: `[coupon] ${coupon.code} issued`, text: `${coupon.code} issued to ${email}. Manual redemption is still required.`, reply_to: email })))
+    .then((rs) => rs.forEach((r) => r.status === 'rejected' && console.error('coupon owner email', r.reason?.message))));
   return json({ status: 'accepted' }, 201);
 }
 
@@ -369,12 +372,14 @@ async function list(env, req, url, origin, ctx) {
   const withNotes = url.searchParams.get('with') === 'notifications';   // owner page only; agents keep the old shape
   let notes = [];
   if (withNotes && rows.length) {
-    try { notes = await sb(env, 'notifications?' + q({ booking_id: `in.(${rows.map((b) => b.id).join(',')})`, select: 'id,booking_id,kind,role,status,attempts,last_error,sent_at,updated_at', order: 'id.asc' })); }
+    try { notes = await sb(env, 'notifications?' + q({ booking_id: `in.(${rows.map((b) => b.id).join(',')})`, select: 'id,booking_id,kind,role,to_address,status,attempts,last_error,sent_at,updated_at', order: 'id.asc' })); }
     catch { notes = null; }
   }
   if (!withNotes) return json({ business: biz, count: rows.length, bookings: rows.map((b) => view(b, origin)) });
   return json({ business: biz, count: rows.length, notifications_ledger: notes === null ? 'unavailable' : 'ok',
-    bookings: rows.map((b) => ({ ...view(b, origin), notifications: (notes || []).filter((n) => n.booking_id === b.id).map(({ booking_id, ...n }) => n) })) });
+    bookings: rows.map((b) => ({ ...view(b, origin), notifications: (notes || []).filter((n) => n.booking_id === b.id)
+      // Owner rows carry a MASKED recipient so two owner inboxes can be told apart; raw ledger addresses are never returned.
+      .map(({ booking_id, to_address, ...n }) => (n.role === 'owner' ? { ...n, recipient: maskEmail(to_address) } : n)) })) });
 }
 
 async function notificationsApi(env, req, url, id, ctx) {

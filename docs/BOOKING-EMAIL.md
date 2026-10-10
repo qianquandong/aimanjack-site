@@ -11,15 +11,20 @@ Transactional booking mail is sent from `AI Man Jack <booking-no-reply@aimanjack
 | Lane | Code | From | Reply-To | To | Changed by #2? |
 |---|---|---|---|---|---|
 | Booking: created, rescheduled, cancelled (customer) | `src/booking-notify.mjs` via `notify()` | `BOOKING_EMAIL_FROM` = booking-no-reply@aimanjack.com | `BOOKING_REPLY_TO` = jack@aimanjack.com | `customer_email`, if given | **yes** |
-| Booking: owner notice | same | same | the customer's email | `OWNER_EMAIL` (secret) | **yes** |
+| Booking: owner notice | same | same | the customer's email | `OWNER_EMAIL` (secret; one or more inboxes, comma-separated) | **yes** |
 | $25 coupon (customer) | `claimCoupon()` / `sendMail()` | `EMAIL_FROM` = bookings@aimanjack.com | `OWNER_EMAIL` | claimant | no (inventoried only) |
-| Coupon owner notice | same | same | claimant | `OWNER_EMAIL` | no |
+| Coupon owner notice | same | same | claimant | each `OWNER_EMAIL` inbox | no (only made list-safe) |
 
 Changing the coupon lane would need its own owner decision.
 
 ## 2. What changed in code
 
 - **Durable ledger.** `booking.notifications` (migration `db/migrations/2026-10-09-booking-notifications.sql`) gets one row per booking event per recipient role. The row is written before sending.
+- **Several owner inboxes.** `OWNER_EMAIL` may list up to 5 addresses, comma-separated (for example `jack@aimanjack.com, other@example.com`).
+  - Each inbox gets its **own** message and ledger row: one bouncing address never hides or blocks the other, and "newer message supersedes older" is per inbox.
+  - Invalid entries are ignored and counted in `/v1/admin/email-config` (`owner_email_invalid_entries`), which also lists every inbox masked (`owner_emails`).
+  - An owner notice recorded while `OWNER_EMAIL` was unset is **re-addressed** to the configured inboxes on its next retry (or on "Resend" from the owner page), once per inbox. Before this, such a row kept failing with `config_missing:OWNER_EMAIL` even after the setting was fixed.
+  - The coupon lane uses the first inbox as the customer Reply-To and sends its owner notice to each inbox.
 - **Provider result per recipient.** Cloudflare's REST response lists `delivered`, `queued` and `permanent_bounces` for each recipient. It returns **no message id, and there are no delivery webhooks**. So:
   - `delivered` means the recipient's mail server accepted the message. It is **not** proof the message reached the inbox.
   - Only the live end-to-end check (§6) proves inbox receipt.
@@ -57,6 +62,8 @@ Changing the coupon lane would need its own owner decision.
   - `tests/` is no longer copied into the published site.
 
 ## 3. Findings that block "live"
+
+**Plan requirement (found 2026-10-09 by Muse in the dashboard, confirmed in Cloudflare's pricing docs):** Email Sending to arbitrary recipients requires the **Workers Paid** plan ($5/month; 3,000 outbound emails/month included, then $0.35 per 1,000). On Workers Free it is "Not available", and onboarding a domain cannot start. The AI Man Jack account is on Workers Free, so **upgrading is an owner purchase decision** and blocks every step below. Source: https://developers.cloudflare.com/email-service/platform/pricing/
 
 Public DNS was checked 2026-10-09 via dns.google.
 

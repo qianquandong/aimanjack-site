@@ -28,5 +28,6 @@ SITE_ORIGIN = "https://aimanjack.com"
 #   npx wrangler pages secret put CF_EMAIL_TOKEN --project-name aimanjack   API token, permission Account → Email Sending → Edit
 #     (unset = no emails, bookings still work — every unsent notification is recorded as config_missing:CF_EMAIL_TOKEN)
 #   npx wrangler pages secret put OWNER_EMAIL    --project-name aimanjack   where owner booking notices go
+#     (several inboxes: comma-separated, e.g. "jack@aimanjack.com, other@example.com", max 5 — each gets its own message)
 #   optional: ALERT_NTFY_URL (+ ALERT_NTFY_TOKEN)   ntfy topic URL for bounced/dead/uncertain booking-email alerts
 # Local: .dev.vars (gitignored) with the same two names.

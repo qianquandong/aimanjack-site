@@ -54,7 +54,7 @@
   var cls = { delivered: 'ok', queued: 'ok', superseded: '', pending: 'warn', sending: 'warn', failed: 'warn', bounced: 'bad', dead: 'bad', uncertain: 'bad' };
   var label = { delivered: 'delivered to mail server', queued: 'queued by provider', superseded: 'replaced by a newer message', pending: 'pending', sending: 'sending', failed: 'retrying', bounced: 'BOUNCED (address rejected)', dead: 'FAILED', uncertain: 'UNCERTAIN (may have been sent)' };
   function chip(n) {
-    var t = n.role + ' · ' + n.kind + ': ' + (label[n.status] || n.status) + (n.attempts > 1 ? ' (' + n.attempts + ')' : '');
+    var t = n.role + (n.recipient ? ' (' + n.recipient + ')' : '') + ' · ' + n.kind + ': ' + (label[n.status] || n.status) + (n.attempts > 1 ? ' (' + n.attempts + ')' : '');
     var err = n.last_error ? ' title="' + esc(n.last_error) + '"' : '';
     var btn = /^(dead|uncertain|failed)$/.test(n.status) ? ' <button class="secondary resend" type="button" data-id="' + esc(n.id) + '" data-status="' + esc(n.status) + '">Resend</button>' : '';
     return '<span class="chip ' + (cls[n.status] || '') + '"' + err + '>' + esc(t) + '</span>' + btn;

@@ -4,8 +4,9 @@
 // email silently failed, and a 200 from the provider was treated as delivered even when the address bounced.
 //
 // Now:
-//   * every notification is a row in booking.notifications BEFORE anything is sent (dedupe_key = event id + recipient
-//     role ⇒ one message per event per recipient, ever); the booking itself never depends on email;
+//   * every notification is a row in booking.notifications BEFORE anything is sent (dedupe_key = booking state + recipient
+//     ⇒ one message per event per recipient, ever; each OWNER_EMAIL inbox is its own recipient); the booking itself never
+//     depends on email;
 //   * a row is CLAIMED with an optimistic-concurrency update before sending, so two workers can never both send it;
 //   * the provider's per-recipient result is recorded: delivered (accepted by the recipient's mail server — NOT proof it
 //     reached the inbox), queued, bounced (permanent, alert, never retried); transport/HTTP errors retry with backoff
@@ -31,23 +32,65 @@ const nowIso = (ms = Date.now()) => new Date(ms).toISOString();
 const plusMin = (ms, m) => nowIso(ms + m * 60000);
 const short = (s, n = 240) => String(s ?? '').replace(/[\r\n]+/g, ' ').slice(0, n);
 
+// OWNER_EMAIL may name several owner inboxes, separated by commas (semicolons/whitespace also accepted), e.g.
+// "jack@aimanjack.com, someone@gmail.com". Each inbox gets its OWN message and ledger row, so one bouncing address can
+// never hide or block the other.
+export const MAX_OWNER_RECIPIENTS = 5;
+const EMAIL_RE = /^[^\s@,;<>"]+@[^\s@,;<>"]+\.[^\s@,;<>"]{2,}$/;
+
+/** Parse OWNER_EMAIL → { list (valid, de-duplicated case-insensitively, at most MAX_OWNER_RECIPIENTS), invalid, dropped }. */
+export function parseOwnerEmails(raw) {
+  const seen = new Set(); const list = []; let invalid = 0, dropped = 0;
+  for (const part of String(raw ?? '').split(/[,;\s]+/)) {
+    const a = part.trim();
+    if (!a) continue;
+    if (a.length > 254 || !EMAIL_RE.test(a)) { invalid += 1; continue; }
+    const k = a.toLowerCase();
+    if (seen.has(k)) continue;
+    seen.add(k);
+    if (list.length >= MAX_OWNER_RECIPIENTS) { dropped += 1; continue; }
+    list.push(a);
+  }
+  return { list, invalid, dropped };
+}
+
+/** j***k@aimanjack.com — enough for the owner to recognise an address without exposing it. */
+export function maskEmail(a) {
+  if (!a) return null;
+  const [l, d] = String(a).split('@');
+  return d ? `${l.slice(0, 1)}***${l.length > 1 ? l.slice(-1) : ''}@${d}` : '***';
+}
+
+/** Stable short tag for a recipient (FNV-1a of the lower-cased address) — keeps addresses out of dedupe keys. */
+export function recipientTag(addr) {
+  if (!addr) return 'none';
+  let h = 0x811c9dc5;
+  for (const ch of String(addr).toLowerCase()) { h ^= ch.codePointAt(0); h = Math.imul(h, 0x01000193) >>> 0; }
+  return h.toString(16).padStart(8, '0');
+}
+
 /** Effective sender settings (booking lane only; the coupon lane keeps EMAIL_FROM — see docs). */
 export function bookingMailConfig(env) {
+  const owners = parseOwnerEmails(env.OWNER_EMAIL).list;
   return {
     from: env.BOOKING_EMAIL_FROM || BOOKING_FROM_DEFAULT,
     replyTo: env.BOOKING_REPLY_TO || BOOKING_REPLY_TO_DEFAULT,
-    ownerTo: env.OWNER_EMAIL || null,
+    ownerTos: owners,
     token: !!env.CF_EMAIL_TOKEN, account: !!env.CF_ACCOUNT_ID,
   };
 }
 
-/** Owner-safe view of the effective configuration (no secrets, owner address masked). */
+/** Owner-safe view of the effective configuration (no secrets, owner addresses masked). */
 export function describeMailConfig(env) {
   const c = bookingMailConfig(env);
-  const mask = (a) => { if (!a) return null; const [l, d] = String(a).split('@'); return d ? `${l.slice(0, 1)}***${l.length > 1 ? l.slice(-1) : ''}@${d}` : '***'; };
-  return { booking_from: c.from, booking_reply_to: c.replyTo, owner_email: mask(c.ownerTo), owner_email_domain: c.ownerTo?.split('@')[1] ?? null,
+  const o = parseOwnerEmails(env.OWNER_EMAIL);
+  return { booking_from: c.from, booking_reply_to: c.replyTo,
+    owner_email: maskEmail(o.list[0]), owner_emails: o.list.map(maskEmail), owner_email_count: o.list.length,
+    owner_email_domain: o.list[0]?.split('@')[1] ?? null,
+    ...(o.invalid ? { owner_email_invalid_entries: o.invalid } : {}),
+    ...(o.dropped ? { owner_email_over_limit_ignored: o.dropped } : {}),
     coupon_from: env.EMAIL_FROM || null, cf_email_token_present: c.token, cf_account_id_present: c.account,
-    note: 'owner_email is masked; compare it with the address you expect. Values come from the running deployment.' };
+    note: `owner_emails are masked; compare them with the addresses you expect (comma-separated in OWNER_EMAIL, at most ${MAX_OWNER_RECIPIENTS}). Values come from the running deployment.` };
 }
 
 /** Build the messages for one booking event. Pure; returns [{role, to, subject, text, reply_to}] (to may be null ⇒ config gap). */
@@ -65,8 +108,11 @@ export function composeMessages(env, b, kind, source, { fmtWhen, prettyPhone, ma
   if (OWNER_NOTIFIED_SOURCES.has(source)) {
     const head = `${kind} (${source}): ${b.service_name} ${when}`;
     const who = `${b.customer_name} · ${phone}${b.customer_email ? ' · ' + b.customer_email : ''}`;
-    out.push({ role: 'owner', to: c.ownerTo, reply_to: b.customer_email || undefined, subject: `[booking] ${head}`,
-      text: [head, who, b.note, manageUrl, `All upcoming bookings: ${siteOrigin}/admin/bookings/`].filter(Boolean).join('\n') });
+    const text = [head, who, b.note, manageUrl, `All upcoming bookings: ${siteOrigin}/admin/bookings/`].filter(Boolean).join('\n');
+    // One message per owner inbox; none configured ⇒ one row with to=null, recorded as config_missing (never silent).
+    for (const to of (c.ownerTos.length ? c.ownerTos : [null])) {
+      out.push({ role: 'owner', to, reply_to: b.customer_email || undefined, subject: `[booking] ${head}`, text });
+    }
   }
   return out;
 }
@@ -125,17 +171,37 @@ export function createNotifier({ db, env, fetchImpl = (...a) => fetch(...a), ale
    *   created   → <booking>:created:<role>                      (once per booking)
    *   cancelled → <booking>:cancelled:<role>                    (terminal, once)
    *   rescheduled → <booking>:rescheduled:<from>-><to>:<minute>:<role>
+   * <role> is `customer`, or `owner.<recipientTag>` (one per owner inbox; `owner.none` = OWNER_EMAIL not configured).
    */
-  const dedupeKey = (b, kind, role, meta = {}) => kind === 'rescheduled'
-    ? `${b.id}:rescheduled:${meta.from ?? ''}->${b.start_at}:${Math.floor(Date.now() / 60000)}:${role}` : `${b.id}:${kind}:${role}`;
+  const roleKey = (m) => (m.role === 'owner' ? `owner.${recipientTag(m.to)}` : m.role);
+  const dedupeKey = (b, kind, m, meta = {}) => kind === 'rescheduled'
+    ? `${b.id}:rescheduled:${meta.from ?? ''}->${b.start_at}:${Math.floor(Date.now() / 60000)}:${roleKey(m)}` : `${b.id}:${kind}:${roleKey(m)}`;
+  const insert = (rows) => db('notifications?on_conflict=dedupe_key', { method: 'POST', body: rows, headers: { prefer: 'resolution=ignore-duplicates,return=representation' } });
   const enqueue = async (b, eventId, kind, messages, meta = {}) => {
     if (!messages.length) return [];
     const rows = messages.map((m) => ({ business_id: b.business_id, booking_id: b.id, event_id: eventId ?? null, kind, role: m.role,
-      dedupe_key: dedupeKey(b, kind, m.role, meta), to_address: m.to, reply_to: m.reply_to ?? null, subject: m.subject, body_text: m.text,
+      dedupe_key: dedupeKey(b, kind, m, meta), to_address: m.to, reply_to: m.reply_to ?? null, subject: m.subject, body_text: m.text,
       status: 'pending', attempts: 0, next_attempt_at: nowIso() }));
     // on_conflict + ignore-duplicates: a replayed or double-submitted event never creates a second message.
-    return db('notifications?on_conflict=dedupe_key', { method: 'POST', body: rows, headers: { prefer: 'resolution=ignore-duplicates,return=representation' } });
+    return insert(rows);
   };
+
+  /**
+   * An owner notice recorded while OWNER_EMAIL was unset (to_address null) is re-addressed once the setting exists:
+   * one new row per configured inbox (same content, dedupe key with the real recipient tag, so concurrent workers
+   * cannot create duplicates), and the placeholder row is closed as superseded. Without this, such a row would keep
+   * failing with config_missing forever even after the owner fixed the setting.
+   */
+  async function readdressOwnerGap(row, owners) {
+    const copies = owners.map((to) => ({ business_id: row.business_id, booking_id: row.booking_id, event_id: row.event_id ?? null, kind: row.kind, role: 'owner',
+      dedupe_key: /owner\.none$/.test(row.dedupe_key) ? row.dedupe_key.replace(/owner\.none$/, `owner.${recipientTag(to)}`) : `${row.dedupe_key}:${recipientTag(to)}`,
+      to_address: to, reply_to: row.reply_to ?? null, subject: row.subject, body_text: row.body_text, status: 'pending', attempts: 0, next_attempt_at: nowIso() }));
+    const created = (await insert(copies)) ?? [];
+    await db(`notifications?id=eq.${row.id}&status=in.(pending,failed)`, { method: 'PATCH', headers: { prefer: 'return=minimal' },
+      body: { status: 'superseded', last_error: 'readdressed_to_configured_owner_email', updated_at: nowIso() } });
+    for (const r of created) await attempt(r);
+    return 'readdressed';
+  }
 
   async function claim(row) {
     const got = await db(`notifications?id=eq.${row.id}&status=eq.${row.status}&attempts=eq.${row.attempts}`, {
@@ -162,11 +228,17 @@ export function createNotifier({ db, env, fetchImpl = (...a) => fetch(...a), ale
   async function attempt(row) {
     try {
       // A newer message to the same recipient about the same booking makes this one obsolete (e.g. a "Confirmed" retry
-      // after the booking was cancelled): never send it out of order.
-      const newer = await db(`notifications?booking_id=eq.${row.booking_id}&role=eq.${row.role}&id=gt.${row.id}&select=id&limit=1`);
+      // after the booking was cancelled): never send it out of order. Scoped to the recipient, so the two owner inboxes
+      // of one event never supersede each other. An unaddressed owner placeholder is obsolete once ANY newer owner row exists.
+      const sameRecipient = row.to_address == null ? '' : `&to_address=eq.${encodeURIComponent(row.to_address)}`;
+      const newer = await db(`notifications?booking_id=eq.${row.booking_id}&role=eq.${row.role}${sameRecipient}&id=gt.${row.id}&select=id&limit=1`);
       if (newer?.length) {
         await db(`notifications?id=eq.${row.id}&status=in.(pending,failed)`, { method: 'PATCH', headers: { prefer: 'return=minimal' }, body: { status: 'superseded', updated_at: nowIso() } });
         return 'superseded';
+      }
+      if (row.role === 'owner' && row.to_address == null) {
+        const owners = bookingMailConfig(env).ownerTos;
+        if (owners.length) return await readdressOwnerGap(row, owners);
       }
       const claimed = await claim(row);
       if (!claimed) return 'skipped_claimed_elsewhere';
