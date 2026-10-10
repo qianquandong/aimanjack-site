@@ -1,0 +1,48 @@
+# This workflow is an OPTIONAL, fail-closed scheduler for due booking notifications.
+# It makes NO production requests until the owner explicitly enables the repository
+# variable BOOKING_EMAIL_RETRY_ENABLED=true AND provisions matching scoped tokens.
+# PR review / committing this file does NOT enable sending.
+name: Booking notification retries
+
+on:
+  schedule:
+    # Every 15 minutes, offset from :00 to reduce GitHub scheduled-job congestion.
+    - cron: '7,22,37,52 * * * *'
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+concurrency:
+  group: booking-notification-retries
+  cancel-in-progress: false
+
+jobs:
+  retry-due:
+    if: ${{ vars.BOOKING_EMAIL_RETRY_ENABLED == 'true' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Process due notifications with dedicated scoped credential
+        env:
+          PROCESS_TOKEN: ${{ secrets.BOOKING_NOTIFICATION_PROCESS_TOKEN }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -z "${PROCESS_TOKEN:-}" ]; then
+            echo "::error::BOOKING_NOTIFICATION_PROCESS_TOKEN is not configured"
+            exit 1
+          fi
+          # Never use --retry here: an uncertain POST may have already been accepted.
+          # The server's durable ledger decides which messages are safe to retry.
+          status="$(curl --silent --show-error --max-time 45 \
+            --output /dev/null --write-out '%{http_code}' \
+            --request POST \
+            --header "Authorization: Bearer ${PROCESS_TOKEN}" \
+            --header "Content-Type: application/json" \
+            "https://aimanjack.com/v1/notifications/process")"
+          if [ "${status}" != "200" ]; then
+            echo "::error::Booking notification processing returned HTTP ${status}"
+            exit 1
+          fi
+          echo "Due booking notifications checked; no recipient details logged."
