@@ -4,6 +4,13 @@ Tracked in GitHub `qianquandong/revenue-os#2`.
 
 **Owner decision (2026-10-09):** "好，那就用 booking-no-reply@aimanjack.com 吧"
 
+**Superseded by later owner decisions (2026-10-09 20:32 CT):**
+- "不升级": no Cloudflare Workers Paid, so Cloudflare Email Sending will not be used.
+- Booking email goes through Jack's **Microsoft 365 mailbox, sent as `jack@aimanjack.com`**.
+- Owner notices go to `jack@aimanjack.com`.
+
+The M365 (Microsoft Graph) sender is **not built yet**. It waits on a check of what the GoDaddy-federated tenant allows (admin vs user consent), tracked on revenue-os#2. The Cloudflare transport below stays in the code until then. Sections 3–6 describe that Cloudflare path.
+
 Transactional booking mail is sent from `AI Man Jack <booking-no-reply@aimanjack.com>`, with `Reply-To: jack@aimanjack.com`. Cold outbound never uses `aimanjack.com`; it lives on `getaimanjack.com`.
 
 ## 1. Email paths inventory (nothing moved silently)
