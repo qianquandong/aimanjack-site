@@ -22,6 +22,8 @@
 
 import { createNotifier, composeMessages, describeMailConfig, alertFromEnv, bookingMailConfig, parseOwnerEmails, maskEmail, mailTransport, transportGap, BATCH } from '../../src/booking-notify.mjs';
 import { m365Send, m365Status, m365StartConnect, m365PollConnect, m365Disconnect, m365Ready } from '../../src/m365-mail.mjs';
+import { reserveMailSend, isMailQuotaError } from '../../src/mail-quota.mjs';
+import { productionApiEnabled } from '../../src/deployment-safety.mjs';
 
 const SOURCES = new Set(['web', 'voice', 'sms', 'admin']);
 // 'admin' suppresses the owner's own notice, so it is honoured only with the admin token; anything else is 'web'.
@@ -147,9 +149,11 @@ async function sendMail(env, { to, subject, text, reply_to }) {
   if (mailTransport(env) === 'm365') {
     // Owner decision 2026-10-09: all site mail goes out through the Microsoft 365 mailbox (From = M365_SENDER).
     const res = await m365Send(env, { to, subject, text, reply_to }, { db: (p, o) => sb(env, p, o) });
-    if (res.status !== 'queued') throw new Error(`email m365 ${res.status}: ${res.error ?? ''}`);
+    if (res.status !== 'queued') throw Object.assign(new Error(`email m365 ${res.status}: ${res.error ?? ''}`), { code: res.error });
     return;
   }
+  const quota = await reserveMailSend(env, (p, o) => sb(env, p, o), env.EMAIL_FROM);
+  if (!quota.ok) throw Object.assign(new Error(quota.error), { code: quota.error });
   const r = await fetch(`https://api.cloudflare.com/client/v4/accounts/${env.CF_ACCOUNT_ID}/email/sending/send`, {
     method: 'POST', headers: { authorization: `Bearer ${env.CF_EMAIL_TOKEN}`, 'content-type': 'application/json' },
     body: JSON.stringify({ to, from: { address: env.EMAIL_FROM, name: 'AI Man Jack' }, reply_to, subject, text, html: `<pre style="font:15px/1.5 -apple-system,Segoe UI,sans-serif;white-space:pre-wrap;margin:0">${esc(text)}</pre>` }),
@@ -229,7 +233,9 @@ async function claimCoupon(env, req, ctx) {
   try {
     await sendMail(env, { to: email, subject: `Your $25 AI Man Jack coupon: ${coupon.code}`, text, reply_to: parseOwnerEmails(env.OWNER_EMAIL).list[0] || env.BOOKING_REPLY_TO });
   } catch (e) {
-    await couponPatch(env, coupon.code, { issuance_status: 'failed', delivery_attempts: (coupon.delivery_attempts || 0) + 1, last_error: String(e.message || e).slice(0, 240) }).catch((dbError) => console.error('coupon failure persistence', dbError.message));
+    const quotaBlocked = isMailQuotaError(e.code);
+    await couponPatch(env, coupon.code, { issuance_status: 'failed', delivery_attempts: (coupon.delivery_attempts || 0) + (quotaBlocked ? 0 : 1), last_error: String(e.message || e).slice(0, 240) }).catch((dbError) => console.error('coupon failure persistence', dbError.message));
+    if (quotaBlocked) return fail(503, 'email_unavailable', 'Coupon email is temporarily unavailable. Please try again later.');
     return fail(502, 'email_failed', 'The coupon email was not accepted by the email provider.');
   }
   await couponPatch(env, coupon.code, { issuance_status: 'sent', delivery_attempts: (coupon.delivery_attempts || 0) + 1, delivered_at: new Date().toISOString(), last_error: null }).catch((e) => console.error('coupon sent persistence', e.message));
@@ -272,7 +278,8 @@ async function notify(env, ctx, b, kind, source, eventId, meta) {
   let rows = null;
   try { rows = await n.enqueue(b, eventId, kind, messages, meta); }
   catch (e) { console.error('booking notification ledger unavailable', errCode(e)); }
-  if (rows) { ctx.waitUntil(Promise.allSettled(rows.map((r) => n.attempt(r))).then(() => n.processDue({ limit: BATCH.afterWrite })).catch(() => {})); return; }
+  // Leave subrequest headroom for quota reservations and token refresh; remaining rows stay pending.
+  if (rows) { ctx.waitUntil(Promise.allSettled(rows.slice(0, 2).map((r) => n.attempt(r))).then(() => n.processDue({ limit: BATCH.afterWrite })).catch(() => {})); return; }
   // Ledger unavailable (migration not applied / DB error): still try to send, loudly logged — never silently dropped.
   const c = bookingMailConfig(env);
   const gap = transportGap(env);
@@ -432,6 +439,7 @@ async function notificationsApi(env, req, url, id, ctx) {
 
 export async function onRequest(ctx) {
   const { request: req, env, params } = ctx;
+  if (!productionApiEnabled(env, req)) return fail(503, 'preview_read_only', 'Read-only preview. Booking and email APIs are disabled.');
   const url = new URL(req.url), origin = url.origin, [res, id, extra] = params.route || [];
   try {
     if (res === 'availability' && req.method === 'GET') { sweep(env, ctx); return await availability(env, url); }

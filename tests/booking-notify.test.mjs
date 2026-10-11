@@ -13,7 +13,7 @@ function fakeDb({ failNotifications = false, failEvents = false } = {}) {
     services: [{ business_id: 'aimanjack', id: 'demo-call', name: '20-Minute AI Workflow Call', duration_min: 20, buffer_min: 0, capacity: 1, active: true }],
     staff: [{ business_id: 'aimanjack', id: 'jack', name: 'Jack Qian', active: true }],
     availability_rules: [0, 1, 2, 3, 4, 5, 6].map((w) => ({ business_id: 'aimanjack', staff_id: null, weekday: w, start_hm: '08:00', end_hm: '20:00' })),
-    blocks: [], bookings: [], events: [], notifications: [], mail_tokens: [], rate: {} };
+    blocks: [], bookings: [], events: [], notifications: [], mail_tokens: [], coupon_rate_limits: [], coupons: [] };
   let seq = 0;
   const cmp = (a, b) => (typeof a === 'number' && typeof b === 'number' ? a - b : String(a ?? '').localeCompare(String(b ?? '')));
   const match = (row, k, v) => {
@@ -37,7 +37,13 @@ function fakeDb({ failNotifications = false, failEvents = false } = {}) {
     const filters = [...u.searchParams].filter(([k]) => !SKIP.has(k));
     const ok = (data, status = 200) => new Response(data == null ? '' : JSON.stringify(data), { status });
     if (path === 'rpc/create_booking') { const p = body.p; t.bookings.push({ ...p, status: 'confirmed', created_at: new Date().toISOString(), updated_at: new Date().toISOString() }); return ok(true); }
-    if (path === 'rpc/take_coupon_rate_limit') { const n = (t.rate[body.p_key_hash] ?? 0) + 1; t.rate[body.p_key_hash] = n; return ok(n <= body.p_limit); }
+    if (path === 'rpc/take_coupon_rate_limit') {
+      let row = t.coupon_rate_limits.find(r => r.key_hash === body.p_key_hash);
+      const now = new Date().toISOString();
+      if (!row) { row = { key_hash: body.p_key_hash, window_start: now, requests: 0 }; t.coupon_rate_limits.push(row); }
+      if (Date.parse(row.window_start) <= Date.now() - body.p_window_seconds * 1000) { row.requests = 0; row.window_start = now; }
+      row.requests++; return ok(row.requests <= body.p_limit);
+    }
     if (path === 'rpc/move_booking') { const p = body.p; const b = t.bookings.find((x) => x.id === p.id); Object.assign(b, { start_at: p.start_at, end_at: p.end_at }); return ok(true); }
     const table = path === 'bookings_full' ? 'bookings' : path;
     if (!(table in t)) return ok({ message: 'not found' }, 404);
@@ -54,6 +60,7 @@ function fakeDb({ failNotifications = false, failEvents = false } = {}) {
       const list = Array.isArray(body) ? body : [body]; const out = [];
       for (let r of list) {
         const oc = u.searchParams.get('on_conflict');
+        if (oc && prefer.includes('ignore-duplicates') && t[table].some(x => x[oc] === r[oc])) continue;
         if (oc && prefer.includes('merge-duplicates')) { const ex = t[table].find((x) => x[oc] === r[oc]); if (ex) { Object.assign(ex, r); out.push({ ...ex }); continue; } }
         if (table === 'mail_tokens') r = { generation: 0, needs_reconnect: false, ...r };
         if (table === 'notifications' && t.notifications.some((x) => x.dedupe_key === r.dedupe_key)) { if (prefer.includes('ignore-duplicates')) continue; return ok({ code: '23505' }, 409); }
@@ -81,7 +88,7 @@ function fakeMail(script = []) {
   return { calls, handle };
 }
 
-const ENV = { SUPABASE_URL: 'https://db.test', SB_SECRET_KEY: 'k', CF_ACCOUNT_ID: 'acct', CF_EMAIL_TOKEN: 'mail-token', OWNER_EMAIL: 'owner-inbox@example.com',
+const ENV = { SITE_ENV: 'production', SUPABASE_URL: 'https://db.test', SB_SECRET_KEY: 'k', CF_ACCOUNT_ID: 'acct', CF_EMAIL_TOKEN: 'mail-token', OWNER_EMAIL: 'owner-inbox@example.com',
   BOOKING_EMAIL_FROM: 'booking-no-reply@aimanjack.com', BOOKING_REPLY_TO: 'jack@aimanjack.com', EMAIL_FROM: 'bookings@aimanjack.com', SITE_ORIGIN: 'https://aimanjack.com', ADMIN_TOKEN: 'admin' };
 
 function harness(t, { env = ENV, db = fakeDb(), mail = fakeMail(), alerts = [], ms = null } = {}) {
@@ -442,16 +449,16 @@ const { CF_EMAIL_TOKEN: _cf, ...NO_CF } = ENV;
 const M365 = { ...NO_CF, MAIL_TRANSPORT: 'm365', M365_AUTH: 'delegated', M365_TENANT_ID: 'tenant-guid', M365_CLIENT_ID: 'client-1',
   M365_SENDER: 'jack@aimanjack.com', M365_TOKEN_KEY: KEY, OWNER_EMAIL: 'jack@aimanjack.com' };
 const msJson = (b, status = 200) => new Response(JSON.stringify(b), { status, headers: { 'content-type': 'application/json' } });
-function fakeMs({ me = 'jack@aimanjack.com', send = [], refresh = 'ok', device = ['authorization_pending', 'ok'], onRefresh = null } = {}) {
+function fakeMs({ me = 'jack@aimanjack.com', send = [], refresh = 'ok', device = ['authorization_pending', 'ok'], onRefresh = null, onDevice = null, onPoll = null } = {}) {
   const calls = []; const st = { rt: 'rt-1', n: 0 };
   const handle = async (url, init = {}) => {
     const u = new URL(url);
-    if (u.pathname === '/tenant-guid/oauth2/v2.0/devicecode') { calls.push({ kind: 'devicecode', p: new URLSearchParams(init.body) }); return msJson({ device_code: 'DEV-SECRET-123', user_code: 'ABCD-EFGH', verification_uri: 'https://microsoft.com/devicelogin', expires_in: 900, interval: 5 }); }
+    if (u.pathname === '/tenant-guid/oauth2/v2.0/devicecode') { calls.push({ kind: 'devicecode', p: new URLSearchParams(init.body) }); if (onDevice) await onDevice(); return msJson({ device_code: 'DEV-SECRET-123', user_code: 'ABCD-EFGH', verification_uri: 'https://microsoft.com/devicelogin', expires_in: 900, interval: 5 }); }
     if (u.pathname === '/tenant-guid/oauth2/v2.0/token') {
       const p = new URLSearchParams(init.body); calls.push({ kind: 'token', grant: p.get('grant_type'), p });
       const issue = () => { st.n += 1; st.rt = `rt-${st.n + 1}`; return msJson({ access_token: `at-${st.n}`, refresh_token: st.rt, expires_in: 3600 }); };
       if (p.get('grant_type') !== 'client_credentials') assert.equal(p.get('client_secret'), null, 'a public client never sends a secret');
-      if (p.get('grant_type') === 'urn:ietf:params:oauth:grant-type:device_code') { assert.equal(p.get('device_code'), 'DEV-SECRET-123'); const step = device.shift() ?? 'ok'; return step === 'ok' ? issue() : typeof step === 'object' ? msJson(step.body, step.status) : msJson({ error: step }, 400); }
+      if (p.get('grant_type') === 'urn:ietf:params:oauth:grant-type:device_code') { assert.equal(p.get('device_code'), 'DEV-SECRET-123'); if (onPoll) await onPoll(); const step = device.shift() ?? 'ok'; return step === 'ok' ? issue() : typeof step === 'object' ? msJson(step.body, step.status) : msJson({ error: step }, 400); }
       if (p.get('grant_type') === 'refresh_token') { if (onRefresh) await onRefresh(); if (refresh !== 'ok') return msJson({ error: refresh }, 400); assert.equal(p.get('refresh_token'), st.rt, 'always presents the latest (rotated) refresh token'); return issue(); }
       if (p.get('grant_type') === 'client_credentials') { assert.equal(p.get('client_secret'), 'app-secret'); return msJson({ access_token: 'app-at', expires_in: 3600 }); }
     }
@@ -749,4 +756,83 @@ test('L7: coupon form says "temporarily unavailable" (503, no coupon row) while 
   const r = await onRequest({ request: req, env: M365, params: { route: ['coupons'] }, waitUntil() {} });
   globalThis.fetch = fetchBefore;
   assert.equal(r.status, 503); assert.equal((await r.json()).error, 'email_unavailable');
+});
+
+test('disconnect wins over an earlier successful device-code poll', async (t) => {
+  _resetM365CacheForTests();
+  let h;
+  const ms = fakeMs({ device: ['ok'], onPoll: async () => {
+    assert.equal((await h.call('POST', '/v1/admin/m365/disconnect', null, ADMIN)).body.status, 'disconnected');
+  } });
+  h = harness(t, { env: M365, ms });
+  await h.call('POST', '/v1/admin/m365/connect', null, ADMIN);
+  const result = await h.call('POST', '/v1/admin/m365/poll', null, ADMIN);
+  assert.equal(result.body.status, 'superseded');
+  assert.equal(h.db.t.mail_tokens[0].refresh_token_enc, null);
+  assert.equal((await book(h)).status, 201);
+  assert.equal(ms.sends().length, 0, 'the losing poll must not cache usable credentials');
+});
+
+test('disconnect during device-code creation prevents publishing a new pending login', async (t) => {
+  let h;
+  const ms = fakeMs({ onDevice: () => h.call('POST', '/v1/admin/m365/disconnect', null, ADMIN) });
+  h = harness(t, { env: M365, ms });
+  const result = await h.call('POST', '/v1/admin/m365/connect', null, ADMIN);
+  assert.equal(result.status, 409);
+  assert.equal(result.body.error, 'connection_changed');
+  assert.equal(result.body.user_code, undefined);
+  assert.equal(h.db.t.mail_tokens[0].pending_device_enc, null);
+});
+
+test('a rejected old poll cannot clear a newer pending login', async (t) => {
+  let h;
+  const ms = fakeMs({ device: ['access_denied'], onPoll: () => h.call('POST', '/v1/admin/m365/connect', null, ADMIN) });
+  h = harness(t, { env: M365, ms });
+  await h.call('POST', '/v1/admin/m365/connect', null, ADMIN);
+  const before = h.db.t.mail_tokens[0].pending_device_enc;
+  await h.call('POST', '/v1/admin/m365/poll', null, ADMIN);
+  const after = h.db.t.mail_tokens[0];
+  assert.ok(after.pending_device_enc);
+  assert.notEqual(after.pending_device_enc, before);
+  assert.equal(after.generation, 2);
+});
+
+test('two concurrent successful polls commit only one connection', async (t) => {
+  let reached = 0, release;
+  const barrier = new Promise(resolve => { release = resolve; });
+  const ms = fakeMs({ device: ['ok', 'ok'], onPoll: async () => { if (++reached === 2) release(); await barrier; } });
+  const h = harness(t, { env: M365, ms });
+  await h.call('POST', '/v1/admin/m365/connect', null, ADMIN);
+  const results = await Promise.all([h.call('POST', '/v1/admin/m365/poll', null, ADMIN), h.call('POST', '/v1/admin/m365/poll', null, ADMIN)]);
+  assert.deepEqual(results.map(r => r.body.status).sort(), ['connected', 'superseded']);
+  assert.equal(h.db.t.mail_tokens.length, 1);
+  assert.equal(h.db.t.mail_tokens[0].generation, 2);
+});
+
+test('coupon customer, coupon owners and booking mail share one atomic mailbox cap', async (t) => {
+  _resetM365CacheForTests();
+  const env = { ...M365, MAIL_DAILY_CAP: '2', OWNER_EMAIL: 'first@example.com, second@example.com' };
+  const ms = fakeMs(), h = harness(t, { env, ms });
+  await connect(h);
+  const headers = { origin: env.SITE_ORIGIN, 'cf-connecting-ip': '203.0.113.2' };
+  const first = await h.call('POST', '/v1/coupons', { email: 'coupon@example.com' }, headers);
+  assert.equal(first.status, 201);
+  assert.equal(ms.sends().length, 2, 'one customer plus at most one owner notice fit the budget');
+  assert.ok(ms.sends().some(s => s.body.message.toRecipients[0].emailAddress.address === 'coupon@example.com'));
+  const second = await h.call('POST', '/v1/coupons', { email: 'another@example.com' }, headers);
+  assert.equal(second.status, 503);
+  assert.equal(second.body.error, 'email_unavailable');
+  assert.equal((await book(h)).status, 201, 'quota must not fail the booking itself');
+  assert.equal(ms.sends().length, 2);
+  assert.ok(h.db.t.notifications.every(n => n.status === 'failed' && n.attempts === 0 && n.last_error === 'daily_send_cap_reached'));
+});
+
+test('coupon cannot bypass booking sends recorded before quota-slot rollout', async (t) => {
+  _resetM365CacheForTests();
+  const env = { ...M365, MAIL_DAILY_CAP: '1' }, ms = fakeMs(), h = harness(t, { env, ms });
+  await connect(h);
+  h.db.t.notifications.push({ id: 99, status: 'queued', sent_at: new Date().toISOString() });
+  const result = await h.call('POST', '/v1/coupons', { email: 'coupon@example.com' }, { origin: env.SITE_ORIGIN, 'cf-connecting-ip': '203.0.113.3' });
+  assert.equal(result.status, 503);
+  assert.equal(ms.sends().length, 0);
 });

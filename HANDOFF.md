@@ -1,5 +1,7 @@
 # HANDOFF MASTER — aimanjack.com（2026-09-18，企业 AI 培训 + SEO Operating System v2）
 
+**2026-10-11 部署规则更新，优先于下文历史命令：** `sh deploy.sh` 只在本地构建、测试并生成只读预览；`--preview` 明确上传到 `aimanjack-review` 的 `review-<commit>` 分支，API 禁用；正式部署必须显式使用 `--production` 且位于 production 分支。正式数据库/邮箱变量只放 `[env.production.vars]`，不能复制凭据到预览。邮件配额复用既有原子限流表/RPC，无新增迁移。详见 `docs/BOOKING-EMAIL.md`。
+
 给下一个接手的人（或下一个会话）。读完这一页就能接着干，不用翻聊天记录。
 规格看 `PRD.md`（2026-09-18 版）；09-09 的 AI 前台 PRD 已作废，在 git 历史里。
 

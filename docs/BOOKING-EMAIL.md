@@ -21,7 +21,7 @@ Cold outbound never uses `aimanjack.com`; it lives on `getaimanjack.com`.
 | Lane | From | Reply-To | To |
 |---|---|---|---|
 | Booking confirmation, change or cancel (customer) | `jack@aimanjack.com` (M365) | none (replies reach the sending mailbox) | `customer_email`, if given and valid |
-| Booking owner notice | `jack@aimanjack.com` (M365) | the customer's email, if valid | `OWNER_EMAIL` = `jack@aimanjack.com` (`[vars]`; comma-separated for several, max 5) |
+| Booking owner notice | `jack@aimanjack.com` (M365) | the customer's email, if valid | `OWNER_EMAIL` = `jack@aimanjack.com` (`[env.production.vars]`; comma-separated for several, max 5) |
 | $25 coupon (customer) | `jack@aimanjack.com` (M365) | none | claimant |
 | Coupon owner notice | `jack@aimanjack.com` (M365) | claimant | each `OWNER_EMAIL` inbox |
 
@@ -57,9 +57,11 @@ Every message sent through M365 is also saved in the mailbox's **Sent Items**.
   - `customer_email` must be a valid address (400 otherwise).
   - Public bookings are limited to 6 per IP per hour.
   - Each customer address gets at most **4 emails per 24 h**. The next is `held`, alerted, and releasable by the owner.
-  - All site mail is capped at `MAIL_DAILY_CAP` (default **40**) per 24 h. Over the cap, sends wait, using no attempts.
+  - Booking mail, coupon customer mail and coupon owner notices all reserve from the same mailbox budget before dispatch. `MAIL_DAILY_CAP` defaults to **40**, accepts integers **1–100**, and limits attempts over a rolling 24 hours. Each slot allows one attempt per 24 hours using the existing `booking.take_coupon_rate_limit` RPC with a hashed mailbox/slot key. Concurrent Workers cannot spend the same slot. No new table or migration is required. Storage failures and invalid limits block sending.
+  - Slots are deliberately not refunded after errors or ambiguous provider outcomes. A known stale-token 401 retry remains one logical attempt. Recent booking ledger entries conservatively reduce the available slot set during rollout, so prior sends do not receive a fresh full budget. New booking entries may consequently count twice and reduce throughput; the cap is an upper bound, not a guaranteed daily allowance. Keep one consistent cap per mailbox across deployments; change the cap after a 24-hour pause in sending so old/new slot sets cannot overlap under different limits.
+  - At the cap, booking messages wait without spending retry attempts; coupon requests return 503 and can be retried later. Coupon owner notices remain best-effort and can be suppressed when the customer email used the last slot.
 - **Stale mail.** A customer email still unsent after **24 h** (for example, created before the mailbox was connected) becomes `expired` instead of arriving late. Owner notices still go. The owner can resend from the page.
-- **Workers Free budget (50 subrequests per invocation).** About 5–8 subrequests per message, so batches stay small: 1 after a write, 3 per availability sweep, 6 per "Retry due emails now".
+- **Request budget.** Quota reservations add shared-store requests. At most two newly enqueued rows are attempted immediately, followed by one due row; availability sweeps process two, and "Retry due emails now" processes three. Remaining rows stay in the ledger for a later sweep. Contention retries are bounded.
 
 ## 3. Delivery ledger (both transports)
 
@@ -103,6 +105,13 @@ Every message sent through M365 is also saved in the mailbox's **Sent Items**.
 - **`deploy.sh` and `.deployignore`.**
   - The test gate now runs `node --test tests/*.test.mjs`. The old `tests/` directory form fails on Node 22, which made every deploy refuse.
   - `tests/` is no longer copied into the published site.
+  - No argument / `--prepare-preview` only builds, tests and stages `.preview/site`. It never uploads.
+  - `--preview` publishes an inert Worker and public assets to the separate `aimanjack-review` project with an explicit `review-<commit>` branch. It never sends IndexNow notifications. Check this project's production branch is still `main` before uploading.
+  - `--production` is explicit and rejected outside the `production` Git branch; it supplies `--branch production` to Wrangler.
+  - `wrangler.toml` defaults and `env.preview` contain only `SITE_ENV=preview`. Live variables are restricted to `env.production.vars`; the API also checks production host/branch before any database, background processing or mail call. Preview remains inert even if stale dashboard secrets exist.
+  - Shared credentials, environment files, source code, internal state and migrations are excluded from preview assets. Never copy production secrets into preview. A functional preview requires separately authorized isolated data and mailbox setup; it is not enabled by this patch.
+
+**Connection concurrency.** Starting a login reserves a new generation before contacting Microsoft. Poll completion/cleanup require both that generation and the same pending login; Disconnect conditionally advances the generation and clears credentials. A late device-code response, old poll or competing poll cannot restore a disconnected connection or overwrite a newer login. The owner page also stops displaying/polling an obsolete login flow.
 
 ### Optional automated retry scheduler (off by default)
 
@@ -132,14 +141,14 @@ The workflow calls only `https://aimanjack.com/v1/notifications/process`; it nev
 If step 2 is refused because GoDaddy restricts app registration: stop. The options then are app registration through GoDaddy support, defederating the tenant from GoDaddy, or another sender. Each is an owner decision.
 
 **B. Deploy.**
-1. Commit `M365_CLIENT_ID` into `wrangler.toml [vars]`.
-2. Set the token key **without ever displaying it**, for production and preview:
+1. Commit `M365_CLIENT_ID` into `wrangler.toml [env.production.vars]`.
+2. Set the token key **without ever displaying it**, for production only:
    `openssl rand -base64 32 | npx wrangler pages secret put M365_TOKEN_KEY --project-name aimanjack`
 3. Apply the migrations:
    - `node scripts/supabase-sql.mjs db/migrations/2026-10-09-booking-notifications.sql`
    - `node scripts/supabase-sql.mjs db/migrations/2026-10-09-mail-tokens.sql`
-4. If an old `OWNER_EMAIL` **secret** was ever created, delete it. `OWNER_EMAIL` now lives in `[vars]`, and a var and a secret with the same name clash.
-5. `sh deploy.sh --preview` and check `/v1/admin/email-config`. Then deploy production.
+4. If an old `OWNER_EMAIL` **secret** was ever created, delete it. `OWNER_EMAIL` now lives in `[env.production.vars]`, and a var and a secret with the same name clash.
+5. `sh deploy.sh` prepares a local read-only preview. After preview upload is authorized, `sh deploy.sh --preview` uploads it to the separate review project. Its `/v1/admin/email-config` must return `503 preview_read_only`. Real booking/mail tests require an isolated functional environment; do not point this preview at the production database. Production deployment is a separate authorized step: `sh deploy.sh --production` from the production branch.
 6. On https://aimanjack.com/admin/bookings/: **Connect Microsoft 365**, enter the code, sign in, accept. The card turns **Connected**.
 7. Run the live end-to-end check (§6).
 8. Once M365 works, the Cloudflare token `aimanjack-site booking email` and the `CF_EMAIL_TOKEN` secret can be deleted.
@@ -161,7 +170,7 @@ Public DNS was checked 2026-10-09 via dns.google.
 | `_dmarc` | `v=DMARC1; p=quarantine; adkim=r; aspf=r; rua=mailto:dmarc_rua@onsecureserver.net;` | Unaligned mail is quarantined |
 | `cf-bounce._domainkey.aimanjack.com` | **NXDOMAIN** | aimanjack.com is **not onboarded** to Cloudflare Email Sending yet. Mail from booking-no-reply@ cannot pass DMARC today. |
 | `CF_EMAIL_TOKEN` | Absent as of the 2026-09-15 secret listing (agent-os state); not re-checked | If still absent, **no booking email has been sent at all**. The old code returned silently. |
-| `OWNER_EMAIL` | Was a `[vars]` entry in `wrangler.toml` | Cloudflare: *"When used in your Pages Functions projects, your Wrangler file is the source of truth… you will be able to see, but not edit"* the same fields in the dashboard. **A dashboard change to OWNER_EMAIL could not take effect while it lived in wrangler.toml.** It is now removed from `[vars]` and must be set as a secret. |
+| `OWNER_EMAIL` | Now an `[env.production.vars]` entry in `wrangler.toml` | The repository value is the source of truth for production. Do not create a duplicate secret or copy this setting into preview. |
 
 Sources:
 - https://developers.cloudflare.com/email-service/configuration/domains/
@@ -196,10 +205,10 @@ Every step is an owner-authorized production change.
 
 1. Onboard the domain (§4) and confirm `cf-bounce._domainkey.aimanjack.com` resolves.
 2. `npx wrangler pages secret put CF_EMAIL_TOKEN --project-name aimanjack` (Email Sending → Edit).
-3. `npx wrangler pages secret put OWNER_EMAIL --project-name aimanjack`. Do this **before** deploying: the var was removed from `wrangler.toml`, so an unset secret means owner notices are recorded as `config_missing:OWNER_EMAIL`.
+3. Confirm `OWNER_EMAIL` in `[env.production.vars]` in `wrangler.toml`; do not create a same-name secret. An unset owner address means owner notices are recorded as `config_missing:OWNER_EMAIL`.
 4. Optional: `ALERT_NTFY_URL` (+ `ALERT_NTFY_TOKEN`).
 5. Apply the migration: `node scripts/supabase-sql.mjs db/migrations/2026-10-09-booking-notifications.sql`.
-6. `sh deploy.sh --preview`. Check `GET /v1/admin/email-config` on the preview, then deploy production.
+6. The current preview is read-only: `sh deploy.sh --preview` targets the review project and its API returns 503. Do not use it for a live mail check. A production upload requires separate authorization and `sh deploy.sh --production` from the production branch.
 7. Run the live E2E (§6).
 
 ## 6. Live end-to-end (proves inbox receipt; owner approval required)

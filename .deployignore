@@ -3,12 +3,17 @@
 .wrangler
 .claude
 .deploy
+.preview
+node_modules
+.env*
+.dev.vars*
 .DS_Store
 *.md
 deploy.sh
 .deployignore
 design-system
 output
+state
 .gitignore
 scripts
 Satoshi-Variable.woff2
@@ -17,6 +22,7 @@ src
 db
 functions
 wrangler.toml
+wrangler*.json*
 .dev.vars
 docs
 tests

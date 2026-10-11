@@ -4,7 +4,7 @@ import { onRequest } from '../functions/v1/[[route]].js';
 
 const PROCESS_KEY = 'p'.repeat(64);
 const env = {
-  ADMIN_TOKEN: 'private-owner-administrator',
+SITE_ENV: 'production',   ADMIN_TOKEN: 'private-owner-administrator',
   NOTIFICATION_PROCESS_TOKEN: PROCESS_KEY,
   SUPABASE_URL: 'https://supabase.test.invalid',
   SB_SECRET_KEY: 'test-only-service-key',

@@ -6,6 +6,14 @@ pages_build_output_dir = ".deploy"
 compatibility_date = "2026-06-01"
 
 [vars]
+# Local and preview are inert, including when the dashboard still has old secrets.
+SITE_ENV = "preview"
+
+[env.preview.vars]
+SITE_ENV = "preview"
+
+[env.production.vars]
+SITE_ENV = "production"
 # Booking data lives in Supabase (project aimanjack-crm, schema `booking`; db/schema.sql).
 SUPABASE_URL = "https://lalmvbxibkozmtnpfbcw.supabase.co"
 # Site mail transport (owner decision 2026-10-09, revenue-os#2): NO Cloudflare Workers Paid ⇒ no Cloudflare Email
@@ -34,7 +42,7 @@ SITE_ORIGIN = "https://aimanjack.com"
 #   curl -H "authorization: Bearer $ADMIN_TOKEN" https://aimanjack.com/v1/admin/email-config
 OWNER_EMAIL = "jack@aimanjack.com"
 
-# Secrets (not here) — set for production AND preview (`--env preview`):
+# Secrets (not here) — production only. Do not copy live secrets into preview.
 #   npx wrangler pages secret put SB_SECRET_KEY --project-name aimanjack   Supabase secret (service-role) key
 #   npx wrangler pages secret put ADMIN_TOKEN   --project-name aimanjack   bearer for GET /v1/bookings?business=…
 #   npx wrangler pages secret put M365_TOKEN_KEY --project-name aimanjack   32 random bytes, base64 (`openssl rand -base64 32`);

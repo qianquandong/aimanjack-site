@@ -23,6 +23,8 @@
 // isolates on their next send, and a refresh racing a disconnect cannot write its rotated token back.
 // Nothing here logs or returns tokens, codes or message contents.
 
+import { reserveMailSend } from './mail-quota.mjs';
+
 export const GRAPH = 'https://graph.microsoft.com/v1.0';
 export const LOGIN = 'https://login.microsoftonline.com';
 export const M365_SENDER_DEFAULT = 'jack@aimanjack.com';
@@ -88,11 +90,14 @@ async function tokenRequest(c, params, fetchImpl) {
 }
 
 const tokenRow = async (db) => (await db('mail_tokens?provider=eq.m365&select=*'))?.[0] ?? null;
-const upsertRow = (db, fields) => db('mail_tokens?on_conflict=provider', { method: 'POST', body: { provider: 'm365', ...fields, updated_at: nowIso() },
-  headers: { prefer: 'resolution=merge-duplicates,return=minimal' } });
+// Initialization must never overwrite a connection created by another request.
+const ensureRow = (db) => db('mail_tokens?on_conflict=provider', { method: 'POST', body: { provider: 'm365' },
+  headers: { prefer: 'resolution=ignore-duplicates,return=minimal' } });
 /** PATCH only if the connection generation is unchanged (a disconnect/reconnect in between wins). */
 const patchGen = (db, gen, fields, extra = '') => db(`mail_tokens?provider=eq.m365&generation=eq.${gen}${extra}`, { method: 'PATCH', body: { ...fields, updated_at: nowIso() },
   headers: { prefer: 'return=representation' } });
+const patchPending = (db, row, fields) => patchGen(db, row.generation ?? 0, fields,
+  `&pending_device_enc=eq.${encodeURIComponent(row.pending_device_enc)}`);
 
 const RECONNECT_ERRORS = /invalid_grant|interaction_required|invalid_client|unauthorized_client|consent_required/;
 
@@ -129,7 +134,7 @@ export async function m365AccessToken(env, db, fetchImpl = (...a) => fetch(...a)
       return { gap: `m365_reconnect_required:${t.error}` };
     }
     // Rotation, conditional on the generation: a disconnect that happened meanwhile is never undone.
-    const stored = await patchGen(db, gen, { ...(t.refresh_token ? { refresh_token_enc: await seal(c.tokenKey, 'refresh', t.refresh_token) } : {}), last_refresh_at: nowIso(), last_error: null }).catch(() => null);
+    const stored = await patchGen(db, gen, { ...(t.refresh_token ? { refresh_token_enc: await seal(c.tokenKey, 'refresh', t.refresh_token) } : {}), last_refresh_at: nowIso(), last_error: null });
     if (Array.isArray(stored) && stored.length === 0) { tokenCache.delete(key); return { gap: 'config_missing:M365_CONNECTION' }; }   // disconnected mid-refresh
     tokenCache.set(key, { token: t.access_token, exp: Date.now() + Math.max(60, (Number(t.expires_in) || 3600) - 120) * 1000, gen });
     return { token: t.access_token };
@@ -145,10 +150,16 @@ export async function m365Send(env, msg, { db, fetchImpl = (...a) => fetch(...a)
   const message = { subject: msg.subject, body: { contentType: 'Text', content: msg.text }, toRecipients: [{ emailAddress: { address: msg.to } }] };
   if (msg.reply_to && !sameAddr(msg.reply_to, c.sender)) message.replyTo = [{ emailAddress: { address: msg.reply_to } }];
   const url = c.auth === 'app' ? `${GRAPH}/users/${encodeURIComponent(c.sender)}/sendMail` : `${GRAPH}/me/sendMail`;
+  let reserved = false;
   for (let pass = 0; pass < 2; pass += 1) {
     const t = await m365AccessToken(env, db, fetchImpl, { force: pass > 0, onReconnectRequired });
     if (t.gap) return { status: 'failed', retry: true, configGap: true, error: t.gap };
     if (t.error) return { status: 'failed', retry: true, error: short(t.error) };
+    if (!reserved) {
+      const quota = await reserveMailSend(env, db, c.sender);
+      if (!quota.ok) return { status: 'failed', retry: true, configGap: true, error: quota.error };
+      reserved = true;
+    }
     let r;
     try { r = await fetchImpl(url, { method: 'POST', headers: { authorization: `Bearer ${t.token}`, 'content-type': 'application/json' }, body: JSON.stringify({ message, saveToSentItems: true }) }); }
     catch (e) {
@@ -190,13 +201,24 @@ export async function m365StartConnect(env, db, fetchImpl = (...a) => fetch(...a
   const gap = m365ConfigGap(env); if (gap) return { ok: false, error: gap };
   const c = m365Config(env);
   if (c.auth !== 'delegated') return { ok: false, error: 'not_needed_for_app_auth' };
+  let generation;
+  try {
+    await ensureRow(db);
+    const row = await tokenRow(db);
+    if (!row) return { ok: false, error: 'token_store_error' };
+    generation = (row.generation ?? 0) + 1;
+    const claimed = await patchGen(db, row.generation ?? 0, { generation, pending_device_enc: null, pending_expires_at: null });
+    if (!claimed?.length) return { ok: false, error: 'connection_changed' };
+    tokenCache.delete(cacheKey(c));
+  } catch (e) { return { ok: false, error: isMissingTable(e) ? 'config_missing:mail_tokens_table' : 'token_store_error' }; }
   let r;
   try { r = await fetchImpl(`${LOGIN}/${c.tenant}/oauth2/v2.0/devicecode`, { method: 'POST', headers: { 'content-type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams({ client_id: c.clientId, scope: M365_DELEGATED_SCOPE }).toString() }); }
   catch { return { ok: false, error: 'network_error' }; }
   const j = await r.json().catch(() => ({}));
   if (!r.ok || !j.device_code) return { ok: false, error: short(j.error || `http_${r.status}`, 80) };
   try {
-    await upsertRow(db, { pending_device_enc: await seal(c.tokenKey, 'device', j.device_code), pending_expires_at: new Date(Date.now() + (Number(j.expires_in) || 900) * 1000).toISOString() });
+    const stored = await patchGen(db, generation, { pending_device_enc: await seal(c.tokenKey, 'device', j.device_code), pending_expires_at: new Date(Date.now() + (Number(j.expires_in) || 900) * 1000).toISOString() }, '&pending_device_enc=is.null');
+    if (!stored?.length) return { ok: false, error: 'connection_changed' };
   } catch (e) { return { ok: false, error: isMissingTable(e) ? 'config_missing:mail_tokens_table' : 'token_store_error' }; }
   // The sign-in page is always Microsoft's fixed device-login URL (never a URL taken from a response).
   return { ok: true, user_code: String(j.user_code ?? '').slice(0, 32), verification_uri: M365_DEVICE_LOGIN_URL, expires_in: Number(j.expires_in) || 900, interval: Number(j.interval) || 5, sign_in_as: c.sender };
@@ -207,7 +229,7 @@ export async function m365PollConnect(env, db, fetchImpl = (...a) => fetch(...a)
   const c = m365Config(env);
   const row = await tokenRow(db);
   if (!row?.pending_device_enc) return { status: row?.refresh_token_enc && !row.needs_reconnect ? 'connected' : 'none' };
-  const clearPending = () => upsertRow(db, { pending_device_enc: null, pending_expires_at: null });
+  const clearPending = () => patchPending(db, row, { pending_device_enc: null, pending_expires_at: null });
   if (row.pending_expires_at && row.pending_expires_at < nowIso()) { await clearPending(); return { status: 'expired' }; }
   let deviceCode; try { deviceCode = await unseal(c.tokenKey, 'device', row.pending_device_enc); } catch { await clearPending(); return { status: 'error', error: 'unsealable' }; }
   const t = await tokenRequest(c, { grant_type: 'urn:ietf:params:oauth:grant-type:device_code', device_code: deviceCode }, fetchImpl);
@@ -229,8 +251,9 @@ export async function m365PollConnect(env, db, fetchImpl = (...a) => fetch(...a)
   if (!sameAddr(mail, c.sender) && !sameAddr(upn, c.sender)) { await clearPending(); return { status: 'wrong_account', account: maskEmail(mail || upn), expected: c.sender }; }
   if (!t.refresh_token) { await clearPending(); return { status: 'error', error: 'no_refresh_token_offline_access_missing' }; }
   const gen = (row.generation ?? 0) + 1;
-  await upsertRow(db, { refresh_token_enc: await seal(c.tokenKey, 'refresh', t.refresh_token), account: c.sender, generation: gen, needs_reconnect: false, last_error: null,
+  const stored = await patchPending(db, row, { refresh_token_enc: await seal(c.tokenKey, 'refresh', t.refresh_token), account: c.sender, generation: gen, needs_reconnect: false, last_error: null,
     connected_at: nowIso(), last_refresh_at: nowIso(), pending_device_enc: null, pending_expires_at: null });
+  if (!stored?.length) return { status: 'superseded' };
   tokenCache.set(cacheKey(c), { token: t.access_token, exp: Date.now() + Math.max(60, (Number(t.expires_in) || 3600) - 120) * 1000, gen });
   return { status: 'connected', account: c.sender };
 }
@@ -238,11 +261,17 @@ export async function m365PollConnect(env, db, fetchImpl = (...a) => fetch(...a)
 /** Stops sending on every isolate at its next send. Revoking consent (https://myapps.microsoft.com) also kills the token at Microsoft. */
 export async function m365Disconnect(env, db) {
   const c = m365Config(env);
-  const row = await tokenRow(db).catch(() => null);
-  await upsertRow(db, { refresh_token_enc: null, account: null, connected_at: null, pending_device_enc: null, pending_expires_at: null,
-    needs_reconnect: false, last_error: null, generation: (row?.generation ?? 0) + 1 });
-  tokenCache.delete(cacheKey(c));
-  return { status: 'disconnected', note: 'To also revoke it at Microsoft immediately: https://myapps.microsoft.com → the app → Revoke.' };
+  await ensureRow(db);
+  for (let attempt = 0; attempt < 3; attempt++) {
+    const row = await tokenRow(db);
+    if (!row) throw new Error('token_store_error');
+    const stored = await patchGen(db, row.generation ?? 0, { refresh_token_enc: null, account: null, connected_at: null, pending_device_enc: null, pending_expires_at: null,
+      needs_reconnect: false, last_error: null, generation: (row.generation ?? 0) + 1 });
+    if (!stored?.length) continue;
+    tokenCache.delete(cacheKey(c));
+    return { status: 'disconnected', note: 'To also revoke it at Microsoft immediately: https://myapps.microsoft.com → the app → Revoke.' };
+  }
+  throw new Error('connection_changed_retry_disconnect');
 }
 
 /** Owner-safe status for /v1/admin/email-config. */

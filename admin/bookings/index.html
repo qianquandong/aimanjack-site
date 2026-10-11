@@ -98,6 +98,8 @@
   }
   // Microsoft 365: the site sends as your mailbox. Connect once (sign in on any device with the code shown here).
   var gapText = { 'config_missing:M365_CLIENT_ID': 'The app registration ID (M365_CLIENT_ID) is not set yet.', 'config_missing:M365_TOKEN_KEY': 'The secret M365_TOKEN_KEY is not set yet.', 'config_invalid:M365_TOKEN_KEY': 'M365_TOKEN_KEY must be 32 random bytes in base64.', 'config_missing:M365_TENANT_ID': 'M365_TENANT_ID is not set.' };
+  var mailFlow = 0;
+  function stopMailFlow() { mailFlow++; $('m365flow').innerHTML = ''; }
   function renderM365(c) {
     var el = $('m365');
     if (c.transport !== 'm365' || !c.m365) { el.innerHTML = 'Not used (mail transport: ' + esc(c.transport) + ').'; return; }
@@ -111,25 +113,29 @@
       : '<span class="chip bad">Not connected — no email can be sent</span><div class="row" style="margin-top:8px"><button id="m365connect" type="button">Connect Microsoft 365</button></div>')
       ;
     $('m365connect').onclick = connectM365;
-    if ($('m365disconnect')) $('m365disconnect').onclick = function () { if (confirm('Disconnect? The site stops sending email until you connect again. To revoke it at Microsoft too, use myapps.microsoft.com.')) api('/v1/admin/m365/disconnect', { method: 'POST' }).then(load).catch(show); };
+    if ($('m365disconnect')) $('m365disconnect').onclick = function () { if (confirm('Disconnect? The site stops sending email until you connect again. To revoke it at Microsoft too, use myapps.microsoft.com.')) { stopMailFlow(); api('/v1/admin/m365/disconnect', { method: 'POST' }).then(load).catch(show); } };
   }
   function connectM365() {
+    stopMailFlow(); var flow = mailFlow;
     api('/v1/admin/m365/connect', { method: 'POST' }).then(function (r) {
+      if (flow !== mailFlow) return;
       if (!r.ok) { show('Could not start: ' + (r.error || 'error')); return; }
       $('m365flow').innerHTML = '<p>1. Open <a href="' + esc(r.verification_uri) + '" target="_blank" rel="noopener">' + esc(r.verification_uri) + '</a> (any device).<br>2. Enter this code:</p><div class="code">' + esc(r.user_code) + '</div><p>3. Sign in as <b>' + esc(r.sign_in_as) + '</b> and accept <i>Send mail as you</i>.</p><p id="m365wait" class="muted">Waiting for you to finish…</p>';
       var until = Date.now() + r.expires_in * 1000, every = Math.max(5, r.interval) * 1000;
       var say = function (t) { var w = $('m365wait'); if (w) w.textContent = t; };   // the card above may be redrawn; this box is not
       (function poll() {
+        if (flow !== mailFlow) return;
         if (Date.now() > until) { say('The code expired. Press Connect again.'); return; }
         api('/v1/admin/m365/poll', { method: 'POST' }).then(function (p) {
+          if (flow !== mailFlow) return;
           if (p.status === 'pending') { setTimeout(poll, every); return; }
           var msg = { connected: 'Connected as ' + p.account + '. Booking emails can go out now.', denied: 'You declined the permission. Nothing was connected.', expired: 'The code expired. Press Connect again.', wrong_account: 'That was ' + (p.account || 'another account') + ' — sign in as ' + p.expected + '. Nothing was connected.' }[p.status] || ('Not connected: ' + (p.error || p.status));
           say(msg); if (p.status === 'connected') setTimeout(load, 1500);
-        }).catch(function (e) { say(e.message + ' — retrying…'); setTimeout(poll, every); });
+        }).catch(function (e) { if (flow !== mailFlow) return; say(e.message + ' — retrying…'); setTimeout(poll, every); });
       })();
     }).catch(show);
   }
-  function lock() { try { sessionStorage.removeItem(KEY); } catch (e) {} $('app').hidden = true; $('login').hidden = false; }
+  function lock() { stopMailFlow(); try { sessionStorage.removeItem(KEY); } catch (e) {} $('app').hidden = true; $('login').hidden = false; }
   $('login').onsubmit = function (e) { e.preventDefault(); try { sessionStorage.setItem(KEY, $('token').value.trim()); } catch (x) {} $('token').value = ''; $('login').hidden = true; $('app').hidden = false; load(); };
   $('refresh').onclick = load;
   $('process').onclick = function () { api('/v1/notifications/process', { method: 'POST' }).then(load).catch(show); };
