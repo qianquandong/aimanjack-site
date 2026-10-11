@@ -113,6 +113,8 @@ Every message sent through M365 is also saved in the mailbox's **Sent Items**.
 
 **Connection concurrency.** Starting a login reserves a new generation before contacting Microsoft. Poll completion/cleanup require both that generation and the same pending login; Disconnect conditionally advances the generation and clears credentials. A late device-code response, old poll or competing poll cannot restore a disconnected connection or overwrite a newer login. The owner page also stops displaying/polling an obsolete login flow.
 
+**Original-project automatic previews.** Cloudflare Pages `aimanjack` uses the build command `node scripts/cloudflare-preview-build.mjs` and the existing `.deploy` output directory. `.node-version` selects Node 22. The command requires `CF_PAGES=1`, a nonempty non-production `CF_PAGES_BRANCH`, and `SITE_ENV=preview`; it refuses other contexts before any build or file changes. It builds the site, runs the complete offline test suite, then stages only public assets and the inert `_worker.js`. Pages advanced mode ignores the root `/functions` when that output Worker exists. Even if old preview secrets remain configured remotely, the Worker contains no database or email client. Build/test failures stop publication. Production is still a separately authorized manual deployment; the shared automatic build command deliberately refuses the production branch. Roll back this build-setting change by restoring an empty build command (the prior automatic check would again fail for missing output); this does not roll back or deploy the production site.
+
 ### Optional automated retry scheduler (off by default)
 
 This is a separate, later owner-authorized activation step, **not part of merging a PR**:
