@@ -24,12 +24,19 @@ const call = async (m, p, body, h = {}) => {
 };
 const admin = { authorization: `Bearer ${token}` };
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
-async function settle(id, kind, expectRoles) {
+async function settle(id, kind, expectRoles, fromDate) {
   for (let i = 0; i < 20; i++) {
-    const l = await call('GET', `/v1/bookings?business=${B}&from=2000-01-01`, null, admin);
+    const l = await call('GET', `/v1/bookings?business=${B}&from=${encodeURIComponent(fromDate)}&with=notifications`, null, admin);
+    assert.equal(l.status, 200, 'admin bookings lookup failed');
+    assert.equal(l.body.notifications_ledger, 'ok', 'notification ledger unavailable');
     const b = l.body.bookings?.find((x) => x.id === id);
     const rows = (b?.notifications ?? []).filter((n) => n.kind === kind);
-    if (rows.length >= expectRoles.length && rows.every((n) => !['pending', 'sending'].includes(n.status))) return rows;
+    if (expectRoles.every((role) => rows.some((n) => n.role === role)) &&
+        rows.every((n) => !['pending', 'sending'].includes(n.status))) {
+      assert.ok(rows.every((n) => ['queued', 'delivered'].includes(n.status)),
+        `notification failure for ${kind}: ${rows.map((n) => n.role + ':' + n.status).join(' ')}`);
+      return rows;
+    }
     await call('POST', '/v1/notifications/process', null, admin); await sleep(3000);
   }
   throw new Error(`notifications for ${kind} did not settle`);
@@ -48,17 +55,36 @@ assert.ok(cfg.body.owner_email, 'OWNER_EMAIL is not set in this deployment');
 const av = await call('GET', `/v1/availability?business=${B}&service=${S}`);
 const slots = av.body.days.flatMap((d) => d.slots);
 const [s1, s2] = slots.slice(-2); // furthest-out slots: least likely to block a real customer
+assert.ok(s1 && s2, 'not enough available slots for a create/reschedule/cancel test');
+const fromDate = s1.start_at.slice(0, 10);
 const hdr = { 'x-source': 'web', 'idempotency-key': 'e2e-' + Date.now() };
-const c = await call('POST', '/v1/bookings', { business: B, service: S, start_at: s1.start_at, customer_name: 'E2E TEST — DO NOT CALL', customer_phone: '(469) 555-0100', customer_email: testEmail, note: `automated email E2E; ${approved}` }, hdr);
-assert.equal(c.status, 201, JSON.stringify(c.body));
-const id = c.body.id;
-console.log('created', id.slice(0, 4) + '…', '→', (await settle(id, 'created', ['customer', 'owner'])).map((n) => `${n.role}:${n.status}`).join(' '));
-const r = await call('PATCH', `/v1/bookings/${id}`, { start_at: s2.start_at }, { 'x-source': 'web' });
-assert.equal(r.status, 200, JSON.stringify(r.body));
-console.log('rescheduled →', (await settle(id, 'rescheduled', ['customer', 'owner'])).map((n) => `${n.role}:${n.status}`).join(' '));
-const x = await call('DELETE', `/v1/bookings/${id}`, null, { 'x-source': 'web' });
-assert.equal(x.body.status, 'cancelled');
-console.log('cancelled →', (await settle(id, 'cancelled', ['customer', 'owner'])).map((n) => `${n.role}:${n.status}`).join(' '));
+let id = null;
+let cancelled = false;
+try {
+  const c = await call('POST', '/v1/bookings', { business: B, service: S, start_at: s1.start_at, customer_name: 'E2E TEST — DO NOT CALL', customer_phone: '(469) 555-0100', customer_email: testEmail, note: 'automated booking email end-to-end test' }, hdr);
+  assert.equal(c.status, 201, JSON.stringify(c.body));
+  id = c.body.id;
+  console.log('created', id.slice(0, 4) + '…', '→', (await settle(id, 'created', ['customer', 'owner'], fromDate)).map((n) => `${n.role}:${n.status}`).join(' '));
+  const r = await call('PATCH', `/v1/bookings/${id}`, { start_at: s2.start_at }, { 'x-source': 'web' });
+  assert.equal(r.status, 200, JSON.stringify(r.body));
+  console.log('rescheduled →', (await settle(id, 'rescheduled', ['customer', 'owner'], fromDate)).map((n) => `${n.role}:${n.status}`).join(' '));
+  const x = await call('DELETE', `/v1/bookings/${id}`, null, { 'x-source': 'web' });
+  assert.equal(x.status, 200, JSON.stringify(x.body));
+  assert.equal(x.body.status, 'cancelled');
+  cancelled = true;
+  console.log('cancelled →', (await settle(id, 'cancelled', ['customer', 'owner'], fromDate)).map((n) => `${n.role}:${n.status}`).join(' '));
+} finally {
+  // A notification assertion must never leave a test appointment occupying a real customer slot.
+  if (id && !cancelled) {
+    try {
+      const cleanup = await call('DELETE', `/v1/bookings/${id}`, null, { ...admin, 'x-source': 'admin' });
+      if (cleanup.status === 200 && cleanup.body.status === 'cancelled') console.error('test booking cancelled during cleanup');
+      else console.error('WARNING: test booking cleanup unsuccessful; manually cancel booking', id.slice(0, 4) + '…', cleanup.status);
+    } catch (e) {
+      console.error('WARNING: test booking cleanup failed; manually cancel booking', id.slice(0, 4) + '…', String(e));
+    }
+  }
+}
 
 console.log(`
 Ledger states above are the PROVIDER's view (${m365 ? '"queued" = accepted by Microsoft 365' : '"delivered" = accepted by the recipient\'s mail server'}), not inbox proof.

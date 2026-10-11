@@ -18,6 +18,8 @@
 // Addresses live only in the database (like the bookings themselves); logs and alerts carry ids and codes only.
 
 import { m365Config, m365ConfigGap, m365Send, m365KeepAlive } from './m365-mail.mjs';
+import { reserveMailSend, MAIL_DAILY_CAP_DEFAULT } from './mail-quota.mjs';
+export { MAIL_DAILY_CAP_DEFAULT } from './mail-quota.mjs';
 
 export const BOOKING_FROM_DEFAULT = 'booking-no-reply@aimanjack.com';
 export const BOOKING_REPLY_TO_DEFAULT = 'jack@aimanjack.com';
@@ -30,11 +32,10 @@ export const ALERT_FAILED_AFTER_MIN = 30;                // a row still failing 
 // owner does not get a notice about their own action. Every other source notifies both.
 export const OWNER_NOTIFIED_SOURCES = new Set(['web', 'voice', 'sms']);
 // Abuse guard (the site now sends from Jack's real mailbox — a flood would get the whole mailbox blocked):
-export const MAIL_DAILY_CAP_DEFAULT = 40;                // all site mail per rolling 24 h (env MAIL_DAILY_CAP overrides)
 export const RECIPIENT_DAILY_CAP = 4;                    // per customer address per rolling 24 h (owner inboxes exempt)
 export const CUSTOMER_STALE_HOURS = 24;                  // a customer email still unsent after this is expired, not sent late
-// Batch sizes keep one invocation under the Workers Free limit of 50 subrequests (≈5–8 per message).
-export const BATCH = { afterWrite: 1, sweep: 3, process: 6 };
+// Shared quota adds a snapshot and atomic reservation; leave room for contention/auth refresh.
+export const BATCH = { afterWrite: 1, sweep: 2, process: 3 };
 
 const nowIso = (ms = Date.now()) => new Date(ms).toISOString();
 const plusMin = (ms, m) => nowIso(ms + m * 60000);
@@ -161,8 +162,10 @@ export function classifyProviderResult(status, body) {
   return { status: 'failed', retry: true, error: short(`http_${status}${code ? ' code_' + code : ''} ${msg}`) };
 }
 
-async function cfSend(env, msg, fetchImpl) {
+async function cfSend(env, msg, fetchImpl, db) {
   const c = bookingMailConfig(env);
+  const quota = await reserveMailSend(env, db, c.from);
+  if (!quota.ok) return { status: 'failed', retry: true, configGap: true, error: quota.error };
   let r;
   try {
     r = await fetchImpl(`https://api.cloudflare.com/client/v4/accounts/${env.CF_ACCOUNT_ID}/email/sending/send`, {
@@ -296,7 +299,7 @@ export function createNotifier({ db, env, fetchImpl = (...a) => fetch(...a), ale
       const msg = { role: claimed.role, to: claimed.to_address, reply_to: claimed.reply_to ?? undefined, subject: claimed.subject, text: claimed.body_text };
       const gap = configGap(env, msg);
       const res = gap ? { status: 'failed', retry: true, configGap: true, error: gap }
-        : mailTransport(env) === 'm365' ? await m365Send(env, msg, { db, fetchImpl, onReconnectRequired: reconnectAlert }) : await cfSend(env, msg, fetchImpl);
+        : mailTransport(env) === 'm365' ? await m365Send(env, msg, { db, fetchImpl, onReconnectRequired: reconnectAlert }) : await cfSend(env, msg, fetchImpl, db);
       return await finish(claimed, res);
     } catch (e) { log('booking notification error', row?.id, short(e?.message, 80)); return 'error'; }
   }
