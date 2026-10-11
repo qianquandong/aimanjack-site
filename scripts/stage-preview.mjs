@@ -22,7 +22,8 @@ export async function stagePreview(repo = resolve(dirname(fileURLToPath(import.m
     let html = await readFile(join(repo, path), 'utf8');
     html = html.replace(/href=(['"])https:\/\/(?:www\.)?aimanjack\.com(\/[^'"\s]*)?\1/g, (_m, quote, p) => `href=${quote}${p || '/'}${quote}`)
       .replace(/\/style\.css\?v=[0-9a-f]+/g, `/style.css?v=${cssHash}`)
-      .replace(/<body([^>]*)>/i, '<body$1><aside role="note" style="position:relative;z-index:99999;background:#ffeb9c;color:#191919;padding:12px 20px;text-align:center;font:14px/1.5 system-ui">页面预览 · 不会保存预约或发送邮件 · 请勿输入真实管理令牌<br>Read-only preview — booking, mailbox connection and email APIs are disabled.</aside>');
+      // The home page's absolute header must start after the inserted banner.
+      .replace(/<body([^>]*)>/i, '<body$1><style>body > header.hdr{top:auto}</style><aside role="note" style="position:relative;z-index:99999;background:#ffeb9c;color:#191919;padding:12px 20px;text-align:center;font:14px/1.5 system-ui">页面预览 · 不会保存预约或发送邮件 · 请勿输入真实管理令牌<br>Read-only preview — booking, mailbox connection and email APIs are disabled.</aside>');
     await writeFile(join(site, path), html);
   }
   await copyFile(new URL('../src/preview-worker.mjs', import.meta.url), join(site, '_worker.js'));
