@@ -1,3 +1,4 @@
+import { kickRosEvents, rosEventsRoute, rosEnabled } from '../../src/ros-events.mjs';
 // Booking API — Cloudflare Pages Function, served at https://aimanjack.com/v1/* (BOOKING-PLAN.md §1–2).
 //   GET    /v1/availability?business=&service=[&from=YYYY-MM-DD&to=YYYY-MM-DD&staff=]
 //   POST   /v1/bookings            { business, service, start_at, customer_name, customer_phone, customer_email?, note?, staff? }
@@ -12,8 +13,7 @@
 // Cloudflare Email Sending REST API (Pages Functions have no send_email binding) — env.CF_ACCOUNT_ID + env.CF_EMAIL_TOKEN
 // + env.EMAIL_FROM. No token = no email, booking still succeeds. Sent in waitUntil so the response never waits on it.
 // Instants are timestamptz; responses render them in the business tz with an offset (ISO 8601).
-// Revenue OS: AI Man Jack sales-call bookings (aimanjack/demo-call) also emit a signed aimanjack.booking.v1 event when
-// ROS_BOOKING_WEBHOOK_URL + ROS_BOOKING_WEBHOOK_SECRET are set (see emitBookingEvent). No name, phone, note or raw email.
+// Revenue OS delivery is captured transactionally by database triggers; src/ros-events.mjs drains that outbox.
 
 const SOURCES = new Set(['web', 'voice', 'sms', 'admin']);
 const json = (data, status = 200) => new Response(JSON.stringify(data), { status, headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' } });
@@ -355,16 +355,6 @@ async function intakeRateLimit(env, req, email) {
   return null;
 }
 
-// Signed event for the Revenue OS operational store: x-ros-signature = sha256=<hex HMAC-SHA256 of "${t}.${body}">.
-// The event carries the receipt minus any IP data. Failure is logged by status only and never fails the request.
-// Also used for booking events (own URL + secret; header id = event.event_id). The header id is informational: ROS takes the id from the signed body.
-async function postRosEvent(env, event, { url = env.ROS_WEBHOOK_URL, secret = env.ROS_WEBHOOK_SECRET } = {}) {
-  const body = JSON.stringify(event), t = String(Math.floor(Date.now() / 1000));
-  const signature = await hmacHex(secret, `${t}.${body}`);
-  const r = await fetch(url, { method: 'POST', body, headers: { 'content-type': 'application/json', 'x-ros-timestamp': t, 'x-ros-signature': `sha256=${signature}`, 'x-ros-event-id': event.event_id || event.receipt_id } });
-  if (!r.ok) console.error('ros webhook rejected', r.status);
-}
-
 function intakeOwnerText(v, receiptId) {
   const label = (k, x) => `${k}: ${x ?? ''}`;
   return [`New training quote request (${receiptId})`, '', label('Name', v.name), label('Email', v.email), label('Company', v.company), label('Website', v.company_website),
@@ -423,11 +413,9 @@ async function intake(env, req, ctx) {
   if (!rec.deduped) {
     const later = (p, what) => { const job = p.catch((e) => console.error(what, errInfo(e))); if (ctx.waitUntil) ctx.waitUntil(job); };
     if (env.CF_EMAIL_TOKEN && env.EMAIL_FROM && env.OWNER_EMAIL) later(sendMail(env, { to: env.OWNER_EMAIL, subject: `[quote request] ${v.company} · ${v.format}`, text: intakeOwnerText(v, receiptId), reply_to: v.email }), 'intake owner email failed');
-    if (env.ROS_WEBHOOK_URL && env.ROS_WEBHOOK_SECRET) {
-      const { ip_hash, subject_email_hash, dedupe_key, ...rest } = receipt;   // the operational store gets no IP data or hashes
-      later(postRosEvent(env, { event_type: 'intake.received', receipt_id: receiptId, received_at: rec.received_at || new Date().toISOString(), ...rest }), 'ros webhook failed');
-    }
+
   }
+  kickRosEvents(env, ctx, (path,o)=>sb(env,path,o));
   return reply(rec.deduped ? 200 : 201, { ok: true, receipt_id: receiptId }, 'received');
 }
 
@@ -440,43 +428,7 @@ async function intake(env, req, ctx) {
 // the Revenue OS subjectKey normalization (lowercase, +tag stripped), so `email:${email_hmac}` equals a ROS contact email_key
 // when EMAIL_HASH_SECRET is the ROS salt; null when the secret is unset. company_domain = email domain unless free-mail, else null.
 // Failures are logged by status/code only and never change the booking response.
-const ROS_BOOKING_BUSINESS = 'aimanjack', ROS_BOOKING_SERVICE = 'demo-call';
-const ROS_BOOKING_TYPES = { created: 'booking.created', rescheduled: 'booking.rescheduled', cancelled: 'booking.canceled' };
-// Keep equal to FREE_MAIL_DOMAINS in revenue-os lib/util.mjs.
-const FREE_MAIL = new Set(['gmail.com', 'googlemail.com', 'yahoo.com', 'outlook.com', 'hotmail.com', 'live.com', 'msn.com', 'icloud.com', 'me.com', 'aol.com', 'proton.me', 'protonmail.com', 'gmx.com', 'mail.com', 'yandex.com', 'qq.com', '163.com', '126.com', 'zoho.com']);
-const rosLinkEmail = (raw) => {
-  const e = clean(raw, 254).toLowerCase();
-  if (!emailOk(e)) return null;
-  const [local, domain] = e.split('@');
-  return `${local.split('+')[0]}@${domain}`;
-};
 
-async function bookingRosEvent(env, b, kind, utm) {
-  const email = rosLinkEmail(b.customer_email), domain = email ? email.split('@')[1] : null;
-  const changedAt = b.updated_at || b.created_at || new Date().toISOString();
-  return {
-    schema: 'aimanjack.booking.v1', event_type: ROS_BOOKING_TYPES[kind],
-    event_id: `booking:${b.id}:${kind}:${Date.parse(changedAt) || changedAt}`,
-    booking_id: b.id, business_id: b.business_id, service_id: b.service_id,
-    starts_at: new Date(b.start_at).toISOString(), duration_min: b.duration_min, timezone: b.tz,
-    email_hmac: email && env.EMAIL_HASH_SECRET ? await hmacHex(env.EMAIL_HASH_SECRET, `email|${email}`) : null,
-    company_domain: domain && !FREE_MAIL.has(domain) ? domain : null,
-    utm: utm && Object.keys(utm).length ? utm : null,
-    occurred_at: new Date(changedAt).toISOString(),
-  };
-}
-
-function emitBookingEvent(env, ctx, b, kind, utm = null) {
-  if (!env.ROS_BOOKING_WEBHOOK_URL || !env.ROS_BOOKING_WEBHOOK_SECRET || !ctx?.waitUntil) return;
-  if (b?.business_id !== ROS_BOOKING_BUSINESS || b?.service_id !== ROS_BOOKING_SERVICE || !ROS_BOOKING_TYPES[kind]) return;
-  const job = (async () => {
-    const event = await bookingRosEvent(env, b, kind, utm);
-    await postRosEvent(env, event, { url: env.ROS_BOOKING_WEBHOOK_URL, secret: env.ROS_BOOKING_WEBHOOK_SECRET });
-  })().catch((e) => console.error('ros booking webhook failed', errInfo(e)));
-  ctx.waitUntil(job);
-}
-
-// kind: created | rescheduled | cancelled. Customer gets a confirmation, the owner a one-line notice.
 function notify(env, ctx, b, kind, source) {
   if (!env.CF_EMAIL_TOKEN || !env.EMAIL_FROM) return;
   const v = view(b, env.SITE_ORIGIN || 'https://aimanjack.com'), when = fmtWhen(b), phone = prettyPhone(b.customer_phone), who = `${b.customer_name} · ${phone}${b.customer_email ? ' · ' + b.customer_email : ''}`;
@@ -534,7 +486,7 @@ async function create(env, req, origin, ctx) {
   try {
     // booking.create_booking(): advisory lock + capacity check + insert in one transaction.
     ok = await sb(env, 'rpc/create_booking', { method: 'POST', body: { p: { id, business_id: biz.id, service_id: svc.id, staff_id: slot.staff_id, start_at: start, end_at: end, lo, hi, capacity: svc.capacity,
-      customer_name: name, customer_phone: phone, customer_email: clean(body.customer_email, 120) || null, note: clean(body.note, 500) || null, source, idempotency_key: idem } } });
+      customer_name: name, customer_phone: phone, customer_email: clean(body.customer_email, 120) || null, note: clean(body.note, 500) || null, source, idempotency_key: idem, ros_utm: firstTouchOf(body) } } });
   } catch (e) {
     if (idem && e.code === '23505') { const ex = await byIdem(env, biz.id, idem); if (ex) return json(view(ex, origin), 200); }
     throw e;
@@ -543,7 +495,7 @@ async function create(env, req, origin, ctx) {
   const b = await getBooking(env, id);
   await logEvent(env, b, 'created', source, { start_at: b.start_at, service: b.service_id, staff: b.staff_id });
   notify(env, ctx, b, 'created', source);
-  emitBookingEvent(env, ctx, b, 'created', firstTouchOf(body));
+  kickRosEvents(env, ctx, (path,o)=>sb(env,path,o));
   return json(view(b, origin), 201);
 }
 
@@ -563,7 +515,7 @@ async function reschedule(env, req, b, origin, ctx) {
   const nb = await getBooking(env, b.id);
   await logEvent(env, nb, 'rescheduled', source, { from: b.start_at, to: nb.start_at });
   notify(env, ctx, nb, 'rescheduled', source);
-  emitBookingEvent(env, ctx, nb, 'rescheduled');
+  kickRosEvents(env, ctx, (path,o)=>sb(env,path,o));
   return json(view(nb, origin));
 }
 
@@ -575,7 +527,7 @@ async function cancel(env, req, b, origin, ctx) {
   const nb = await getBooking(env, b.id);
   await logEvent(env, nb, 'cancelled', source, { start_at: b.start_at });
   notify(env, ctx, nb, 'cancelled', source);
-  emitBookingEvent(env, ctx, nb, 'cancelled');
+  kickRosEvents(env, ctx, (path,o)=>sb(env,path,o));
   return json(view(nb, origin));
 }
 
@@ -594,6 +546,11 @@ export async function onRequest(ctx) {
   const { request: req, env, params } = ctx;
   const url = new URL(req.url), origin = url.origin, [res, id, extra] = params.route || [];
   try {
+    if (res === 'ros-events') return await rosEventsRoute({env,req,id,extra,db:(path,o)=>sb(env,path,o)});
+    if (rosEnabled(env) && ((res === 'bookings' && ['POST','PATCH','DELETE'].includes(req.method)) || (res === 'intake' && req.method === 'POST'))) {
+      try { if (await sb(env,'rpc/ros_ready',{method:'POST',schema:'revenue',body:{}}) !== true) throw Error('not_ready'); }
+      catch { return fail(503,'customer_sync_unavailable','Please try again later.'); }
+    }
     if (res === 'availability' && req.method === 'GET') return await availability(env, url);
     if (res === 'bookings' && !id) {
       if (req.method === 'POST') return await create(env, req, origin, ctx);

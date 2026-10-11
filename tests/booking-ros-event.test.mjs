@@ -95,118 +95,27 @@ function assertNoPii(body) {
   for (const k of ['customer_name', 'customer_phone', 'customer_email', 'name', 'phone', 'email', 'note']) assert.ok(!(k in ev), `ROS body has ${k}`);
 }
 
-test('created, rescheduled and canceled each emit exactly one signed aimanjack.booking.v1 event with the right type', async (t) => {
-  const db = fake(t);
-  const created = await book(env, 'aimanjack', 'demo-call', { ft_utm_source: 'linkedin', ft_utm_campaign: 'q4', ft_ref: 'www.linkedin.com', ft_landing: '/ai-training/' });
-  assert.equal(db.sent.length, 1, 'one event on create');
-  const id = created.json.id;
-  const moved = await call(env, 'PATCH', ['bookings', id], { start_at: created.slots[3].start_at });
-  assert.equal(moved.res.status, 200, JSON.stringify(moved.json));
-  assert.equal(db.sent.length, 2, 'one event on reschedule');
-  const canceled = await call(env, 'DELETE', ['bookings', id]);
-  assert.equal(canceled.json.status, 'cancelled');
-  assert.equal(db.sent.length, 3, 'one event on cancel');
-  const again = await call(env, 'DELETE', ['bookings', id]);
-  assert.equal(again.res.status, 200);
-  assert.equal(db.sent.length, 3, 'canceling an already-canceled booking changes nothing and emits nothing');
-
-  const evs = db.sent.map((x) => JSON.parse(x.body));
-  assert.deepEqual(evs.map((e) => e.event_type), ['booking.created', 'booking.rescheduled', 'booking.canceled']);
-  assert.equal(new Set(evs.map((e) => e.event_id)).size, 3, 'event_id unique per change');
-  for (const [i, x] of db.sent.entries()) {
-    const ev = evs[i];
-    assert.ok(verifies(x), 'signature verifies');
-    assert.equal(x.headers['content-type'], 'application/json');
-    assert.equal(x.headers['x-ros-event-id'], ev.event_id);
-    assert.ok(Math.abs(Number(x.headers['x-ros-timestamp']) - Date.now() / 1000) < 60);
-    assert.equal(ev.schema, 'aimanjack.booking.v1');
-    assert.equal(ev.booking_id, id);
-    assert.equal(ev.business_id, 'aimanjack');
-    assert.equal(ev.service_id, 'demo-call');
-    assert.equal(ev.duration_min, 20);
-    assert.equal(ev.timezone, 'America/Chicago');
-    assert.match(ev.starts_at, /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.000Z$/);
-    assert.match(ev.occurred_at, /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/);
-    assert.equal(ev.email_hmac, hmac(EMAIL_SECRET, 'email|dana.reyes@northwind-example.com'), 'keyed, normalized like ROS subjectKey (lowercase, +tag stripped)');
-    assert.equal(ev.company_domain, 'northwind-example.com');
-    assertNoPii(x.body);
-  }
-  assert.equal(evs[0].starts_at, new Date(created.slots[0].start_at).toISOString());
-  assert.equal(evs[1].starts_at, new Date(created.slots[3].start_at).toISOString(), 'rescheduled carries the new time');
-  assert.equal(evs[2].starts_at, evs[1].starts_at);
-  assert.deepEqual(evs[0].utm, { utm_source: 'linkedin', utm_campaign: 'q4', referrer_host: 'linkedin.com', landing_path: '/ai-training/' }, 'first-touch when the request carries it');
-  assert.equal(evs[1].utm, null);
-  assert.equal(db.events.length, 3, 'booking.events log unchanged: one row per write');
+// Delivery/ordering/retry assertions now execute the real SQL triggers in ros-events.test.mjs.
+test('booking lifecycle works with event processing disabled, even when old URLs remain', async t => {
+  const db=fake(t);
+  const available=await slots(env,'aimanjack','demo-call');
+  const created=await book(env,'aimanjack','demo-call',{start_at:available[12].start_at});
+  const id=created.json.id;
+  assert.equal((await call(env,'PATCH',['bookings',id],{start_at:created.slots[15].start_at})).res.status,200);
+  assert.equal((await call(env,'DELETE',['bookings',id])).res.status,200);
+  assert.equal(db.sent.length,0,'no fire-and-forget event path remains');
 });
 
-test('receptionist-client bookings (other business, or another AI Man Jack service) emit nothing', async (t) => {
-  const db = fake(t);
-  const salon = await book(env, 'acme-salon', 'haircut');
-  await call(env, 'PATCH', ['bookings', salon.json.id], { start_at: salon.slots[2].start_at });
-  await call(env, 'DELETE', ['bookings', salon.json.id]);
-  await book(env, 'aimanjack', 'onsite-visit');
-  assert.equal(db.events.length, 4, 'the bookings themselves happened');
-  assert.equal(db.sent.length, 0, 'nothing reached Revenue OS');
+test('enabling delivery without the migration fails before creating a booking', async t=>{
+  const db=fake(t);
+  const r=await call({...env,ROS_EVENTS_ENABLED:'true'},'POST',['bookings'],{business:'aimanjack',service:'demo-call',...CUSTOMER});
+  assert.equal(r.res.status,503);assert.equal(r.json.error,'customer_sync_unavailable');assert.equal(db.bookings.size,0);assert.equal(db.sent.length,0);
 });
 
-test('webhook env unset (either variable) → no event, booking unaffected', async (t) => {
-  for (const drop of [['ROS_BOOKING_WEBHOOK_URL'], ['ROS_BOOKING_WEBHOOK_SECRET'], ['ROS_BOOKING_WEBHOOK_URL', 'ROS_BOOKING_WEBHOOK_SECRET']]) {
-    const db = fake(t);
-    const e = { ...env }; for (const k of drop) delete e[k];
-    const r = await book(e);
-    await call(e, 'PATCH', ['bookings', r.json.id], { start_at: r.slots[1].start_at });
-    await call(e, 'DELETE', ['bookings', r.json.id]);
-    assert.equal(db.sent.length, 0, `unset ${drop.join('+')}`);
-  }
-});
-
-test('the intake webhook settings alone do not send booking events', async (t) => {
-  const db = fake(t);
-  const { ROS_BOOKING_WEBHOOK_URL, ROS_BOOKING_WEBHOOK_SECRET, ...rest } = env;
-  await book({ ...rest, ROS_WEBHOOK_URL: ROS_URL, ROS_WEBHOOK_SECRET: 'intake-secret' });
-  assert.equal(db.sent.length, 0);
-});
-
-test('free-mail booker → company_domain null; no EMAIL_HASH_SECRET → email_hmac null; no email → both null; never a raw email', async (t) => {
-  const db = fake(t);
-  await book(env, 'aimanjack', 'demo-call', { customer_email: 'dana.reyes@gmail.com' });
-  const { EMAIL_HASH_SECRET, ...unsalted } = env;
-  await book(unsalted);
-  await book(env, 'aimanjack', 'demo-call', { customer_email: undefined });
-  const [free, nosecret, noemail] = db.sent.map((x) => JSON.parse(x.body));
-  assert.equal(free.company_domain, null);
-  assert.equal(free.email_hmac, hmac(EMAIL_SECRET, 'email|dana.reyes@gmail.com'));
-  assert.equal(nosecret.email_hmac, null, 'never an unkeyed hash');
-  assert.equal(nosecret.company_domain, 'northwind-example.com');
-  assert.equal(noemail.email_hmac, null);
-  assert.equal(noemail.company_domain, null);
-  for (const x of db.sent) { assert.ok(verifies(x)); assertNoPii(x.body); }
-  assert.ok(!db.sent[0].body.includes('gmail'), 'free-mail domain is not sent either');
-});
-
-test('ROS failures (HTTP error or network error) never affect the booking response', async (t) => {
-  for (const ros of [() => response('down', 503), () => { throw new Error('network down'); }]) {
-    const lines = [];
-    t.mock.method(console, 'error', (...a) => lines.push(a.join(' ')));
-    const db = fake(t, { ros });
-    const r = await book(env);
-    assert.equal(r.json.status, 'confirmed');
-    const m = await call(env, 'PATCH', ['bookings', r.json.id], { start_at: r.slots[1].start_at });
-    assert.equal(m.res.status, 200);
-    const c = await call(env, 'DELETE', ['bookings', r.json.id]);
-    assert.equal(c.res.status, 200);
-    assert.equal(db.sent.length, 3, 'attempted each time');
-    assert.ok(lines.some((l) => /^ros (booking webhook failed|webhook rejected 503)/.test(l)), 'failure is logged');
-    for (const s of PII.filter((x) => x !== '@')) assert.ok(!lines.join('\n').toLowerCase().includes(s.toLowerCase()), `log contains ${s}`);
-  }
-});
-
-test('idempotent create replay (same Idempotency-Key) emits no second event', async (t) => {
-  const db = fake(t);
-  const s = await slots(env, 'aimanjack', 'demo-call');
-  const body = { business: 'aimanjack', service: 'demo-call', start_at: s[0].start_at, staff: s[0].staff_id, ...CUSTOMER };
-  const a = await call(env, 'POST', ['bookings'], body, { 'idempotency-key': 'k-1' });
-  const b = await call(env, 'POST', ['bookings'], body, { 'idempotency-key': 'k-1' });
-  assert.equal(a.res.status, 201); assert.equal(b.res.status, 200); assert.equal(a.json.id, b.json.id);
-  assert.equal(db.sent.length, 1);
+test('idempotent booking replay creates no additional booking', async t=>{
+  const db=fake(t);const s=await slots(env,'aimanjack','demo-call');
+  const body={business:'aimanjack',service:'demo-call',start_at:s[0].start_at,...CUSTOMER};
+  const a=await call(env,'POST',['bookings'],body,{'idempotency-key':'same'});
+  const b=await call(env,'POST',['bookings'],body,{'idempotency-key':'same'});
+  assert.equal(a.res.status,201);assert.equal(b.res.status,200);assert.equal(a.json.id,b.json.id);assert.equal(db.bookings.size,1);
 });

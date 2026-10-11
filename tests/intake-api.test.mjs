@@ -229,30 +229,13 @@ test('owner notice goes out only when email is configured, and its failure never
   assert.match(on.emails[0].text, /not a booked meeting/);
 });
 
-test('ROS webhook: signed with HMAC-SHA256 over "${t}.${body}", event id = receipt id, no IP data, once per receipt, failures ignored', async (t) => {
-  t.mock.method(console, 'error', () => {});
-  const secret = 'ros-test-secret';
-  const e = { ...env, ROS_WEBHOOK_URL: 'https://ros.test/hook', ROS_WEBHOOK_SECRET: secret };
-  const db = fake(t, { rosStatus: 500 });
-  const r = await send(valid(), { e });
-  const j = await r.json();
-  assert.equal(r.status, 201, 'a failing webhook does not fail the request');
-  assert.equal(db.ros.length, 1);
-  const { headers, body } = db.ros[0];
-  assert.match(headers['x-ros-timestamp'], /^\d{10}$/);
-  assert.equal(headers['x-ros-event-id'], j.receipt_id);
-  assert.equal(headers['x-ros-signature'], `sha256=${createHmac('sha256', secret).update(`${headers['x-ros-timestamp']}.${body}`).digest('hex')}`);
-  const event = JSON.parse(body);
-  assert.equal(event.event_type, 'intake.received');
-  assert.equal(event.receipt_id, j.receipt_id);
-  assert.equal(event.consent_request, true); assert.equal(event.consent_newsletter, false);
-  assert.ok(!('ip_hash' in event) && !('subject_email_hash' in event) && !body.includes(IP), 'no IP data in the event');
-  assert.ok(!('dedupe_key' in event), 'no dedupe key in the event (it may be the guessable fallback)');
-  await send(valid(), { e });
-  assert.equal(db.ros.length, 1, 'a deduped retry is not re-sent');
-  const quiet = fake(t);
-  await send(valid({ email: 'c@example.com' }));
-  assert.equal(quiet.ros.length, 0, 'no webhook env → no webhook');
+test('destination settings alone never enable event transmission; receipt still persists', async (t) => {
+  const e = { ...env, ROS_WEBHOOK_URL: 'https://ros.test/hook', ROS_WEBHOOK_SECRET: 'test' };
+  const db = fake(t);
+  const r = await send(valid(), {e});
+  assert.equal(r.status, 201);
+  assert.equal(db.ros.length, 0);
+  assert.equal(db.records.length, 1);
 });
 
 test('no PII reaches console output on any path, including store, email and webhook failures', async (t) => {
@@ -287,7 +270,7 @@ test('EMAIL_HASH_SECRET / IP_HASH_SALT unset: subject and IP hashes are null, de
   assert.equal(p.subject_email_hash, null, 'no unsalted subject hash');
   assert.equal(p.ip_hash, null, 'no unsalted IP hash');
   assert.equal(p.dedupe_key, sha(`${EMAIL}|northwind-example.com|${today()}`), 'documented fallback');
-  assert.ok(!db.ros[0].body.includes(p.dedupe_key), 'fallback dedupe key never leaves the receipt row');
+  assert.equal(db.ros.length, 0, 'disabled event processor never transmits receipt data');
   assert.ok(lines.some((l) => /EMAIL_HASH_SECRET unset/.test(l)) && lines.some((l) => /IP_HASH_SALT unset/.test(l)), 'warned');
   for (const s of PII) assert.ok(!lines.join('\n').toLowerCase().includes(s.toLowerCase()), `warning contains ${s}`);
 });
