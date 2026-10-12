@@ -6,7 +6,7 @@ import { createHmac } from 'node:crypto';
 import { onRequest } from '../functions/v1/[[route]].js';
 
 const ROS_URL = 'https://ros.test/v1/events/booking', ROS_SECRET = 'booking-webhook-test-secret', EMAIL_SECRET = 'email-hash-test-secret-0123456789';
-const env = {
+const env = { SITE_ENV: 'production',
   SUPABASE_URL: 'https://db.test', SB_SECRET_KEY: 'test-key', CF_ACCOUNT_ID: 'account', CF_EMAIL_TOKEN: '', EMAIL_FROM: 'bookings@aimanjack.com',
   OWNER_EMAIL: 'jack@aimanjack.com', SITE_ORIGIN: 'https://aimanjack.com',
   ROS_BOOKING_WEBHOOK_URL: ROS_URL, ROS_BOOKING_WEBHOOK_SECRET: ROS_SECRET, EMAIL_HASH_SECRET: EMAIL_SECRET,
@@ -14,10 +14,9 @@ const env = {
 const hmac = (k, s) => createHmac('sha256', k).update(s).digest('hex');
 const response = (body, status = 200) => new Response(body === null ? null : typeof body === 'string' ? body : JSON.stringify(body), { status });
 const CUSTOMER = { customer_name: 'Dana Reyes', customer_phone: '(214) 555-0147', customer_email: 'Dana.Reyes+Ops@Northwind-Example.com', note: 'Northwind Example — weekly dispatch spreadsheet' };
-const PII = ['Dana', 'Reyes', 'dana.reyes', '555', '0147', '+12145550147', 'dispatch', 'Northwind Example', '@'];
 
 // businesses: the AI Man Jack sales call (db/schema.sql seed) and a receptionist client on the same API.
-function fake(t, { ros = () => response({ ok: true }) } = {}) {
+function fake(t, { ros = () => response({ ok: true }), ready } = {}) {
   const original = globalThis.fetch;
   t.after(() => { globalThis.fetch = original; });
   const businesses = {
@@ -30,7 +29,7 @@ function fake(t, { ros = () => response({ ok: true }) } = {}) {
     { business_id: 'acme-salon', id: 'haircut', name: 'Haircut', duration_min: 30, buffer_min: 0, capacity: 1, active: true },
   ];
   const staff = [{ business_id: 'aimanjack', id: 'jack', name: 'Jack Qian' }, { business_id: 'acme-salon', id: 'sam', name: 'Sam' }];
-  const bookings = new Map(), events = [], sent = [];
+  const bookings = new Map(), events = [], sent = [], rateKeys = [];
   let clock = Date.parse('2026-10-09T12:00:00.000Z');
   const stamp = () => new Date(clock += 1000).toISOString();
   const full = (b) => {
@@ -45,12 +44,14 @@ function fake(t, { ros = () => response({ ok: true }) } = {}) {
     if (!url.startsWith('https://db.test/rest/v1/')) throw new Error(`unexpected fetch ${method} ${url}`);
     const u = new URL(url), path = u.pathname.replace('/rest/v1/', ''), p = Object.fromEntries(u.searchParams), eq = (k) => p[k]?.replace(/^eq\./, '');
     const body = options.body ? JSON.parse(options.body) : null;
+    if (path === 'rpc/ros_ready' && ready !== undefined) return response(ready);
     if (path === 'businesses') return response(businesses[eq('id')] ? [businesses[eq('id')]] : []);
     if (path === 'services') return response(services.filter((s) => s.business_id === eq('business_id') && s.id === eq('id')));
     if (path === 'staff') return response(staff.filter((s) => s.business_id === eq('business_id')));
     if (path === 'availability_rules') return response([0, 1, 2, 3, 4, 5, 6].map((weekday) => ({ staff_id: null, weekday, start_hm: '09:00', end_hm: '17:00' })));
     if (path === 'blocks') return response([]);
     if (path === 'bookings' && method === 'GET') return response([...bookings.values()].filter((b) => b.business_id === eq('business_id') && b.status === 'confirmed'));
+    if (path === 'rpc/take_coupon_rate_limit') { rateKeys.push(body.p_key_hash); return response(true); }
     if (path === 'rpc/create_booking') {
       const at = stamp();
       const { lo, hi, capacity, ...row } = body.p;
@@ -70,7 +71,7 @@ function fake(t, { ros = () => response({ ok: true }) } = {}) {
     if (path === 'events') { events.push(body); return response(null, 201); }
     throw new Error(`unexpected supabase ${method} ${path}`);
   };
-  return { bookings, events, sent };
+  return { bookings, events, sent, rateKeys };
 }
 
 async function call(e, method, route, body, headers = {}) {
@@ -88,13 +89,6 @@ async function book(e, business = 'aimanjack', service = 'demo-call', extra = {}
   assert.equal(r.res.status, 201, JSON.stringify(r.json));
   return { ...r, slots: s };
 }
-const verifies = ({ headers, body }) => headers['x-ros-signature'] === `sha256=${hmac(ROS_SECRET, `${headers['x-ros-timestamp']}.${body}`)}`;
-function assertNoPii(body) {
-  for (const s of PII) assert.ok(!body.toLowerCase().includes(s.toLowerCase()), `ROS body contains ${s}`);
-  const ev = JSON.parse(body);
-  for (const k of ['customer_name', 'customer_phone', 'customer_email', 'name', 'phone', 'email', 'note']) assert.ok(!(k in ev), `ROS body has ${k}`);
-}
-
 // Delivery/ordering/retry assertions now execute the real SQL triggers in ros-events.test.mjs.
 test('booking lifecycle works with event processing disabled, even when old URLs remain', async t => {
   const db=fake(t);
@@ -118,4 +112,22 @@ test('idempotent booking replay creates no additional booking', async t=>{
   const a=await call(env,'POST',['bookings'],body,{'idempotency-key':'same'});
   const b=await call(env,'POST',['bookings'],body,{'idempotency-key':'same'});
   assert.equal(a.res.status,201);assert.equal(b.res.status,200);assert.equal(a.json.id,b.json.id);assert.equal(db.bookings.size,1);
+});
+
+test('booking IP limiter uses a secret-keyed digest and omits the key when salt is missing',async t=>{
+  const db=fake(t),s=await slots(env,'aimanjack','demo-call');
+  const body={business:'aimanjack',service:'demo-call',start_at:s[0].start_at,...CUSTOMER};
+  const e={...env,IP_HASH_SALT:'test-booking-ip-salt'};
+  assert.equal((await call(e,'POST',['bookings'],body,{'cf-connecting-ip':'203.0.113.77'})).res.status,201);
+  assert.deepEqual(db.rateKeys,[hmac(e.IP_HASH_SALT,'booking-ip:203.0.113.77')]);
+  t.mock.method(console,'warn',()=>{});
+  assert.equal((await call(env,'POST',['bookings'],{...body,start_at:s[1].start_at},{'cf-connecting-ip':'203.0.113.77'})).res.status,201);
+  assert.equal(db.rateKeys.length,1,'missing salt never sends a plain IP digest');
+});
+
+test('enabled sync saves via the transactional source RPC without an inline webhook request',async t=>{
+  const db=fake(t,{ready:true});
+  assert.equal((await book({...env,ROS_EVENTS_ENABLED:'true'})).res.status,201);
+  assert.equal(db.bookings.size,1);
+  assert.equal(db.sent.length,0,'a separate authenticated processor drains captured events');
 });

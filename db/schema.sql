@@ -207,6 +207,7 @@ alter table booking.bookings enable row level security;
 alter table booking.events enable row level security;
 alter table booking.coupons enable row level security;
 alter table booking.coupon_rate_limits enable row level security;
+-- booking.notifications (durable email ledger): db/migrations/2026-10-09-booking-notifications.sql
 
 -- Seed: AI Man Jack itself (W1). Hours mirror the SMS agent: Mon–Fri 7–9 PM, Sat 10 AM–6 PM, Sunday off.
 insert into booking.businesses (id, name, tz, min_lead_min, max_days_ahead, cancel_window_hours, owner_phone)

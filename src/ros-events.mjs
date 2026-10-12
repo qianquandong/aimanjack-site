@@ -87,14 +87,10 @@ export function rosProcessor({env,db,fetchImpl=(...a)=>fetch(...a),now=()=>Date.
   const replay=id=>rpc('replay',{p_id:id});
   return {process,list,replay};
 }
-export function kickRosEvents(env,ctx,db) {
-  if(!rosEnabled(env)||!ctx?.waitUntil) return;
-  ctx.waitUntil(rosProcessor({env,db}).process({limit:1}).catch(()=>console.error('ros_events_processor_unavailable')));
-}
 export async function rosEventsRoute({env,req,id,extra,db}) {
   const auth=req.headers.get('authorization');
   const admin=!!env.ADMIN_TOKEN&&auth===`Bearer ${env.ADMIN_TOKEN}`;
-  const processor=!!env.ROS_EVENT_PROCESS_TOKEN&&auth===`Bearer ${env.ROS_EVENT_PROCESS_TOKEN}`;
+  const processor=typeof env.ROS_EVENT_PROCESS_TOKEN==='string'&&env.ROS_EVENT_PROCESS_TOKEN.length>=32&&auth===`Bearer ${env.ROS_EVENT_PROCESS_TOKEN}`;
   const respond=(status,data)=>new Response(JSON.stringify(data),{status,headers:{'content-type':'application/json','cache-control':'no-store'}});
   if(!admin&&!(processor&&id==='process'&&!extra&&req.method==='POST')) return respond(401,{error:'unauthorized'});
   const p=rosProcessor({env,db});

@@ -8,7 +8,7 @@ import { pages as contactPages } from '../src/pages/contact.mjs';
 import { render, pageOf } from '../src/layout.mjs';
 import { QUOTE_URL } from '../src/config.mjs';
 
-const env = {
+const env = { SITE_ENV: 'production',
   SUPABASE_URL: 'https://db.test', SB_SECRET_KEY: 'test-key',
   CF_ACCOUNT_ID: 'account', CF_EMAIL_TOKEN: '', EMAIL_FROM: 'bookings@aimanjack.com', OWNER_EMAIL: 'jack@aimanjack.com',
   SITE_ORIGIN: 'https://aimanjack.com', ADMIN_TOKEN: 'admin-token',
@@ -50,7 +50,13 @@ function fake(t, { rateLimit = () => true, record, rosStatus = 200, emailOk = tr
   t.after(() => { globalThis.fetch = original; });
   globalThis.fetch = async (url, options = {}) => {
     url = String(url); calls.push(url);
-    if (url.startsWith('https://db.test/')) assert.equal(options.headers['content-profile'], 'revenue', 'intake uses the revenue schema');
+    if (url.startsWith('https://db.test/') && /\/(take_intake_rate_limit|record_intake)$/.test(url)) assert.equal(options.headers['content-profile'], 'revenue', 'intake uses the revenue schema');
+    if (url.startsWith('https://db.test/rest/v1/notifications?') || url.startsWith('https://db.test/rest/v1/coupon_rate_limits?')) return response([]);
+    if (url === 'https://db.test/rest/v1/rpc/take_coupon_rate_limit') {
+      assert.equal(options.headers['content-profile'], 'booking', 'shared mail quota uses booking schema');
+      assert.equal(JSON.parse(options.body).p_limit, 1);
+      return response(true);
+    }
     if (url === 'https://db.test/rest/v1/rpc/take_intake_rate_limit') { const v = rateLimit(JSON.parse(options.body)); return v instanceof Response ? v : response(v); }
     if (url === 'https://db.test/rest/v1/rpc/record_intake') {
       const { p, p_consents } = JSON.parse(options.body);

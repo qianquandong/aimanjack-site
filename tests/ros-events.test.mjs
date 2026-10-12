@@ -97,5 +97,26 @@ test('migration is repeatable; roles cannot read or mutate delivery data directl
   const f=await fixture(t);const {readFile}=await import('node:fs/promises');await f.pg.exec(await readFile(new URL('../db/migrations/2026-10-11-ros-event-outbox.sql',import.meta.url),'utf8'));
   assert.equal(await f.db('rpc/ros_ready'),true);
   await f.pg.exec('set role anon');await assert.rejects(f.rows('select * from revenue.ros_events'));await assert.rejects(f.rows('select revenue.ros_claim(1)'));await f.pg.exec('reset role');
-  await f.pg.exec('set role service_role');await assert.rejects(f.pg.exec("delete from revenue.ros_events"));await f.pg.exec('reset role');
+  await f.booking();await f.pg.exec('set role service_role');assert.equal((await f.rows('select * from revenue.ros_events')).length,1);assert.equal((await f.rows('select * from revenue.ros_claim(1)')).length,1);await assert.rejects(f.pg.exec("delete from revenue.ros_events"));await f.pg.exec('reset role');
+});
+
+test('non-sales appointments never enter the outbox; free mail is not a company identity',async t=>{
+  const f=await fixture(t);
+  await f.pg.exec("insert into booking.services(business_id,id,name,duration_min) values('aimanjack','other-service','Other',20)");
+  await f.pg.exec("insert into booking.bookings(id,business_id,service_id,staff_id,start_at,end_at,customer_name,customer_phone) values('other','aimanjack','other-service','jack',now()+interval '10 days',now()+interval '10 days 20 minutes','Test','+12145550147')");
+  assert.deepEqual(await f.rows('select * from revenue.ros_events'),[]);
+  await f.booking();await f.pg.exec("update booking.bookings set customer_email='Dana+test@gmail.com' where id='b1'");
+  let payload;await rosProcessor({...f,fetchImpl:async(u,o)=>{payload=JSON.parse(o.body);return ok();}}).process();
+  assert.equal(payload.company_domain,null);assert.equal(payload.email_hmac,createHmac('sha256',f.env.EMAIL_HASH_SECRET).update('email|dana@gmail.com').digest('hex'));
+});
+
+test('an old blocked event is alerted while an unauthenticated or short-token request cannot drain it',async t=>{
+  const f=await fixture(t);await f.booking();await f.pg.exec("update revenue.ros_events set next_attempt_at=now()+interval '1 hour',created_at=now()-interval '31 minutes'");
+  let alerts=0;const p=rosProcessor({...f,fetchImpl:async()=>{alerts++;return new Response('ok');}});
+  const result=await p.process();assert.equal(result.processed.length,0);assert.equal(result.alert.sent,true);assert.equal(alerts,1);
+  const bad=()=>{throw Error('unauthorized DB access');};
+  for(const auth of ['', 'Bearer short']) {
+    const r=await rosEventsRoute({env:{ROS_EVENT_PROCESS_TOKEN:'short'},req:new Request('https://aimanjack.com/v1/ros-events/process',{method:'POST',headers:{authorization:auth}}),id:'process',db:bad});
+    assert.equal(r.status,401);
+  }
 });

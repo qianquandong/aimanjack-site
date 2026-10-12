@@ -3,7 +3,7 @@ import {PGlite} from '@electric-sql/pglite';
 import {readFile} from 'node:fs/promises';
 export async function fixture(t) {
   const pg=new PGlite();t.after(()=>pg.close());
-  await pg.exec('create role anon; create role authenticated; create role service_role;');
+  await pg.exec('create role anon; create role authenticated; create role service_role bypassrls;');
   for(const path of ['db/schema.sql','db/migrations/2026-10-08-revenue-intake.sql','db/migrations/2026-10-11-ros-event-outbox.sql'])
     await pg.exec(await readFile(new URL('../'+path,import.meta.url),'utf8'));
   const rows=async(sql,args=[]) => (await pg.query(sql,args)).rows;
@@ -13,7 +13,7 @@ export async function fixture(t) {
   const booking=async(id='b1')=>rows(`insert into booking.bookings(id,business_id,service_id,staff_id,start_at,end_at,customer_name,customer_phone,customer_email,ros_utm)
     values($1,'aimanjack','demo-call','jack',now()+interval '10 days',now()+interval '10 days 20 minutes','Dana Test','+12145550147','Dana+Ops@acme.test','{"utm_source":"email","utm_campaign":"pilot"}') returning *`,[id]);
   const intake=async()=>{
-    const p={dedupe_key:'a'.repeat(64),form_version:'test-v1',payload:{name:'Dana Test',email:'dana@acme.test',company:'Acme'},consent_request:true,
+    const p={dedupe_key:'a'.repeat(64),form_version:'test-v1',payload:{name:'Dana Test',email:'dana@acme.test',company:'Acme',company_website:'acme.test',industry:'logistics',headcount:'50-99',attendees:12,location:'remote',timing:'one_to_three',format:'workshop_90',workflows:'Weekly operations reporting',tools:'Microsoft 365'},consent_request:true,
       consent_newsletter:false,consent_notice_version:'test-notice',ip_hash:'b'.repeat(64),subject_email_hash:'c'.repeat(64),utm:{utm_source:'email'},self_reported_source:'email'};
     return (await rows('select revenue.record_intake($1::jsonb,$2::jsonb) as r',[JSON.stringify(p),'[]']))[0].r;
   };

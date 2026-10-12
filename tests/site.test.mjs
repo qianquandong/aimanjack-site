@@ -332,7 +332,7 @@ test('no owner-unapproved price or retired half-day offer appears on any indexab
   for (const re of UNAPPROVED) assert.doesNotMatch(llms(), re, `llms.txt ${re}`);
   // Built HTML on disk, including anything hand-written outside src/: an indexable file must come from a src route and carry no unapproved price.
   const { readdirSync, readFileSync, statSync } = await import('node:fs');
-  const root = new URL('../', import.meta.url).pathname, SKIP = new Set(['.git', '.claude', '.deploy', 'scripts', 'design-system', 'output', 'docs', 'src', 'db', 'functions', 'state', 'tests', 'node_modules']);
+  const root = new URL('../', import.meta.url).pathname, SKIP = new Set(['.git', '.claude', '.deploy', '.preview', 'scripts', 'design-system', 'output', 'docs', 'src', 'db', 'functions', 'state', 'tests', 'node_modules']);
   const files = [], walk = (d) => { for (const f of readdirSync(root + d)) { const rel = d + f; if (SKIP.has(rel)) continue; if (statSync(root + rel).isDirectory()) walk(rel + '/'); else if (f.endsWith('.html')) files.push(rel); } };
   walk('');
   const routes = new Set(pages.map((x) => urlOf(x.p.path, x.lang)));
@@ -483,7 +483,7 @@ test('privacy policy discloses the quote form, Supabase, GA4 and how to opt out,
 
 test('deploy gate runs the test suite with a glob (node --test tests/ fails on Node 22)', async () => {
   const sh = await readFile(new URL('../deploy.sh', import.meta.url), 'utf8');
-  assert.match(sh, /node --test tests\/\*\.mjs/);
+  assert.match(sh, /node --test tests\/\*\.test\.mjs/);
   assert.doesNotMatch(sh, /node --test tests\/(?:\s|\))/);
 });
 

@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<title>Bookings · AI Man Jack (owner)</title>
+<style>
+  :root{--bg:#fff;--fg:#14171a;--muted:#5b6670;--line:#e3e7eb;--card:#f7f9fa;--ok:#137333;--warn:#a05a00;--bad:#b3261e;--accent:#1a56db}
+  @media (prefers-color-scheme:dark){:root{--bg:#0f1214;--fg:#e8ecef;--muted:#9aa5ae;--line:#263038;--card:#161b1f;--ok:#57c27a;--warn:#e0a24a;--bad:#f2867e;--accent:#7aa2ff}}
+  *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;padding:16px;padding-bottom:calc(16px + env(safe-area-inset-bottom))}
+  h1{font-size:20px;margin:0 0 4px}h2{font-size:15px;color:var(--muted);margin:22px 0 8px;text-transform:uppercase;letter-spacing:.04em}
+  .muted{color:var(--muted);font-size:14px}.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  input,button{font:inherit;border-radius:10px;border:1px solid var(--line);padding:10px 12px;background:var(--card);color:var(--fg)}
+  input{flex:1;min-width:0}button{cursor:pointer;background:var(--accent);color:#fff;border:0}button.secondary{background:var(--card);color:var(--fg);border:1px solid var(--line)}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin:8px 0}
+  .time{font-weight:600;font-size:17px}.who{margin:2px 0}.note{white-space:pre-wrap;color:var(--muted);font-size:14px;margin-top:4px}
+  a{color:var(--accent)}.chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+  .chip{font-size:12px;border-radius:999px;padding:3px 9px;border:1px solid var(--line)}
+  .ok{color:var(--ok);border-color:var(--ok)}.warn{color:var(--warn);border-color:var(--warn)}.bad{color:var(--bad);border-color:var(--bad)}
+  .cancelled{opacity:.6}.banner{border-radius:12px;padding:10px 12px;margin:10px 0;border:1px solid var(--bad);color:var(--bad)}
+  pre{white-space:pre-wrap;font-size:13px;margin:0}
+  .code{font:600 26px/1.2 ui-monospace,Menlo,monospace;letter-spacing:.08em;margin:6px 0;color:var(--fg)}
+</style>
+</head>
+<body>
+<h1>Upcoming bookings</h1>
+<p class="muted">Owner-only. The admin token stays in this browser tab (session storage) and is sent only to aimanjack.com.</p>
+
+<form id="login" class="row" autocomplete="off">
+  <input id="token" type="password" placeholder="Admin token" aria-label="Admin token" autocomplete="current-password">
+  <button type="submit">Open</button>
+</form>
+
+<div id="app" hidden>
+  <div class="row"><button id="refresh" class="secondary" type="button">Refresh</button><button id="process" class="secondary" type="button">Retry due emails now</button><button id="logout" class="secondary" type="button">Lock</button></div>
+  <div id="alerts"></div>
+  <div id="list"></div>
+  <h2>Customer sync</h2>
+  <p class="muted">Syncs quote requests and consultation bookings to Revenue OS. This retry does not send customer emails.</p>
+  <button id="sync-process" class="secondary" type="button" disabled>Retry due syncs now</button>
+  <div id="sync" class="card muted" aria-live="polite">…</div>
+  <h2>Microsoft 365 mailbox</h2>
+  <div id="m365" class="card muted">…</div>
+  <div id="m365flow"></div>
+  <h2>Email settings in effect</h2>
+  <div id="config" class="card muted">…</div>
+</div>
+
+<script>
+(function () {
+  var KEY = 'amj-admin-token', BIZ = 'aimanjack';
+  var $ = function (id) { return document.getElementById(id); };
+  var esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); };
+  var token = function () { try { return sessionStorage.getItem(KEY) || ''; } catch (e) { return ''; } };
+  function api(path, opts) {
+    opts = opts || {};
+    return fetch(path, { method: opts.method || 'GET', headers: { authorization: 'Bearer ' + token(), 'content-type': 'application/json' }, body: opts.body ? JSON.stringify(opts.body) : undefined, cache: 'no-store', referrerPolicy: 'no-referrer' })
+      .then(function (r) { if (r.status === 401) { lock(); throw new Error('Token rejected'); } return r.json(); });
+  }
+  var cls = { delivered: 'ok', queued: 'ok', superseded: '', expired: '', pending: 'warn', sending: 'warn', failed: 'warn', held: 'bad', bounced: 'bad', dead: 'bad', uncertain: 'bad' };
+  var label = { delivered: 'delivered to mail server', queued: 'accepted by mail provider', superseded: 'replaced by a newer message', expired: 'not sent (too old)', pending: 'pending', sending: 'sending', failed: 'retrying', held: 'HELD (too many emails to this address today)', bounced: 'BOUNCED (address rejected)', dead: 'FAILED', uncertain: 'UNCERTAIN (may have been sent)' };
+  function chip(n) {
+    var t = n.role + (n.recipient ? ' (' + n.recipient + ')' : '') + ' · ' + n.kind + ': ' + (label[n.status] || n.status) + (n.attempts > 1 ? ' (' + n.attempts + ')' : '');
+    var err = n.last_error ? ' title="' + esc(n.last_error) + '"' : '';
+    var btn = /^(dead|uncertain|failed|held|expired)$/.test(n.status) ? ' <button class="secondary resend" type="button" data-id="' + esc(n.id) + '" data-status="' + esc(n.status) + '">Resend</button>' : '';
+    return '<span class="chip ' + (cls[n.status] || '') + '"' + err + '>' + esc(t) + '</span>' + btn;
+  }
+  function render(data) {
+    var bad = [];
+    var days = {};
+    data.bookings.forEach(function (b) { (days[b.start_at.slice(0, 10)] = days[b.start_at.slice(0, 10)] || []).push(b); (b.notifications || []).forEach(function (n) { if (/^(bounced|dead|uncertain|held)$/.test(n.status)) bad.push(n.id); }); });
+    $('alerts').innerHTML = (data.notifications_ledger !== 'ok' ? '<div class="banner">Email ledger unavailable — the notifications migration may not be applied. Emails are not tracked.</div>' : '')
+      + (bad.length ? '<div class="banner">' + bad.length + ' email(s) bounced, failed or are uncertain — see the red items below.</div>' : '');
+    var html = '';
+    Object.keys(days).sort().forEach(function (d) {
+      html += '<h2>' + esc(new Date(d + 'T12:00:00').toLocaleDateString(undefined, { weekday: 'long', month: 'short', day: 'numeric' })) + '</h2>';
+      days[d].forEach(function (b) {
+        var t = new Date(b.start_at).toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
+        html += '<div class="card ' + (b.status === 'cancelled' ? 'cancelled' : '') + '">'
+          + '<div class="time">' + esc(t) + ' · ' + esc(b.service_name) + (b.status === 'cancelled' ? ' · cancelled' : '') + '</div>'
+          + '<div class="who">' + esc(b.customer_name) + '</div>'
+          + '<div class="row muted"><a href="tel:' + esc(b.customer_phone) + '">' + esc(b.customer_phone) + '</a>' + (b.customer_email ? '<a href="mailto:' + esc(b.customer_email) + '">' + esc(b.customer_email) + '</a>' : '') + '<span>via ' + esc(b.source) + '</span></div>'
+          + (b.note ? '<div class="note">' + esc(b.note) + '</div>' : '')
+          + '<div class="chips">' + (b.notifications || []).map(chip).join('') + '</div></div>';
+      });
+    });
+    $('list').innerHTML = html || '<p class="muted">No upcoming bookings.</p>';
+    Array.prototype.forEach.call(document.querySelectorAll('.resend'), function (b) {
+      b.onclick = function () {
+        var msg = b.dataset.status === 'uncertain' ? 'This email may already have been delivered. Send it again anyway?' : 'Send this email again?';
+        if (!confirm(msg)) return;
+        b.disabled = true; api('/v1/notifications/requeue', { method: 'POST', body: { ids: [Number(b.dataset.id)] } }).then(load).catch(show);
+      };
+    });
+  }
+  function show(e) { $('alerts').innerHTML = '<div class="banner">' + esc(e.message || e) + '</div>'; }
+  function loadSync() {
+    api('/v1/ros-events').then(function (r) {
+      if (!Array.isArray(r.events)) throw new Error(r.error || 'Customer sync is unavailable');
+      $('sync-process').disabled = !r.enabled;
+      var labels = { pending: 'Waiting', sending: 'Syncing', retry: 'Will retry', dead: 'Needs attention' };
+      var h = '<p>' + (r.enabled ? 'Sync enabled.' : 'Sync is paused. No events will be transmitted.') + '</p>';
+      h += r.events.length ? '<p>Showing up to 100 outstanding events, oldest first.</p>' : '<p>No outstanding events.</p>';
+      r.events.forEach(function (e) {
+        h += '<div class="card"><b>Event #' + esc(e.id) + ' · ' + esc(e.target === 'booking' ? 'Consultation' : 'Quote request') + '</b>'
+          + '<p><span class="chip ' + (e.status === 'dead' ? 'bad' : 'warn') + '">' + esc(labels[e.status] || e.status) + '</span> · ' + esc(e.total_attempts) + ' attempts</p>'
+          + (e.last_error ? '<p>Reason: ' + esc(e.last_error) + '</p>' : '')
+          + (e.alerted_at ? '<p>Owner alert sent.</p>' : e.status === 'dead' ? '<p>Owner alert has not been delivered. Check the alert settings.</p>' : '')
+          + (r.enabled && /^(retry|dead)$/.test(e.status) ? '<button class="secondary sync-replay" type="button" data-id="' + esc(e.id) + '">Queue again</button>' : '') + '</div>';
+      });
+      $('sync').innerHTML = h;
+      Array.prototype.forEach.call(document.querySelectorAll('.sync-replay'), function (b) {
+        b.onclick = function () {
+          b.disabled = true;
+          api('/v1/ros-events/' + b.dataset.id + '/replay', { method: 'POST' }).then(function (v) {
+            if (!v.ok) throw new Error('Could not queue this event. Refresh and try again.');
+            loadSync();
+          }).catch(function (e) { show(e); loadSync(); });
+        };
+      });
+    }).catch(function () {
+      $('sync-process').disabled = true;
+      $('sync').textContent = 'Customer sync is unavailable. Its database setup may still be pending.';
+    });
+  }
+  $('sync-process').onclick = function () {
+    this.disabled = true;
+    api('/v1/ros-events/process', { method: 'POST' }).then(function (r) {
+      if (r.error) throw new Error(r.error);
+      return loadSync();
+    }).catch(function (e) { show(e); loadSync(); });
+  };
+  function load() {
+    loadSync();
+    api('/v1/bookings?business=' + BIZ + '&with=notifications').then(render).catch(show);
+    api('/v1/admin/email-config').then(function (c) { $('config').innerHTML = '<pre>' + esc(JSON.stringify(c, null, 2)) + '</pre>'; renderM365(c); }).catch(function () {});
+  }
+  // Microsoft 365: the site sends as your mailbox. Connect once (sign in on any device with the code shown here).
+  var gapText = { 'config_missing:M365_CLIENT_ID': 'The app registration ID (M365_CLIENT_ID) is not set yet.', 'config_missing:M365_TOKEN_KEY': 'The secret M365_TOKEN_KEY is not set yet.', 'config_invalid:M365_TOKEN_KEY': 'M365_TOKEN_KEY must be 32 random bytes in base64.', 'config_missing:M365_TENANT_ID': 'M365_TENANT_ID is not set.' };
+  var mailFlow = 0;
+  function stopMailFlow() { mailFlow++; $('m365flow').innerHTML = ''; }
+  function renderM365(c) {
+    var el = $('m365');
+    if (c.transport !== 'm365' || !c.m365) { el.innerHTML = 'Not used (mail transport: ' + esc(c.transport) + ').'; return; }
+    var m = c.m365, h = 'Sends as <b>' + esc(m.sender) + '</b> · ' + esc(m.auth) + ' permission<br>';
+    if (m.setup_gap) { el.innerHTML = h + '<span class="chip warn">Setup incomplete</span> ' + esc(gapText[m.setup_gap] || m.setup_gap); return; }
+    if (m.auth === 'app') { el.innerHTML = h + '<span class="chip ok">App permission configured</span>'; return; }
+    if (m.mail_tokens_table !== 'ok') { el.innerHTML = h + '<span class="chip bad">Token table missing</span> Apply db/migrations/2026-10-09-mail-tokens.sql.'; return; }
+    if (m.needs_reconnect) { el.innerHTML = h + '<span class="chip bad">Connection expired or revoked — no email can be sent</span> (' + esc(m.last_error || '') + ')<div class="row" style="margin-top:8px"><button id="m365connect" type="button">Reconnect Microsoft 365</button></div>'; $('m365connect').onclick = connectM365; return; }
+    el.innerHTML = h + (m.connected
+      ? '<span class="chip ok">Connected</span> ' + esc(m.connected_account || '') + (m.connected_at ? ' since ' + esc(new Date(m.connected_at).toLocaleString()) : '') + '<div class="row" style="margin-top:8px"><button id="m365connect" class="secondary" type="button">Reconnect</button><button id="m365disconnect" class="secondary" type="button">Disconnect</button></div>'
+      : '<span class="chip bad">Not connected — no email can be sent</span><div class="row" style="margin-top:8px"><button id="m365connect" type="button">Connect Microsoft 365</button></div>')
+      ;
+    $('m365connect').onclick = connectM365;
+    if ($('m365disconnect')) $('m365disconnect').onclick = function () { if (confirm('Disconnect? The site stops sending email until you connect again. To revoke it at Microsoft too, use myapps.microsoft.com.')) { stopMailFlow(); api('/v1/admin/m365/disconnect', { method: 'POST' }).then(load).catch(show); } };
+  }
+  function connectM365() {
+    stopMailFlow(); var flow = mailFlow;
+    api('/v1/admin/m365/connect', { method: 'POST' }).then(function (r) {
+      if (flow !== mailFlow) return;
+      if (!r.ok) { show('Could not start: ' + (r.error || 'error')); return; }
+      $('m365flow').innerHTML = '<p>1. Open <a href="' + esc(r.verification_uri) + '" target="_blank" rel="noopener">' + esc(r.verification_uri) + '</a> (any device).<br>2. Enter this code:</p><div class="code">' + esc(r.user_code) + '</div><p>3. Sign in as <b>' + esc(r.sign_in_as) + '</b> and accept <i>Send mail as you</i>.</p><p id="m365wait" class="muted">Waiting for you to finish…</p>';
+      var until = Date.now() + r.expires_in * 1000, every = Math.max(5, r.interval) * 1000;
+      var say = function (t) { var w = $('m365wait'); if (w) w.textContent = t; };   // the card above may be redrawn; this box is not
+      (function poll() {
+        if (flow !== mailFlow) return;
+        if (Date.now() > until) { say('The code expired. Press Connect again.'); return; }
+        api('/v1/admin/m365/poll', { method: 'POST' }).then(function (p) {
+          if (flow !== mailFlow) return;
+          if (p.status === 'pending') { setTimeout(poll, every); return; }
+          var msg = { connected: 'Connected as ' + p.account + '. Booking emails can go out now.', denied: 'You declined the permission. Nothing was connected.', expired: 'The code expired. Press Connect again.', wrong_account: 'That was ' + (p.account || 'another account') + ' — sign in as ' + p.expected + '. Nothing was connected.' }[p.status] || ('Not connected: ' + (p.error || p.status));
+          say(msg); if (p.status === 'connected') setTimeout(load, 1500);
+        }).catch(function (e) { if (flow !== mailFlow) return; say(e.message + ' — retrying…'); setTimeout(poll, every); });
+      })();
+    }).catch(show);
+  }
+  function lock() { stopMailFlow(); try { sessionStorage.removeItem(KEY); } catch (e) {} $('app').hidden = true; $('login').hidden = false; }
+  $('login').onsubmit = function (e) { e.preventDefault(); try { sessionStorage.setItem(KEY, $('token').value.trim()); } catch (x) {} $('token').value = ''; $('login').hidden = true; $('app').hidden = false; load(); };
+  $('refresh').onclick = load;
+  $('process').onclick = function () { api('/v1/notifications/process', { method: 'POST' }).then(load).catch(show); };
+  $('logout').onclick = lock;
+  if (token()) { $('login').hidden = true; $('app').hidden = false; load(); }
+})();
+</script>
+</body>
+</html>

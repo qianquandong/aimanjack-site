@@ -1,17 +1,36 @@
 #!/bin/sh
 # Stage a clean copy (internal notes must not ship), deploy to Cloudflare Pages,
 # then ping IndexNow (Bing) with all sitemap URLs. Builds and runs the test suite first; refuses to deploy on any failure.
-#   sh deploy.sh            production branch → aimanjack.com + IndexNow
-#   sh deploy.sh --preview  any branch → <branch>.aimanjack.pages.dev, no IndexNow
+#   sh deploy.sh                    prepare read-only preview locally; NO upload
+#   sh deploy.sh --prepare-preview  same as above
+#   sh deploy.sh --preview          upload read-only preview to aimanjack-review/review-<commit>
+#   sh deploy.sh --production       explicit production upload, production branch only
 set -e
 cd "$(dirname "$0")"
+mode=${1:---prepare-preview}
+[ "$#" -le 1 ] || { echo 'deploy.sh: unexpected arguments'; exit 2; }
+case "$mode" in
+  --prepare-preview|--preview) ;;
+  --production)
+    [ "$(git symbolic-ref --quiet --short HEAD)" = production ] || { echo 'deploy.sh: production upload requires the production branch'; exit 2; } ;;
+  *) echo 'Usage: sh deploy.sh [--prepare-preview|--preview|--production]'; exit 2 ;;
+esac
 
 # Gate (2026-09-28): never ship what the test suite rejects. Every deploy path goes through here — Jack, Claude, and the
 # scheduled blog routine, which once published a post that linked a hidden page and overflowed on phones.
-# There is no package.json or linter in this repo, so build + node --test is the whole gate.
+# Install locked dev dependencies with npm ci before running the build/test gate.
 node scripts/build.mjs >/dev/null
-# Glob, not the directory: on Node 22 `node --test tests/` fails with "Cannot find module …/tests" (audit 2026-10-08).
-out=$(node --test tests/*.mjs 2>&1) || { printf '%s\n' "$out" | grep -E 'not ok|AssertionError|ℹ (pass|fail)' | head -30; echo 'deploy.sh: tests failed, nothing deployed'; exit 1; }
+out=$(node --test tests/*.test.mjs 2>&1) || { printf '%s\n' "$out" | grep -E 'not ok|AssertionError|ℹ (pass|fail)' | head -30; echo 'deploy.sh: tests failed, nothing deployed'; exit 1; }
+
+if [ "$mode" != --production ]; then
+  node scripts/stage-preview.mjs
+  [ "$mode" = --preview ] || { echo 'Read-only preview prepared in .preview/site; nothing uploaded.'; exit 0; }
+  revision=$(git rev-parse HEAD)
+  preview_branch="review-$(git rev-parse --short=12 HEAD)"
+  # Independent config, inert Worker and explicit target; inherited production secrets cannot be used.
+  (cd .preview && npx wrangler pages deploy site --project-name aimanjack-review --branch "$preview_branch" --commit-hash "$revision" --commit-dirty=true)
+  exit 0
+fi
 
 rm -rf .deploy && mkdir .deploy
 rsync -a --exclude-from=.deployignore ./ .deploy/
@@ -32,10 +51,7 @@ for asset in style.css; do
   find .deploy -name '*.html.bak' -delete   # sed -i.bak works on both macOS and GNU sed
 done
 
-npx wrangler pages deploy .deploy --project-name aimanjack
-
-# --preview: the current branch is not production; skip IndexNow (its URLs point at production).
-[ "$1" = "--preview" ] && { echo "preview deploy, IndexNow skipped"; exit 0; }
+npx wrangler pages deploy .deploy --project-name aimanjack --branch production
 
 KEY=f613b8f49a0f40cdb8a3bf9c265efa53
 URLS=$(grep -o '<loc>[^<]*</loc>' sitemap.xml | sed 's/<[^>]*>//g' | sed 's/.*/"&"/' | paste -sd, -)

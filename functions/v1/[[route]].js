@@ -1,4 +1,4 @@
-import { kickRosEvents, rosEventsRoute, rosEnabled } from '../../src/ros-events.mjs';
+import { rosEventsRoute, rosEnabled } from '../../src/ros-events.mjs';
 // Booking API — Cloudflare Pages Function, served at https://aimanjack.com/v1/* (BOOKING-PLAN.md §1–2).
 //   GET    /v1/availability?business=&service=[&from=YYYY-MM-DD&to=YYYY-MM-DD&staff=]
 //   POST   /v1/bookings            { business, service, start_at, customer_name, customer_phone, customer_email?, note?, staff? }
@@ -9,13 +9,29 @@ import { kickRosEvents, rosEventsRoute, rosEnabled } from '../../src/ros-events.
 //   POST   /v1/intake              training quote request (JSON or form POST) → revenue.intake_receipts (see intake() below)
 // Writes take an Idempotency-Key header and an X-Source header (web | voice | sms | admin; default web).
 // Data: Supabase Postgres (schema `booking`, db/schema.sql) via PostgREST with the secret key — env.SUPABASE_URL + env.SB_SECRET_KEY.
-// Email: after every write, a confirmation goes to customer_email (if given) and a notice to OWNER_EMAIL, via the
-// Cloudflare Email Sending REST API (Pages Functions have no send_email binding) — env.CF_ACCOUNT_ID + env.CF_EMAIL_TOKEN
-// + env.EMAIL_FROM. No token = no email, booking still succeeds. Sent in waitUntil so the response never waits on it.
+// Email: after every write, a confirmation goes to customer_email (if given) and a notice to OWNER_EMAIL. Transport
+// (MAIL_TRANSPORT): 'm365' = Jack's Microsoft 365 mailbox via Graph, sent as M365_SENDER (owner decision 2026-10-09,
+// src/m365-mail.mjs); 'cloudflare' = Cloudflare Email Sending REST (needs Workers Paid; not used). Booking mail goes
+// through a durable ledger (booking.notifications, src/booking-notify.mjs): per-recipient result, bounded retries, no
+// double send, alerts. An email problem never fails or undoes a booking. Coupons use the same transport.
+//   GET  /v1/admin/email-config                 (admin) effective sender settings, owner address masked
+//   POST /v1/admin/m365/connect | poll | disconnect  (admin) one-time Microsoft 365 sign-in (device code) from the owner page
+//   GET  /v1/bookings?business=…&with=notifications (admin) adds per-message email states (owner page)
+//   GET  /v1/notifications?status=&booking=     (admin) ledger rows
+//   POST /v1/notifications/process              (admin) mark stale sends uncertain, send everything due
+//   POST /v1/notifications/requeue {ids:[…], include_bounced?}  (admin) owner-requested resend (bounced only if explicit)
 // Instants are timestamptz; responses render them in the business tz with an offset (ISO 8601).
 // Revenue OS delivery is captured transactionally by database triggers; src/ros-events.mjs drains that outbox.
 
+import { createNotifier, composeMessages, describeMailConfig, alertFromEnv, bookingMailConfig, parseOwnerEmails, maskEmail, mailTransport, transportGap, BATCH } from '../../src/booking-notify.mjs';
+import { m365Send, m365Status, m365StartConnect, m365PollConnect, m365Disconnect, m365Ready } from '../../src/m365-mail.mjs';
+import { reserveMailSend, isMailQuotaError } from '../../src/mail-quota.mjs';
+import { productionApiEnabled } from '../../src/deployment-safety.mjs';
+
 const SOURCES = new Set(['web', 'voice', 'sms', 'admin']);
+// 'admin' suppresses the owner's own notice, so it is honoured only with the admin token; anything else is 'web'.
+const sourceOf = (env, req) => { const s = req.headers.get('x-source'); if (s === 'admin') return adminOk(env, req) ? 'admin' : 'web'; return SOURCES.has(s) ? s : 'web'; };
+const errCode = (e) => String(e?.code ?? e?.message ?? e).split(':')[0].slice(0, 60);   // logs: status/code only, never ids or addresses
 const json = (data, status = 200) => new Response(JSON.stringify(data), { status, headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' } });
 const fail = (status, error, message) => json({ error, message }, status);
 
@@ -126,8 +142,8 @@ function view(b, origin) {
   };
 }
 
-const logEvent = (env, b, type, source, payload) =>
-  sb(env, 'events', { method: 'POST', body: { business_id: b.business_id, booking_id: b.id, type, source, payload }, headers: { prefer: 'return=minimal' } });
+const logEvent = async (env, b, type, source, payload) =>
+  (await sb(env, 'events', { method: 'POST', body: { business_id: b.business_id, booking_id: b.id, type, source, payload }, headers: { prefer: 'return=representation' } }))?.[0]?.id ?? null;
 
 // ── email (Cloudflare Email Sending, REST) ──
 const whenFmt = {};
@@ -136,6 +152,14 @@ const prettyPhone = (p) => { const m = /^\+1(\d{3})(\d{3})(\d{4})$/.exec(p || ''
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
 async function sendMail(env, { to, subject, text, reply_to }) {
+  if (mailTransport(env) === 'm365') {
+    // Owner decision 2026-10-09: all site mail goes out through the Microsoft 365 mailbox (From = M365_SENDER).
+    const res = await m365Send(env, { to, subject, text, reply_to }, { db: (p, o) => sb(env, p, o) });
+    if (res.status !== 'queued') throw Object.assign(new Error(`email m365 ${res.status}: ${res.error ?? ''}`), { code: res.error });
+    return;
+  }
+  const quota = await reserveMailSend(env, (p, o) => sb(env, p, o), env.EMAIL_FROM);
+  if (!quota.ok) throw Object.assign(new Error(quota.error), { code: quota.error });
   const r = await fetch(`https://api.cloudflare.com/client/v4/accounts/${env.CF_ACCOUNT_ID}/email/sending/send`, {
     method: 'POST', headers: { authorization: `Bearer ${env.CF_EMAIL_TOKEN}`, 'content-type': 'application/json' },
     body: JSON.stringify({ to, from: { address: env.EMAIL_FROM, name: 'AI Man Jack' }, reply_to, subject, text, html: `<pre style="font:15px/1.5 -apple-system,Segoe UI,sans-serif;white-space:pre-wrap;margin:0">${esc(text)}</pre>` }),
@@ -158,6 +182,11 @@ const acquireFailedCoupon = async (env, coupon) => (await sb(env, 'coupons?' + q
   method: 'PATCH', body: { issuance_status: 'pending', updated_at: new Date().toISOString() }, headers: { prefer: 'return=representation' },
 }))[0] ?? null;
 const adminOk = (env, req) => env.ADMIN_TOKEN && req.headers.get('authorization') === `Bearer ${env.ADMIN_TOKEN}`;
+// Dedicated, least-privilege scheduler credential: can ONLY process due notifications, never list bookings,
+// requeue arbitrary messages, connect M365, or access any other admin endpoint.
+const notificationProcessorOk = (env, req) => typeof env.NOTIFICATION_PROCESS_TOKEN === 'string' &&
+  env.NOTIFICATION_PROCESS_TOKEN.length >= 32 &&
+  req.headers.get('authorization') === `Bearer ${env.NOTIFICATION_PROCESS_TOKEN}`;
 const sha256 = async (value) => [...new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(value)))].map((byte) => byte.toString(16).padStart(2, '0')).join('');
 const hmacHex = async (secret, message) => {
   const key = await crypto.subtle.importKey('raw', new TextEncoder().encode(secret), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']);
@@ -202,7 +231,7 @@ async function claimCoupon(env, req, ctx) {
   if (!emailOk(normalized)) return fail(400, 'email_invalid', 'Enter a valid email address.');
   const limited = await couponRateLimit(env, req, normalized);
   if (limited) return limited;
-  if (!env.CF_EMAIL_TOKEN || !env.EMAIL_FROM) return fail(503, 'email_unavailable', 'Coupon email is temporarily unavailable.');
+  if (mailTransport(env) === 'm365' ? !(await m365Ready(env, (p, o) => sb(env, p, o))) : (!env.CF_EMAIL_TOKEN || !env.EMAIL_FROM)) return fail(503, 'email_unavailable', 'Coupon email is temporarily unavailable.');
 
   let coupon = await couponByEmail(env, normalized);
   if (coupon) {
@@ -224,13 +253,18 @@ async function claimCoupon(env, req, ctx) {
 
   const text = `Your $25 coupon for any AI Man Jack service\n\nCoupon code: ${coupon.code}\n\nUse this coupon once on any AI Man Jack service. No minimum spend, expiration or new-customer restriction. Reply to this email when you are ready to use it.\n\nJack\nAI Man Jack`;
   try {
-    await sendMail(env, { to: email, subject: `Your $25 AI Man Jack coupon: ${coupon.code}`, text, reply_to: env.OWNER_EMAIL });
+    await sendMail(env, { to: email, subject: `Your $25 AI Man Jack coupon: ${coupon.code}`, text, reply_to: parseOwnerEmails(env.OWNER_EMAIL).list[0] || env.BOOKING_REPLY_TO });
   } catch (e) {
-    await couponPatch(env, coupon.code, { issuance_status: 'failed', delivery_attempts: (coupon.delivery_attempts || 0) + 1, last_error: String(e.message || e).slice(0, 240) }).catch((dbError) => console.error('coupon failure persistence', dbError.message));
+    const quotaBlocked = isMailQuotaError(e.code);
+    await couponPatch(env, coupon.code, { issuance_status: 'failed', delivery_attempts: (coupon.delivery_attempts || 0) + (quotaBlocked ? 0 : 1), last_error: String(e.message || e).slice(0, 240) }).catch((dbError) => console.error('coupon failure persistence', dbError.message));
+    if (quotaBlocked) return fail(503, 'email_unavailable', 'Coupon email is temporarily unavailable. Please try again later.');
     return fail(502, 'email_failed', 'The coupon email was not accepted by the email provider.');
   }
   await couponPatch(env, coupon.code, { issuance_status: 'sent', delivery_attempts: (coupon.delivery_attempts || 0) + 1, delivered_at: new Date().toISOString(), last_error: null }).catch((e) => console.error('coupon sent persistence', e.message));
-  if (env.OWNER_EMAIL && ctx.waitUntil) ctx.waitUntil(sendMail(env, { to: env.OWNER_EMAIL, subject: `[coupon] ${coupon.code} issued`, text: `${coupon.code} issued to ${email}. Manual redemption is still required.`, reply_to: email }).catch((e) => console.error('coupon owner email', e.message)));
+  // OWNER_EMAIL may list several inboxes (comma-separated); each gets its own notice (the provider call takes one address).
+  const owners = parseOwnerEmails(env.OWNER_EMAIL).list;
+  if (owners.length && ctx.waitUntil) ctx.waitUntil(Promise.allSettled(owners.map((to) => sendMail(env, { to, subject: `[coupon] ${coupon.code} issued`, text: `${coupon.code} issued to ${email}. Manual redemption is still required.`, reply_to: email })))
+    .then((rs) => rs.forEach((r) => r.status === 'rejected' && console.error('coupon owner email', r.reason?.message))));
   return json({ status: 'accepted' }, 201);
 }
 
@@ -264,8 +298,8 @@ async function redeemCoupon(env, req, code) {
 // HMAC with EMAIL_HASH_SECRET; only when that secret is unset does it fall back to the day-scoped sha256, which is guessable
 // by someone who already knows email + domain + day, so it is kept only in the receipt row (stripped from the ROS event, never
 // logged, erased with the receipt). Missing secrets log a code-only warning.
-// Then, never blocking the response: owner notice via sendMail (only if configured) and a signed event to the Revenue OS
-// operational store (only if ROS_WEBHOOK_URL + ROS_WEBHOOK_SECRET are set).
+// Then: owner notice via the configured transport. Revenue OS delivery is captured by the same DB transaction,
+// and drained in a separate authenticated request so mailbox work and sync retries do not share a request budget.
 // PII rule: responses carry only ok / receipt_id / error codes / field NAMES; console output carries only codes and statuses.
 // Option values must match the <select>s rendered by src/pages/contact.mjs (tests/intake-api.test.mjs submits every one).
 const INTAKE_ENUMS = {
@@ -412,36 +446,41 @@ async function intake(env, req, ctx) {
 
   if (!rec.deduped) {
     const later = (p, what) => { const job = p.catch((e) => console.error(what, errInfo(e))); if (ctx.waitUntil) ctx.waitUntil(job); };
-    if (env.CF_EMAIL_TOKEN && env.EMAIL_FROM && env.OWNER_EMAIL) later(sendMail(env, { to: env.OWNER_EMAIL, subject: `[quote request] ${v.company} · ${v.format}`, text: intakeOwnerText(v, receiptId), reply_to: v.email }), 'intake owner email failed');
+    if (!transportGap(env)) for (const to of parseOwnerEmails(env.OWNER_EMAIL).list) {
+      later(sendMail(env, { to, subject: `[quote request] ${v.company} · ${v.format}`, text: intakeOwnerText(v, receiptId), reply_to: v.email }), 'intake owner email failed');
+    }
 
   }
-  kickRosEvents(env, ctx, (path,o)=>sb(env,path,o));
   return reply(rec.deduped ? 200 : 201, { ok: true, receipt_id: receiptId }, 'received');
 }
 
-// ── Booking events for Revenue OS (contract aimanjack.booking.v1) ──
-// After a successful create / reschedule / cancel of an AI Man Jack sales call (business 'aimanjack', service 'demo-call', the
-// ids /book/ posts: src/pages/book.mjs, db/schema.sql seed), a signed event goes to ROS_BOOKING_WEBHOOK_URL in waitUntil — only
-// when ROS_BOOKING_WEBHOOK_URL + ROS_BOOKING_WEBHOOK_SECRET are both set. Receptionist-client bookings on the same API never
-// leave the site (they are not sales meetings). Signature: same scheme as the intake event, with its own secret.
-// Data minimization: no name, phone, note or raw email. email_hmac = HMAC-SHA256(EMAIL_HASH_SECRET, `email|${normalized}`) with
-// the Revenue OS subjectKey normalization (lowercase, +tag stripped), so `email:${email_hmac}` equals a ROS contact email_key
-// when EMAIL_HASH_SECRET is the ROS salt; null when the secret is unset. company_domain = email domain unless free-mail, else null.
-// Failures are logged by status/code only and never change the booking response.
+// kind: created | rescheduled | cancelled. Customer gets a confirmation, the owner a one-line notice.
+// Durable: rows are written to booking.notifications first, then sent in waitUntil (src/booking-notify.mjs).
+const notifierFor = (env) => createNotifier({ db: (path, o) => sb(env, path, o), env, alert: alertFromEnv(env) });
+async function notify(env, ctx, b, kind, source, eventId, meta) {
+  const origin = env.SITE_ORIGIN || 'https://aimanjack.com';
+  const messages = composeMessages(env, b, kind, source, { fmtWhen, prettyPhone, manageUrl: view(b, origin).manage_url, siteOrigin: origin });
+  if (!messages.length) return;
+  const n = notifierFor(env);
+  let rows = null;
+  try { rows = await n.enqueue(b, eventId, kind, messages, meta); }
+  catch (e) { console.error('booking notification ledger unavailable', errCode(e)); }
+  // Leave subrequest headroom for quota reservations and token refresh; remaining rows stay pending.
+  if (rows) { ctx.waitUntil(Promise.allSettled(rows.slice(0, 2).map((r) => n.attempt(r))).then(() => n.processDue({ limit: BATCH.afterWrite })).catch(() => {})); return; }
+  // Ledger unavailable (migration not applied / DB error): still try to send, loudly logged — never silently dropped.
+  const c = bookingMailConfig(env);
+  const gap = transportGap(env);
+  if (gap) { console.error('booking email NOT sent (no ledger):', gap); return; }
+  messages.filter((m) => !m.to).forEach((m) => console.error('booking email NOT sent (no ledger):', m.role === 'owner' ? 'config_missing:OWNER_EMAIL' : 'no_customer_email'));
+  ctx.waitUntil(Promise.allSettled(messages.filter((m) => m.to).map((m) => sendMail({ ...env, EMAIL_FROM: c.from }, { to: m.to, subject: m.subject, text: m.text, reply_to: m.reply_to })))
+    .then((rs) => rs.forEach((r, i) => r.status === 'rejected' && console.error('booking email (no ledger) failed', messages.filter((m) => m.to)[i].role, errCode(r.reason)))));
+}
 
-function notify(env, ctx, b, kind, source) {
-  if (!env.CF_EMAIL_TOKEN || !env.EMAIL_FROM) return;
-  const v = view(b, env.SITE_ORIGIN || 'https://aimanjack.com'), when = fmtWhen(b), phone = prettyPhone(b.customer_phone), who = `${b.customer_name} · ${phone}${b.customer_email ? ' · ' + b.customer_email : ''}`;
-  const subj = { created: `Confirmed: your ${b.service_name} with Jack, ${when}`, rescheduled: `Moved: your ${b.service_name} is now ${when}`, cancelled: `Cancelled: your ${b.service_name} on ${when}` }[kind];
-  const line = { created: `You're booked. Jack will call ${phone} on ${when}.`, rescheduled: `Your call is moved. Jack will call ${phone} on ${when}.`, cancelled: `Your call on ${when} is cancelled. Book a new time any time.` }[kind];
-  const manage = kind === 'cancelled' ? `Book again: ${env.SITE_ORIGIN || 'https://aimanjack.com'}/book/` : `Change or cancel (up to ${b.cancel_window_hours}h before): ${v.manage_url}`;
-  const customer = `Hi ${b.customer_name},\n\n${line}\n\n${manage}\n\nQuestions? Just reply to this email.\n\nJack\nAI Man Jack`;
-  const head = `${kind} (${source}): ${b.service_name} ${when}`;
-  const owner = [head, who, b.note, v.manage_url].filter(Boolean).join('\n');
-  const jobs = [];
-  if (b.customer_email) jobs.push(sendMail(env, { to: b.customer_email, subject: subj, text: customer, reply_to: env.OWNER_EMAIL }));
-  if (env.OWNER_EMAIL && source !== 'admin') jobs.push(sendMail(env, { to: env.OWNER_EMAIL, subject: `[booking] ${head}`, text: owner, reply_to: b.customer_email || undefined }));
-  ctx.waitUntil(Promise.allSettled(jobs).then((rs) => rs.forEach((r, i) => r.status === 'rejected' && console.error('booking email', i, r.reason?.message))));
+// Post-commit side effects (event log, notifications) must never turn a committed booking into an error response.
+async function afterWrite(env, ctx, b, kind, source, payload, meta = {}) {
+  let eventId = null;
+  try { eventId = await logEvent(env, b, kind, source, payload); } catch (e) { console.error('booking event log failed', errCode(e)); }
+  try { await notify(env, ctx, b, kind, source, eventId, meta); } catch (e) { console.error('booking notify failed', errCode(e)); }
 }
 
 function normPhone(raw) {
@@ -458,6 +497,10 @@ function windowClosed(b) {
 const windowMsg = (b) => `Changes must be made at least ${b.cancel_window_hours} hour${b.cancel_window_hours === 1 ? '' : 's'} before the appointment. Contact ${b.business_name} directly.`;
 
 // ── handlers ──
+// Pages Functions have no cron: public availability traffic also drives retries (at most once a minute per isolate).
+let lastSweep = 0;
+const sweep = (env, ctx) => { if (!ctx?.waitUntil || transportGap(env) || Date.now() - lastSweep < 60000) return; lastSweep = Date.now(); ctx.waitUntil(notifierFor(env).processDue({ limit: BATCH.sweep }).catch(() => {})); };
+
 async function availability(env, url) {
   const q = url.searchParams, r = await loadBizSvc(env, q.get('business'), q.get('service'));
   if (r.error) return r.error;
@@ -471,12 +514,27 @@ async function create(env, req, origin, ctx) {
   if (!body) return fail(400, 'bad_json', 'Body must be JSON.');
   const r = await loadBizSvc(env, body.business, body.service);
   if (r.error) return r.error;
-  const { biz, svc } = r, source = SOURCES.has(req.headers.get('x-source')) ? req.headers.get('x-source') : 'web';
+  const { biz, svc } = r, source = sourceOf(env, req);
   const idem = clean(req.headers.get('idempotency-key'), 128) || null;
   if (idem) { const ex = await byIdem(env, biz.id, idem); if (ex) return json(view(ex, origin), 200); }
   const name = clean(body.customer_name, 80), phone = normPhone(body.customer_phone);
   if (!name) return fail(400, 'name_required', 'customer_name is required.');
   if (!phone) return fail(400, 'phone_invalid', 'customer_phone must be a valid phone number.');
+  const email = clean(body.customer_email, 120);
+  if (email && !emailOk(email.toLowerCase())) return fail(400, 'email_invalid', 'customer_email must be a valid email address (or leave it out).');
+  // Public bookings are rate-limited per IP: each booking makes the owner's real mailbox send email, so a scripted
+  // book/cancel loop must not be able to spam through it. Fails open (a booking matters more); the email ledger also
+  // caps sends per address and per day.
+  if (source === 'web' && !adminOk(env, req)) {
+    const ip = clean(req.headers.get('cf-connecting-ip'), 64);
+    const ipKey = await ipHmac(env, 'booking-ip', ip);
+    if (ipKey) {
+      try {
+        const allowed = await sb(env, 'rpc/take_coupon_rate_limit', { method: 'POST', body: { p_key_hash: ipKey, p_limit: 6, p_window_seconds: 3600 } });
+        if (allowed === false) return fail(429, 'rate_limited', 'Too many bookings from this connection. Try again later or call us.');
+      } catch (e) { console.error('booking rate limiter unavailable', errCode(e)); }
+    } else if (ip) console.warn('booking: IP_HASH_SALT unset; IP rate limit unavailable');
+  }
   const slot = await findSlot(env, biz, svc, body.start_at, { staffId: body.staff || undefined });
   if (!slot) return fail(409, 'slot_unavailable', 'That time is not available. Pick another one.');
   const id = crypto.randomUUID().replace(/-/g, '').slice(0, 16);
@@ -486,16 +544,14 @@ async function create(env, req, origin, ctx) {
   try {
     // booking.create_booking(): advisory lock + capacity check + insert in one transaction.
     ok = await sb(env, 'rpc/create_booking', { method: 'POST', body: { p: { id, business_id: biz.id, service_id: svc.id, staff_id: slot.staff_id, start_at: start, end_at: end, lo, hi, capacity: svc.capacity,
-      customer_name: name, customer_phone: phone, customer_email: clean(body.customer_email, 120) || null, note: clean(body.note, 500) || null, source, idempotency_key: idem, ros_utm: firstTouchOf(body) } } });
+      customer_name: name, customer_phone: phone, customer_email: email || null, note: clean(body.note, 500) || null, source, idempotency_key: idem, ros_utm: firstTouchOf(body) } } });
   } catch (e) {
     if (idem && e.code === '23505') { const ex = await byIdem(env, biz.id, idem); if (ex) return json(view(ex, origin), 200); }
     throw e;
   }
   if (!ok) return fail(409, 'slot_unavailable', 'That time was just taken. Pick another one.');
   const b = await getBooking(env, id);
-  await logEvent(env, b, 'created', source, { start_at: b.start_at, service: b.service_id, staff: b.staff_id });
-  notify(env, ctx, b, 'created', source);
-  kickRosEvents(env, ctx, (path,o)=>sb(env,path,o));
+  await afterWrite(env, ctx, b, 'created', source, { start_at: b.start_at, service: b.service_id, staff: b.staff_id });
   return json(view(b, origin), 201);
 }
 
@@ -504,7 +560,7 @@ async function reschedule(env, req, b, origin, ctx) {
   if (!body?.start_at) return fail(400, 'start_at_required', 'start_at is required.');
   if (b.status !== 'confirmed') return fail(409, 'booking_cancelled', 'This appointment was cancelled. Book a new one.');
   if (windowClosed(b)) return fail(409, 'cancel_window', windowMsg(b));
-  const source = SOURCES.has(req.headers.get('x-source')) ? req.headers.get('x-source') : 'web';
+  const source = sourceOf(env, req);
   const { biz, svc } = await loadBizSvc(env, b.business_id, b.service_id);
   const slot = await findSlot(env, biz, svc, body.start_at, { staffId: body.staff || b.staff_id, excludeId: b.id });
   if (!slot) return fail(409, 'slot_unavailable', 'That time is not available. Pick another one.');
@@ -513,25 +569,22 @@ async function reschedule(env, req, b, origin, ctx) {
   const ok = await sb(env, 'rpc/move_booking', { method: 'POST', body: { p: { id: b.id, business_id: b.business_id, staff_id: slot.staff_id, start_at: start, end_at: end, lo, hi, capacity: b.capacity } } });
   if (!ok) return fail(409, 'slot_unavailable', 'That time was just taken. Pick another one.');
   const nb = await getBooking(env, b.id);
-  await logEvent(env, nb, 'rescheduled', source, { from: b.start_at, to: nb.start_at });
-  notify(env, ctx, nb, 'rescheduled', source);
-  kickRosEvents(env, ctx, (path,o)=>sb(env,path,o));
+  if (Date.parse(nb.start_at) !== Date.parse(b.start_at)) await afterWrite(env, ctx, nb, 'rescheduled', source, { from: b.start_at, to: nb.start_at }, { from: b.start_at });
   return json(view(nb, origin));
 }
 
 async function cancel(env, req, b, origin, ctx) {
   if (b.status !== 'confirmed') return json(view(b, origin));
   if (windowClosed(b)) return fail(409, 'cancel_window', windowMsg(b));
-  const source = SOURCES.has(req.headers.get('x-source')) ? req.headers.get('x-source') : 'web';
-  await sb(env, 'bookings?' + q({ id: 'eq.' + b.id, status: 'eq.confirmed' }), { method: 'PATCH', body: { status: 'cancelled', updated_at: new Date().toISOString() }, headers: { prefer: 'return=minimal' } });
+  const source = sourceOf(env, req);
+  const changed = await sb(env, 'bookings?' + q({ id: 'eq.' + b.id, status: 'eq.confirmed' }), { method: 'PATCH', body: { status: 'cancelled', updated_at: new Date().toISOString() }, headers: { prefer: 'return=representation' } });
   const nb = await getBooking(env, b.id);
-  await logEvent(env, nb, 'cancelled', source, { start_at: b.start_at });
-  notify(env, ctx, nb, 'cancelled', source);
-  kickRosEvents(env, ctx, (path,o)=>sb(env,path,o));
+  // A concurrent second cancel changes no row: it returns the cancelled booking but sends nothing.
+  if (changed?.length) await afterWrite(env, ctx, nb, 'cancelled', source, { start_at: b.start_at });
   return json(view(nb, origin));
 }
 
-async function list(env, req, url, origin) {
+async function list(env, req, url, origin, ctx) {
   const auth = req.headers.get('authorization') || '';
   if (!env.ADMIN_TOKEN || auth !== `Bearer ${env.ADMIN_TOKEN}`) return fail(401, 'unauthorized', 'Bearer token required.');
   const biz = url.searchParams.get('business');
@@ -539,11 +592,42 @@ async function list(env, req, url, origin) {
   const from = url.searchParams.get('from'), status = url.searchParams.get('status'), phone = normPhone(url.searchParams.get('phone'));
   const rows = await sb(env, 'bookings_full?' + q({ business_id: 'eq.' + biz, start_at: 'gte.' + (isDate(from) ? from : new Date(Date.now() - 864e5).toISOString().slice(0, 10)),
     ...(status ? { status: 'eq.' + status } : {}), ...(phone ? { customer_phone: 'eq.' + phone } : {}), order: 'start_at.asc', limit: '500' }));
-  return json({ business: biz, count: rows.length, bookings: rows.map((b) => view(b, origin)) });
+  const withNotes = url.searchParams.get('with') === 'notifications';   // owner page only; agents keep the old shape
+  let notes = [];
+  if (withNotes && rows.length) {
+    try { notes = await sb(env, 'notifications?' + q({ booking_id: `in.(${rows.map((b) => b.id).join(',')})`, select: 'id,booking_id,kind,role,to_address,status,attempts,last_error,sent_at,updated_at', order: 'id.asc' })); }
+    catch { notes = null; }
+  }
+  if (!withNotes) return json({ business: biz, count: rows.length, bookings: rows.map((b) => view(b, origin)) });
+  return json({ business: biz, count: rows.length, notifications_ledger: notes === null ? 'unavailable' : 'ok',
+    bookings: rows.map((b) => ({ ...view(b, origin), notifications: (notes || []).filter((n) => n.booking_id === b.id)
+      // Owner rows carry a MASKED recipient so two owner inboxes can be told apart; raw ledger addresses are never returned.
+      .map(({ booking_id, to_address, ...n }) => (n.role === 'owner' ? { ...n, recipient: maskEmail(to_address) } : n)) })) });
+}
+
+async function notificationsApi(env, req, url, id, ctx) {
+  const scheduledProcessOnly = id === 'process' && req.method === 'POST' && notificationProcessorOk(env, req);
+  if (!adminOk(env, req) && !scheduledProcessOnly) return fail(401, 'unauthorized', 'Bearer token required.');
+  const n = notifierFor(env);
+  if (!id && req.method === 'GET') {
+    const status = url.searchParams.get('status'), booking = url.searchParams.get('booking');
+    const rows = await sb(env, 'notifications?' + q({ select: 'id,booking_id,kind,role,status,attempts,last_error,sent_at,next_attempt_at,created_at,updated_at',
+      ...(status ? { status: 'eq.' + status } : {}), ...(booking ? { booking_id: 'eq.' + booking } : {}), order: 'id.desc', limit: '200' }));
+    return json({ count: rows.length, notifications: rows });
+  }
+  if (id === 'process' && req.method === 'POST') return json(await n.processDue({ limit: BATCH.process }));
+  if (id === 'requeue' && req.method === 'POST') {
+    const body = await req.json().catch(() => null);
+    const rows = await n.requeue(Array.isArray(body?.ids) ? body.ids : [], { includeBounced: body?.include_bounced === true });
+    if (ctx?.waitUntil) ctx.waitUntil(n.processDue({ limit: BATCH.process }).catch(() => {}));
+    return json({ requeued: rows.map((r) => r.id) });
+  }
+  return fail(404, 'not_found', 'No such route.');
 }
 
 export async function onRequest(ctx) {
   const { request: req, env, params } = ctx;
+  if (!productionApiEnabled(env, req)) return fail(503, 'preview_read_only', 'Read-only preview. Booking and email APIs are disabled.');
   const url = new URL(req.url), origin = url.origin, [res, id, extra] = params.route || [];
   try {
     if (res === 'ros-events') return await rosEventsRoute({env,req,id,extra,db:(path,o)=>sb(env,path,o)});
@@ -551,10 +635,10 @@ export async function onRequest(ctx) {
       try { if (await sb(env,'rpc/ros_ready',{method:'POST',schema:'revenue',body:{}}) !== true) throw Error('not_ready'); }
       catch { return fail(503,'customer_sync_unavailable','Please try again later.'); }
     }
-    if (res === 'availability' && req.method === 'GET') return await availability(env, url);
+    if (res === 'availability' && req.method === 'GET') { sweep(env, ctx); return await availability(env, url); }
     if (res === 'bookings' && !id) {
       if (req.method === 'POST') return await create(env, req, origin, ctx);
-      if (req.method === 'GET') return await list(env, req, url, origin);
+      if (req.method === 'GET') return await list(env, req, url, origin, ctx);
     }
     if (res === 'bookings' && id && !extra) {
       const b = await getBooking(env, id);
@@ -562,6 +646,20 @@ export async function onRequest(ctx) {
       if (req.method === 'GET') return json(view(b, origin));
       if (req.method === 'PATCH') return await reschedule(env, req, b, origin, ctx);
       if (req.method === 'DELETE') return await cancel(env, req, b, origin, ctx);
+    }
+    if (res === 'notifications' && !extra) return await notificationsApi(env, req, url, id, ctx);
+    if (res === 'admin' && id === 'email-config' && req.method === 'GET') {
+      if (!adminOk(env, req)) return fail(401, 'unauthorized', 'Bearer token required.');
+      const cfg = describeMailConfig(env);
+      return json(mailTransport(env) === 'm365' ? { ...cfg, m365: await m365Status(env, (p, o) => sb(env, p, o)) } : cfg);
+    }
+    // One-time Microsoft 365 connection (delegated sign-in from the owner page): connect → poll until connected.
+    if (res === 'admin' && id === 'm365' && req.method === 'POST' && ['connect', 'poll', 'disconnect'].includes(extra)) {
+      if (!adminOk(env, req)) return fail(401, 'unauthorized', 'Bearer token required.');
+      const db = (p, o) => sb(env, p, o);
+      if (extra === 'connect') { const r = await m365StartConnect(env, db); return json(r, r.ok ? 200 : 409); }
+      if (extra === 'poll') return json(await m365PollConnect(env, db));
+      return json(await m365Disconnect(env, db));
     }
     if (res === 'coupons' && !id) {
       if (req.method === 'POST') return await claimCoupon(env, req, ctx);
@@ -574,7 +672,7 @@ export async function onRequest(ctx) {
     }
     return fail(404, 'not_found', 'No such route.');
   } catch (e) {
-    console.error('booking api', e);
+    console.error('booking api', errInfo(e));
     return fail(500, 'internal', 'Something went wrong on our side.');
   }
 }
