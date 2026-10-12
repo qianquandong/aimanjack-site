@@ -11,7 +11,7 @@ const PROD = "https://aimanjack.com";
 const SITE = (process.env.SITE || PROD).replace(/\/$/, "");
 const PREVIEW = SITE !== PROD;
 // Indexable routes (PRD 2026-09-18 §77). Add /ai-training-dallas/, /ai-workflow-training/, /ai-workshops/ and the team pages as they ship.
-const EN = ["/", "/ai-training/", "/blog/", "/about/", "/contact/", "/book/"];
+const EN = ["/", "/ai-training/", "/ai-training/team-workshop/", "/ai-training/onsite-texas/", "/blog/", "/about/", "/contact/", "/book/"];
 // Resource library (bilingual since the 2026-09 redesign): hubs plus one detail page of each type as a canary.
 const EN_ONLY = ["/tools/", "/tools/ai-readiness-assessment/", "/use-cases/", "/use-cases/sales/", "/workflows/", "/workflows/prospect-research/", "/templates/", "/templates/sales-meeting-prep/", "/templates/ai-data-boundaries-one-pager/", "/case-studies/", "/case-studies/livestream-agency-scheduling/"];
 const PAGES = [...EN, ...EN_ONLY].flatMap((p) => [p, "/zh" + p]);

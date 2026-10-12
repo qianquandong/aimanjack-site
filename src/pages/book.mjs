@@ -44,8 +44,8 @@ const copy = {
 
 // Left column of the page (design: Book / ZH-Book).
 const INFO = {
-  en: { top: '20-minute call with Jack', steps: [['On the call:', 'what you or your team does every week, which tools you already use, and where work keeps repeating.'], ['Within 24 hours:', 'a recommended plan (who should attend and which workflows to start with) and a written price.'], ['Then:', 'live sessions on your real work, remote anywhere in the U.S. or onsite in Dallas–Fort Worth.']], alt: ['Rather text? Send <strong>TRAINING</strong> to', ', or email', '.'] },
-  zh: { top: '与 Jack 的 20 分钟通话', steps: [['通话中：', '了解你或团队每周的工作、已经在用的工具，以及哪些工作总在重复。'], ['24 小时内：', '给出推荐方案（谁来参加、从哪几条工作流开始）和书面报价。'], ['之后：', '围绕你的真实工作实时授课，全美远程或在达拉斯—沃斯堡上门。']], alt: ['更习惯短信？发送 <strong>TRAINING</strong> 至', '，或发邮件至', '。'] },
+  en: { top: '20-minute call with Jack', steps: [['On the call:', 'what you or your team does every week, which tools you already use, and where work keeps repeating.'], ['After the call:', 'Jack reviews your notes personally and emails a recommended plan (who should attend and which workflows to start with) and a written price.'], ['Then:', 'live sessions on your real work, remote anywhere in the U.S. or onsite in Dallas–Fort Worth.']], alt: ['Rather text? Send <strong>TRAINING</strong> to', ', or email', '.'] },
+  zh: { top: '与 Jack 的 20 分钟通话', steps: [['通话中：', '了解你或团队每周的工作、已经在用的工具，以及哪些工作总在重复。'], ['通话之后：', 'Jack 会亲自整理，并通过邮件发送推荐方案（谁来参加、从哪几条工作流开始）和书面报价。'], ['之后：', '围绕你的真实工作实时授课，全美远程或在达拉斯—沃斯堡上门。']], alt: ['更习惯短信？发送 <strong>TRAINING</strong> 至', '，或发邮件至', '。'] },
 };
 
 // One script for both languages; strings come from window.BK.

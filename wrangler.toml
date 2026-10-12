@@ -6,18 +6,64 @@ pages_build_output_dir = ".deploy"
 compatibility_date = "2026-06-01"
 
 [vars]
+# Local and preview are inert, including when the dashboard still has old secrets.
+SITE_ENV = "preview"
+
+[env.preview.vars]
+SITE_ENV = "preview"
+
+[env.production.vars]
+SITE_ENV = "production"
+ROS_EVENTS_ENABLED = "false" # Enable only after outbox migration + receiver + scheduled processor are approved.
 # Booking data lives in Supabase (project aimanjack-crm, schema `booking`; db/schema.sql).
 SUPABASE_URL = "https://lalmvbxibkozmtnpfbcw.supabase.co"
-# Booking emails (Cloudflare Email Sending, REST API — Pages Functions have no send_email binding).
-# aimanjack.com must be onboarded under Email Service → Email Sending in the dashboard (adds SPF/DKIM).
+# Site mail transport (owner decision 2026-10-09, revenue-os#2): NO Cloudflare Workers Paid ⇒ no Cloudflare Email
+# Sending. All site mail (booking + coupon) goes out through Jack's Microsoft 365 mailbox via Microsoft Graph, as
+# M365_SENDER, delegated permission Mail.Send (one-time "Connect Microsoft 365" on /admin/bookings/). src/m365-mail.mjs.
+MAIL_TRANSPORT = "m365"
+M365_AUTH = "delegated"
+M365_TENANT_ID = "7b2782a2-fd4d-42e2-b5e5-97d3999d2f0f"   # aimanjack.com (GoDaddy-federated Microsoft 365)
+M365_SENDER = "jack@aimanjack.com"
+# Application (client) ID of the "aimanjack-site mail" app registration (Entra, registered 2026-10-09; not a secret).
+# The device-code connect also needs, on that app: Authentication → Allow public client flows = Yes, and API permissions
+# → Microsoft Graph → Delegated → Mail.Send (docs/BOOKING-EMAIL.md §4A steps 4–5).
+M365_CLIENT_ID = "7248926a-349c-4b2a-8ba0-81084086e966"
+# Legacy Cloudflare transport (MAIL_TRANSPORT = "cloudflare"; needs Workers Paid + aimanjack.com onboarded):
 CF_ACCOUNT_ID = "6e58305e2e9f1f725ce66d0746f740e5"
+# Booking lane (owner decision 2026-10-09, revenue-os#2): transactional booking mail only. Cold outbound never uses
+# aimanjack.com (it lives on getaimanjack.com).
+BOOKING_EMAIL_FROM = "booking-no-reply@aimanjack.com"   # Cloudflare transport only; with M365 the From is M365_SENDER
+BOOKING_REPLY_TO = "jack@aimanjack.com"
+# Coupon lane From for the Cloudflare transport only; with MAIL_TRANSPORT = "m365" coupons also go out as M365_SENDER.
 EMAIL_FROM = "bookings@aimanjack.com"
-OWNER_EMAIL = "jack@aimanjack.com"
 SITE_ORIGIN = "https://aimanjack.com"
+# Owner booking notices (owner decision 2026-10-09 20:32 CT: "那就jack@aimanjack.com吧"). This file is the source of
+# truth for vars — a dashboard edit of OWNER_EMAIL cannot take effect; change it HERE (comma-separated for several
+# inboxes, max 5, each gets its own message). Verify the effective value (masked) with
+#   curl -H "authorization: Bearer $ADMIN_TOKEN" https://aimanjack.com/v1/admin/email-config
+OWNER_EMAIL = "jack@aimanjack.com"
 
-# Secrets (not here) — set for production AND preview (`--env preview`):
+# Secrets (not here) — production only. Do not copy live secrets into preview.
 #   npx wrangler pages secret put SB_SECRET_KEY --project-name aimanjack   Supabase secret (service-role) key
 #   npx wrangler pages secret put ADMIN_TOKEN   --project-name aimanjack   bearer for GET /v1/bookings?business=…
 #   npx wrangler pages secret put CF_EMAIL_TOKEN --project-name aimanjack   API token, permission Account → Email Sending → Edit
 #     (unset = no emails, bookings still work)
+#   Quote intake (POST /v1/intake, Revenue OS v6) — all optional, but set the first two before go-live:
+#   npx wrangler pages secret put EMAIL_HASH_SECRET --project-name aimanjack   random 32+ bytes (e.g. `openssl rand -hex 32`).
+#     Keys HMAC-SHA256 for revenue.intake_receipts/consent_events.subject_email_hash ('subject:'+email), the receipt
+#     dedupe_key and rate-limit keys. Unset = subject_email_hash stored as null (never an unsalted email hash), dedupe falls
+#     back to a day-scoped sha256 kept only in the receipt row, and a code-only warning is logged per submission.
+#     Rotating it breaks the link between old and new hashes (erasure of old receipts then needs revenue.erase_receipt).
+#     Operators compute a DSAR subject hash as hex HMAC-SHA256(EMAIL_HASH_SECRET, 'subject:' + lower(trim(email))).
+#   npx wrangler pages secret put IP_HASH_SALT --project-name aimanjack   random 32+ bytes. Unset = ip_hash stored as null.
+#   npx wrangler pages secret put ROS_WEBHOOK_URL / ROS_WEBHOOK_SECRET   signed intake event to the Revenue OS store.
+# Local: .dev.vars (gitignored) with the same names.
+#   npx wrangler pages secret put M365_TOKEN_KEY --project-name aimanjack   32 random bytes, base64 (`openssl rand -base64 32`);
+#     seals the Microsoft 365 refresh token in booking.mail_tokens. Changing it disconnects the mailbox (reconnect once).
+#   (Cloudflare transport only) CF_EMAIL_TOKEN   API token, Account → Email Sending → Edit
+#   optional: ALERT_NTFY_URL (+ ALERT_NTFY_TOKEN)   ntfy topic URL for bounced/dead/uncertain booking-email alerts
 # Local: .dev.vars (gitignored) with the same two names.
+
+# ROS_EVENT_PROCESS_TOKEN: separate process-only token; never use ADMIN_TOKEN in the scheduler.
+# ROS_WEBHOOK_URL/SECRET and ROS_BOOKING_WEBHOOK_URL/SECRET: approved HTTPS receiver routes.
+# ROS_ALERT_NTFY_URL/TOKEN: customer-sync failure alert channel (separate from booking-email alerts).

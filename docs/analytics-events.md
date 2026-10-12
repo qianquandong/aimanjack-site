@@ -35,3 +35,17 @@ Flywheel funnel (2026-09-19): `tool_complete` → `tool_template_click` → `tem
 
 Funnel to build in GA4 Explorations: organic landing → (`workflow_view` | `template_view` | `tool_view`) → (`template_copy` | `tool_complete`) → `training_page_view` → `workshop_cta_click` → `booking_complete`.
 Never report `workshop_cta_click` as a booked meeting; only `booking_complete` is.
+
+## Revenue OS v6 additions (2026-10-08)
+
+| Event | Fires when | Params | Notes |
+|---|---|---|---|
+| `view_offer` | An offer page loads: `/ai-training/` (`custom-four`), `/ai-training/team-workshop/` (`team-intro-90`), `/ai-training/onsite-texas/` (`onsite-day`) | `offer_id` | From `<body data-offer>`. |
+| `click_book_call` | Any click on a link to `/book/` or `/zh/book/` (in addition to that link's own `data-event`) | `cta_position` | A click is not a booking; only `booking_complete` is. |
+| `offer_path_click` / `quote_cta_click` | Three-path chooser card / any "Request a scoped quote" link | `cta_position` | — |
+| `request_quote_start` | First focus inside the quote form on `/contact/quote/` | `offer_format` | — |
+| `submit_enterprise_inquiry` | Only after `POST /v1/intake` returned `ok` with a `receipt_id` | `receipt_id`, `offer_format` | The receipt id is a random UUID (joins GA4 to `revenue.intake_receipts`); never name, email or answers. |
+| `opt_in_newsletter` | Same moment, only if the optional newsletter box was ticked | `form` | — |
+
+`download_asset`: not implemented — the site has no downloadable files yet.
+Privacy: on `/book/?id=…` (booking manage links) `page_location` is sent without the query string, and the next page's `page_referrer` is stripped the same way. Global Privacy Control, or the "Turn off analytics" button on `/privacy` (localStorage `amj_analytics_off`), stops GA4 from loading. First-touch UTM/referrer/landing data lives in `sessionStorage.amj_ft` and is sent only inside a quote request.

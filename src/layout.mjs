@@ -1,4 +1,4 @@
-import { SITE, BRAND, EMAIL, SMS_TEL, SMS_DISPLAY, GA4_ID, BOOK_URL, OG_CARD, langPath, zhPath } from './config.mjs';
+import { SITE, BRAND, EMAIL, SMS_TEL, SMS_DISPLAY, GA4_ID, BOOK_URL, OG_CARD, OFFERS, langPath, zhPath } from './config.mjs';
 import { T } from './i18n.mjs';
 
 export const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
@@ -48,7 +48,7 @@ function footer(lang) {
   return `<footer class="ftr"><div class="wrap">
 <div class="ftr-top"><div class="ftr-brand">${logo(lang)}<p>${f.tagline}</p></div>
 <div class="ftr-cols">
-${col(f.training, [[L(lang, '/ai-training/'), f.corporate], [L(lang, '/ai-training/') + '#formats', f.workshops], [href(lang, '/tools/'), f.tools], [href(lang, '/templates/'), f.templates], [href(lang, '/workflows/'), f.workflows]])}
+${col(f.training, [[L(lang, '/ai-training/'), f.corporate], [L(lang, OFFERS.workshop.path), f.workshops], [L(lang, OFFERS.onsite.path), f.onsite], [href(lang, '/tools/'), f.tools], [href(lang, '/templates/'), f.templates], [href(lang, '/workflows/'), f.workflows]])}
 ${col(f.teams, [[href(lang, '/use-cases/sales/'), f.sales], [href(lang, '/use-cases/marketing/'), f.marketing], [href(lang, '/use-cases/operations/'), f.operations], [href(lang, '/use-cases/leadership/'), f.leadership]])}
 ${col(f.resources, [[L(lang, '/blog/'), f.guides], [L(lang, '/case-studies/'), f.cases], ['https://realagentusecases.com/', f.newsletter]])}
 ${col(f.company, [[L(lang, '/about/'), f.about], [L(lang, '/contact/'), f.contact], [L(lang, BOOK_URL), f.book]])}
@@ -104,13 +104,29 @@ if(!matchMedia('(prefers-reduced-motion:reduce)').matches&&'IntersectionObserver
  [].forEach.call(D.querySelectorAll('.stat-bar b'),function(b){io.observe(b)});
  if(desk)D.addEventListener('pointermove',function(e){var c=e.target.closest&&e.target.closest('.prog');if(!c)return;var r=c.getBoundingClientRect();
   c.style.setProperty('--mx',e.clientX-r.left+'px');c.style.setProperty('--my',e.clientY-r.top+'px')},{passive:true})}
+// First-touch attribution (W-007): campaign tags, referring host and landing path of the first page view in this tab. sessionStorage only
+// (first-party, no cookies, no PII); the quote form copies it into hidden fields. It is not sent anywhere else.
+try{var SS=sessionStorage;if(!SS.getItem('amj_ft')){var u=new URLSearchParams(location.search),ft={ts:Date.now(),landing:location.pathname.slice(0,200)};
+ ['utm_source','utm_medium','utm_campaign','utm_content','utm_term'].forEach(function(k){var v=u.get(k);if(v)ft[k]=v.slice(0,120)});
+ try{var rh=D.referrer?new URL(D.referrer).hostname:'';if(rh&&rh!==location.hostname)ft.ref=rh.slice(0,120)}catch(_){}
+ SS.setItem('amj_ft',JSON.stringify(ft))}}catch(_){}
 D.addEventListener('click',function(e){var l=e.target.closest('[data-event]');if(l)track(l.dataset.event,{cta_position:l.dataset.pos||''});
+ var a=e.target.closest('a[href]');if(a&&/^\\/(zh\\/)?book\\/(\\?|#|$)/.test(a.getAttribute('href')))track('click_book_call',{cta_position:a.dataset.pos||''});
+ var off=e.target.closest('[data-analytics-off]');if(off){e.preventDefault();try{localStorage.setItem('amj_analytics_off','1')}catch(_){}window['ga-disable-${GA4_ID}']=true;off.textContent=off.dataset.done||off.textContent}
  var m=e.target.closest('.menu nav a');if(m)m.closest('details').open=false});
 var bar=D.getElementById('sticky-cta'),hero=D.getElementById('hero-cta');
 if(bar&&hero&&'IntersectionObserver' in window)new IntersectionObserver(function(en){bar.hidden=en[0].isIntersecting||en[0].boundingClientRect.top>0}).observe(hero);
 if(!/(^|\\.)aimanjack\\.com$/.test(location.hostname))return;
+// Opt-out (see /privacy): Global Privacy Control or the "turn off analytics" link → Google Analytics is never loaded.
+var optout=navigator.globalPrivacyControl===true;try{optout=optout||localStorage.getItem('amj_analytics_off')==='1'}catch(_){}
+if(optout){window['ga-disable-${GA4_ID}']=true;return}
 addEventListener('load',function(){var s=D.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=${GA4_ID}';D.head.appendChild(s);
- gtag('js',new Date());gtag('config','${GA4_ID}');var v=D.body.dataset.view;if(v)track(v)});
+ // Booking manage links (/book/?id=…) carry the token that opens a booking: GA4 gets the address without its query string,
+ // both on that page and as the next page's referrer.
+ var cfg={},bk=/^\\/(zh\\/)?book\\/$/;if(bk.test(location.pathname)&&location.search)cfg.page_location=location.origin+location.pathname;
+ try{var r=new URL(D.referrer);if(r.hostname===location.hostname&&bk.test(r.pathname)&&r.search)cfg.page_referrer=r.origin+r.pathname}catch(_){}
+ gtag('js',new Date());if(cfg.page_location||cfg.page_referrer)gtag('set',cfg);gtag('config','${GA4_ID}',cfg);
+ var v=D.body.dataset.view;if(v)track(v);var o=D.body.dataset.offer;if(o)track('view_offer',{offer_id:o})});
 })();
 </script>`;
 
@@ -142,9 +158,8 @@ export function render(page, lang) {
 <title>${esc(page.title)}</title>
 <meta name="description" content="${esc(page.description)}">
 <link rel="canonical" href="${url}">
-<link rel="alternate" hreflang="en" href="${SITE + canonicalPath}">${langs.includes('zh') ? `
-<link rel="alternate" hreflang="zh" href="${SITE + zhPath(canonicalPath)}">` : ''}
-<link rel="alternate" hreflang="x-default" href="${SITE + canonicalPath}">
+${langs.includes('en') ? `<link rel="alternate" hreflang="en" href="${SITE + canonicalPath}">` : ''}${langs.includes('zh') ? `${langs.includes('en') ? '\n' : ''}<link rel="alternate" hreflang="zh" href="${SITE + zhPath(canonicalPath)}">` : ''}
+<link rel="alternate" hreflang="x-default" href="${SITE + (langs.includes('en') ? canonicalPath : zhPath(canonicalPath))}">
 <meta name="robots" content="${page.noindex ? 'noindex, follow' : 'index, follow, max-image-preview:large, max-snippet:-1'}">
 <meta property="og:type" content="${page.ogType || 'website'}">
 <meta property="og:url" content="${url}">
@@ -163,7 +178,7 @@ ${twitterImage}${ld}
 <link rel="preload" href="/fonts/Satoshi-latin-2.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/style.css?v=0">
 </head>
-<body${page.view ? ` data-view="${page.view}"` : ''}${page.hero === 'photo' || page.bodyClass ? ` class="${[page.hero === 'photo' ? 'on-photo' : '', page.bodyClass || ''].join(' ').trim()}"` : ''}>
+<body${page.view ? ` data-view="${page.view}"` : ''}${page.offer ? ` data-offer="${page.offer}"` : ''}${page.hero === 'photo' || page.bodyClass ? ` class="${[page.hero === 'photo' ? 'on-photo' : '', page.bodyClass || ''].join(' ').trim()}"` : ''}>
 <a class="skip-link" href="#main">${t.skip}</a>
 ${header(lang, page.path, langs)}
 <main id="main">

@@ -7,6 +7,7 @@ import { business, person, website } from '../schema.mjs';
 import { USE_CASES } from '../content/usecases.mjs';
 import { caseProof, clientProof } from './cases.mjs';
 import { progCard } from './training.mjs';
+import { chooser } from './offers.mjs';
 import { templateBySlug } from '../content/templates.mjs';
 import { loc } from '../resources.mjs';
 import { templateCard } from './workflows.mjs';
@@ -31,7 +32,7 @@ const C = {
     roomP: `${talks(['Zero', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine'])} community talks in Dallas and Plano and a ${PROOF.hackathon}-person hackathon came first. The method that survived those rooms is the one you get: your real work, turned into AI workflows that run.`,
     roomAlt: 'Hands-on session: everyone working on their own task.', by: 'Dallas-based · teaches every session himself', about: 'About Jack →',
     teamK: 'Explore by team', teamH: 'Where does your team start?', teamMore: 'All use cases →', owners: 'Run a small business? See how the program works for owners & operators →',
-    progK: 'Training program', progH: 'One program, built around your work', progMore: 'Session-by-session plan and pricing →',
+    progK: 'Training program', progH: 'The core program, built around your work', progMore: 'Session-by-session plan and pricing →',
     prog: { k: 'Core program', big: `${S} sessions`, sub: `${S} × ${M} min · customized · live`, chip: `Starting at ${PROGRAM_PRICE}/person`,
         p: 'We work directly on the tasks you already do and build practical AI workflows around them. The curriculum changes with the business or team.',
         items: [`Four live ${M}-minute sessions`, 'Built around your actual work', 'One workflow at a time', 'Review what worked between sessions', 'Human verification built into every workflow', 'Remote anywhere in the U.S.'],
@@ -39,7 +40,7 @@ const C = {
     toolsK: 'Free tools', toolsH: 'Get something useful in three minutes', toolsMore: 'All free tools →',
     strip: ['The 37-person Dallas AI hackathon', 'Jack presenting at a Dallas session', 'A team demonstrating what it built'],
     howK: 'How engagement works', howH: 'From first call to a workflow that survives', step: 'Step',
-    how: [['A short workflow call', 'Tell me what you or your team does every week, which tools you already use, and where work keeps repeating.'], ['A recommended training plan', 'Who should attend, which workflows to start with, and a written price, within 24 hours.'], ['Four live sessions on real work', 'We build and improve workflows using work you actually do, not canned demos.'], ['Use it, then keep, change or stop', 'Each session starts with what worked, what broke and what should change. Keep the workflows that are accurate and useful; change or stop the rest.']],
+    how: [['A short workflow call', 'Tell me what you or your team does every week, which tools you already use, and where work keeps repeating.'], ['A recommended training plan', 'Who should attend, which workflows to start with, and a written price, sent by email.'], ['Four live sessions on real work', 'We build and improve workflows using work you actually do, not canned demos.'], ['Use it, then keep, change or stop', 'Each session starts with what worked, what broke and what should change. Keep the workflows that are accurate and useful; change or stop the rest.']],
     bandH: 'Bring one task.<br>We’ll make it <em>work.</em>',
   },
   zh: {
@@ -57,7 +58,7 @@ const C = {
     roomP: `在达拉斯与 Plano 举办的${talks(['零', '一', '两', '三', '四', '五', '六', '七', '八', '九'])}场社区讲座和一场 ${PROOF.hackathon} 人黑客松，是这套方法的试验场。经过这些课堂检验的方法，正是你将获得的：以真实工作为素材，搭建真正可运行的 AI 工作流。`,
     roomAlt: '实操环节：每位学员都在处理自己的任务。', by: '常驻达拉斯 · 每场课程均亲自授课', about: '了解 Jack →',
     teamK: '按团队浏览', teamH: '你的团队从哪里开始？', teamMore: '全部应用场景 →', owners: '自己经营小企业？看看课程项目怎么帮老板和经营者 →',
-    progK: '培训项目', progH: '一个项目，围绕你的工作来做', progMore: '每节课安排与价格 →',
+    progK: '培训项目', progH: '核心项目，围绕你的工作来做', progMore: '每节课安排与价格 →',
     prog: { k: '核心项目', big: `${S} 节课`, sub: `${S} × ${M} 分钟 · 定制 · 实时授课`, chip: `每人 ${PROGRAM_PRICE} 起`,
         p: '直接围绕你已经在做的任务，搭建真正用得上的 AI 工作流。课程内容随企业或团队的情况调整。',
         items: [`四节 ${M} 分钟的实时课程`, '围绕你的真实工作设计', '一次落地一条工作流', '课间复盘哪些有效', '每条工作流都设有人工核验环节', '全美远程授课'],
@@ -65,7 +66,7 @@ const C = {
     toolsK: '免费工具', toolsH: '三分钟，获得一份可用的结果', toolsMore: '全部免费工具 →',
     strip: ['37 人参与的达拉斯 AI 黑客松', 'Jack 在达拉斯的一场课程中讲解', '一个小组正在演示自己搭建的成果'],
     howK: '合作流程', howH: '从首次沟通，到真正落地的工作流', step: '第 {n} 步',
-    how: [['一次简短的工作流沟通', '说说你或团队每周都在做什么、已经在用哪些工具，以及哪些工作总在重复。'], ['一份推荐的培训方案', '24 小时内给出建议：谁来参加、从哪几条工作流开始，以及书面报价。'], ['四节围绕真实工作的实时课程', '用你实际在做的工作来搭建、改进工作流，不用预设的演示案例。'], ['课间使用，再决定保留、调整或停止', '每节课都从上次以来哪些有效、哪些出了问题、哪些要调整开始。准确又有用的工作流留下，其余的调整或停用。']],
+    how: [['一次简短的工作流沟通', '说说你或团队每周都在做什么、已经在用哪些工具，以及哪些工作总在重复。'], ['一份推荐的培训方案', '通过邮件给出建议：谁来参加、从哪几条工作流开始，以及书面报价。'], ['四节围绕真实工作的实时课程', '用你实际在做的工作来搭建、改进工作流，不用预设的演示案例。'], ['课间使用，再决定保留、调整或停止', '每节课都从上次以来哪些有效、哪些出了问题、哪些要调整开始。准确又有用的工作流留下，其余的调整或停用。']],
     bandH: '带一项任务来，<br>我们让它<em>真正运转</em>。',
   },
 };
@@ -93,6 +94,7 @@ ${caseProof(lang)}
 <section class="sec" id="teams"><div class="wrap">${head(c.teamK, c.teamH, [href(lang, '/use-cases/'), c.teamMore])}
 <div class="rows">${USE_CASES.map((u, i) => { const x = loc(u, lang); return `<a href="${href(lang, `/use-cases/${u.slug}/`)}" data-event="use_case_click" data-pos="home"><span class="n">${n2(i)}</span><h3>${x.title}</h3><p>${x.card}</p><span class="go" aria-hidden="true">→</span></a>`; }).join('')}</div><p class="rows-more"><a href="${L(lang, '/ai-training/')}#team-owners" data-event="use_case_click" data-pos="home-owners">${c.owners}</a></p></div></section>
 
+${chooser(lang, { pos: 'home' })}
 <section class="sec tight" id="programs"><div class="wrap">${head(c.progK, c.progH, [L(lang, '/ai-training/') + '#formats', c.progMore])}
 ${progCard(c.prog, `<a class="btn btn-primary" href="${L(lang, '/ai-training/')}#formats" data-event="training_program_click" data-pos="home-programs">${c.prog.cta}</a>`)}</div></section>
 

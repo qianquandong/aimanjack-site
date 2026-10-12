@@ -1,5 +1,10 @@
 .wrangler/
 .deploy/
+.preview/
 .DS_Store
 .planning
 .dev.vars
+
+node_modules/
+.dev.vars.*
+.env*

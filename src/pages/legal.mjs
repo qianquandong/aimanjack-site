@@ -3,10 +3,32 @@ import { breadcrumb, BUSINESS_REF } from '../components.mjs';
 
 // /privacy and /sms-terms: English text is unchanged from the previous site (A2P review pages).
 // Chinese versions are translations of the same text. /terms is new; Jack reviews before production.
+// 2026-10-08 (Revenue OS v6, W-002/W-007): /privacy gains one appended block, QUOTE_ANALYTICS below, covering the training quote form,
+// Supabase as processor, Google Analytics 4 and how to opt out. The A2P SMS paragraphs above it are untouched.
+// DRAFT_REQUIRES_OWNER_LEGAL_REVIEW: the QUOTE_ANALYTICS wording (EN + ZH) is a draft, not legal advice, and must be reviewed by the
+// owner / counsel before production. No mailing address is stated on purpose — do not invent one.
+
+// DRAFT_REQUIRES_OWNER_LEGAL_REVIEW — see the note at the top of this file.
+const QUOTE_ANALYTICS = {
+  en: `<h2>Training quote requests</h2>
+<p>When you send the training quote form, we collect what you enter: your name, work email, company, company website, industry, company size, number of attendees, preferred format and location, the work and tools you describe, your timing and how you heard about us. With it we store the page you first landed on, the referring website and any campaign tags (UTM parameters) from that visit, the version of the form and consent wording you saw, and a one-way hash of your IP address used only to prevent abuse.</p>
+<p>We use this information to reply to your request, prepare a scope and quote, and keep a record of the consent you gave. The required box ("I agree to be contacted about this request") covers messages about that request only. We send newsletter emails only if you tick the separate, optional newsletter box, and you can unsubscribe at any time. Supabase stores these records for us as a service provider (processor), and Cloudflare hosts the site and may send us a notification email about your request. We do not sell this information or add it to advertising audiences.</p>
+<h2>Analytics</h2>
+<p>We use Google Analytics 4 to understand which pages are visited and which buttons are used. Google Analytics sets cookies and receives your IP address and browser information. We do not send your name, email address or form answers to Google Analytics, and the private link that manages a booking is removed from the page address before it is sent. Campaign tags from your first page view are also kept in your browser's session storage, which is cleared when you close the tab, so they can be attached to a quote request if you send one.</p>
+<p>To opt out, turn on Global Privacy Control in your browser (when it is on, we do not load Google Analytics), use the button below on each browser you use, or install Google's <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener">Google Analytics opt-out browser add-on</a>.</p>
+<p><button type="button" class="btn btn-secondary btn-sm" data-analytics-off data-done="Analytics is now off on this browser.">Turn off analytics on this browser</button></p>`,
+  zh: `<h2>培训报价申请</h2>
+<p>当你提交培训报价表单时，我们会收集你填写的信息：姓名、工作邮箱、公司名称、公司网站、所属行业、公司规模、参加人数、倾向的培训形式和地点、你描述的工作和工具、大致时间，以及你是从哪里了解到我们的。同时，我们会保存你首次访问的页面、来源网站和该次访问中的推广标记（UTM 参数）、你看到的表单及同意说明的版本，以及仅用于防止滥用的 IP 地址单向哈希值。</p>
+<p>这些信息用于回复你的申请、准备服务范围和报价，并记录你给出的同意。必选项“我同意就本次申请接受联系”只涵盖与这次申请有关的联系。只有在你另外勾选可选的电子通讯选项时，我们才会发送电子通讯，你可以随时退订。Supabase 作为服务提供商（数据处理方）为我们保存这些记录；Cloudflare 托管本网站，并可能向我们发送关于你的申请的通知邮件。我们不出售这些信息，也不会把它们用于广告受众。</p>
+<h2>网站分析</h2>
+<p>我们使用 Google Analytics 4 了解哪些页面被访问、哪些按钮被点击。Google Analytics 会设置 Cookie，并接收你的 IP 地址和浏览器信息。我们不会把你的姓名、邮箱或表单内容发送给 Google Analytics；用于管理预约的私人链接，在发送前会从页面地址中去掉。你首次访问时的推广标记还会保存在浏览器的会话存储中（关闭标签页即清除），以便你提交报价申请时一并附上。</p>
+<p>如需退出：在浏览器中开启“全球隐私控制”（Global Privacy Control，开启后我们不会加载 Google Analytics）；在你使用的每个浏览器上点击下方按钮；或安装 Google 的 <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener">Google Analytics 停用浏览器插件</a>。</p>
+<p><button type="button" class="btn btn-secondary btn-sm" data-analytics-off data-done="已在此浏览器关闭网站分析。">在此浏览器关闭网站分析</button></p>`,
+};
 
 const privacy = {
-  en: { title: 'Privacy Policy | AI Man Jack', description: 'How AI Man Jack collects and uses information from calls, text messages, bookings, and coupon email requests.', crumb: 'Privacy', h1: 'Privacy Policy', body: `
-<p class="meta">Last updated: September 14, 2026</p>
+  en: { title: 'Privacy Policy | AI Man Jack', description: 'How AI Man Jack collects and uses information from calls, text messages, bookings, coupon email requests, training quote requests and website analytics, and how to opt out.', crumb: 'Privacy', h1: 'Privacy Policy', body: `
+<p class="meta">Last updated: October 8, 2026</p>
 <p>AI Man Jack ("we", "us") provides AI education, websites, and workflow automation services, including a missed-call text-back service for local businesses. This policy explains what information we collect and how we use it.</p>
 <h2>Information we collect</h2>
 <p>When you call or text a business phone number powered by our service, we process your phone number and the content of your text messages solely to deliver the service: acknowledging missed calls and relaying conversations between you and the business.</p>
@@ -17,11 +39,12 @@ const privacy = {
 <h2>How we use information</h2>
 <p>We use your phone number to send the messages described above on behalf of the business you contacted. We use a coupon email only to deliver and administer that coupon, not to subscribe you to marketing. We do not sell personal information or use it for advertising.</p>
 <p>Service providers process data only to operate these features: Supabase stores booking and coupon records, and Cloudflare hosts the site and sends coupon and booking emails. We retain the coupon record as needed to prevent duplicate issuance and redemption. Contact us to request access, correction, or deletion where applicable; we may retain a minimal record when necessary to prevent fraud or comply with law.</p>
+${QUOTE_ANALYTICS.en}
 <h2>Contact</h2>
 <p>Questions? Email <a href="mailto:${EMAIL}">${EMAIL}</a>.</p>
 <p><a href="/">&larr; Back to home</a> · <a href="/sms-terms">SMS Terms &amp; Conditions</a> · <a href="/terms">Terms of Service</a></p>` },
-  zh: { title: '隐私政策 | AI Man Jack', description: 'AI Man Jack 如何收集和使用来电、短信、预约及优惠券 email 请求中的信息。', crumb: '隐私', h1: '隐私政策', body: `
-<p class="meta">最后更新：2026 年 9 月 14 日</p>
+  zh: { title: '隐私政策 | AI Man Jack', description: 'AI Man Jack 如何收集和使用来电、短信、预约、优惠券 email 请求、培训报价申请和网站分析中的信息，以及如何退出。', crumb: '隐私', h1: '隐私政策', body: `
+<p class="meta">最后更新：2026 年 10 月 8 日</p>
 <p>AI Man Jack（「我们」）提供 AI 教育、网站和工作流自动化服务，包括面向本地商家的漏接来电短信回复服务。本政策说明我们收集哪些信息，以及如何使用。</p>
 <h2>我们收集的信息</h2>
 <p>当你拨打或发短信到由我们服务支持的商家号码时，我们只为提供服务而处理你的电话号码和短信内容：确认漏接的来电，并在你和商家之间传递对话。</p>
@@ -32,6 +55,7 @@ const privacy = {
 <h2>我们如何使用信息</h2>
 <p>我们用你的电话号码代表你联系的商家发送上述短信。优惠券 email 只用于发送和管理这张优惠券，不会把你加入营销邮件。我们不出售个人信息，也不用于广告。</p>
 <p>服务商只为运行这些功能处理数据：Supabase 保存预约和优惠券记录；Cloudflare 托管网站，并发送优惠券和预约邮件。为防止重复领取和重复核销，我们会按需要保留优惠券记录。你可以联系我们申请查阅、更正或删除适用的信息；为防欺诈或遵守法律，我们可能保留必要的最少记录。</p>
+${QUOTE_ANALYTICS.zh}
 <h2>联系</h2>
 <p>有问题？发邮件到 <a href="mailto:${EMAIL}">${EMAIL}</a>。</p>
 <p><a href="/zh/">&larr; 返回首页</a> · <a href="/zh/sms-terms">短信条款</a> · <a href="/zh/terms">服务条款</a></p>` },

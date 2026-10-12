@@ -1,0 +1,50 @@
+# Inert until the owner explicitly provisions the scoped secret and enables the variable.
+# Do not use ADMIN_TOKEN here. This credential can only drain the event outbox.
+name: Customer sync retries
+
+on:
+  schedule:
+    - cron: '11,26,41,56 * * * *'
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+concurrency:
+  group: customer-sync-retries
+  cancel-in-progress: false
+
+jobs:
+  retry-due:
+    if: ${{ vars.ROS_EVENT_RETRY_ENABLED == 'true' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Process due events and report undelivered alerts
+        env:
+          PROCESS_TOKEN: ${{ secrets.ROS_EVENT_PROCESS_TOKEN }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "${#PROCESS_TOKEN}" -lt 32 ]; then
+            echo "::error::Customer sync needs a dedicated process token of at least 32 characters"
+            exit 1
+          fi
+          response_file="$(mktemp)"
+          trap 'rm -f "$response_file"' EXIT
+          # No transport-level retry: the durable server ledger handles uncertainty.
+          status="$(curl --silent --show-error --max-time 45 \
+            --output "$response_file" --write-out '%{http_code}' \
+            --request POST \
+            --header "Authorization: Bearer ${PROCESS_TOKEN}" \
+            --header "Content-Type: application/json" \
+            'https://aimanjack.com/v1/ros-events/process')"
+          if [ "$status" != 200 ]; then
+            echo "::error::Customer sync processing returned HTTP ${status}"
+            exit 1
+          fi
+          if ! jq -e '.enabled == true and (.processed | type == "array") and all(.processed[]; .saved == true) and (.alert.due != true or .alert.sent == true)' "$response_file" >/dev/null; then
+            echo "::error::Customer sync is disabled, a result could not be saved, or an owner alert was not delivered"
+            exit 1
+          fi
+          echo 'Customer sync checked; no customer details logged.'
