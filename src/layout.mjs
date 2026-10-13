@@ -37,7 +37,7 @@ ${logo(lang)}
 <nav class="hdr-nav" aria-label="Primary">${links}</nav><span class="spacer"></span>
 ${langLink}
 ${planBtn(lang, { pos: 'header', cls: 'btn-sm hdr-cta' })}
-<details class="hdr-menu"><summary aria-label="${t.menu}"><svg width="18" height="14" viewBox="0 0 18 14" aria-hidden="true"><path d="M0 1h18M0 7h18M0 13h18" stroke="currentColor" stroke-width="2"/></svg></summary>
+<details class="hdr-menu" id="hdr-menu"><summary aria-label="${t.menu}"><svg width="18" height="14" viewBox="0 0 18 14" aria-hidden="true"><path d="M0 1h18M0 7h18M0 13h18" stroke="currentColor" stroke-width="2"/></svg></summary>
 <nav class="hdr-menu-panel" aria-label="Primary, mobile">${links}${planBtn(lang, { pos: 'menu' })}</nav></details>
 </div></header>`;
 }
@@ -113,9 +113,13 @@ try{var SS=sessionStorage;if(!SS.getItem('amj_ft')){var u=new URLSearchParams(lo
 D.addEventListener('click',function(e){var l=e.target.closest('[data-event]');if(l)track(l.dataset.event,{cta_position:l.dataset.pos||''});
  var a=e.target.closest('a[href]');if(a&&/^\\/(zh\\/)?book\\/(\\?|#|$)/.test(a.getAttribute('href')))track('click_book_call',{cta_position:a.dataset.pos||''});
  var off=e.target.closest('[data-analytics-off]');if(off){e.preventDefault();try{localStorage.setItem('amj_analytics_off','1')}catch(_){}window['ga-disable-${GA4_ID}']=true;off.textContent=off.dataset.done||off.textContent}
- var m=e.target.closest('.menu nav a');if(m)m.closest('details').open=false});
+ if(menu&&menu.open&&(!menu.contains(e.target)||e.target.closest('.hdr-menu-panel a')))menu.open=false});
+// Mobile menu: a tap outside it, a tap on one of its links or Escape closes it (native <details> only toggles on its summary).
+var menu=D.getElementById('hdr-menu');
+D.addEventListener('keydown',function(e){if(e.key==='Escape'&&menu&&menu.open){var f=menu.contains(D.activeElement);menu.open=false;if(f)menu.querySelector('summary').focus()}});
+// Body padding for the sticky bar only where the bar can appear (pages with #hero-cta); elsewhere it left an empty strip under the footer.
 var bar=D.getElementById('sticky-cta'),hero=D.getElementById('hero-cta');
-if(bar&&hero&&'IntersectionObserver' in window)new IntersectionObserver(function(en){bar.hidden=en[0].isIntersecting||en[0].boundingClientRect.top>0}).observe(hero);
+if(bar&&hero&&'IntersectionObserver' in window){D.body.classList.add('has-sticky');new IntersectionObserver(function(en){bar.hidden=en[0].isIntersecting||en[0].boundingClientRect.top>0}).observe(hero)}
 if(!/(^|\\.)aimanjack\\.com$/.test(location.hostname))return;
 // Opt-out (see /privacy): Global Privacy Control or the "turn off analytics" link → Google Analytics is never loaded.
 var optout=navigator.globalPrivacyControl===true;try{optout=optout||localStorage.getItem('amj_analytics_off')==='1'}catch(_){}
