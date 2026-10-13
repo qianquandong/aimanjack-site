@@ -1,9 +1,10 @@
+import { trainingFormatSummary } from '../training-buyers.mjs';
 // First post produced by the seo-blog workflow (Agent OS workflows/seo-blog.md). Every fact below comes from
 // aimanjack.com/ai-training/ or knowledge/marketing/approved-claims.md. No first-person anecdotes: stories.md is empty.
 export const post = {
   slug: 'ai-training-for-employees-start-with-one-task',
   date: '2026-09-17',
-  updated: undefined,
+  updated: '2026-10-13',
   status: 'published',
   en: {
     keyword: 'AI training for employees',
@@ -41,7 +42,7 @@ export const post = {
 <h2>When this does not work</h2>
 <p>This method fails when the people in the room do not own a repeatable task. A leadership team that mostly makes one-off decisions will score every candidate low on frequency, and the session turns back into a product discussion. For that group a briefing is more honest than a workshop.</p>
 <p>It also fails when the approved source does not exist. If nobody can point to the notes, the price list, or the policy the AI is allowed to read from, step four has nothing to put in the "approved source" slot. Fix the source first. That is a documentation problem, and no amount of AI training for employees solves it.</p>
-<p>And it fails when nobody checks in afterwards. Two weeks after every session we ask whether the workflow was tested, whether the result was accurate enough to use, and whether the task should continue, change, or stop. Skip the follow-up and you are back to a room full of people who enjoyed the demonstration.</p>
+<p>And it fails when nobody checks in afterwards. For the four-session program, each session reviews what happened between sessions. For a one-off workshop, agree any follow-up separately and name an internal owner to review the workflow after two weeks. Skip the follow-up and you are back to a room full of people who enjoyed the demonstration.</p>
 
 <h2>What to do in the next 14 days</h2>
 <ul>
@@ -49,10 +50,10 @@ export const post = {
 <li>Take the single highest-scoring task and write its instruction in five parts. Run it once. Have the person who normally does the task grade the output.</li>
 <li>Decide who signs off before that output is used. Write the name down. If there is no name, the workflow is not ready.</li>
 </ul>
-<p>If you want this run with your whole team in one room, the three formats and what each one covers are on the <a href="/ai-training/#formats">training page</a>, and the workflows each team builds are under <a href="/ai-training/#teams">who it’s for</a>.</p>
+<p>If you want this run with your whole team in one room, the three formats and what each one covers are on the <a href="/ai-training/#team-paths">training page</a>, and the workflows each team builds are under <a href="/ai-training/#teams">who it’s for</a>.</p>
 `,
     faq: [
-      ['How long does AI training for employees take?', 'Three formats run the same five-part method: a 90-minute lunch-and-learn with one live build, a half-day hands-on workshop where everyone builds on their own task, and a multi-week program. What changes is how much each person does with their own hands.'],
+      ['How long does AI training for employees take?', trainingFormatSummary('en')],
       ['Do employees need to know how to code?', 'No. The sessions are for people who do not write code: operations, sales, admin, front office, planning, customer service. The instruction template is written in plain language and the verification checklist fits on one page.'],
       ['Which AI tool does the training use?', 'The task is chosen before the tool. Sessions run on whichever chat assistant the company has already approved — ChatGPT, Claude, Gemini, Copilot — because the method (task score, five-part instruction, verification, guardrails) is the same across products.'],
       ['What if the AI gives a wrong answer during training?', 'That is planned. At least one output in each session is deliberately flawed so the group practices catching it. Every participant leaves with the five verification questions and knows who approves an output before it is used.'],
@@ -98,7 +99,7 @@ export const post = {
 <h2>这种方法在何时无效</h2>
 <p>当参与者手中没有可重复的任务时，这种方法并不适用。以一次性决策为主的管理团队，会在“频率”一项上给每个候选任务打低分，课程也会重新变成产品讨论。对这类团队而言，一次专题分享比一场工作坊更为合适。</p>
 <p>当可信来源并不存在时，这种方法同样无效。如果没有人能指出 AI 被允许读取的那份记录、价目表或制度，第四步中“可信来源”一栏便无从填写。请先补齐资料来源。这是文档问题，再多的员工 AI 培训也无法解决。</p>
-<p>课后无人回访，也会使其失效。每场课程结束两周后，我们都会确认：工作流是否经过测试、结果是否足够准确、该任务应继续、调整还是停止。省略回访，就会回到原点：一屋子看完演示、感觉良好的人。</p>
+<p>课后无人回访，也会使其失效。四次课程项目会在每节课检查课间的实际使用情况。单次工作坊的课后支持需要另行确认；团队应安排内部负责人，在两周后检查工作流是否经过测试、结果是否准确，以及应该继续、调整还是停止。省略回访，就会回到原点：一屋子看完演示、感觉良好的人。</p>
 
 <h2>未来 14 天可以做的事</h2>
 <ul>
@@ -106,10 +107,10 @@ export const post = {
 <li>选出得分最高的一项任务，按五个要素写出指令并运行一次，由平时负责这项任务的同事为输出打分。</li>
 <li>确定输出在使用前由谁签字，并写下名字。如果写不出名字，这条工作流就尚未准备好。</li>
 </ul>
-<p>如果希望整个团队在同一间教室里完成这套练习，三种培训形式及其内容见<a href="/zh/ai-training/#formats">培训页面</a>；各团队在课程中搭建的工作流，见<a href="/zh/ai-training/#teams">适用团队</a>。</p>
+<p>如果希望整个团队在同一间教室里完成这套练习，三种培训形式及其内容见<a href="/zh/ai-training/#team-paths">培训页面</a>；各团队在课程中搭建的工作流，见<a href="/zh/ai-training/#teams">适用团队</a>。</p>
 `,
     faq: [
-      ['员工 AI 培训需要多长时间？', '三种形式采用同一套五部分方法：90 分钟的专题分享（现场搭建一条工作流）、半天的实操工作坊（每位学员基于自己的任务动手搭建），以及多周项目。区别在于每位学员亲自动手的程度。'],
+      ['员工 AI 培训需要多长时间？', trainingFormatSummary('zh')],
       ['员工需要会编程吗？', '不需要。课程面向不写代码的岗位：运营、销售、行政、前台、计划、客服。指令模板使用日常语言，核验清单只有一页纸。'],
       ['培训使用哪款 AI 工具？', '先定任务，再选工具。课程使用公司已批准的对话式 AI 工具，例如 ChatGPT、Claude、Gemini 或 Copilot，因为这套方法（任务评分、五要素指令、核验、规范）适用于各类产品。'],
       ['培训中 AI 给出错误答案怎么办？', '这是有意安排的。每场课程至少有一个刻意设置的错误输出，供学员练习识别。每位学员离开时都掌握五个核验问题，并清楚输出在使用前应由谁审批。'],
