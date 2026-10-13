@@ -303,11 +303,10 @@ const { OFFERS, QUOTE_URL, INTAKE_FORM_VERSION, CONSENT_NOTICE_VERSION, GA4_ID }
 const urlOf = (path, lang) => (lang === 'zh' ? (path === '/' ? '/zh/' : '/zh' + path) : path);
 // Owner-UNAPPROVED amounts (revenue-os config/offer_catalog.json proposals) and the retired half-day offer. None may be public.
 const UNAPPROVED_PRICES = [/\$\s?1,?500(?!\d)/, /\$\s?4,?900(?!\d)/, /\$\s?95(?![\d,])/, /"price":"?(?:1500|4900|95)\b/, /\b(?:1,?500|4,?900) ?美元/, /半天 ?\$/];
-// Retired half-day format: banned everywhere except two older blog posts that still describe it as advice (HANDOFF "Offer
-// (2026-09-28)", left on purpose; owner decision pending). Prices above are banned on blog posts too.
-const RETIRED_FORMAT = [/半天工作坊/, /half[- ]day workshop/i];
+// Retired formats are banned on every indexable page, including the corrected older posts.
+const RETIRED_FORMAT = [/半天(?:的)?(?:实操)?工作坊/, /half[- ]day(?: hands-on)? workshop/i];
 const UNAPPROVED = [...UNAPPROVED_PRICES, ...RETIRED_FORMAT];
-const bannedFor = (path) => (/^\/(?:zh\/)?blog\//.test(path) ? UNAPPROVED_PRICES : UNAPPROVED);
+const bannedFor = () => UNAPPROVED;
 
 test('team workshop and onsite pages are indexable, bilingual, self-canonical, in the sitemap, and priced only by scoped quote', async () => {
   const pages = await allPages();

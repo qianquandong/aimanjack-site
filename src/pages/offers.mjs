@@ -9,6 +9,7 @@ import { T } from '../i18n.mjs';
 import { breadcrumb } from '../components.mjs';
 import { BUSINESS_REF, AREA } from '../schema.mjs';
 import { localTrainingProof } from '../training-buyers.mjs';
+import { buyerQuestions } from '../training-questions.mjs';
 
 // Quote CTA: carries the format so the form preselects it. The /book/ CTA is the 20-minute workflow call.
 export const quoteBtn = (lang, { format, label, pos, cls = 'btn-primary', id = '' }) =>
@@ -190,7 +191,7 @@ ${key === 'onsite' ? localTrainingProof(lang) : ''}
 <div class="big-card oakc" id="pricing"><div class="eyebrow">${c.priceK}</div><h2>${c.priceH}</h2><p>${c.priceP}</p><p>${c.priceNote}</p>${ctas(`${key}-pricing`, false)}</div></div></section>
 
 <section class="sec tight" id="faq"><div class="wrap">${head(c.faqK, c.faqH)}
-<div class="faq">${c.faq.map(([q, a], i) => `<details${i === 0 ? ' open' : ''}><summary>${q}</summary><div class="faq-a"><p>${a}</p></div></details>`).join('\n')}</div></div></section>
+<div class="faq">${[...c.faq, ...buyerQuestions(lang, key)].map(([q, a], i) => `<details${i === 0 ? ' open' : ''}><summary>${q}</summary><div class="faq-a"><p>${a}</p></div></details>`).join('\n')}</div></div></section>
 
 <section class="sec tight" id="start"><div class="wrap"><div class="big-card oakc"><h2>${c.ctaH}</h2><p>${c.ctaP}</p>${ctas(`${key}-final`, false)}</div></div></section>`,
     jsonld: [
