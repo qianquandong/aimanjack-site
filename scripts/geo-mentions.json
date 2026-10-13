@@ -90,5 +90,28 @@
         "position": null
       }
     ]
+  },
+  {
+    "date": "2026-10-13",
+    "probes": [
+      {
+        "prompt": "corporate AI training Dallas",
+        "cited": false,
+        "url": null,
+        "position": null
+      },
+      {
+        "prompt": "AI training for employees small business",
+        "cited": false,
+        "url": null,
+        "position": null
+      },
+      {
+        "prompt": "AI workflow training for sales teams",
+        "cited": false,
+        "url": null,
+        "position": null
+      }
+    ]
   }
 ]
