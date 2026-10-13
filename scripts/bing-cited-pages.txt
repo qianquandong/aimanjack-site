@@ -1,0 +1,7 @@
+# URLs that Bing Webmaster Tools → AI Performance → Pages reports as cited by Microsoft Copilot and partners.
+# The weekly SEO routine curls each one and flags anything that is not a plain HTTP 200 (a 301 here means a cited
+# page quietly turned into a redirect, which is what happened to both URLs below between 2026-09-02 and 2026-10-13).
+# Refresh this list from Bing roughly monthly; one URL per line, comments start with #.
+# 2026-10-13 snapshot: 280 citations in the trailing 3 months (188 + 92).
+https://aimanjack.com/resources/ai-training-curriculum-nontechnical-teams/
+https://aimanjack.com/resources/chatgpt-vs-ai-agents/

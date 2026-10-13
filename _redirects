@@ -11,10 +11,16 @@
 /community/*  /ai-training/  301
 /zh/community  /zh/ai-training/  301
 /zh/community/*  /zh/ai-training/  301
+# /resources/chatgpt-vs-ai-agents/ and /resources/ai-training-curriculum-nontechnical-teams/ are live again (src/posts/, post.path):
+# Bing AI Performance showed Copilot citing both while they redirected here. No wildcard, so they serve as 200.
 /resources  /blog/  301
-/resources/*  /blog/  301
+/resources/  /blog/  301
+/resources/ai-data-safety-checklist  /templates/ai-data-boundaries-one-pager/  301
+/resources/ai-data-safety-checklist/  /templates/ai-data-boundaries-one-pager/  301
 /zh/resources  /zh/blog/  301
-/zh/resources/*  /zh/blog/  301
+/zh/resources/  /zh/blog/  301
+/zh/resources/ai-data-safety-checklist  /zh/templates/ai-data-boundaries-one-pager/  301
+/zh/resources/ai-data-safety-checklist/  /zh/templates/ai-data-boundaries-one-pager/  301
 /website  /  301
 /website/*  /  301
 /zh/website  /zh/  301

@@ -45,7 +45,7 @@ const C = {
   },
   zh: {
     title: '达拉斯—沃斯堡企业 AI 培训 | AI Man Jack',
-    description: `为达拉斯—沃斯堡企业团队提供实操 AI 培训，Jack Qian 亲自授课，支持上门、全美远程及中英文。四次课程每人 ${PROGRAM_PRICE} 起，团队按需报价。`,
+    description: `为达拉斯—沃斯堡企业团队提供实操 AI 培训：销售、运营、市场和管理层各带一项真实任务来，带一条能用的工作流和核验方法走。Jack Qian 亲自授课，支持上门、全美远程及中英文。四次课程每人 ${PROGRAM_PRICE} 起，团队按需报价。`,
     og: { title: '达拉斯—沃斯堡企业 AI 实操培训', description: `Jack Qian 中英文亲自授课。四节 ${M} 分钟课程，每人 ${PROGRAM_PRICE} 起。DFW 可上门，全美可远程。` },
     eyebrow: '达拉斯—沃斯堡 · 上门或远程 · 中英文授课', h1: '达拉斯—沃斯堡<br>企业 <em>AI 实操培训</em>。',
     sub: 'Jack Qian 带非技术团队，把 ChatGPT、Claude、Gemini 或 Copilot 用在日常工作中。从你手头的销售、市场或运营任务出发，搭建可复用的工作流，并学会核验 AI 的输出。',

@@ -5,16 +5,16 @@
 // It cannot verify facts: numbers and first-person stories still go through the fact-check reviewer before hand-off.
 import { existsSync } from 'node:fs';
 import { dirname, join } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { render } from '../src/layout.mjs';
-import { postPage, postPath } from '../src/blog.mjs';
+import { postPage, pathOf } from '../src/blog.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const slug = process.argv[2];
 if (!slug) { console.error('usage: node scripts/blog-check.mjs <slug>'); process.exit(2); }
 const file = join(ROOT, 'src/posts', `${slug}.mjs`);
 if (!existsSync(file)) { console.error(`no such post: src/posts/${slug}.mjs`); process.exit(2); }
-const { post } = await import(file);
+const { post } = await import(pathToFileURL(file).href);   // file URL, so the check also runs on Windows
 
 // Phrases that read as machine-written or as claims the site never makes. Case-insensitive substring match on body text.
 const BANNED = {
@@ -33,7 +33,7 @@ for (const lang of ['en', 'zh']) {
   const W = (ok, msg) => out(ok ? 'PASS' : 'WARN', lang, msg);
   if (!c) { out('FAIL', lang, 'missing language block'); continue; }
 
-  const page = { path: postPath(post.slug), ...postPage(post, lang) };
+  const page = { path: pathOf(post), ...postPage(post, lang) };
   const html = render(page, lang);
   const main = html.slice(html.indexOf('<main'), html.indexOf('</main>'));
   const body = strip(c.sections);
