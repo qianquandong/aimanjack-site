@@ -70,12 +70,15 @@ test('deploy entry point defaults to preparation; preview and production cannot 
     npx: '#!/bin/sh\nprintf "%s\\n" "$*" >> "$TEST_COMMANDS"\n',
     curl: '#!/bin/sh\necho unexpected-curl >> "$TEST_COMMANDS"\nexit 99\n',
   })) await writeFile(join(root, 'bin', name), content, { mode: 0o755 });
-  const env = { ...process.env, PATH: `${join(root, 'bin')}:${process.env.PATH}`, TEST_COMMANDS: commands };
-  execFileSync('sh', ['deploy.sh'], { cwd: root, env });
+  // Put fixtures first inside the shell, after Git for Windows has normalized PATH.
+  const shellBin = join(root, 'bin').replace(/\\/g, '/').replace(/^([A-Za-z]):/, (_, drive) => `/${drive.toLowerCase()}`);
+  const env = { ...process.env, TEST_BIN: shellBin, TEST_COMMANDS: commands };
+  const deploy = (...args) => execFileSync('sh', ['-c', 'PATH="$TEST_BIN:$PATH"; export PATH; . ./deploy.sh "$@"', 'deploy.sh', ...args], { cwd: root, env, stdio: 'pipe' });
+  deploy();
   await assert.rejects(readFile(commands), { code: 'ENOENT' });
-  execFileSync('sh', ['deploy.sh', '--preview'], { cwd: root, env });
+  deploy('--preview');
   assert.equal((await readFile(commands, 'utf8')).trim(), 'wrangler pages deploy site --project-name aimanjack-review --branch review-abc123456789 --commit-hash abc1234567890000000000000000000000000000 --commit-dirty=true');
-  assert.throws(() => execFileSync('sh', ['deploy.sh', '--production'], { cwd: root, env, stdio: 'pipe' }));
-  assert.throws(() => execFileSync('sh', ['deploy.sh', '--preview', '--project-name', 'aimanjack'], { cwd: root, env, stdio: 'pipe' }));
+  assert.throws(() => deploy('--production'));
+  assert.throws(() => deploy('--preview', '--project-name', 'aimanjack'));
   assert.equal((await readFile(commands, 'utf8')).trim().split('\n').length, 1, 'refused paths must not upload or ping IndexNow');
 });

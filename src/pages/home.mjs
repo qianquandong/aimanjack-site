@@ -1,6 +1,6 @@
 // / — what AI Man Jack helps teams accomplish, and the way into the library (design canvas: Main / ZH-Main).
 // Curriculum, format details, reviews and FAQ live on /ai-training/. Numbers come from config.mjs.
-import { SITE, TRAINING, PROOF, PROGRAM_PRICE } from '../config.mjs';
+import { SITE, TRAINING, PROOF, PROGRAM_PRICE, GBP_URL } from '../config.mjs';
 import { planBtn, photoHero, ctaBand, href, L } from '../layout.mjs';
 import { T } from '../i18n.mjs';
 import { business, person, website } from '../schema.mjs';
@@ -25,7 +25,7 @@ const C = {
     sub: 'Bring the work you already do. We turn it into practical AI workflows you can actually use — across operations, marketing, sales, research, websites and day-to-day business management.',
     seeProgram: 'See the 4-Session Program',
     heroAlt: 'A full classroom in Dallas at one of Jack Qian’s hands-on AI workshops',
-    stats: [[`${PROGRAM_PRICE}/person`, `${S}-session customized program starts here`], [`${S} × ${M} min`, 'Live, hands-on sessions'], [PROOF.hackathon, 'builders at one Dallas AI hackathon'], [`${PROOF.rating} ★`, `${PROOF.reviews} Google reviews from workshop attendees`]],
+    stats: [[`${PROGRAM_PRICE}/person`, `${S}-session customized program starts here`], [`${S} × ${M} min`, 'Live, hands-on sessions'], [PROOF.hackathon, 'builders at one Dallas AI hackathon'], [`${PROOF.rating} ★`, `<a href="${GBP_URL}" target="_blank" rel="noopener">${PROOF.reviews} Google reviews ↗</a>`]],
     learnK: 'What you learn', learnH: 'Four things you can do after training',
     learn: [['Find the right AI use cases', 'Pick the tasks in your own week that are worth handing to AI, and skip the ones that are not.'], ['Build repeatable workflows', 'Go from a one-off prompt to a workflow that runs the same way next week.'], ['Verify AI output', 'Know which results can go straight out, which must be checked, and which should never be left to AI.'], ['Apply AI to real work', 'Leave with a working workflow for a task you already do, not a demo of someone else’s.']],
     roomK: 'Real rooms', roomH: 'Built in front of real people. Now applied to real businesses.',
@@ -51,7 +51,7 @@ const C = {
     sub: '带上你手头已经在做的工作，我们把它变成真正用得上的 AI 工作流，覆盖运营、市场、销售、调研、网站和日常经营管理。',
     seeProgram: '查看四次课程项目',
     heroAlt: '达拉斯，Jack Qian 主讲的一场 AI 实操工作坊，教室座无虚席',
-    stats: [[`${PROGRAM_PRICE}/人`, '四次定制课程项目起步价'], [`${S} × ${M} 分钟`, '实时互动的实操课'], [PROOF.hackathon, '人参与达拉斯 AI 黑客松'], [`${PROOF.rating} ★`, `${PROOF.reviews} 条 Google 评价，均来自工作坊学员`]],
+    stats: [[`${PROGRAM_PRICE}/人`, '四次定制课程项目起步价'], [`${S} × ${M} 分钟`, '实时互动的实操课'], [PROOF.hackathon, '人参与达拉斯 AI 黑客松'], [`${PROOF.rating} ★`, `<a href="${GBP_URL}" target="_blank" rel="noopener">${PROOF.reviews} 条 Google 评价 ↗</a>`]],
     learnK: '培训成果', learnH: '培训结束后，你能做到的四件事',
     learn: [['识别合适的 AI 应用场景', '从日常工作中筛选出值得交给 AI 的任务，同时明确哪些并不适合。'], ['搭建可复用的工作流', '从一次性的提示词，升级为下周依然能稳定运行的工作流。'], ['核验 AI 的输出', '清楚哪些结果可以直接使用、哪些必须复核、哪些不应交给 AI。'], ['应用于真实工作', '带走的是针对自身任务的可用工作流，而不是别人的演示案例。']],
     roomK: '真实课堂', roomH: '先在真实课堂中打磨，如今用在真实的生意里。',

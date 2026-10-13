@@ -1,6 +1,6 @@
 // /about/ (design canvas: About / ZH-About). Numbers from config.PROOF.
-import { EMAIL, SMS_TEL, SMS_DISPLAY, PROOF } from '../config.mjs';
-import { photoHero, L } from '../layout.mjs';
+import { EMAIL, SMS_TEL, SMS_DISPLAY, PROOF, GBP_URL } from '../config.mjs';
+import { L } from '../layout.mjs';
 import { breadcrumb } from '../components.mjs';
 import { business, person } from '../schema.mjs';
 
@@ -12,7 +12,8 @@ const C = {
     crumb: 'About', h1: 'AI Man Jack helps teams learn and apply AI to <em>real work.</em>', sub: 'A one-person company in Dallas, Texas. Jack Qian designs the session, teaches it, and does the two-week follow-up himself.', heroAlt: 'Jack Qian teaching a hands-on AI session',
     doesK: 'What the company does', does: 'AI Man Jack runs <a href="/ai-training/">hands-on AI training for business owners and teams</a>, remote across the U.S. or onsite in Dallas–Fort Worth, in English or Chinese. Each person works on a task they already do and leaves with a working AI workflow plus a way to verify its output.',
     whoK: 'Who runs it', who: ['Jack Qian is an AI trainer, AI workflow builder and Dallas AI community organizer. By day he is a business planner at a Dallas semiconductor company; the workflows he teaches are the ones he runs on his own work first.', 'He also writes <a href="https://realagentusecases.com/" rel="noopener">Real Agent Use Cases</a>, a weekly newsletter on AI agents and workflows working professionals actually run.'],
-    stats: [[PROOF.talks, `community AI talks in Plano and Dallas, ${PROOF.perTalk} each`], [PROOF.hackathon, 'builders at one three-hour AI hackathon'], [`${PROOF.reviews} × ★5`, 'Google reviews from attendees']],
+    stats: [[PROOF.talks, `community AI talks in Plano and Dallas, ${PROOF.perTalk} each`], [PROOF.hackathon, 'builders at one three-hour AI hackathon'], [`${PROOF.rating} ★`, `${PROOF.reviews} Google reviews`]],
+    reviewSource: 'View Google reviews', reviewChecked: 'Verified',
     howK: 'How he works', howH: 'Four rules every session follows',
     how: [['Task first, tool second.', 'Every session starts with work the team already does, not with a product tour.'], ['Everyone builds.', 'No one leaves with slides alone; each person leaves with a workflow that ran.'], ['Verification is part of the exercise.', 'One output in every session is deliberately flawed, and the room has to catch it.'], ['Follow up before claiming.', 'Two weeks after a session he checks whether the workflow was tested and whether it should continue, change or stop.']],
     strip: ['The 37-person Dallas AI hackathon', 'Jack presenting at a Dallas session', 'A team demonstrating what it built'],
@@ -25,7 +26,8 @@ const C = {
     crumb: '关于', h1: 'AI Man Jack 帮助团队学习 AI，<br>并将其应用于<em>真实工作</em>。', sub: '位于德州达拉斯的一人公司。课程设计、授课与两周回访，均由 Jack Qian 本人完成。', heroAlt: 'Jack Qian 正在讲授一场 AI 实操课程',
     doesK: '公司业务', does: 'AI Man Jack 为企业老板和团队提供<a href="/zh/ai-training/">实操型 AI 培训</a>，全美远程授课，也可在达拉斯—沃斯堡上门，中英文均可。每位学员基于自己的真实任务练习，带走一条可用的 AI 工作流以及核验输出的方法。',
     whoK: '创始人', who: ['Jack Qian 是 AI 培训师、AI 工作流构建者，也是达拉斯 AI 社区的组织者。他的本职工作是在达拉斯一家半导体公司从事业务规划；他所教授的工作流，都先在自己的工作中实际运行过。', '他还撰写 <a href="https://realagentusecases.com/" rel="noopener">Real Agent Use Cases</a>——一份每周更新的通讯，介绍职场人士真正在用的 AI 智能体与工作流。'],
-    stats: [[PROOF.talks, `场社区 AI 讲座，Plano 与达拉斯，每场 ${PROOF.perTalk.replace('+', '')} 人以上`], [PROOF.hackathon, '人参与一场三小时的 AI 黑客松'], [`${PROOF.reviews} × ★5`, '条来自学员的 Google 评价']],
+    stats: [[PROOF.talks, `场社区 AI 讲座，Plano 与达拉斯，每场 ${PROOF.perTalk.replace('+', '')} 人以上`], [PROOF.hackathon, '人参与一场三小时的 AI 黑客松'], [`${PROOF.rating} ★`, `${PROOF.reviews} 条 Google 评价`]],
+    reviewSource: '查看 Google 评价', reviewChecked: '核对于',
     howK: '工作原则', howH: '每一场课程都遵循的四条原则',
     how: [['先定任务，再选工具。', '每一次课程都从团队已有的工作开始，而不是从产品介绍开始。'], ['人人动手。', '没有人只带着幻灯片离开；每位学员都带走一条实际运行过的工作流。'], ['核验是练习的一部分。', '每场课程都有一个刻意设置的错误输出，需要学员自己找出来。'], ['先回访，再下结论。', '课程两周后回访，确认工作流是否经过实测，以及应继续、调整还是停止。']],
     strip: ['37 人参与的达拉斯 AI 黑客松', 'Jack 在达拉斯的一场课程中讲解', '一个小组正在演示自己搭建的成果'],
@@ -40,13 +42,13 @@ const page = (lang) => {
   const c = C[lang], bc = breadcrumb(lang, [[c.crumb, '/about/']]);
   const hrefs = [L(lang, '/book/'), `mailto:${EMAIL}`, `sms:${SMS_TEL}?body=TRAINING%20-%20`], evs = ['booking_start', 'email_training_click', 'sms_training_click'];
   return {
-    title: c.title, description: c.description, hero: 'photo',
-    body: `${photoHero({ photo: 'teaching', alt: c.heroAlt, size: 'md', inner: `<div class="hero-main" style="padding-bottom:64px;row-gap:18px"><div class="col-a" style="gap:20px">${bc.html}<h1 class="lg" style="font-size:clamp(40px,6.1vw,88px)">${c.h1}</h1></div><p class="col-b" style="padding:0">${c.sub}</p></div>` })}
+    title: c.title, description: c.description, bodyClass: 'on-photo about-page',
+    body: `<section class="about-hero on-dark"><div class="wrap">${bc.html}<h1>${c.h1}</h1><p>${c.sub}</p></div></section>
 <section class="sec"><div class="wrap g12" style="row-gap:64px">
 <div style="grid-column:span 3"><div class="eyebrow">${c.doesK}</div></div><p class="answer" style="grid-column:4 / span 9;font-size:clamp(21px,2.1vw,30px)">${c.does}</p>
 <div style="grid-column:span 3"><div class="eyebrow">${c.whoK}</div></div>
 <div class="who-grid" style="grid-column:4 / span 9"><img src="/img/jack-headshot.jpg" width="640" height="640" loading="lazy" decoding="async" alt="Jack Qian" style="border-radius:24px;aspect-ratio:1;object-fit:cover">
-<div style="display:flex;flex-direction:column;gap:18px">${c.who.map((p) => `<p style="font-size:clamp(17px,1.35vw,19px);line-height:1.7;color:var(--body-strong)">${p.replace('<a ', '<a style="color:var(--accent-text);font-weight:600" ')}</p>`).join('')}<div class="stat-cards" style="margin-top:8px">${c.stats.map(([b, s]) => `<div><b>${b}</b><span>${s}</span></div>`).join('')}</div></div></div>
+<div style="display:flex;flex-direction:column;gap:18px">${c.who.map((p) => `<p style="font-size:clamp(17px,1.35vw,19px);line-height:1.7;color:var(--body-strong)">${p.replace('<a ', '<a style="color:var(--accent-text);font-weight:600" ')}</p>`).join('')}<div class="stat-cards" style="margin-top:8px">${c.stats.map(([b, s]) => `<div><b>${b}</b><span>${s}</span></div>`).join('')}</div><p class="review-source"><a href="${GBP_URL}" target="_blank" rel="noopener">${c.reviewSource} ↗</a> · ${c.reviewChecked} <time datetime="${PROOF.reviewsCheckedOn}">${PROOF.reviewsCheckedOn}</time></p></div></div>
 </div></section>
 <section class="sec dark"><div class="wrap"><div class="sec-head"><div><div class="eyebrow">${c.howK}</div><h2>${c.howH}</h2></div></div>
 <ol class="steps-line">${c.how.map(([h, p], i) => `<li><span class="n" style="font-size:15px">0${i + 1}</span><h3>${h}</h3><p>${p}</p></li>`).join('')}</ol></div></section>

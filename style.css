@@ -642,6 +642,16 @@ h3,.h3{font-size:clamp(21px,1.75vw,25px);line-height:1.25;letter-spacing:-.02em;
 .crumbs{padding:0;font-size:14px;color:var(--muted)}.crumbs ol{display:flex;flex-wrap:wrap;gap:8px;list-style:none;margin:0;padding:0}.crumbs a{color:var(--muted)}
 .crumbs li+li::before{content:'/';margin-right:8px}
 .page-hero{padding:64px 0 56px}.page-hero .wrap{display:flex;flex-direction:column;gap:20px}
+/* About: a quiet charcoal backdrop keeps the introduction separate from event photography. */
+.about-hero{padding:164px 0 88px;color:#fff;background:linear-gradient(115deg,#202826,#303a36);border-bottom:1px solid #47504a}
+.about-hero .wrap{display:flex;flex-direction:column;align-items:flex-start;gap:28px}
+.about-hero .crumbs,.about-hero .crumbs a{color:#d1d8d1;font-weight:400}
+.about-hero h1{max-width:1040px;font-size:clamp(40px,5.3vw,76px);line-height:1.08;letter-spacing:-.035em}
+.about-hero h1 em{font-style:normal;color:var(--on-dark-accent);white-space:nowrap}
+.about-hero p{max-width:710px;padding-top:24px;border-top:1px solid #647066;color:#e0e5dd;font-size:clamp(17px,1.5vw,20px);line-height:1.7}
+.review-source{font-size:14px;line-height:1.6;color:var(--muted)}
+.review-source a{color:var(--accent-text);text-decoration:underline;text-underline-offset:3px}
+@media(max-width:720px){.about-hero{padding:124px 0 56px}.about-hero .wrap{gap:24px}.about-hero h1{letter-spacing:-.025em}}
 .callout{background:var(--card);border:0;border-radius:var(--r);padding:24px 28px}
 /* Article */
 .art-head{display:flex;flex-direction:column;align-items:center;text-align:center;gap:22px;padding:72px 0 48px}.art-head h1{max-width:1080px}.art-head .lead{max-width:760px;font-size:21px}

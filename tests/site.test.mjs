@@ -4,6 +4,7 @@ import { readdir, readFile } from 'node:fs/promises';
 import { render, pageOf, langsOf } from '../src/layout.mjs';
 import { llms } from '../src/llms.mjs';
 import { OG_CARD } from '../src/config.mjs';
+import { fileURLToPath } from 'node:url';
 
 async function allPages() {
   const files = (await readdir(new URL('../src/pages/', import.meta.url))).filter((f) => f.endsWith('.mjs')).sort();
@@ -332,7 +333,7 @@ test('no owner-unapproved price or retired half-day offer appears on any indexab
   for (const re of UNAPPROVED) assert.doesNotMatch(llms(), re, `llms.txt ${re}`);
   // Built HTML on disk, including anything hand-written outside src/: an indexable file must come from a src route and carry no unapproved price.
   const { readdirSync, readFileSync, statSync } = await import('node:fs');
-  const root = new URL('../', import.meta.url).pathname, SKIP = new Set(['.git', '.claude', '.deploy', '.preview', 'scripts', 'design-system', 'output', 'docs', 'src', 'db', 'functions', 'state', 'tests', 'node_modules']);
+  const root = fileURLToPath(new URL('../', import.meta.url)), SKIP = new Set(['.git', '.claude', '.deploy', '.preview', 'scripts', 'design-system', 'output', 'docs', 'src', 'db', 'functions', 'state', 'tests', 'node_modules']);
   const files = [], walk = (d) => { for (const f of readdirSync(root + d)) { const rel = d + f; if (SKIP.has(rel)) continue; if (statSync(root + rel).isDirectory()) walk(rel + '/'); else if (f.endsWith('.html')) files.push(rel); } };
   walk('');
   const routes = new Set(pages.map((x) => urlOf(x.p.path, x.lang)));
