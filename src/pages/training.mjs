@@ -69,9 +69,9 @@ const page = (lang) => {
   const c = C[lang], bc = breadcrumb(lang, [[c.crumb, '/ai-training/']]);
   const head = (k, h, p, more) => `<div class="sec-head"><div><div class="eyebrow">${k}</div><h2>${h}</h2>${p ? `<p class="lead">${p}</p>` : ''}</div>${more || ''}</div>`;
   return {
-    title: c.title, description: c.description, og: c.og, view: 'training_page_view', offer: OFFERS.program.id, hero: 'photo',
-    body: `${photoHero({ photo: 'workshop', alt: c.heroAlt, size: 'md', stats: c.stats, inner: `<div class="hero-main stack">${bc.html}<div class="eyebrow">${c.eyebrow}</div><h1 class="lg" style="font-size:clamp(44px,6.4vw,92px)">${c.h1}</h1><p style="max-width:720px">${c.sub}</p>
-<div class="cta-row" style="gap:20px">${planBtn(lang, { pos: 'training-hero', id: 'hero-cta' })}<a class="btn btn-secondary" href="#formats" data-event="training_program_click" data-pos="training-hero">${c.seePricing}</a><span style="font-size:15px;color:var(--on-photo)">${c.text} <a href="${SMS}" data-event="sms_training_click" data-pos="training-hero">${SMS_DISPLAY}</a></span></div></div>` })}
+    title: c.title, description: c.description, og: c.og, view: 'training_page_view', offer: OFFERS.program.id, hero: 'photo', bodyClass: 'training-page',
+    body: `${photoHero({ photo: 'workshop', alt: c.heroAlt, size: 'md', stats: c.stats, inner: `<div class="hero-main stack">${bc.html}<div class="eyebrow">${c.eyebrow}</div><h1 class="lg brand-hero-title">${c.h1}</h1><p style="max-width:720px">${c.sub}</p>
+<div class="cta-row">${planBtn(lang, { pos: 'training-hero', id: 'hero-cta' })}<a class="btn btn-secondary" href="#formats" data-event="training_program_click" data-pos="training-hero">${c.seePricing}</a></div><span class="hero-contact">${c.text} <a href="${SMS}" data-event="sms_training_click" data-pos="training-hero">${SMS_DISPLAY}</a></span></div>` })}
 
 ${trainingBrief(lang)}
 <section class="sec" id="teams"><div class="wrap">${head(c.teamsK, c.teamsH, c.teamsP)}

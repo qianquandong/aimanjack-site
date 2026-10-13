@@ -33,7 +33,7 @@ const COPY = {
 
 export function trainingBrief(lang) {
   const c = COPY[lang];
-  return `<section class="sec tight buyer-guide" id="team-paths"><div class="wrap">
+  return `<section class="sec buyer-guide" id="team-paths"><div class="wrap">
 <div class="sec-head"><div><div class="eyebrow">${c.k}</div><h2>${c.h}</h2><p class="lead">${c.p}</p></div></div>
 <dl class="buyer-facts">${c.facts.map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join('')}</dl>
 <div class="format-comparison"><div class="table-wrap"><table><caption>${lang === 'zh' ? '三种团队 AI 培训形式对比' : 'Compare three formats for team AI training'}</caption>
@@ -49,7 +49,7 @@ export function localTrainingProof(lang) {
   const zh = lang === 'zh';
   return `<section class="sec tight local-training" id="dfw-training"><div class="wrap local-training-grid">
 <figure><img src="/img/events/dallas-session3-hands-on.webp" width="1600" height="1066" loading="lazy" decoding="async" alt="${zh ? '达拉斯社区 AI 课堂中，参与者动手练习' : 'Participants practising during a Dallas community AI session'}"><figcaption>${zh ? '达拉斯社区 AI 课堂实拍' : 'A real Dallas community AI session'}</figcaption></figure>
-<div><div class="eyebrow">${zh ? '当地讲师 · 真实课堂' : 'Local instructor · Real sessions'}</div><h2>${zh ? '在你的办公室，用团队的工作来练。' : 'At your office. On the work your team does.'}</h2>
+<div class="local-training-copy"><div class="eyebrow">${zh ? '当地讲师 · 真实课堂' : 'Local instructor · Real sessions'}</div><h2>${zh ? '在你的办公室，用团队的工作来练。' : 'At your office. On the work your team does.'}</h2>
 <p>${zh ? 'Jack Qian 为 Dallas、Fort Worth、Plano、Richardson、Frisco、McKinney、Arlington 及周边团队提供上门培训。先确认地点、人数、部门和已批准的 AI 工具，再安排课程与书面报价。德州其他地区可按需安排，差旅另行报价。' : 'Jack Qian provides onsite training for teams in Dallas, Fort Worth, Plano, Richardson, Frisco, McKinney, Arlington and the surrounding metroplex. Start with your location, team size, departments and approved AI tools; the schedule and price are agreed in writing. Elsewhere in Texas is available on request, with travel quoted separately.'}</p>
 <p>${zh ? `教学经历包括 ${PROOF.talks} 场 Dallas 与 Plano 社区讲座及一场 ${PROOF.hackathon} 人黑客松。社区活动记录展示授课经历；企业项目成果以单独核实的案例为准。` : `Jack’s teaching experience includes ${PROOF.talks} community talks in Dallas and Plano and a ${PROOF.hackathon}-person hackathon. These community events demonstrate teaching experience; business results are documented separately in verified case studies.`}</p>
 <div class="local-proof-links"><a href="${L(lang, '/about/')}">${zh ? '了解讲师与活动照片' : 'Meet Jack & see session photos'} →</a><a href="${L(lang, '/case-studies/livestream-agency-scheduling/')}">${zh ? '查看真实工作流案例' : 'Read a real workflow case study'} →</a></div>

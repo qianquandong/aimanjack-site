@@ -43,7 +43,7 @@ const page = (lang) => {
   const hrefs = [L(lang, '/book/'), `mailto:${EMAIL}`, `sms:${SMS_TEL}?body=TRAINING%20-%20`], evs = ['booking_start', 'email_training_click', 'sms_training_click'];
   return {
     title: c.title, description: c.description, bodyClass: 'on-photo about-page',
-    body: `<section class="about-hero on-dark"><div class="wrap">${bc.html}<h1>${c.h1}</h1><p>${c.sub}</p></div></section>
+    body: `<section class="about-hero on-dark"><div class="wrap">${bc.html}<h1 class="brand-hero-title">${c.h1}</h1><p>${c.sub}</p></div></section>
 <section class="sec"><div class="wrap g12" style="row-gap:64px">
 <div style="grid-column:span 3"><div class="eyebrow">${c.doesK}</div></div><p class="answer" style="grid-column:4 / span 9;font-size:clamp(21px,2.1vw,30px)">${c.does}</p>
 <div style="grid-column:span 3"><div class="eyebrow">${c.whoK}</div></div>

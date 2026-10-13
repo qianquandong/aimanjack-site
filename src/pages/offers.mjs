@@ -171,8 +171,8 @@ const page = (key, lang) => {
   const ticks = (items, cls = '') => `<ul class="ticks${cls}">${items.map((x) => `<li><span>${x}</span></li>`).join('')}</ul>`;
   const ctas = (pos, first) => `<div class="cta-row">${quoteBtn(lang, { format: o.format, label: c.quote, pos, id: first ? 'hero-cta' : '' })}${bookBtn(lang, pos)}</div>`;
   return {
-    title: c.title, description: c.description, offer: o.id,   // body data-offer → GA4 view_offer {offer_id}
-    body: `<section class="page-hero"><div class="wrap">${bc.html}<p class="eyebrow">${c.eyebrow}</p><h1 style="max-width:1080px">${c.h1}</h1><p class="lead" style="max-width:760px">${c.sub}</p>${ctas(`${key}-hero`, true)}</div></section>
+    title: c.title, description: c.description, offer: o.id, bodyClass: 'offer-page',   // body data-offer → GA4 view_offer {offer_id}
+    body: `<section class="page-hero"><div class="wrap">${bc.html}<p class="eyebrow">${c.eyebrow}</p><h1 class="brand-hero-title">${c.h1}</h1><p class="lead" style="max-width:760px">${c.sub}</p>${ctas(`${key}-hero`, true)}</div></section>
 
 ${key === 'onsite' ? localTrainingProof(lang) : ''}
 <section class="sec tight" id="who"><div class="wrap">${head(c.forK, c.forH)}

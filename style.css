@@ -740,6 +740,8 @@ html[lang=zh] .nums .why{font-style:normal}
   .sec{padding:64px 0}.sec.tight{padding-top:0}.section{padding:64px 0}.sec-head{flex-direction:column;align-items:flex-start;gap:16px;margin-bottom:32px}
   .g4,.g3,.g2,.steps-line,.quote-grid,.stat-cards,.bk-form{grid-template-columns:1fr}.g4,.g3,.g2{gap:12px}.steps-line{gap:24px}
   .cta-row .btn,.prog .btn,.cta-band .btn,.cta-card .btn,.bk-form button{width:100%}.cta-row{align-items:stretch}
+  .btn{max-width:100%;white-space:normal;text-align:center;padding-top:14px;padding-bottom:14px}
+  .more{white-space:normal}
   .oak{padding:24px 20px}.prog{padding:28px 24px}.rows a{padding:22px 0}.rows .n{grid-column:span 2}.rows h3{grid-column:3 / span 8}.rows p{grid-column:3 / span 10;font-size:15.5px}.rows .go{font-size:22px}
   .split-photo{grid-template-columns:1fr;min-height:0}.split-photo>img{height:280px}.split-photo>div{padding:48px var(--pad)}
   .photo-strip{grid-template-columns:1fr 1fr;gap:8px;padding:0 8px}.photo-strip img{height:200px;border-radius:12px}.photo-strip img:first-child{grid-column:1 / -1;height:240px}
@@ -846,34 +848,59 @@ html[lang=zh] .nums .why{font-style:normal}
 @media (max-width:720px){.qf{grid-template-columns:minmax(0,1fr);padding:24px 20px}.qf .btn{width:100%}.choose{padding:24px 20px}}
 
 /* Training buyers: an early, readable comparison; local proof uses real event photography. */
-.home-local h1.xl{font-size:clamp(42px,5.3vw,76px);line-height:1.04}
-html[lang=zh] .home-local h1.xl{font-size:clamp(38px,5vw,72px);line-height:1.2}
+/* Shared headline scale and spacing for the main training journey. */
+h1.brand-hero-title{max-width:1040px;font-size:clamp(42px,5.3vw,76px);line-height:1.08;letter-spacing:-.035em;text-wrap:balance}
+html[lang=zh] h1.brand-hero-title{font-size:clamp(38px,5vw,72px);line-height:1.2;letter-spacing:-.025em}
+.brand-hero-title em{font-style:normal;color:var(--on-dark-accent)}
+.home-local .photo-hero{min-height:min(820px,100svh)}
+.training-page .hero-main.stack{max-width:1040px;gap:24px}
+.hero-contact{font-size:14px;line-height:1.6;color:var(--on-photo)}
+.offer-page .page-hero{padding-bottom:88px}
+.offer-page .page-hero .wrap{gap:24px}
+.offer-page .page-hero .lead{margin-top:0}
+.buyer-guide{padding-bottom:0}
 .buyer-guide .lead{max-width:850px}
 .buyer-facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px;margin:0 0 36px;padding:24px 0;border-block:1px solid var(--line)}
 .buyer-facts dt{font-weight:700;margin-bottom:6px}.buyer-facts dd{color:var(--muted);font-size:16px;line-height:1.55}
-.format-comparison table{width:100%;border-collapse:collapse;text-align:left;table-layout:fixed;font-size:16px}
-.format-comparison .table-wrap{border:0;border-radius:0}
+.format-comparison table{width:100%;border-collapse:separate;border-spacing:0;text-align:left;table-layout:fixed;font-size:16px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r)}
+.format-comparison .table-wrap{border:0;border-radius:0;background:transparent}
 .format-comparison caption{text-align:left;color:var(--muted);font-size:14px;margin-bottom:14px}
 .format-comparison th,.format-comparison td{padding:24px 20px;vertical-align:top;border-bottom:1px solid var(--line);overflow-wrap:break-word;line-height:1.55}
 .format-comparison thead{background:var(--card)}.format-comparison thead th{font-size:13px;letter-spacing:.04em}
+.format-comparison thead th:first-child{border-top-left-radius:var(--r)}.format-comparison thead th:last-child{border-top-right-radius:var(--r)}
+.format-comparison tbody tr:last-child>*{border-bottom:0}
 .format-comparison tbody th{font-size:21px;font-weight:600;line-height:1.3}
 .format-comparison th:first-child{width:23%}.format-comparison th:last-child{width:24%}
 .format-comparison td strong{display:block;font-weight:600;color:var(--ink)}
 .format-comparison td a{display:inline-block;margin-top:14px;font-weight:600;text-decoration:underline;text-underline-offset:4px}
 .buyer-prep{display:grid;grid-template-columns:1fr 3fr;gap:28px;padding:26px 0;margin-top:16px}.buyer-prep p{color:var(--muted)}.buyer-prep h3{font-size:18px}
 .buyer-links{display:flex;gap:12px 24px;flex-wrap:wrap;padding-top:20px;border-top:1px solid var(--line);font-size:15px;font-weight:600}
-.local-training-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:56px;align-items:center}
+.local-training-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:56px;align-items:start}
 .local-training figure{margin:0}.local-training img{width:100%;border-radius:var(--r);aspect-ratio:4/3;object-fit:cover}
 .local-training figcaption{margin-top:10px;font-size:14px;color:var(--muted)}
-.local-training p+p{margin-top:18px}.local-proof-links{display:flex;flex-wrap:wrap;gap:12px 24px;margin:24px 0;font-weight:600;font-size:15px}
-@media(max-width:760px){
+.local-training-copy{display:flex;flex-direction:column;gap:16px}
+.local-training-copy h2{font-size:clamp(32px,3.5vw,48px);line-height:1.12;text-wrap:balance}
+.local-training-copy>p{color:var(--muted)}
+.local-proof-links{display:flex;flex-wrap:wrap;gap:12px 24px;margin:8px 0;font-weight:600;font-size:15px}
+@media(max-width:1000px){.local-training-grid{gap:32px}}
+@media(max-width:900px){
   .buyer-facts{grid-template-columns:1fr;gap:18px}.buyer-facts>div{display:grid;grid-template-columns:100px 1fr;gap:16px}
   .buyer-prep,.local-training-grid{grid-template-columns:1fr;gap:18px}
   .format-comparison table,.format-comparison tbody,.format-comparison tr,.format-comparison th,.format-comparison td{display:block;width:100%}
+  .format-comparison table{border:0;background:transparent;border-radius:0}
   .format-comparison caption{display:block;width:100%}
   .format-comparison thead{position:absolute;width:1px;height:1px;clip-path:inset(50%);overflow:hidden}
   .format-comparison tbody tr{padding:24px 20px;background:var(--card);border-radius:var(--r);margin-bottom:16px}
   .format-comparison tbody th,.format-comparison th:first-child,.format-comparison th:last-child{width:100%;padding:0 0 16px;border:0}
   .format-comparison td{border:0;padding:10px 0 0}.format-comparison td::before{content:attr(data-label);display:block;font-size:12px;font-weight:600;color:var(--muted);margin-bottom:4px}
   .format-comparison td a{margin-top:10px}.local-training-grid{gap:28px}
+}
+@media(max-width:720px){
+  .home-local .photo-hero{min-height:0}
+  .training-page .hero-main{padding-top:32px}
+  .training-page .hero-main.stack{gap:20px}
+  .offer-page .page-hero{padding-top:40px;padding-bottom:64px}
+  .offer-page .page-hero .wrap{gap:20px}
+  .buyer-guide{padding-bottom:0}
+  .buyer-prep{padding:24px 0;margin-top:8px;gap:12px}
 }

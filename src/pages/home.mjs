@@ -79,7 +79,7 @@ const page = (lang) => {
   return {
     title: c.title, description: c.description, og: c.og, view: 'home_view', hero: 'photo', bodyClass: 'home-local',
     body: `${photoHero({ photo: 'workshop', alt: c.heroAlt, stats: c.stats, inner: `<div class="hero-main">
-<div class="col-a"><div class="eyebrow">${c.eyebrow}</div><h1 class="xl">${c.h1}</h1></div>
+<div class="col-a"><div class="eyebrow">${c.eyebrow}</div><h1 class="xl brand-hero-title">${c.h1}</h1></div>
 <div class="col-b"><p>${c.sub}</p><div class="cta-row">${planBtn(lang, { pos: 'hero', id: 'hero-cta' })}<a class="btn btn-secondary" href="${L(lang, '/ai-training/')}#formats" data-event="training_program_click" data-pos="hero">${c.seeProgram}</a></div></div></div>` })}
 
 <section class="sec" id="learn"><div class="wrap">${head(c.learnK, c.learnH)}
