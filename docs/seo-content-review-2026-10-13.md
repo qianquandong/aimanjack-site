@@ -28,7 +28,8 @@ The configured $499/person starting price and four 90-minute sessions; scoped-qu
 - Static build: 102 indexable pages.
 - Local site and content tests: 31 passed, 0 failed.
 - Browser review: four affected pages rendered from local HTML with embedded local assets at 390px and 1440px; no document-level horizontal overflow. The desktop/mobile comparison table and expanded retreat FAQ were visually inspected. Network navigation is restricted in this environment, so these are static render checks, not live HTTP tests.
-- Full offline suite must pass in CI with the locked test dependency installed. The local environment lacks `@electric-sql/pglite`; that local dependency limitation is not presented as a passing database test.
+- Full offline CI suite: 157 passed, 0 failed, 0 skipped, using Node 22 and the locked test dependency. Evidence: GitHub Actions run 38479052623, job 115576857721, completed 2026-10-13; test artifact `seo-review-test-results` (11855946822). The reviewed source SHA-256 checks passed before the build. Source and generated HTML were committed together as `6cd50658d1317d19b21e50ae5b84a228b94b3622`.
+- The temporary source-transfer/build workflow and application script were removed after the successful run; existing deployment and CI configuration remain unchanged in the final diff.
 - This is a bounded content correction, not a Search Console analysis. No private GSC data, search volume, ranking gains or AI-search visibility have been claimed.
 
 Production publishing remains a separate, explicit deployment under the existing `deploy.sh --production` controls. Preview environments are read-only and are not proof that production booking or email works.
