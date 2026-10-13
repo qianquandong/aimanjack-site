@@ -16,6 +16,8 @@ const write = (rel, html) => { const f = join(ROOT, rel); mkdirSync(dirname(f), 
 
 // lastmod must mean "this page changed", not "someone ran the build": a page whose HTML is byte-identical
 // to what is already on disk keeps the lastmod it had in the previous sitemap.
+// Git's Windows CRLF checkout is not a content update.
+const normalize = (html) => html.replace(/\r\n/g, '\n');
 const today = new Date().toISOString().slice(0, 10);
 const read = (rel) => { const f = join(ROOT, rel); return existsSync(f) ? readFileSync(f, 'utf8') : ''; };
 const prevLastmod = Object.fromEntries([...read('sitemap.xml').matchAll(/<loc>([^<]+)<\/loc><lastmod>([^<]+)<\/lastmod>/g)].map((m) => [m[1], m[2]]));
@@ -28,7 +30,7 @@ for (const file of readdirSync(join(ROOT, 'src/pages')).filter((f) => f.endsWith
       const page = pageOf(p, lang);
       const langPath = lang === 'zh' ? zhPath(p.path) : p.path;
       const rel = outFile(langPath).replace(/^\//, ''), html = render(page, lang), loc = SITE + langPath;
-      const lastmod = html === read(rel) && prevLastmod[loc] ? prevLastmod[loc] : today;
+      const lastmod = normalize(html) === normalize(read(rel)) && prevLastmod[loc] ? prevLastmod[loc] : today;
       write(rel, html);
       if (!page.noindex) urls.push({ loc, lastmod, priority: p.priority ?? 0.7, changefreq: p.changefreq ?? 'monthly' });
     }

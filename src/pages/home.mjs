@@ -18,11 +18,11 @@ const talks = (w) => w[PROOF.talks] || PROOF.talks;
 
 const C = {
   en: {
-    title: 'AI Man Jack | Customized AI Training for Business Teams',
-    description: `Hands-on AI training built around the work your business already does. Four-session programs start at ${PROGRAM_PRICE}/person, with custom team pricing and remote delivery across the U.S.`,
-    og: { title: 'Make AI useful at work', description: `Four live ${M}-minute sessions built around your real work. Starting at ${PROGRAM_PRICE}/person. Remote across the U.S., onsite in Dallas–Fort Worth.` },
-    eyebrow: 'Customized AI training · Remote across the U.S. · Dallas–Fort Worth onsite · English or Chinese', h1: 'Make AI useful<br>at <em>work.</em>',
-    sub: 'Bring the work you already do. We turn it into practical AI workflows you can actually use — across operations, marketing, sales, research, websites and day-to-day business management.',
+    title: 'Corporate AI Training in Dallas–Fort Worth | AI Man Jack',
+    description: `Hands-on AI training for Dallas–Fort Worth business teams. Jack Qian teaches onsite or remotely, in English or Chinese. Four-session programs from ${PROGRAM_PRICE}/person.`,
+    og: { title: 'AI training for Dallas–Fort Worth teams', description: `Hands-on training with Jack Qian, in English or Chinese. Four live ${M}-minute sessions from ${PROGRAM_PRICE}/person. Onsite in DFW or remote across the U.S.` },
+    eyebrow: 'Dallas–Fort Worth onsite · Remote across the U.S. · English or Chinese', h1: 'AI training for<br><em>Dallas–Fort Worth</em><br>business teams.',
+    sub: 'Jack Qian teaches non-technical teams to use ChatGPT, Claude, Gemini or Copilot on work they already do. Bring a sales, marketing or operations task; build a repeatable workflow and learn how to check its output.',
     seeProgram: 'See the 4-Session Program',
     heroAlt: 'A full classroom in Dallas at one of Jack Qian’s hands-on AI workshops',
     stats: [[`${PROGRAM_PRICE}/person`, `${S}-session customized program starts here`], [`${S} × ${M} min`, 'Live, hands-on sessions'], [PROOF.hackathon, 'builders at one Dallas AI hackathon'], [`${PROOF.rating} ★`, `<a href="${GBP_URL}" target="_blank" rel="noopener">${PROOF.reviews} Google reviews ↗</a>`]],
@@ -44,11 +44,11 @@ const C = {
     bandH: 'Bring one task.<br>We’ll make it <em>work.</em>',
   },
   zh: {
-    title: 'AI Man Jack | 为企业团队定制的 AI 培训',
-    description: `围绕你的业务已经在做的工作，提供实操型 AI 培训。四次课程项目每人 ${PROGRAM_PRICE} 起，团队可定制报价，全美远程授课。`,
-    og: { title: '让 AI 真正落地于日常工作', description: `四节 ${M} 分钟实时课程，围绕你的真实工作设计。每人 ${PROGRAM_PRICE} 起，全美远程授课，达拉斯—沃斯堡可上门。` },
-    eyebrow: '定制 AI 培训 · 全美远程 · 达拉斯—沃斯堡可上门 · 中英文授课', h1: '让 AI 真正落地<br>于<em>日常工作</em>。',
-    sub: '带上你手头已经在做的工作，我们把它变成真正用得上的 AI 工作流，覆盖运营、市场、销售、调研、网站和日常经营管理。',
+    title: '达拉斯—沃斯堡企业 AI 培训 | AI Man Jack',
+    description: `为达拉斯—沃斯堡企业团队提供实操 AI 培训，Jack Qian 亲自授课，支持上门、全美远程及中英文。四次课程每人 ${PROGRAM_PRICE} 起，团队按需报价。`,
+    og: { title: '达拉斯—沃斯堡企业 AI 实操培训', description: `Jack Qian 中英文亲自授课。四节 ${M} 分钟课程，每人 ${PROGRAM_PRICE} 起。DFW 可上门，全美可远程。` },
+    eyebrow: '达拉斯—沃斯堡 · 上门或远程 · 中英文授课', h1: '达拉斯—沃斯堡<br>企业 <em>AI 实操培训</em>。',
+    sub: 'Jack Qian 带非技术团队，把 ChatGPT、Claude、Gemini 或 Copilot 用在日常工作中。从你手头的销售、市场或运营任务出发，搭建可复用的工作流，并学会核验 AI 的输出。',
     seeProgram: '查看四次课程项目',
     heroAlt: '达拉斯，Jack Qian 主讲的一场 AI 实操工作坊，教室座无虚席',
     stats: [[`${PROGRAM_PRICE}/人`, '四次定制课程项目起步价'], [`${S} × ${M} 分钟`, '实时互动的实操课'], [PROOF.hackathon, '人参与达拉斯 AI 黑客松'], [`${PROOF.rating} ★`, `<a href="${GBP_URL}" target="_blank" rel="noopener">${PROOF.reviews} 条 Google 评价 ↗</a>`]],
@@ -77,7 +77,7 @@ const page = (lang) => {
   const c = C[lang], n2 = (i) => String(i + 1).padStart(2, '0');
   const head = (k, h, more) => `<div class="sec-head"><div><div class="eyebrow">${k}</div><h2>${h}</h2></div>${more ? `<a class="more" href="${more[0]}">${more[1]}</a>` : ''}</div>`;
   return {
-    title: c.title, description: c.description, og: c.og, view: 'home_view', hero: 'photo',
+    title: c.title, description: c.description, og: c.og, view: 'home_view', hero: 'photo', bodyClass: 'home-local',
     body: `${photoHero({ photo: 'workshop', alt: c.heroAlt, stats: c.stats, inner: `<div class="hero-main">
 <div class="col-a"><div class="eyebrow">${c.eyebrow}</div><h1 class="xl">${c.h1}</h1></div>
 <div class="col-b"><p>${c.sub}</p><div class="cta-row">${planBtn(lang, { pos: 'hero', id: 'hero-cta' })}<a class="btn btn-secondary" href="${L(lang, '/ai-training/')}#formats" data-event="training_program_click" data-pos="hero">${c.seeProgram}</a></div></div></div>` })}
@@ -106,7 +106,7 @@ ${progCard(c.prog, `<a class="btn btn-primary" href="${L(lang, '/ai-training/')}
 <section class="sec" id="how"><div class="wrap">${head(c.howK, c.howH)}
 <ol class="steps-line">${c.how.map(([h, p], i) => `<li><span class="n">${c.step.includes('{n}') ? c.step.replace('{n}', i + 1) : `${c.step} ${i + 1}`}</span><h3>${h}</h3><p>${p}</p></li>`).join('')}</ol></div></section>
 ${ctaBand(lang, { h: c.bandH, pos: 'home-final' })}`,
-    jsonld: [business(lang, { full: true }), person(), website()],
+    jsonld: [business(lang), person(), website()],
   };
 };
 

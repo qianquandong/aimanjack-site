@@ -7,7 +7,8 @@ import { SITE, BOOK_URL, PROGRAM_PRICE, OFFERS, QUOTE_URL } from '../config.mjs'
 import { L } from '../layout.mjs';
 import { T } from '../i18n.mjs';
 import { breadcrumb } from '../components.mjs';
-import { BUSINESS_REF } from '../schema.mjs';
+import { BUSINESS_REF, AREA } from '../schema.mjs';
+import { localTrainingProof } from '../training-buyers.mjs';
 
 // Quote CTA: carries the format so the form preselects it. The /book/ CTA is the 20-minute workflow call.
 export const quoteBtn = (lang, { format, label, pos, cls = 'btn-primary', id = '' }) =>
@@ -100,10 +101,10 @@ const C = {
   },
   onsite: {
     en: {
-      title: 'Full-Day Onsite AI Training in Texas | Scoped Quote | AI Man Jack',
+      title: 'Onsite AI Training in Dallas–Fort Worth & Texas | AI Man Jack',
       description: 'One full day of hands-on AI training at your office: fundamentals, data safety, department use cases and guided labs on real work. Onsite in Dallas–Fort Worth; elsewhere in Texas with travel quoted separately. Priced by scoped quote.',
       crumb: 'Full-day onsite', eyebrow: 'Onsite training · One full day · Dallas–Fort Worth, elsewhere in Texas on request · English or Chinese',
-      h1: 'Full-day onsite AI training for Texas teams',
+      h1: 'Onsite AI training for Dallas–Fort Worth teams',
       sub: 'One day at your office, built around the work your team already does: AI fundamentals, safe use of company data, use cases by department and guided labs, ending with a plan for what comes next. This is AI training, not a custom ERP or CRM build.',
       quote: 'Request onsite quote',
       forK: 'Who it’s for', forH: 'Companies that want a whole team trained on the same day',
@@ -129,10 +130,10 @@ const C = {
       ld: { name: 'Full-Day Onsite AI Training (Texas)', desc: 'One full day of onsite, hands-on AI training: fundamentals, approved-data safety, department use cases, guided labs and a next-step plan. Onsite in Dallas–Fort Worth; elsewhere in Texas on request with travel quoted separately. AI training, not CRM or ERP implementation. Priced by scoped quote.' },
     },
     zh: {
-      title: '德州全天上门 AI 培训 | 按需报价 | AI Man Jack',
+      title: '达拉斯—沃斯堡上门 AI 培训 | 德州企业实操课 | AI Man Jack',
       description: '到贵公司现场一整天的 AI 实操培训：AI 基础、数据安全、各部门应用场景，以及围绕真实工作的实操练习。达拉斯—沃斯堡上门；德州其他城市可安排，差旅另行报价。按需报价。',
       crumb: '全天上门培训', eyebrow: '上门培训 · 全天 · 达拉斯—沃斯堡，德州其他城市可按需安排 · 中英文授课',
-      h1: '面向德州团队的<br>全天上门 AI 培训',
+      h1: '达拉斯—沃斯堡企业<br>上门 AI 培训',
       sub: '在贵公司现场安排一整天，围绕团队已经在做的工作展开：AI 基础、公司数据的安全使用、各部门的应用场景和实操练习，最后形成下一步计划。这是 AI 培训，不是 ERP 或 CRM 定制开发。',
       quote: '申请上门培训报价',
       forK: '适合谁', forH: '希望全员在同一天完成培训的公司',
@@ -160,7 +161,7 @@ const C = {
   },
 };
 
-const DFW = { '@id': `${SITE}/#dfw` };
+const DFW = AREA[0]; // Define the area on each offer page, not an unresolved @id alone.
 const TEXAS = { '@type': 'State', name: 'Texas', containedInPlace: { '@type': 'Country', name: 'United States' } };
 
 const page = (key, lang) => {
@@ -173,6 +174,7 @@ const page = (key, lang) => {
     title: c.title, description: c.description, offer: o.id,   // body data-offer → GA4 view_offer {offer_id}
     body: `<section class="page-hero"><div class="wrap">${bc.html}<p class="eyebrow">${c.eyebrow}</p><h1 style="max-width:1080px">${c.h1}</h1><p class="lead" style="max-width:760px">${c.sub}</p>${ctas(`${key}-hero`, true)}</div></section>
 
+${key === 'onsite' ? localTrainingProof(lang) : ''}
 <section class="sec tight" id="who"><div class="wrap">${head(c.forK, c.forH)}
 <div class="g2"><div class="oak">${ticks(c.for)}</div><div class="oak"><h3>${c.notForH}</h3>${ticks(c.notFor, ' x')}</div></div></div></section>
 

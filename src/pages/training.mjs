@@ -4,18 +4,18 @@ import { planBtn, photoHero, ctaBand, L } from '../layout.mjs';
 import { breadcrumb } from '../components.mjs';
 import { caseProof, clientProof } from './cases.mjs';
 import { business, person, faqPage } from '../schema.mjs';
-import { chooser } from './offers.mjs';
+import { trainingBrief } from '../training-buyers.mjs';
 
 const SMS = `sms:${SMS_TEL}?body=TRAINING%20-%20`;
 const S = TRAINING.sessions, M = TRAINING.sessionMin;
 
 const C = {
   en: {
-    title: 'Customized AI Training for Teams | 4-Session Program | AI Man Jack',
+    title: 'Corporate AI Training for Employees | 4 Sessions | AI Man Jack',
     description: `Four live ${M}-minute AI training sessions built around your real work. Programs start at ${PROGRAM_PRICE}/person. Custom team pricing. Remote across the U.S. and onsite in Dallas–Fort Worth.`,
     og: { title: 'AI Training Built Around the Work You Already Do', description: `Four live ${M}-minute sessions on your real work. Starting at ${PROGRAM_PRICE}/person. Remote across the U.S., onsite in Dallas–Fort Worth, in English or Chinese.`, alt: 'Hands-on AI training for your business or team, in English or Chinese' },
     crumb: 'AI training', eyebrow: 'Customized AI training · Remote across the U.S. · Dallas–Fort Worth onsite · English or Chinese', h1: 'AI training built around the work you <em>already do</em>',
-    sub: 'No fixed curriculum. We start with the work you already do, choose the tasks where AI can actually help, and build repeatable workflows together.',
+    sub: 'Hands-on corporate AI training for non-technical employees and business owners. Jack Qian builds the sessions around your team’s real tasks, using company-approved tools such as ChatGPT, Claude, Gemini or Copilot.',
     seePricing: 'See pricing & format', text: 'Prefer to text? Send TRAINING to', heroAlt: 'A full classroom in Dallas at one of Jack Qian’s hands-on AI workshops',
     stats: [[`${PROGRAM_PRICE}/person`, `${S}-session program starts here`], [`${S} × ${M} min`, 'Live sessions'], ['Customized', 'Your work determines the curriculum'], ['Remote U.S.', 'Dallas–Fort Worth onsite available']],
     teamsK: 'Who it’s for', teamsH: 'Owners and teams who don’t write code and do repeat work', teamsP: 'Everyone works on tasks they already do. These are the workflows people build in the sessions.',
@@ -35,14 +35,14 @@ const C = {
     bioK: 'Who teaches it', bio: '“I run community AI workshops here in Dallas because useful AI education should be accessible, and I teach companies the same way. Every session starts with one real task and an honest answer about whether AI belongs there.”', bioBy: 'founder, AI Man Jack', bioMore: 'More about Jack →',
   },
   zh: {
-    title: '为团队定制的 AI 培训 | 四次课程项目 | AI Man Jack',
+    title: '企业员工 AI 培训 | 四次定制实操课程 | AI Man Jack',
     description: `四节 ${M} 分钟的实时 AI 培训课，围绕你的真实工作设计。每人 ${PROGRAM_PRICE} 起，团队可定制报价。全美远程授课，达拉斯—沃斯堡可上门。`,
     og: { title: '围绕你手头工作设计的 AI 培训', description: `四节 ${M} 分钟实时课程，围绕真实工作展开。每人 ${PROGRAM_PRICE} 起。全美远程，达拉斯—沃斯堡可上门，中英文授课。`, alt: '为企业和团队定制的实操型 AI 培训，中英文授课' },
     crumb: 'AI 培训', eyebrow: '定制 AI 培训 · 全美远程 · 达拉斯—沃斯堡可上门 · 中英文授课', h1: '围绕你<em>手头工作</em>设计的<br>AI 培训',
-    sub: '没有固定大纲。我们从你已经在做的工作出发，挑出 AI 真正帮得上忙的任务，一起搭建可复用的工作流。',
+    sub: '面向非技术员工与企业老板的 AI 实操培训。Jack Qian 围绕团队的真实任务设计课程，使用公司已批准的 ChatGPT、Claude、Gemini 或 Copilot，一起搭建可复用的工作流。',
     seePricing: '查看价格与形式', text: '更习惯短信？发送 TRAINING 至', heroAlt: '达拉斯，Jack Qian 主讲的一场 AI 实操工作坊，教室座无虚席',
     stats: [[`${PROGRAM_PRICE}/人`, '四次课程项目起步价'], [`${S} × ${M} 分钟`, '实时课程'], ['定制', '课程内容由你的工作决定'], ['全美远程', '达拉斯—沃斯堡可上门']],
-    teamsK: '适用对象', teamsH: '适合不写代码、但有大量重复性工作的老板和团队', teamsP: '每个人都基于自己已有的工作任务练习。以下是课程中实际搭建过的工作流。',
+    teamsK: '适用对象', teamsH: '适合不写代码、但有大量重复性工作的老板和团队', teamsP: '每个人都基于自己已有的工作任务练习。以下是可以用来设计课程的工作流示例。',
     teams: [['sales', '销售', ['首次通话前的客户调研：基于对方官网与 CRM 记录', '会前准备：根据上次通话记录整理五个要点', '根据通话记录起草跟进邮件，保持个人风格', '基于已审批模板生成方案初稿']], ['operations', '运营', ['基于同一份表格，每周生成固定格式的周报', '根据操作录屏整理流程文档', '将会议纪要转化为明确负责人的待办事项', '从发票、表单和 PDF 中提取字段并整理成表格']], ['marketing', '市场', ['将大量文章综合为一份研究简报', '根据模板生成投放简报', '将一篇内容改编为三种形式', '根据导出的数据撰写效果总结']], ['leaders', '管理者', ['用四个问题评估哪些任务值得引入 AI', '明确哪些输出在使用前必须由人审批', '规定哪些数据可以输入工具、哪些不可以', '两周复盘：每条工作流是保留、调整还是停止']], ['owners', '老板与经营者', ['网站更新与内容', '调研与决策支持', 'SOP 与日常行政', '市场营销工作流', '日常经营']]],
     curK: '课程内容', curH: '先定任务，再选工具。', curP: '非技术团队通常面临两种困境：要么被层出不穷的 AI 产品弄得无所适从，要么试过聊天机器人、得到了令人印象深刻的回答，却不知道如何融入自己的工作。产品演示只会让问题更严重。因此，每一次课程都围绕一项真实任务，分五个部分展开。', curNote: '两周后回访：是否经过实测？结果是否足够准确？应继续、调整还是停止？',
     cur: [['选择合适的任务', '每位学员列出三项每周重复的工作，并按四个标准打分：频率是否足够高、输入输出能否清晰描述、能否快速核验、能否在不涉及敏感信息的情况下测试。', '“根据这份已批准的会议记录整理五点会议简报”可以教；“帮我管理整个部门”则不行。'], ['为 AI 提供有效上下文', '提示词是一份工作指令，而不是什么秘诀：明确目标、指定可信来源、设定约束、规定输出格式，并标出需要人工核验的内容。'], ['从对话升级为工作流', '对话产出的是一个回答；工作流则让信息按步骤流转：收集已批准的记录、提取决策、明确负责人、起草跟进、进入审核队列。', '团队会在这一步理解聊天机器人与智能体（Agent）的区别。'], ['核验输出结果', '每条结论能否追溯到来源？缺少哪些上下文？使用前由谁审批？每场课程至少有一个刻意设置的错误输出——找出它，比再看一次完美演示更有价值。'], ['落实数据与审批规范', '每位学员都能明确回答三个问题：哪些工具已获批准、哪些信息不得输入、哪些环节必须由人签字确认。']],
@@ -73,6 +73,7 @@ const page = (lang) => {
     body: `${photoHero({ photo: 'workshop', alt: c.heroAlt, size: 'md', stats: c.stats, inner: `<div class="hero-main stack">${bc.html}<div class="eyebrow">${c.eyebrow}</div><h1 class="lg" style="font-size:clamp(44px,6.4vw,92px)">${c.h1}</h1><p style="max-width:720px">${c.sub}</p>
 <div class="cta-row" style="gap:20px">${planBtn(lang, { pos: 'training-hero', id: 'hero-cta' })}<a class="btn btn-secondary" href="#formats" data-event="training_program_click" data-pos="training-hero">${c.seePricing}</a><span style="font-size:15px;color:var(--on-photo)">${c.text} <a href="${SMS}" data-event="sms_training_click" data-pos="training-hero">${SMS_DISPLAY}</a></span></div></div>` })}
 
+${trainingBrief(lang)}
 <section class="sec" id="teams"><div class="wrap">${head(c.teamsK, c.teamsH, c.teamsP)}
 <div class="g4">${c.teams.map(([slug, name, items]) => `<div class="oak${slug === 'owners' ? ' wide' : ''}" id="team-${slug}" style="gap:18px;padding:30px 28px"><h3 style="font-size:26px">${name}</h3><ul class="ticks">${items.map((i) => `<li><span>${i}</span></li>`).join('')}</ul></div>`).join('')}</div></div></section>
 
@@ -83,7 +84,6 @@ const page = (lang) => {
 ${caseProof(lang)}
 <section class="sec" id="formats"><div class="wrap">${head(c.fmtK, c.fmtH, c.fmtP)}
 ${progCard(c.fmt, planBtn(lang, { pos: 'training-format' }))}<p class="prog-alt">${c.shorter}</p></div></section>
-${chooser(lang, { pos: 'training', programHref: '#formats' })}
 ${clientProof(lang, 'training')}
 
 <section class="sec tight" id="testimonials"><div class="wrap">${head(c.revK, c.revH, c.revP, `<a class="more" href="${GBP_URL}" target="_blank" rel="noopener">${c.revMore}</a>`)}
@@ -98,7 +98,7 @@ ${clientProof(lang, 'training')}
 <section class="sec tight" id="about"><div class="wrap"><div class="big-card" style="flex-direction:row;align-items:center;gap:32px;flex-wrap:wrap"><img src="/img/jack-portrait-256.webp" width="256" height="256" loading="lazy" decoding="async" alt="Jack Qian" style="width:120px;height:120px;border-radius:50%;object-fit:cover;flex:none">
 <div style="display:flex;flex-direction:column;gap:10px;flex:1 1 320px"><div class="eyebrow">${c.bioK}</div><p style="font-size:clamp(17px,1.4vw,20px);line-height:1.6">${c.bio}</p><span style="font-size:15px;color:var(--muted)"><strong style="color:var(--ink)">Jack Qian</strong> · ${c.bioBy}</span></div><a class="more" href="${L(lang, '/about/')}">${c.bioMore}</a></div></div></section>
 ${ctaBand(lang, { pos: 'training-final' })}`,
-    jsonld: [business(lang, { full: true }), person(), faqPage(c.faq, `${SITE}${L(lang, '/ai-training/')}#faq`), bc.ld],
+    jsonld: [business(lang), person(), faqPage(c.faq, `${SITE}${L(lang, '/ai-training/')}#faq`), bc.ld],
   };
 };
 

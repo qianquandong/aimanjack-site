@@ -26,7 +26,7 @@ const LEGAL = ['/privacy', '/terms', '/sms-terms'];
 
 test('home page positions AI Man Jack as practical AI training for teams, in both languages', async () => {
   const pages = await allPages();
-  for (const [lang, title, h1] of [['en', /Customized AI Training for Business Teams/, /Make AI useful/], ['zh', /定制的 AI 培训/, /让 AI 真正落地/]]) {
+  for (const [lang, title, h1] of [['en', /Corporate AI Training in Dallas–Fort Worth/, /AI training for/], ['zh', /达拉斯—沃斯堡企业 AI 培训/, /达拉斯—沃斯堡/]]) {
     const home = find(pages, '/', lang);
     assert.ok(home, `missing ${lang} home`);
     assert.match(head(home.html), new RegExp(`<title>[^<]*${title.source}`));
@@ -35,6 +35,25 @@ test('home page positions AI Man Jack as practical AI training for teams, in bot
     assert.match(home.html, /Book a Workflow Call|预约工作流咨询/);
     for (const p of ['/tools/', '/use-cases/', '/workflows/', '/ai-training/']) assert.match(home.html, new RegExp(`href="(?:/zh)?${p}`), `${lang} home links ${p}`);
     for (const re of BANNED) assert.doesNotMatch(body(home.html) + ld(home.html), re, `${lang} home contains ${re}`);
+  }
+});
+
+test('training proof remains visible without self-serving rating markup, and offer areas resolve on the page', async () => {
+  const pages = await allPages();
+  const { PROOF, GBP_URL } = await import('../src/config.mjs');
+  for (const lang of ['en', 'zh']) {
+    for (const path of ['/', '/ai-training/', '/about/']) {
+      const html = find(pages, path, lang).html;
+      assert.doesNotMatch(ld(html), /"@type":"(?:Review|AggregateRating)"/);
+      assert.ok(body(html).includes(GBP_URL), `${lang}:${path} keeps its Google source`);
+      assert.ok(body(html).includes(String(PROOF.reviews)), `${lang}:${path} keeps the checked review count`);
+    }
+    for (const path of ['/ai-training/team-workshop/', '/ai-training/onsite-texas/']) {
+      const nodes = JSON.parse(ld(find(pages, path, lang).html))['@graph'];
+      const service = nodes.find(n => n['@type'] === 'Service');
+      assert.equal(service.provider['@id'], 'https://aimanjack.com/#business');
+      assert.ok(service.areaServed.some(a => a.name === 'Dallas–Fort Worth metroplex' && a['@type'] === 'AdministrativeArea'));
+    }
   }
 });
 
