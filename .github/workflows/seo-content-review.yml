@@ -1,0 +1,33 @@
+name: SEO content review
+
+on:
+  push:
+    branches: [fix/seo-content-consistency-2026-10-13]
+  pull_request:
+    branches: [production]
+
+permissions:
+  contents: read
+
+jobs:
+  content-review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Archive reviewed source (no credentials or dependencies)
+        run: git archive --format=tar HEAD > /tmp/aimanjack-reviewed-source.tar
+      - uses: actions/upload-artifact@v4
+        with:
+          name: aimanjack-reviewed-source
+          path: /tmp/aimanjack-reviewed-source.tar
+          retention-days: 7
+      - name: Install locked test dependencies
+        run: npm ci --ignore-scripts
+      - name: Build static pages
+        run: node scripts/build.mjs
+      - name: Run offline regression tests
+        run: node --no-warnings --test tests/*.test.mjs
