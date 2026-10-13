@@ -83,7 +83,7 @@ const page = (lang) => {
 <div class="col-b"><p>${c.sub}</p><div class="cta-row">${planBtn(lang, { pos: 'hero', id: 'hero-cta' })}<a class="btn btn-secondary" href="${L(lang, '/ai-training/')}#formats" data-event="training_program_click" data-pos="hero">${c.seeProgram}</a></div></div></div>` })}
 
 <section class="sec" id="learn"><div class="wrap">${head(c.learnK, c.learnH)}
-<div class="g4">${c.learn.map(([h, p], i) => `<div class="oak" style="min-height:280px"><span class="n">${n2(i)}</span><h3>${h}</h3><p>${p}</p></div>`).join('')}</div></div></section>
+<div class="g4">${c.learn.map(([h, p], i) => `<div class="oak learn-card"><span class="n">${n2(i)}</span><h3>${h}</h3><p>${p}</p></div>`).join('')}</div></div></section>
 ${clientProof(lang, 'home')}
 
 <section class="split-photo dark" id="rooms"><img src="/img/events/dallas-session3-hands-on.webp" width="1600" height="1066" loading="lazy" decoding="async" alt="${c.roomAlt}">
