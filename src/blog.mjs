@@ -36,6 +36,8 @@ export const readingMinutes = (lang, html) => {
 };
 
 export const postPath = (slug) => `${BLOG_PATH}${slug}/`;
+// A post may pin a legacy URL (post.path, e.g. /resources/<slug>/) when AI engines already cite it; everything else about it stays a blog post.
+export const pathOf = (post) => post.path ?? postPath(post.slug);
 const onward = (lang) => { const s = STR[lang], r = R[lang], wf = loc(workflowBySlug['meeting-notes-to-action-items'], lang), tp = loc(templateBySlug['ai-use-case-discovery-worksheet'], lang);
   return [card({ href: href(lang, `/workflows/${wf.slug}/`), kicker: r.workflows.replace(/s$/, ''), title: wf.title, text: wf.description.split(/(?<=[.。])\s*/)[0], tags: [r.dept[wf.department]], cta: r.openWorkflow, event: 'resource_to_training_click' }),
     card({ href: href(lang, `/templates/${tp.slug}/`), kicker: r.templates.replace(/s$/, ''), title: tp.title, text: tp.description, tags: [r.dept[tp.category]], cta: r.openTemplate, event: 'template_click' }),
@@ -44,7 +46,7 @@ const onward = (lang) => { const s = STR[lang], r = R[lang], wf = loc(workflowBy
 // post: { slug, date, updated?, status: 'draft'|'published'|'hidden', en: {...}, zh: {...} }
 // per-language: { keyword, title, description, h1, sub, takeaways: [], sections: html, faq: [[q, a]], pillar: [label, path], related: [[label, path]], sources?: [[label, url]] }
 export function postPage(post, lang) {
-  const s = STR[lang], c = post[lang], path = postPath(post.slug);
+  const s = STR[lang], c = post[lang], path = pathOf(post);
   const bc = breadcrumb(lang, [[s.crumb, BLOG_PATH], [s.guide, path]]);
   const mins = readingMinutes(lang, c.sections);
   // "On this page": every <h2> in the body gets an id and an entry.
@@ -79,7 +81,7 @@ ${c.faq?.length ? `<h2>${s.faq}</h2>${faq(lang, c.faq, { heading: false })}` : '
 export function indexPage(posts, lang) {
   const s = STR[lang], bc = breadcrumb(lang, [[s.crumb, BLOG_PATH]]);
   const cards = posts.map((p) => { const x = p[lang];
-    return card({ href: L(lang, postPath(p.slug)), kicker: `${s.guide} · ${readingMinutes(lang, x.sections)} ${s.minutes}`, title: x.h1, text: x.description, tags: [dateText(lang, p.date)], cta: lang === 'zh' ? '阅读全文' : 'Read the guide', event: 'resource_click', hl: 'h2' }); }).join('');
+    return card({ href: L(lang, pathOf(p)), kicker: `${s.guide} · ${readingMinutes(lang, x.sections)} ${s.minutes}`, title: x.h1, text: x.description, tags: [dateText(lang, p.date)], cta: lang === 'zh' ? '阅读全文' : 'Read the guide', event: 'resource_click', hl: 'h2' }); }).join('');
   return {
     title: s.idxTitle, description: s.idxDesc, view: 'blog_view',
     body: `<section style="padding:72px 0 56px"><div class="wrap g12" style="align-items:end;row-gap:20px"><div style="grid-column:span 7;display:flex;flex-direction:column;gap:20px">${bc.html}<div class="eyebrow">${s.crumb}</div><h1 class="lg" style="font-size:clamp(42px,6.1vw,88px)">${s.idxH}</h1></div><p class="lead" style="grid-column:9 / span 4;font-size:18px">${s.idxSub}</p></div></section>
