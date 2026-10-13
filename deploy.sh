@@ -33,7 +33,12 @@ if [ "$mode" != --production ]; then
 fi
 
 rm -rf .deploy && mkdir .deploy
-rsync -a --exclude-from=.deployignore ./ .deploy/
+if command -v rsync >/dev/null 2>&1; then
+  rsync -a --exclude-from=.deployignore ./ .deploy/
+else
+  # Git for Windows ships no rsync; GNU tar reads the same simple patterns from .deployignore (.deploy itself is listed, so no recursion).
+  tar --exclude-from=.deployignore -cf - . | tar -C .deploy -xf -
+fi
 
 # Minify the stylesheet into the staged copy only — the source stays readable.
 # Measured 2026-09-02: 40,033 -> ~33,000 B raw (8.7 -> 6.5 KB brotli), which took
