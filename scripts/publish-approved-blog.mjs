@@ -4,7 +4,7 @@ import { existsSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { execFileSync } from 'node:child_process';
-import { ROOT, PACK, sha256, json, loadQueue, draftFor, inspect, chooseRelease, routeOf, textOnly, dateInChicago, weekInChicago, isDallasPublicationWindow, applyDirectoryCopy } from './editorial-queue.mjs';
+import { ROOT, PACK, sha256, json, loadQueue, draftFor, draftForRelease, inspect, chooseRelease, routeOf, textOnly, dateInChicago, weekInChicago, isDallasPublicationWindow, applyDirectoryCopy } from './editorial-queue.mjs';
 import { render } from '../src/layout.mjs';
 
 const REPO = 'qianquandong/aimanjack-site';
@@ -217,7 +217,7 @@ async function publish() {
   if (!selection) { console.log('No due owner-approved manuscript, or this week already completed. Nothing published.'); return; }
   if (process.env.BLOG_AUTOPUBLISH_ENABLED !== 'true') throw new Error('Publishing is not enabled');
   if (!process.env.CLOUDFLARE_API_TOKEN || !process.env.CLOUDFLARE_ACCOUNT_ID) throw new Error('Cloudflare deployment credentials are missing; no article or branch was changed');
-  const { item, pending } = selection, { post, digest } = await draftFor(item);
+  const { item, pending } = selection, { post, digest } = await draftForRelease(item);
   git('fetch', 'origin', 'production');
   if (git('rev-parse', 'HEAD') !== git('rev-parse', 'origin/production')) throw new Error('Production advanced; rerun against its latest version');
   const liveBefore = await publicBaseline(), before = pending?.protectedBefore || liveBefore, source = `src/posts/${item.slug}.mjs`;
