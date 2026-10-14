@@ -45,7 +45,7 @@ const C = {
     description: `围绕团队日常工作开展的企业 AI 实操培训。四节 ${M} 分钟实时课程，每人 ${PROGRAM_PRICE} 起。全美远程，达拉斯—沃斯堡可上门，中文或英文授课。`,
     og: { title: '围绕团队日常工作开展的企业 AI 实操培训', description: '从客户会议、流程文档到报告，结合团队已经在做的任务，练习使用 AI、核验输出，并明确数据与审批边界。', alt: 'Jack Qian 在达拉斯主讲 AI 实操培训' },
     crumb: 'AI 培训', eyebrow: '全美实时远程授课 · 达拉斯—沃斯堡（DFW）可上门 · 中文或英文授课',
-    h1: '围绕团队<em>日常工作</em>开展的<br>企业 AI 实操培训',
+    h1: '围绕团队<em style="white-space:nowrap">日常工作</em>开展的<br>企业 AI 实操培训',
     sub: '从准备客户会议，到整理工作流程、起草报告，结合团队已经在做的任务，练习如何使用 AI，以及如何核验它的输出。',
     intro: 'AI Man Jack 为企业老板和非技术团队提供实操培训，由 Jack Qian 本人设计课程并授课。',
     seePricing: '查看价格与形式', text: '更习惯短信？发送 TRAINING 至', heroAlt: '达拉斯，Jack Qian 主讲的一场 AI 实操工作坊，教室座无虚席',
