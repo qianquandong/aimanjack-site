@@ -47,7 +47,8 @@ test('training proof remains visible without self-serving rating markup, and off
       const html = find(pages, path, lang).html;
       assert.doesNotMatch(ld(html), /"@type":"(?:Review|AggregateRating)"/);
       assert.ok(body(html).includes(GBP_URL), `${lang}:${path} keeps its Google source`);
-      assert.ok(body(html).includes(String(PROOF.reviews)), `${lang}:${path} keeps the checked review count`);
+      // The approved English training copy links to Google without repeating a dated review count.
+      if (lang !== 'en' || path !== '/ai-training/') assert.ok(body(html).includes(String(PROOF.reviews)), `${lang}:${path} keeps the checked review count`);
     }
     for (const path of ['/ai-training/team-workshop/', '/ai-training/onsite-texas/']) {
       const nodes = JSON.parse(ld(find(pages, path, lang).html))['@graph'];
@@ -289,7 +290,9 @@ test('the four-session program is the only offer on Home and Training; the clien
       assert.doesNotMatch(x, /\$1,500|Half day|half-day workshop|半天工作坊|Scoped after|Three ways to|Ways to work together/, `${path} shows no competing format`);
       assert.doesNotMatch(x, /gun|firearm|枪|California retail|hours? saved|ROI of|省了 ?\d+ ?小时/i, `${path} client proof stays unnamed and claims nothing`);
     }
-    assert.match(b, /In progress/); assert.match(z, /进行中/);
+    // The English training rewrite omits the unfinished client card; existing home and Chinese proof stay intact.
+    if (path !== '/ai-training/') assert.match(b, /In progress/);
+    assert.match(z, /进行中/);
   }
   // every primary CTA on the money pages goes to /book/ or to the program; no page-level CTA points at a workshop
   for (const x of pages.filter((x) => !x.page.noindex && !x.p.path.startsWith('/blog/'))) assert.doesNotMatch(body(x.html) + ld(x.html), /\$1,500|Book a Workshop|预约团队培训/, `${x.lang}:${x.p.path}`);
