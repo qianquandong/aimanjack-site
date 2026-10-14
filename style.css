@@ -671,6 +671,20 @@ h3,.h3{font-size:clamp(21px,1.75vw,25px);line-height:1.25;letter-spacing:-.02em;
 /* About */
 .stat-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.stat-cards div{display:flex;flex-direction:column;gap:4px;padding:20px;background:var(--card);border-radius:16px}
 .stat-cards b{font-size:36px;letter-spacing:-.03em}.stat-cards span{font-size:14.5px;line-height:1.5;color:var(--muted)}
+/* Dallas page (2026-10-13): the session log table; on phones each row becomes a labelled block via data-label */
+.events-t{width:100%;border-collapse:collapse;font-size:16px;background:var(--surface)}
+.events-t th,.events-t td{padding:14px 16px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;line-height:1.5}
+.events-t thead th{font-size:13px;letter-spacing:.04em;background:var(--card)}
+.events-t tbody th{font-weight:600;white-space:nowrap}
+.events-t tbody tr:last-child>*{border-bottom:0}
+@media(max-width:720px){
+  .events-t,.events-t tbody,.events-t tr,.events-t th,.events-t td{display:block;width:100%}
+  .events-t thead{position:absolute;width:1px;height:1px;clip-path:inset(50%);overflow:hidden}
+  .events-t tbody tr{padding:14px 0}.events-t tbody tr:not(:last-child){border-bottom:1px solid var(--line)}
+  .events-t tbody th{padding:0 16px 6px;border:0;white-space:normal}
+  .events-t td{border:0;padding:3px 16px 0}
+  .events-t td::before{content:attr(data-label) ": ";font-size:12.5px;font-weight:600;color:var(--muted)}
+}
 .big-card{display:flex;flex-direction:column;gap:18px;padding:40px;border-radius:24px;background:var(--surface);border:1px solid var(--line)}.big-card.oakc{background:var(--card);border:0}
 .big-card h2{font-size:clamp(28px,2.8vw,40px)}
 .pills{display:flex;flex-wrap:wrap;gap:8px}.pills span{font-size:15px;font-weight:600;background:var(--surface);border-radius:var(--pill);padding:8px 14px}

@@ -18,10 +18,11 @@ const talks = (w) => w[PROOF.talks] || PROOF.talks;
 
 const C = {
   en: {
-    title: 'Corporate AI Training in Dallas–Fort Worth | AI Man Jack',
-    description: `Hands-on AI training for Dallas–Fort Worth business teams. Jack Qian teaches onsite or remotely, in English or Chinese. Four-session programs from ${PROGRAM_PRICE}/person.`,
-    og: { title: 'AI training for Dallas–Fort Worth teams', description: `Hands-on training with Jack Qian, in English or Chinese. Four live ${M}-minute sessions from ${PROGRAM_PRICE}/person. Onsite in DFW or remote across the U.S.` },
-    eyebrow: 'Dallas–Fort Worth onsite · Remote across the U.S. · English or Chinese', h1: 'AI training for<br><em>Dallas–Fort Worth</em><br>business teams.',
+    // 2026-10-13: the home page no longer competes with /ai-training/dallas/ for the local term (HANDOFF §1.1). DFW stays in the eyebrow and body.
+    title: 'Corporate AI Training for Business Teams | AI Man Jack',
+    description: `Hands-on corporate AI training for business teams. Jack Qian teaches onsite in Dallas–Fort Worth or live online, in English or Chinese. Four-session programs from ${PROGRAM_PRICE}/person.`,
+    og: { title: 'Hands-on AI training for business teams', description: `Hands-on training with Jack Qian, in English or Chinese. Four live ${M}-minute sessions from ${PROGRAM_PRICE}/person. Onsite in Dallas–Fort Worth or live online across the U.S.` },
+    eyebrow: '<a href="/ai-training/dallas/">Dallas–Fort Worth onsite</a> · Remote across the U.S. · English or Chinese', h1: 'AI training for<br><em>business teams</em>,<br>built on real work.',
     sub: 'Jack Qian teaches non-technical teams to use ChatGPT, Claude, Gemini or Copilot on work they already do. Bring a sales, marketing or operations task; build a repeatable workflow and learn how to check its output.',
     seeProgram: 'See the 4-Session Program',
     heroAlt: 'A full classroom in Dallas at one of Jack Qian’s hands-on AI workshops',
@@ -44,10 +45,10 @@ const C = {
     bandH: 'Bring one task.<br>We’ll make it <em>work.</em>',
   },
   zh: {
-    title: '达拉斯—沃斯堡企业 AI 培训 | AI Man Jack',
-    description: `为达拉斯—沃斯堡企业团队提供实操 AI 培训：销售、运营、市场和管理层各带一项真实任务来，带一条能用的工作流和核验方法走。Jack Qian 亲自授课，支持上门、全美远程及中英文。四次课程每人 ${PROGRAM_PRICE} 起，团队按需报价。`,
-    og: { title: '达拉斯—沃斯堡企业 AI 实操培训', description: `Jack Qian 中英文亲自授课。四节 ${M} 分钟课程，每人 ${PROGRAM_PRICE} 起。DFW 可上门，全美可远程。` },
-    eyebrow: '达拉斯—沃斯堡 · 上门或远程 · 中英文授课', h1: '达拉斯—沃斯堡<br>企业 <em>AI 实操培训</em>。',
+    title: '企业团队 AI 实操培训 | AI Man Jack',
+    description: `为企业团队提供实操 AI 培训：销售、运营、市场和管理层各带一项真实任务来，带一条能用的工作流和核验方法走。Jack Qian 亲自授课，达拉斯—沃斯堡可上门，全美线上直播，中英文授课。四次课程每人 ${PROGRAM_PRICE} 起，团队按需报价。`,
+    og: { title: '企业团队 AI 实操培训', description: `Jack Qian 中英文亲自授课。四节 ${M} 分钟课程，每人 ${PROGRAM_PRICE} 起。达拉斯—沃斯堡可上门，全美可远程。` },
+    eyebrow: '<a href="/zh/ai-training/dallas/">达拉斯—沃斯堡上门</a> · 全美远程 · 中英文授课', h1: '企业团队的<br><em>AI 实操培训</em>，<br>从真实工作出发。',
     sub: 'Jack Qian 带非技术团队，把 ChatGPT、Claude、Gemini 或 Copilot 用在日常工作中。从你手头的销售、市场或运营任务出发，搭建可复用的工作流，并学会核验 AI 的输出。',
     seeProgram: '查看四次课程项目',
     heroAlt: '达拉斯，Jack Qian 主讲的一场 AI 实操工作坊，教室座无虚席',
