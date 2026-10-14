@@ -1,0 +1,10 @@
+{
+  "approved": true,
+  "slug": "ai-policy-for-small-business-employees",
+  "draftSha256": "4010b9db24c618c32c7b81ebf6493dae99f8d89760c53415198d30ae9d3061f0",
+  "configSha256": "b09c0cad21fe40d919dabb7bcc8ad081d2978e535875bcaeda73aced580ec0b5",
+  "approvedBy": "qianquandong",
+  "approvedAt": "2026-10-14T13:35:13.402Z",
+  "notBefore": "2026-11-18",
+  "approvalRun": "https://github.com/qianquandong/aimanjack-site/actions/runs/38572950371"
+}
