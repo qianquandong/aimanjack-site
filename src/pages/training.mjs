@@ -13,27 +13,35 @@ const S = TRAINING.sessions, M = TRAINING.sessionMin;
 const C = {
   en: {
     title: 'Corporate AI Training for Employees | 4 Sessions | AI Man Jack',
-    description: `Four live ${M}-minute AI training sessions built around your real work. Programs start at ${PROGRAM_PRICE}/person. Custom team pricing. Remote across the U.S. and onsite in Dallas–Fort Worth.`,
-    og: { title: 'AI Training Built Around the Work You Already Do', description: `Four live ${M}-minute sessions on your real work. Starting at ${PROGRAM_PRICE}/person. Remote across the U.S., onsite in Dallas–Fort Worth, in English or Chinese.`, alt: 'Hands-on AI training for your business or team, in English or Chinese' },
-    crumb: 'AI training', eyebrow: 'Customized AI training · Remote across the U.S. · Dallas–Fort Worth onsite · English or Chinese', h1: 'AI training built around the work you <em>already do</em>',
-    sub: 'Hands-on corporate AI training for non-technical employees and business owners. Jack Qian builds the sessions around your team’s real tasks, using company-approved tools such as ChatGPT, Claude, Gemini or Copilot.',
+    description: `Practical AI training for business owners and nontechnical teams. Four live ${M}-minute sessions from ${PROGRAM_PRICE}/person. Online across the U.S. or onsite in Dallas–Fort Worth, in English or Chinese.`,
+    og: { title: 'Corporate AI Training for Your Team’s Everyday Work', description: 'Work through familiar business tasks with Jack Qian using company-approved tools. Practise giving clear instructions, reviewing outputs and setting data boundaries.', alt: 'Jack Qian teaching a hands-on AI training session in Dallas' },
+    crumb: 'AI training', eyebrow: 'Remote across the U.S. · Dallas–Fort Worth onsite · English or Chinese',
+    h1: 'Corporate AI training for your team’s <em>everyday work</em>',
+    sub: 'Learn to apply AI to the tasks your team already handles—from preparing for customer meetings to documenting processes and drafting reports.',
+    intro: 'AI Man Jack offers practical training for business owners and nontechnical teams, personally designed and taught by Jack Qian.',
     seePricing: 'See pricing & format', text: 'Prefer to text? Send TRAINING to', heroAlt: 'A full classroom in Dallas at one of Jack Qian’s hands-on AI workshops',
-    stats: [[`${PROGRAM_PRICE}/person`, `${S}-session program starts here`], [`${S} × ${M} min`, 'Live sessions'], ['Customized', 'Your work determines the curriculum'], ['Remote U.S.', 'Dallas–Fort Worth onsite available']],
-    teamsK: 'Who it’s for', teamsH: 'Owners and teams who don’t write code and do repeat work', teamsP: 'Everyone works on tasks they already do. These are the workflows people build in the sessions.',
-    teams: [['sales', 'Sales', ['Account research before a first call, from the prospect’s site and your CRM notes', 'Meeting prep: five points to raise, drafted from last call’s notes', 'Follow-up emails drafted from call notes, in your voice', 'First-draft proposals from an approved template']], ['operations', 'Operations', ['The same weekly report, built from the same spreadsheet, every week', 'Process documentation from a recorded walkthrough', 'Meeting notes turned into action items with owners', 'Fields pulled out of invoices, forms and PDFs into a table']], ['marketing', 'Marketing', ['Research synthesis from a stack of articles into one brief', 'Campaign briefs from a filled-in template', 'One piece of content repurposed into three formats', 'Performance summaries from exported numbers']], ['leaders', 'Leaders & managers', ['Which tasks are worth AI, scored on four questions', 'Where a human must sign off before an output is used', 'What data may go into a tool and what may not', 'A two-week check: keep, change or stop each workflow']], ['owners', 'Owners & operators', ['Website updates and content', 'Research and decision support', 'SOPs and recurring admin', 'Marketing workflows', 'Day-to-day business operations']]],
-    curK: 'What we cover', curH: 'Task first, tool second.', curP: 'Non-technical teams arrive overwhelmed by AI products, or with an impressive chatbot answer that doesn’t fit their job. A product tour makes both worse. So every session works through one real task in five parts.', curNote: 'Two weeks later: was it tested, was it accurate enough to use, should it continue, change or stop?',
-    cur: [['Choose a suitable task', 'Each person lists three things they repeat every week and scores them: often enough to matter, clear input and output, quick to check, testable without sensitive information.', '“Prepare a five-point meeting brief from these approved notes” is teachable. “Run my department” is not.'], ['Give the AI useful context', 'A prompt is a work instruction, not a secret formula: a goal, an approved source, constraints, a usable format, and what to flag for a person to verify.'], ['Move from chat to workflow', 'A chat produces an answer. A workflow moves information through steps: collect approved notes, extract decisions, identify owners, draft follow-ups, put the result in a review queue.', 'This is where a team learns the difference between a chatbot and an agent.'], ['Verify the output', 'Can every claim be traced to the source? What context is missing? Who approves it before use? At least one output in every session is deliberately flawed — finding it teaches more than another perfect demo.'], ['Apply data and approval guardrails', 'Every participant leaves with a clear answer to three questions: which tools are approved, which information is off-limits, and where a human must sign off.']],
-    fmtK: 'Program and pricing', fmtH: 'The 4-session program', fmtP: `Four live ${M}-minute sessions built on your work, one workflow at a time. You use the workflows between sessions, and the next session fixes what broke.`, shorter: `Want a shorter first step? See the <a href="${OFFERS.workshop.path}" data-event="offer_path_click" data-pos="training-shorter">90-minute team workshop</a> (scoped quote).`,
+    stats: [[`${PROGRAM_PRICE}/person`, `${S}-session program starts here`], [`${S} × ${M} min`, 'Live sessions'], ['Customized', 'Your team’s tasks and approved tools'], ['Remote U.S.', 'Dallas–Fort Worth onsite available']],
+    teams: [
+      ['sales', 'Sales', 'Research an account, prepare for a meeting or draft a follow-up email from call notes.', 'Explore sales workflows'],
+      ['operations', 'Operations and administration', 'Turn meeting notes into action items, draft a procedure from a walkthrough or prepare a weekly report from a spreadsheet export.', 'Explore operations workflows'],
+      ['marketing', 'Marketing', 'Organize research, prepare a campaign brief or adapt existing content for another channel.', 'Explore marketing workflows'],
+    ],
+    cur: [
+      ['Choose a suitable task.', 'Identify recurring work with clear inputs and an output someone can check.'],
+      ['Provide useful context.', 'Supply approved material, explain the constraints and specify the required format.'],
+      ['Build repeatable steps.', 'Write instructions the team can test and revise.'],
+      ['Review the output.', 'Check facts, missing context and unsupported claims, including practice with a deliberately flawed example.'],
+      ['Set clear boundaries.', 'Agree which information can be used and where a person must approve the result.'],
+    ],
     fmt: { k: 'Core program', big: `${S} sessions`, sub: `${S} × ${M}-minute live sessions`, chip: `Starting at ${PROGRAM_PRICE}/person`,
-        p: 'This is the core AI Man Jack program. Instead of following a fixed curriculum, the sessions are designed around the work you or your team already does.',
-        items: ['Session 1: identify the right tasks and build the first workflow', 'Session 2: improve context, inputs and repeatability', 'Session 3: connect the workflow to the way the business actually operates', 'Session 4: review what worked, fix what broke and create a repeatable playbook'],
-        note: 'Exact content changes based on the business. Custom team pricing available.' },
-    revK: 'Reviewed on Google', revH: 'What attendees say', revP: `${PROOF.rating} across ${PROOF.reviews} Google reviews. Verified ${PROOF.reviewsCheckedOn}.`, revMore: `Read all ${PROOF.reviews} on Google →`, revBy: 'Google review · Dallas AI workshop',
-    rev: [['emily xu', '“I had such a great experience at this AI workshop. It was practical, inspiring, and genuinely fun. Jack, the host, did an amazing job of breaking down complex AI concepts in a way that was easy to understand…”'], ['U Rachel', '“I really enjoyed Jack’s AI seminar! He has a very forward-thinking perspective on AI and does a great job of explaining everything from understanding AI to actually using it in real life…”'], ['Yuqi Guan', '“This AI course was very informative and easy to follow. It covered the fundamentals of AI and its basic applications, making it especially suitable for beginners with little or no prior experience.”']],
-    fromK: 'Where the method came from', fromH: 'Five talks, one hackathon, and a lot of rewriting.', fromP: 'The task-scoring exercise, the deliberately flawed output, the two-week check-in — each one earned its place by working in front of fifty people, or got cut. The five parts above are the ones that survived.', fromAlt: 'Jack Qian teaching a hands-on community AI workshop in Dallas',
-    faqK: 'Common questions', faqH: 'The training, answered plainly',
-    faq: [['Who is the AI training for?', 'Business owners and non-technical teams that do repeat knowledge work — sales, operations, marketing, admin, planning, customer service and the managers who lead them. No coding is required. Everyone works on tasks they already do.'], ['What do people actually build during the training?', 'Working workflows for tasks they already do every week — a meeting brief from approved notes, a first-draft customer reply, a weekly report pulled from a spreadsheet, a website update. The first one runs by the end of the first session; the next sessions improve it and add the next task. Each person also leaves with a checklist for verifying the output before it goes out.'], ['Is the training in English or Chinese?', 'Either. The community series in Dallas in 2026 ran in Chinese; company sessions run in whichever language the room works in, and the materials come in both.'], ['Which AI tools does the training use?', 'Whatever your company has already approved — ChatGPT, Claude, Gemini, Copilot. The method is the same across tools. The first thing covered is which data may go into a tool and which may not.'], ['How much does the training cost?', `The ${S}-session customized program starts at ${PROGRAM_PRICE} per person and includes four live ${M}-minute sessions. Team pricing is customized based on group size, goals and how much preparation is required. If you want a shorter first step, a 90-minute team session is available on request. <a href="/book/">Book a 20-minute workflow call</a> and Jack will follow up by email with a recommendation and a written price.`], ['How do you know whether the training worked?', 'Each session starts with what happened since the last one: which workflow was used on real work, whether the result was accurate enough to use, and where review took too long. Two weeks after the last session we check again whether each workflow should continue, change or stop. Attendance and satisfaction scores are not the measure.'], ['Is the training remote, or can it run at our office?', 'Remote training is available anywhere in the U.S., over video. Onsite sessions are available across Dallas–Fort Worth — Dallas, Fort Worth, Plano, Richardson, Frisco, McKinney, Arlington, and everywhere between. See <a href="/ai-training/dallas/">the sessions we have run in Dallas–Fort Worth</a>.']],
-    bioK: 'Who teaches it', bio: '“I run community AI workshops here in Dallas because useful AI education should be accessible, and I teach companies the same way. Every session starts with one real task and an honest answer about whether AI belongs there.”', bioBy: 'founder, AI Man Jack', bioMore: 'More about Jack →',
+      p: 'In the four-session program, participants try their workflows between meetings and bring back questions, errors and review difficulties. Later sessions address what needs improvement.',
+      items: [`${S} live ${M}-minute sessions, workflow instructions and a repeatable playbook`, 'Two weeks after the final session, Jack checks whether each workflow should continue, change or stop', 'The review considers actual use, output accuracy and the effort needed to check the work'],
+      note: 'Custom team pricing available. Exact content changes based on the team’s tasks.' },
+    faq: [
+      ['Which tools will we use?', 'Training uses tools your company has approved, which may include ChatGPT, Claude, Gemini or Microsoft Copilot. The selection depends on your team’s tasks and access.'],
+      ['What should participants prepare?', `Bring a few recurring tasks and suitable sample material. Participants need a laptop and access to the agreed tool. Onsite sessions also require reliable Wi-Fi and a shared screen or projector. <a href="${OFFERS.onsite.path}">Onsite preparation details</a>.`],
+      ['Does training include software implementation?', 'Training does not include software development or CRM/ERP configuration and integration. Connecting to live systems or automatically updating records requires a separate implementation scope, permissions and testing.'],
+    ],
   },
   zh: {
     title: '企业员工 AI 培训 | 四次定制实操课程 | AI Man Jack',
@@ -60,14 +68,60 @@ const C = {
     bioK: '授课讲师', bio: '“我在达拉斯举办社区 AI 工作坊，因为实用的 AI 教育应当人人可及；为企业授课，我也秉持同样的方式。每一次课程都从一项真实任务开始，并坦诚回答：这件事是否真的适合交给 AI。”', bioBy: 'AI Man Jack 创始人', bioMore: '了解更多 →',
   },
 };
-for (const lang of ['en', 'zh']) C[lang].faq.push(...buyerQuestions(lang, 'program'));
+C.zh.faq.push(...buyerQuestions('zh', 'program'));
 export const TRAINING_FAQ = { en: C.en.faq, zh: C.zh.faq };
 
 // The one program card, shared by / and /ai-training/: name, price and CTA on the left, what is included on the right.
 // It is the only offer card on the site (2026-09-28); shorter formats are a line of text, never a competing card.
 export const progCard = ({ k, big, sub, chip, p, items, note }, cta) => `<div class="prog dark on-dark solo"><div class="prog-main"><span class="k">${k}</span><span class="big">${big}</span><span class="sub">${sub}</span><span class="chip">${chip}</span><p>${p}</p>${cta}${note ? `<span class="note">${note}</span>` : ''}</div><ul class="ticks">${items.map((x) => `<li><span>${x}</span></li>`).join('')}</ul></div>`;
 
+// The approved English copy is page-local so shared buying guides and the Chinese page stay unchanged.
+const englishPage = () => {
+  const c = C.en, bc = breadcrumb('en', [[c.crumb, '/ai-training/']]);
+  const head = (k, h, p = '') => `<div class="sec-head"><div><div class="eyebrow">${k}</div><h2>${h}</h2>${p ? `<p class="lead">${p}</p>` : ''}</div></div>`;
+  const formats = [
+    ['workshop', `${OFFERS.workshop.minutes}-minute team workshop`, 'One team wants to explore one or two focused tasks.', 'Guided workflow exercises, written instructions, an output-review checklist and notes on data boundaries.', 'Customized quote', 'Workshop details'],
+    ['onsite', 'Full-day onsite training', 'Several teams need shared working rules and time to practise together.', 'Department use cases, guided labs, review checklists and a next-step plan with owners.', 'Customized quote', 'Onsite details'],
+    ['program', 'Four-session program', 'Your team wants to practise between meetings and refine its workflows.', `Four live ${M}-minute sessions, workflow instructions and a repeatable playbook.`, `From ${PROGRAM_PRICE} per person`, 'Program details'],
+  ];
+  const headers = ['Format', 'A good fit when…', 'What it covers', 'Pricing'];
+  return {
+    title: c.title, description: c.description, og: c.og, view: 'training_page_view', offer: OFFERS.program.id, hero: 'photo', bodyClass: 'training-page',
+    body: `${photoHero({ photo: 'workshop', alt: c.heroAlt, size: 'md', stats: c.stats, inner: `<div class="hero-main stack">${bc.html}<div class="eyebrow">${c.eyebrow}</div><h1 class="lg brand-hero-title">${c.h1}</h1><p style="max-width:720px">${c.sub}</p><p style="max-width:720px">${c.intro}</p>
+<div class="cta-row">${planBtn('en', { pos: 'training-hero', id: 'hero-cta' })}<a class="btn btn-secondary" href="#formats" data-event="training_program_click" data-pos="training-hero">${c.seePricing}</a></div><span class="hero-contact">${c.text} <a href="${SMS}" data-event="sms_training_click" data-pos="training-hero">${SMS_DISPLAY}</a></span></div>` })}
+
+<section class="sec" id="teams"><div class="wrap">${head('Your team’s tasks', 'Start with work your team knows', 'The training takes shape around your team’s responsibilities, available tools and approved source material. Example exercises include:')}
+<div class="g3">${c.teams.map(([slug, name, example, label]) => `<div class="oak" id="team-${slug}" style="gap:18px;padding:30px 28px"><h3 style="font-size:26px">${name}</h3><p>${example}</p><a class="more" href="/use-cases/${slug}/">${label} →</a></div>`).join('')}</div>
+<p class="prog-alt" id="team-owners">No coding experience is required. The focus is on choosing useful tasks, giving clear instructions and checking the result before using it.</p></div></section>
+
+<section class="sec buyer-guide" id="team-paths"><div class="wrap">${head('Training formats', 'Choose a format that fits your team')}
+<div class="format-comparison"><div class="table-wrap"><table><caption>Compare three formats for team AI training</caption><thead><tr>${headers.map(h => `<th scope="col">${h}</th>`).join('')}</tr></thead><tbody>
+${formats.map(([key, name, fit, includes, price, label]) => `<tr><th scope="row">${name}</th><td data-label="${headers[1]}">${fit}</td><td data-label="${headers[2]}">${includes}</td><td data-label="${headers[3]}"><strong>${price}</strong><a href="${key === 'program' ? '#formats' : OFFERS[key].path}" data-event="${key === 'program' ? 'training_program_click' : 'offer_path_click'}" data-pos="training-compare-${key}">${label} →</a></td></tr>`).join('')}
+</tbody></table></div></div>
+<p style="margin-top:18px;color:var(--muted)">Group size, goals and preparation requirements determine the final scope and price. AI tool accounts and subscriptions are separate. Travel outside Dallas–Fort Worth is quoted separately.</p></div></section>
+
+<section class="sec dark" id="curriculum"><div class="wrap g12">
+<div style="grid-column:span 4;display:flex;flex-direction:column;gap:20px"><div class="eyebrow">Training method</div><h2 style="font-size:clamp(36px,4.4vw,64px);line-height:1">Practise the task—and how to check it</h2><p style="font-size:17px;line-height:1.65">Exercises follow a practical sequence.</p><p style="font-size:15.5px;line-height:1.65">Exercises use synthetic, redacted or company-approved sample material. Tool selection and data rules are agreed before the session.</p></div>
+<ol class="nums" style="grid-column:6 / span 7">${c.cur.map(([h, p], i) => `<li><span class="n">${i + 1}</span><div><h3 style="font-size:26px">${h}</h3><p>${p}</p></div></li>`).join('')}</ol></div></section>
+
+<section class="sec" id="formats"><div class="wrap">${head('The four-session program', 'Put workflows to use between sessions')}
+${progCard(c.fmt, planBtn('en', { pos: 'training-format' }))}
+<p class="prog-alt">This follow-up belongs to the four-session program. Additional support after a standalone workshop or onsite day is separately scoped.</p></div></section>
+
+<section class="sec tight" id="about"><div class="wrap"><div class="big-card" style="flex-direction:row;align-items:center;gap:32px;flex-wrap:wrap"><img src="/img/jack-portrait-256.webp" width="256" height="256" loading="lazy" decoding="async" alt="Jack Qian" style="width:120px;height:120px;border-radius:50%;object-fit:cover;flex:none">
+<div style="display:flex;flex-direction:column;gap:16px;flex:1 1 320px"><h2>Meet your instructor</h2><p>Jack Qian runs AI Man Jack LLC in Dallas, Texas. He designs and teaches the sessions himself.</p><p id="community-proof">His background includes business planning at a Dallas semiconductor company, building AI workflows and organizing community AI events. He also writes <a href="https://realagentusecases.com/">Real Agent Use Cases</a>, a newsletter about practical agents and workflows.</p><p><a class="more" href="/about/">More about Jack →</a> · <a href="/ai-training/dallas/">Dallas–Fort Worth sessions and venues →</a></p></div></div>
+<aside class="buyer-prep"><h3>Workflow implementation example</h3><p>The <a href="/case-studies/livestream-agency-scheduling/">livestream-agency scheduling case study</a> describes a rules-based system that prepares a weekly schedule draft. An operations lead still reviews, edits and publishes the schedule. It is an implementation case, rather than evidence of training outcomes; net time savings have not been established.</p></aside>
+<div class="buyer-links" id="testimonials"><a href="${GBP_URL}" target="_blank" rel="noopener">Read attendee reviews on Google ↗</a></div></div></section>
+
+<section class="sec" id="faq"><div class="wrap g12"><div style="grid-column:span 4;display:flex;flex-direction:column;gap:16px"><div class="eyebrow">Questions & preparation</div><h2 style="font-size:clamp(32px,3.6vw,52px)">Before we start</h2></div>
+<div class="faq" style="grid-column:6 / span 7">${c.faq.map(([q, a], i) => `<details${i === 0 ? ' open' : ''}><summary>${q}</summary><div class="faq-a"><p>${a}</p></div></details>`).join('\n')}</div></div></section>
+${ctaBand('en', { h: 'Discuss a starting point for your team', sub: 'Bring one recurring task to a workflow call. Discuss what your team needs, which tools are available and which training format fits the work.', pos: 'training-final' })}`,
+    jsonld: [business('en'), person(), faqPage(c.faq, `${SITE}/ai-training/#faq`), bc.ld],
+  };
+};
+
 const page = (lang) => {
+  if (lang === 'en') return englishPage();
   const c = C[lang], bc = breadcrumb(lang, [[c.crumb, '/ai-training/']]);
   const head = (k, h, p, more) => `<div class="sec-head"><div><div class="eyebrow">${k}</div><h2>${h}</h2>${p ? `<p class="lead">${p}</p>` : ''}</div>${more || ''}</div>`;
   return {
