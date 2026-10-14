@@ -1,0 +1,77 @@
+name: Approved bilingual blog publisher
+
+on:
+  schedule:
+    - cron: '0 9 * * 3'
+      timezone: America/Chicago
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'dry-run checks only; approve/revoke records your decision; publish releases only a due approved version'
+        type: choice
+        options: [dry-run, approve, revoke, publish]
+        default: dry-run
+      slug:
+        description: 'For approve/revoke: article slug from the draft review'
+        type: string
+      draft_sha256:
+        description: 'For approve: exact SHA-256 shown in the reviewed bilingual draft'
+        type: string
+      not_before:
+        description: 'For approve: earliest release date YYYY-MM-DD in Dallas time'
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: approved-blog-production
+  cancel-in-progress: false
+
+jobs:
+  editorial:
+    if: github.repository == 'qianquandong/aimanjack-site'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install locked test dependencies
+        run: npm ci --ignore-scripts
+      - name: Check the complete bilingual draft queue
+        run: node scripts/editorial-queue.mjs check
+      - name: Build and run existing offline release checks
+        run: |
+          node scripts/build.mjs
+          node --test tests/*.test.mjs
+          test -z "$(git status --porcelain)"
+      - name: Check cloud deployment credentials without deploying
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN || secrets.CLOUDFLARE_PAGES_EDIT }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: node scripts/editorial-readiness.mjs
+      - name: Run the selected editorial action
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BLOG_MODE: ${{ github.event_name == 'schedule' && 'publish' || inputs.mode }}
+          BLOG_SLUG: ${{ inputs.slug }}
+          BLOG_DRAFT_SHA256: ${{ inputs.draft_sha256 }}
+          BLOG_NOT_BEFORE: ${{ inputs.not_before }}
+          BLOG_AUTOPUBLISH_ENABLED: ${{ vars.BLOG_AUTOPUBLISH_ENABLED }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN || secrets.CLOUDFLARE_PAGES_EDIT }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: node scripts/publish-approved-blog.mjs
+      - name: Save production verification if a release occurred
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: blog-production-verification-${{ github.run_id }}
+          path: ${{ runner.temp }}/blog-production-verification.json
+          if-no-files-found: ignore

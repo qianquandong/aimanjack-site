@@ -1,0 +1,66 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>AI training for sales teams with one source-based exercise</title><style>body{font:17px/1.75 system-ui,sans-serif;color:#18332c;background:#fafaf6;margin:0}main{max-width:850px;padding:32px 24px;margin:auto}h1,h2,h3{line-height:1.3}h2{margin-top:2em}a{color:#075b4a}table{border-collapse:collapse;width:100%;font-size:15px}td,th{border:1px solid #cad6cf;padding:10px;text-align:left}pre{white-space:pre-wrap;background:#eef1eb;padding:16px}aside{padding:14px 18px;background:#fff0bb;border-radius:8px}.meta{color:#50645b;font-size:14px}li{margin-bottom:6px}</style><main><a href="index.html">← 全部稿件 / All drafts</a><p class="meta">ai-training-for-sales-teams · New article / 新文章</p><aside>待 Jack 审阅，尚未批准排期。Draft for Jack’s review; not approved for publication.<br>内容版本 SHA-256: <code>98f1388e17b8df9d09135b35b160afdf7e433b190965b16948a3f4a93d198711</code></aside><h1>AI training for sales teams with one source-based exercise</h1><p>Practise the path from account notes to a meeting brief and follow-up, including the errors a salesperson must catch before anything reaches a customer.</p><p class="meta">Proposed title: AI Training for Sales Teams: A Worked Exercise | AI Man Jack<br>Description: Run AI training for sales teams with a synthetic account brief, meeting agenda and follow-up. Practise checking sources, commitments and missing information.</p><ul><li>Sales training should teach source checks and commitment review alongside drafting.</li><li>A useful practice pack separates confirmed facts, unknowns, questions and proposed next steps.</li><li>The exercise below is synthetic; it demonstrates a method and provides no evidence of sales or productivity results.</li><li>Designated approvers retain control of customer messages, pricing, promises and CRM changes within their authority.</li></ul>
+<h2>Define the task and the approval point</h2>
+<p>AI training for sales teams can start with a familiar task: prepare for a customer meeting using approved notes, then draft a follow-up from the meeting record. The employee needs to practise more than generating convincing language. They need to distinguish a recorded fact from a question and a possible next step from a commitment.</p>
+<p>The exercise below is a proposed teaching activity. It does not describe a customer engagement, a past classroom or an improvement in conversion rates. For a wider map of tasks, see <a href="https://aimanjack.com/use-cases/sales/">sales workflows</a>; this article focuses on how a team can practise and assess one complete sequence.</p>
+
+<h2>Prepare a synthetic source pack</h2>
+<p><strong>All companies, roles, dates and details in this exercise are fictional.</strong> They exist only to make source checking possible. Use these materials, or substitute approved and appropriately redacted company material after confirming tool permissions.</p>
+<table><thead><tr><th>Source</th><th>Synthetic content</th></tr></thead><tbody>
+<tr><td>S1: account description</td><td>Practice Company A distributes office supplies from two locations. The operations manager coordinates replenishment reports.</td></tr>
+<tr><td>S2: discovery notes</td><td>The team combines weekly spreadsheet exports into a replenishment report. It wants to discuss reducing repeated formatting. No budget, purchasing authority or implementation deadline was recorded.</td></tr>
+<tr><td>S3: meeting arrangement</td><td>A 30-minute discovery call is scheduled. The salesperson may discuss the process and request a redacted sample, subject to the customer’s approval. No price or delivery date has been offered.</td></tr>
+</tbody></table>
+<p>Keep the source labels attached. Do not ask the model to fill gaps from memory or search for a fictional company. The point is to see whether the output stays within a small, inspectable evidence set.</p>
+
+<h2>Use five steps and a repeatable instruction</h2>
+<ol>
+<li><strong>Choose the task.</strong> Produce a meeting brief and proposed agenda, rather than an account strategy with invented context.</li>
+<li><strong>Provide context.</strong> Supply S1–S3 and explain the meeting’s purpose and permissions.</li>
+<li><strong>Write repeatable instructions.</strong> Specify headings, source labels and how to handle unknowns.</li>
+<li><strong>Verify the output.</strong> Compare every factual statement with the pack and challenge unsupported commitments.</li>
+<li><strong>Set guardrails.</strong> Keep the output in a review draft; a person approves customer communication and any system update.</li>
+</ol>
+<pre><code>Use only S1–S3 to prepare the salesperson for the discovery call.
+Return:
+1. Confirmed facts, each labelled with its source.
+2. Unknowns, including budget, authority and timeline.
+3. Three questions that explore the reporting process.
+4. A proposed agenda that totals 30 minutes.
+Do not infer purchase intent, promise results, set a price or create a deadline.
+Mark ideas as proposals. Do not send messages or update a CRM.</code></pre>
+<p>The exact tool is secondary to the conditions of use. The company must approve the tool and the selected material. This exercise makes no assumption about browsing, account settings or a connection to sales software.</p>
+
+<h2>Compare the draft with a reference answer</h2>
+<p><strong>This reference answer is hand-written for the synthetic exercise, not a recorded model response.</strong> A valid answer may use different wording while preserving the same boundaries.</p>
+<ul>
+<li><strong>Confirmed:</strong> two locations (S1); spreadsheet exports feed a weekly report (S2); a discovery call is scheduled (S3).</li>
+<li><strong>Unknown:</strong> budget, purchasing authority, implementation deadline and whether a sample can be shared.</li>
+<li><strong>Questions:</strong> Which formatting steps repeat? Who checks the report? What would the customer permit us to inspect?</li>
+<li><strong>Proposed agenda:</strong> current process, 10 minutes; constraints and sample permissions, 10 minutes; questions and possible next step, 10 minutes.</li>
+</ul>
+<p>The agenda’s time allocation is a training proposal, not a fact extracted from the notes. That distinction matters: the tool can help suggest a structure without presenting it as something the customer already agreed.</p>
+
+<h2>Catch deliberate mistakes before drafting a follow-up</h2>
+<p>Inspect this intentionally flawed line: “The customer approved the budget and will start the rollout next Monday.” Neither approval nor a rollout date appears in the source pack. Replace it with the relevant unknowns. A convincing tone does not make the statement supported.</p>
+<p>Now add a fourth synthetic source. S4, after-call notes: “Operations manager will ask internally whether a redacted sample may be shared. Salesperson will provide a list of required fields. No deadline or next meeting was agreed.” Ask for a short follow-up using S1–S4 for background, but only S4 for agreed actions, commitments and timing. Keep those actions separate from unresolved points.</p>
+<blockquote><p>Thank you for explaining the reporting process. You will check internally whether a redacted sample can be shared. I will provide a list of the fields we would need to inspect. Timing and a next meeting remain to be confirmed.</p></blockquote>
+<p>This is another hand-written synthetic reference. A draft that adds “Please send the sample by Friday” has introduced a deadline. Participants should remove it or present it explicitly as a question for approval, rather than pass it off as an agreement.</p>
+
+<h2>Use a review checklist and record what remains</h2>
+<ul>
+<li>Can each account fact be traced to an approved source?</li>
+<li>Are hypotheses and questions clearly separated from facts?</li>
+<li>Do every promise, owner and date match the meeting record?</li>
+<li>Have pricing, terms and claims stayed within authorized material?</li>
+<li>Has a salesperson reviewed the message before sending or logging it?</li>
+</ul>
+<p>Save the instruction and corrected draft as a small playbook. On subsequent permitted work, record use, errors and editing effort. Do not turn the classroom reference answer into a claim that a team improved revenue or saved a measured amount of time. The <a href="https://aimanjack.com/workflows/sales-follow-up/">follow-up workflow</a> provides an additional checklist for ongoing use.</p>
+
+<h2>When this does not work</h2>
+<p>This exercise cannot repair notes that omit the commitments the team needs to communicate. Clarify the record with its owner. Sensitive pricing, personal data and confidential customer documents require appropriate permissions before use. Negotiation decisions remain with authorized people.</p>
+<p>The activity also does not implement CRM automation. Software development, CRM or ERP configuration, live connections and automatic writeback are separate work requiring agreed scope, permissions and testing.</p>
+
+<h2>Choose a training format for the team</h2>
+<p>A 90-minute workshop can focus on one or two tasks such as this sequence. A full-day onsite session can allow broader guided team practice. Four live 90-minute sessions provide opportunities to try workflows between meetings, with Jack’s follow-up two weeks after the final session. Extra support after standalone sessions is scoped separately.</p>
+<p>Jack Qian personally designs and teaches <a href="https://aimanjack.com/ai-training/">AI Man Jack training</a> in English or Chinese, remotely across the United States and onsite in Dallas–Fort Worth. Four-session programs start at $499 per person; final scope and team pricing are confirmed in the quote. Tool subscriptions are separate and travel outside DFW is quoted separately. Bring an approved sample and the sales reviewer’s requirements to discuss a suitable starting point.</p>
+<h2>Questions and answers</h2><h3>Does AI training for sales teams include outreach automation?</h3><p>Training covers the agreed exercises and review method. Automatic sends, CRM connections and writeback need separate implementation scope, permissions and testing.</p><h3>Can we use real customer notes in training?</h3><p>Only use material approved for the selected tool and the group setting. Synthetic or appropriately redacted notes can provide an initial exercise when customer material is unsuitable.</p><h3>Does this exercise show a sales result?</h3><p>No. The company, notes and reference answers are synthetic. They demonstrate source checking and commitment review, not a measured increase in revenue, conversion or productivity.</p><h3>Do we have to buy a particular AI subscription?</h3><p>The tool is chosen according to the company’s approvals, task and available access. Tool accounts and subscriptions are separate from the training scope.</p><h2>Sources and related pages</h2><ul><li><a href="https://aimanjack.com/use-cases/sales/">Sales workflows</a></li><li><a href="https://aimanjack.com/workflows/sales-meeting-preparation/">Sales meeting preparation</a></li><li><a href="https://aimanjack.com/templates/follow-up-email/">Follow-up email template</a></li></ul></main></html>
