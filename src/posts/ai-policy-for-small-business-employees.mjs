@@ -3,9 +3,9 @@
 // and /templates/approved-source-inventory/. No first-person anecdotes: stories.md is still empty.
 export const post = {
   slug: 'ai-policy-for-small-business-employees',
-  date: '2026-09-29',
+  date: '2026-10-13',
   updated: undefined,
-  status: 'draft',
+  status: 'published',
   en: {
     keyword: 'AI policy for small business employees',
     title: 'AI Policy for Small Business Employees | AI Man Jack',
