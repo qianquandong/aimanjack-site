@@ -18,12 +18,12 @@ const STR = {
     pillar: (l, h) => `The approach in this post is what we teach in <a href="${h}">${l}</a>.`, ctaH: 'Want your team to run this exercise with Jack?', ctaSub: `Four-session programs from ${PRICE}/person, remote across the U.S. Custom team pricing.`,
     moreK: 'Keep reading', moreH: 'Field notes from the sessions', all: 'All resources →', figAlt: 'Hands-on session in Dallas: everyone working on a task they already do.',
     tool: ['Free tool', 'AI Readiness Assessment', 'Measure how prepared your team is across eight areas, in three minutes.', ['3 min', 'No sign-up'], 'Start assessment'],
-    idxTitle: 'Resources: AI Training and AI Workflow Notes | AI Man Jack', idxDesc: 'Notes from Jack Qian for team leads: how to pick the task, how to teach non-technical staff to use AI, when a workflow is really working. Only what was actually done.', idxH: 'Field notes from the sessions', idxSub: 'Each post covers one thing that actually happened in a Dallas session: an exercise, a question from the room, a workflow that ran. No invented numbers.', soon: 'First post coming soon.' },
+    idxTitle: 'Resources: AI Training and AI Workflow Notes | AI Man Jack', idxDesc: 'Practical AI training guides for team leads: choosing tasks, preparing safe exercises, comparing formats and checking workflow use and output quality.', idxH: 'Practical AI training guides', idxSub: 'Guides, sample exercises and checklists for applying AI to everyday work. Teaching examples are labeled, and implementation cases are distinguished from training outcomes.', soon: 'First post coming soon.' },
   zh: { crumb: '资源', guide: '指南', by: '作者', published: '发布于', updated: '更新于', takeaways: '核心要点', toc: '本页目录', minutes: '分钟阅读', faq: '常见问题', sources: '资料来源',
     pillar: (l, h) => `本文介绍的方法，正是我们在<a href="${h}">${l}</a>中讲授的内容。`, ctaH: '希望团队与 Jack 一起完成这个练习？', ctaSub: `四次课程项目每人 ${PRICE} 起，全美远程授课，团队可定制报价。`,
     moreK: '延伸阅读', moreH: '来自课堂的实践笔记', all: '全部资源 →', figAlt: '达拉斯实操课堂：每位学员都在处理自己的真实任务。',
     tool: ['免费工具', 'AI 准备度评估', '三分钟，从八个维度评估团队的 AI 准备程度。', ['3 分钟', '无需注册'], '开始评估'],
-    idxTitle: '资源：员工 AI 培训与 AI 工作流实践笔记 | AI Man Jack', idxDesc: 'Jack Qian 为团队负责人撰写的实践笔记：如何选择任务、如何培训非技术员工使用 AI、如何判断一条工作流是否真正有效。只记录实际做过的事。', idxH: '来自课堂的实践笔记', idxSub: '每篇文章记录达拉斯课堂上真实发生的一件事：一个练习、一个现场提问，或一条成功运行的工作流。没有数据，就不编造数据。', soon: '第一篇文章即将发布。' },
+    idxTitle: '资源：员工 AI 培训与 AI 工作流实践笔记 | AI Man Jack', idxDesc: 'Jack Qian 为企业团队负责人整理的 AI 培训指南：选择任务、准备练习、比较课程形式，以及核验工作流的实际使用和输出质量。', idxH: '企业 AI 培训实用指南', idxSub: '围绕团队日常工作的 AI 培训指南、模拟练习和核验清单。教学示例会明确标注，系统实施案例与培训效果分别说明。', soon: '第一篇文章即将发布。' },
 };
 
 const dateText = (lang, iso) => lang === 'zh' ? iso.replace(/(\d+)-0?(\d+)-0?(\d+)/, '$1 年 $2 月 $3 日') : new Date(iso + 'T00:00:00Z').toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' });
