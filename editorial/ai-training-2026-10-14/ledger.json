@@ -13,7 +13,28 @@
     },
     "week": "2026-10-12",
     "date": "2026-10-14",
-    "state": "pending-verification",
-    "preparedAt": "2026-10-14T18:09:27.054Z"
+    "state": "verified",
+    "preparedAt": "2026-10-14T18:09:27.054Z",
+    "version": "f8674bae0cadb017337f91f65e469226133acb69",
+    "verifiedWeek": "2026-10-12",
+    "verifiedAt": "2026-10-14T18:10:15.959Z",
+    "checked": [
+      {
+        "path": "/blog/ai-training-costs-small-business-teams/",
+        "contentSha256": "66dbe0be78f2eb12f9a103d90dcbe29cd44b2a5977b24c603ff676e392072c92",
+        "resourcesSha256": "7c8733a3ec1705ca57c236f0efbb8d5ab4bd32ad8467e2a14430ce288ee9fb6a",
+        "canonical": "https://aimanjack.com/blog/ai-training-costs-small-business-teams/",
+        "status": 200
+      },
+      {
+        "path": "/zh/blog/ai-training-costs-small-business-teams/",
+        "contentSha256": "e416ef10a898262b88efad234ce9d8d1166587a60e0cca980f30586ddd1e30d8",
+        "resourcesSha256": "3ae95910a277121587399e7ba10209860c8a9e256fc68c576710ec9aebc7f358",
+        "canonical": "https://aimanjack.com/zh/blog/ai-training-costs-small-business-teams/",
+        "status": 200
+      }
+    ],
+    "firstPartyPagesChecked": 26,
+    "deploymentUrl": "https://474e3620.aimanjack.pages.dev"
   }
 ]
