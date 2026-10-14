@@ -1,0 +1,50 @@
+name: Read-only blog publication monitor
+
+on:
+  workflow_run:
+    workflows: [Approved bilingual blog publisher]
+    types: [completed]
+    branches: [production]
+  schedule:
+    - cron: '31,51 9 * * 3'
+      timezone: America/Chicago
+    - cron: '23 10-23 * * 3'
+      timezone: America/Chicago
+    # Independent catch-up if Wednesday's publisher or monitor triggers were delayed/dropped.
+    - cron: '37 8 * * *'
+      timezone: America/Chicago
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: read-only-blog-publication-monitor
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    if: github.repository == 'qianquandong/aimanjack-site'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: production
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Read publisher state and verify formal pages using GET only
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: node scripts/monitor-blog-publication.mjs
+      - name: Save readable monitor evidence even when verification fails
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: blog-publication-monitor-${{ github.run_id }}
+          path: ${{ runner.temp }}/blog-publication-monitor.json
+          if-no-files-found: error
+          retention-days: 90
