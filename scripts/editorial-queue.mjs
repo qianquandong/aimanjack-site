@@ -7,7 +7,8 @@ import { execFileSync } from 'node:child_process';
 
 export const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 export const PACK = 'editorial/ai-training-2026-10-14';
-export const sha256 = value => createHash('sha256').update(value).digest('hex');
+// Source approvals must survive Windows CRLF versus Linux LF checkouts. All hashed values here are UTF-8 text.
+export const sha256 = value => createHash('sha256').update((typeof value === 'string' ? value : Buffer.from(value).toString('utf8')).replace(/\r\n/g, '\n')).digest('hex');
 export const approvalBundle = (sourceBytes, item, directoryBytes) => Buffer.concat([sourceBytes, Buffer.from('\nRELEASE_PLAN\n' + JSON.stringify(item) + '\nDIRECTORY_COPY\n'), directoryBytes]);
 export const textOnly = value => value.replace(/<script\b[\s\S]*?<\/script>/gi, '').replace(/<[^>]+>/g, ' ').replace(/&#160;|&nbsp;/g, ' ').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;|&#x27;/gi, "'").replace(/\s+/g, ' ').trim();
 export const dateInChicago = (now = new Date()) => new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Chicago', year: 'numeric', month: '2-digit', day: '2-digit' }).format(now);

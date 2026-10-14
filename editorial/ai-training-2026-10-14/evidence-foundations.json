@@ -143,4 +143,3 @@
   "validationMethod": "Existing scripts/blog-check.mjs logic executed in memory with only ROOT/import/draft-file lookup redirected to editorial copies; no src files modified, no site build or deploy run.",
   "packagingNote": "The current shared blog index describes articles as actual classroom field notes. Review-package labels should identify these as planning guides and fictional exercises, as the drafts do; do not present them as documented client stories."
 }
-

@@ -7,6 +7,10 @@ import { allowedReleasePath } from '../scripts/publish-approved-blog.mjs';
 const bytes = Buffer.from('approved bilingual manuscript'), config = Buffer.from('approved site facts');
 const now = new Date('2026-10-21T14:00:00Z');
 const approval = overrides => ({ approved: true, approvedBy: 'qianquandong', draftSha256: sha256(bytes), configSha256: sha256(config), approvedAt: '2026-10-14T15:00:00Z', approvalRun: 'https://github.com/qianquandong/aimanjack-site/actions/runs/123', notBefore: '2026-10-21', ...overrides });
+test('approval hashes are stable across Windows and Linux line endings but preserve real text edits', () => {
+  assert.equal(sha256('English\r\n中文\r\n'), sha256(Buffer.from('English\n中文\n')));
+  assert.notEqual(sha256('English\n中文\n'), sha256('English\n改稿\n'));
+});
 test('an owner approval binds both language versions and the current site facts', () => {
   assert.doesNotThrow(() => assertApproval(approval(), bytes, config, 'qianquandong', now));
   assert.throws(() => assertApproval(null, bytes, config, 'qianquandong', now), /No owner approval/);
