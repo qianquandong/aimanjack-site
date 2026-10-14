@@ -4,7 +4,7 @@ import { existsSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { execFileSync } from 'node:child_process';
-import { ROOT, PACK, sha256, json, loadQueue, draftFor, inspect, chooseRelease, routeOf, textOnly, dateInChicago, weekInChicago, applyDirectoryCopy } from './editorial-queue.mjs';
+import { ROOT, PACK, sha256, json, loadQueue, draftFor, inspect, chooseRelease, routeOf, textOnly, dateInChicago, weekInChicago, isDallasPublicationWindow, applyDirectoryCopy } from './editorial-queue.mjs';
 import { render } from '../src/layout.mjs';
 
 const REPO = 'qianquandong/aimanjack-site';
@@ -251,6 +251,7 @@ async function publish() {
   const version = git('rev-parse', 'HEAD');
   git('fetch', 'origin', 'production');
   if (git('rev-parse', 'origin/production') !== version) throw new Error('Production advanced before deploy; stop and rerun');
+  if (!isDallasPublicationWindow()) throw new Error('Dallas publication window closed before deployment; release remains pending for a permitted retry');
   const log = execFileSync('sh', ['deploy.sh', '--production'], { cwd: ROOT, encoding: 'utf8', maxBuffer: 16 * 1024 * 1024 });
   console.log(log);
   if (!/IndexNow ping: HTTP 200\b/.test(log)) throw new Error('Deployment did not confirm a successful IndexNow response');

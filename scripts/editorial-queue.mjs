@@ -1,6 +1,6 @@
 // Internal draft review and exact-version approval. Never publishes or contacts booking/email APIs.
 import { createHash } from 'node:crypto';
-import { readFile, writeFile, mkdir } from 'node:fs/promises';
+import { readFile, writeFile, appendFile, mkdir } from 'node:fs/promises';
 import { resolve, dirname, join } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { execFileSync } from 'node:child_process';
@@ -12,6 +12,10 @@ export const sha256 = value => createHash('sha256').update((typeof value === 'st
 export const approvalBundle = (sourceBytes, item, directoryBytes) => Buffer.concat([sourceBytes, Buffer.from('\nRELEASE_PLAN\n' + JSON.stringify(item) + '\nDIRECTORY_COPY\n'), directoryBytes]);
 export const textOnly = value => value.replace(/<script\b[\s\S]*?<\/script>/gi, '').replace(/<[^>]+>/g, ' ').replace(/&#160;|&nbsp;/g, ' ').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;|&#x27;/gi, "'").replace(/\s+/g, ' ').trim();
 export const dateInChicago = (now = new Date()) => new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Chicago', year: 'numeric', month: '2-digit', day: '2-digit' }).format(now);
+export function isDallasPublicationWindow(now = new Date()) {
+  const parts = Object.fromEntries(new Intl.DateTimeFormat('en-US', { timeZone: 'America/Chicago', weekday: 'short', hour: '2-digit', hourCycle: 'h23' }).formatToParts(now).map(({ type, value }) => [type, value]));
+  return parts.weekday === 'Wed' && Number(parts.hour) >= 9;
+}
 export function weekInChicago(now = new Date()) {
   const d = new Date(`${dateInChicago(now)}T12:00:00Z`);
   d.setUTCDate(d.getUTCDate() - ((d.getUTCDay() + 6) % 7));
@@ -79,9 +83,11 @@ export async function inspect(root = ROOT, now = new Date()) {
     if (ledger.some(x => x.slug === item.slug && x.draftSha256 === draft.digest && x.state === 'verified')) { eligible = false; reason = 'This version is already published and verified'; }
     rows.push({ ...item, draftSha256: draft.digest, eligible, reason });
   }
-  return { owner: queue.owner, timezone: queue.timezone, today: dateInChicago(now), week: weekInChicago(now), ledger, items: rows };
+  return { owner: queue.owner, timezone: queue.timezone, today: dateInChicago(now), week: weekInChicago(now), releaseWindowOpen: isDallasPublicationWindow(now), ledger, items: rows };
 }
 export function chooseRelease(report) {
+  // A delayed cron or manual retry cannot turn Wednesday's slot into an early or non-Wednesday deployment.
+  if (report.releaseWindowOpen === false) return null;
   const pending = report.ledger.find(x => x.state === 'pending-verification');
   if (pending) {
     const item = report.items.find(x => x.slug === pending.slug && x.draftSha256 === pending.draftSha256);
@@ -91,6 +97,12 @@ export function chooseRelease(report) {
   if (report.ledger.some(x => (x.verifiedWeek || x.week) === report.week && x.state === 'verified')) return null;
   const item = report.items.find(x => x.eligible);
   return item ? { item, pending: null } : null;
+}
+export function planEditorialAction(mode, report) {
+  if (!['publish', 'dry-run', 'approve', 'revoke'].includes(mode)) throw new Error('Unknown editorial action');
+  if (mode !== 'publish') return { runRequired: true, selected: null, reason: `${mode} requires the existing checks` };
+  const selection = chooseRelease(report);
+  return { runRequired: Boolean(selection), selected: selection?.item.slug || null, reason: selection ? 'Due approved release requires the existing checks' : report.releaseWindowOpen === false ? 'Outside Wednesday 09:00–23:59 America/Chicago' : 'No due approved release, or this week already completed' };
 }
 const escape = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
 export async function renderReview(root = ROOT) {
@@ -122,7 +134,13 @@ export async function validateAll(root = ROOT) {
 if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href) {
   const mode = process.argv[2] || 'inspect';
   if (mode === 'inspect') console.log(JSON.stringify(await inspect(), null, 2));
+  else if (mode === 'plan') {
+    const action = process.env.BLOG_MODE || 'dry-run';
+    const plan = planEditorialAction(action, action === 'publish' ? await inspect() : undefined);
+    if (process.env.GITHUB_OUTPUT) await appendFile(process.env.GITHUB_OUTPUT, `run_required=${plan.runRequired}\n`);
+    console.log(JSON.stringify(plan));
+  }
   else if (mode === 'review') console.log(await renderReview());
   else if (mode === 'check') await validateAll();
-  else throw new Error('Usage: node scripts/editorial-queue.mjs [inspect|review|check]');
+  else throw new Error('Usage: node scripts/editorial-queue.mjs [inspect|plan|review|check]');
 }
