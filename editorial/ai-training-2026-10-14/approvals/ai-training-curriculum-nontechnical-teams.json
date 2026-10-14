@@ -1,0 +1,10 @@
+{
+  "approved": true,
+  "slug": "ai-training-curriculum-nontechnical-teams",
+  "draftSha256": "e341ab6da1b230bdbc57685e5780de702332bcedf7710e3dbb7a40b83dbcc45f",
+  "configSha256": "b09c0cad21fe40d919dabb7bcc8ad081d2978e535875bcaeda73aced580ec0b5",
+  "approvedBy": "qianquandong",
+  "approvedAt": "2026-10-14T13:39:31.725Z",
+  "notBefore": "2026-12-09",
+  "approvalRun": "https://github.com/qianquandong/aimanjack-site/actions/runs/38573561658"
+}
