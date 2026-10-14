@@ -1,7 +1,11 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFile } from 'node:fs/promises';
-import { assertApproval, sha256, chooseRelease, weekInChicago, dateInChicago, routeOf, approvalBundle } from '../scripts/editorial-queue.mjs';
+import { readFile, mkdtemp, rm } from 'node:fs/promises';
+import { execFileSync } from 'node:child_process';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { assertApproval, sha256, chooseRelease, weekInChicago, dateInChicago, routeOf, approvalBundle, isDallasPublicationWindow, planEditorialAction } from '../scripts/editorial-queue.mjs';
 import { allowedReleasePath } from '../scripts/publish-approved-blog.mjs';
 
 const bytes = Buffer.from('approved bilingual manuscript'), config = Buffer.from('approved site facts');
@@ -38,6 +42,56 @@ test('Dallas dates and weekly limits hold across UTC boundaries and daylight sav
   assert.equal(weekInChicago(new Date('2026-10-19T06:00:00Z')), '2026-10-19');
   assert.equal(dateInChicago(new Date('2026-11-04T15:00:00Z')), '2026-11-04');
 });
+
+test('Dallas publication opens Wednesday at 09:00 across summer and winter offsets', () => {
+  for (const [instant, expected] of [
+    ['2026-10-14T13:59:59Z', false], ['2026-10-14T14:00:00Z', true],
+    ['2026-11-04T14:59:59Z', false], ['2026-11-04T15:00:00Z', true],
+    ['2026-10-13T20:00:00Z', false], ['2026-10-15T20:00:00Z', false],
+    ['2026-10-15T04:59:59Z', true], ['2026-10-15T05:00:00Z', false],
+    ['2026-11-05T05:59:59Z', true], ['2026-11-05T06:00:00Z', false]
+  ]) assert.equal(isDallasPublicationWindow(new Date(instant)), expected, instant);
+});
+
+test('an early or non-Wednesday run cannot publish or retry a pending deployment', () => {
+  const item = { slug: 'first', draftSha256: 'abc', eligible: true };
+  const report = { week: '2026-10-12', releaseWindowOpen: false, ledger: [], items: [item] };
+  assert.equal(chooseRelease(report), null);
+  assert.equal(chooseRelease({ ...report, ledger: [{ ...item, state: 'pending-verification' }] }), null);
+  assert.equal(chooseRelease({ ...report, releaseWindowOpen: true }).item.slug, 'first');
+});
+
+test('the read-only plan skips all release work for closed, completed or empty publication slots', () => {
+  const report = { week: '2026-10-12', releaseWindowOpen: true, ledger: [], items: [{ slug: 'first', eligible: true }] };
+  assert.deepEqual(planEditorialAction('publish', report), { runRequired: true, selected: 'first', reason: 'Due approved release requires the existing checks' });
+  for (const noOp of [
+    { ...report, releaseWindowOpen: false },
+    { ...report, ledger: [{ state: 'verified', week: report.week }] },
+    { ...report, items: [] }
+  ]) {
+    const plan = planEditorialAction('publish', noOp);
+    assert.equal(plan.runRequired, false);
+    assert.equal(plan.selected, null);
+  }
+  for (const mode of ['dry-run', 'approve', 'revoke']) assert.equal(planEditorialAction(mode).runRequired, true);
+  assert.throws(() => planEditorialAction('invalid'), /Unknown editorial action/);
+});
+
+test('the plan CLI reports a Thursday no-op to Actions without production credentials or deployment', async t => {
+  const directory = await mkdtemp(join(tmpdir(), 'aimanjack-editorial-plan-'));
+  t.after(() => rm(directory, { recursive: true, force: true }));
+  const output = join(directory, 'github-output');
+  const script = new URL('../scripts/editorial-queue.mjs', import.meta.url);
+  const stdout = execFileSync(process.execPath, ['--input-type=module', '-e', `
+    const RealDate = Date;
+    globalThis.Date = class extends RealDate { constructor(...args) { super(...(args.length ? args : ['2026-10-15T15:00:00Z'])); } };
+    process.argv[1] = ${JSON.stringify(fileURLToPath(script))};
+    process.argv[2] = 'plan';
+    await import(${JSON.stringify(script.href)});
+  `], { encoding: 'utf8', env: { ...process.env, BLOG_MODE: 'publish', GITHUB_OUTPUT: output, CLOUDFLARE_API_TOKEN: '', CLOUDFLARE_ACCOUNT_ID: '', GH_TOKEN: '' } });
+  assert.deepEqual(JSON.parse(stdout), { runRequired: false, selected: null, reason: 'Outside Wednesday 09:00–23:59 America/Chicago' });
+  assert.equal(await readFile(output, 'utf8'), 'run_required=false\n');
+});
 test('one due bilingual topic is selected and unapproved drafts cannot be selected', () => {
   const report = { week: '2026-10-19', ledger: [], items: [{ slug: 'no', eligible: false }, { slug: 'first', eligible: true }, { slug: 'second', eligible: true }] };
   assert.equal(chooseRelease(report).item.slug, 'first');
@@ -64,7 +118,14 @@ test('the cloud job uses explicit production deployment and does not contain boo
   const workflow = await readFile(new URL('../.github/workflows/approved-blog-publisher.yml', import.meta.url), 'utf8');
   const publisher = await readFile(new URL('../scripts/publish-approved-blog.mjs', import.meta.url), 'utf8');
   assert.match(workflow, /timezone: America\/Chicago/);
+  assert.match(workflow, /cron: '0 9 \* \* 3'/);
+  assert.match(workflow, /cron: '17,47 9-23 \* \* 3'/);
+  for (const name of ['Install locked test dependencies', 'Check the complete bilingual draft queue', 'Build and run existing offline release checks', 'Check cloud deployment credentials without deploying', 'Run the selected editorial action']) {
+    const step = workflow.slice(workflow.indexOf(`- name: ${name}`)).split(/\r?\n      - /)[0];
+    assert.match(step, /if: steps\.plan\.outputs\.run_required == 'true'/, name);
+  }
   assert.match(workflow, /default: dry-run/);
   assert.match(publisher, /\['deploy\.sh', '--production'\]/);
+  assert.match(publisher, /if \(!isDallasPublicationWindow\(\)\) throw new Error\([^\n]+\);\r?\n  const log = execFileSync\('sh', \['deploy\.sh', '--production'\]/);
   assert.doesNotMatch(publisher, /--force|--admin|--no-verify|booking-smoke|\/v1\/bookings|Mail\.Send/);
 });

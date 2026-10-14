@@ -8,6 +8,8 @@ Open `review/index.html` to read the twenty language versions. Each article page
 
 Publish at most one topic per week, English and Chinese together, on Wednesday at 09:00 America/Chicago. This is an operational starting point that leaves time for review and observation, not a proven optimum for ranking or conversion. A substantive update to an existing topic occupies the same weekly slot as a new topic. An empty or unapproved queue produces a no-op.
 
+The primary trigger remains Wednesday at 09:00 Dallas time, including daylight saving changes. Because GitHub can delay or drop scheduled events, staggered triggers at :17 and :47 retry later on Wednesday. They skip release work when the weekly topic is already verified or no approved topic is due. Every publication entry point, including a pending deployment retry, refuses deployment outside Wednesday 09:00–23:59 America/Chicago; a delayed task crossing into Thursday cannot publish. These retries improve resilience but do not turn GitHub scheduling into an exact-time delivery guarantee.
+
 Order: costs and formats; choosing a trainer; evaluating results; sales practice; marketing practice; employee AI policy; first task; office managers; curriculum; ChatGPT versus agents. The ordering prioritizes buying questions and distinct practice examples. It has not been scored using search volume or conversion data.
 
 ## Owner approval and revocation
