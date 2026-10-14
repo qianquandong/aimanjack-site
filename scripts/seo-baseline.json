@@ -1,12 +1,12 @@
 {
- "capturedAt": "2026-10-13",
+ "capturedAt": "2026-10-14",
  "pages": {
   "/": {
-   "title": "Corporate AI Training in Dallas–Fort Worth | AI Man Jack",
-   "description": "Hands-on AI training for Dallas–Fort Worth business teams. Jack Qian teaches onsite or remotely, in English or Chinese. Four-session programs from $499/person.",
+   "title": "Corporate AI Training for Business Teams | AI Man Jack",
+   "description": "Hands-on corporate AI training for business teams. Jack Qian teaches onsite in Dallas–Fort Worth or live online, in English or Chinese. Four-session programs from $499/person.",
    "canonical": "https://aimanjack.com/",
    "hreflang": "en,x-default,zh",
-   "h1": "AI training for  Dallas–Fort Worth  business teams.",
+   "h1": "AI training for  business teams , built on real work.",
    "robots": "index, follow, max-image-preview:large, max-snippet:-1",
    "schemaTypes": "AdministrativeArea,City,Country,Offer,Person,PostalAddress,ProfessionalService,Service,State,UnitPriceSpecification,WebSite",
    "ogImage": "https://aimanjack.com/img/og-2026-09.jpg",
@@ -15,11 +15,11 @@
    "h1Count": 1
   },
   "/zh/": {
-   "title": "达拉斯—沃斯堡企业 AI 培训 | AI Man Jack",
-   "description": "为达拉斯—沃斯堡企业团队提供实操 AI 培训：销售、运营、市场和管理层各带一项真实任务来，带一条能用的工作流和核验方法走。Jack Qian 亲自授课，支持上门、全美远程及中英文。四次课程每人 $499 起，团队按需报价。",
+   "title": "企业团队 AI 实操培训 | AI Man Jack",
+   "description": "为企业团队提供实操 AI 培训：销售、运营、市场和管理层各带一项真实任务来，带一条能用的工作流和核验方法走。Jack Qian 亲自授课，达拉斯—沃斯堡可上门，全美线上直播，中英文授课。四次课程每人 $499 起，团队按需报价。",
    "canonical": "https://aimanjack.com/zh/",
    "hreflang": "en,x-default,zh",
-   "h1": "达拉斯—沃斯堡 企业  AI 实操培训 。",
+   "h1": "企业团队的  AI 实操培训 ， 从真实工作出发。",
    "robots": "index, follow, max-image-preview:large, max-snippet:-1",
    "schemaTypes": "AdministrativeArea,City,Country,Offer,Person,PostalAddress,ProfessionalService,Service,State,UnitPriceSpecification,WebSite",
    "ogImage": "https://aimanjack.com/img/og-2026-09-zh.jpg",
@@ -53,6 +53,32 @@
    "ga4": true,
    "h1Count": 1
   },
+  "/ai-training/dallas/": {
+   "title": "AI Training for Dallas–Fort Worth Teams | AI Man Jack",
+   "description": "Hands-on AI training for Dallas–Fort Worth teams, onsite or live online. 6 community sessions, 309 sign-ups and 17 Google reviews at 5.0 in 2026. From $499/person.",
+   "canonical": "https://aimanjack.com/ai-training/dallas/",
+   "hreflang": "en,x-default,zh",
+   "h1": "AI training for  Dallas–Fort Worth  business teams, built on the work you already do",
+   "robots": "index, follow, max-image-preview:large, max-snippet:-1",
+   "schemaTypes": "AdministrativeArea,Answer,BreadcrumbList,City,Country,FAQPage,ListItem,Offer,OfferCatalog,Person,Place,PostalAddress,ProfessionalService,Question,Service,State,UnitPriceSpecification",
+   "ogImage": "https://aimanjack.com/img/og-2026-09.jpg",
+   "bookLinks": 6,
+   "ga4": true,
+   "h1Count": 1
+  },
+  "/zh/ai-training/dallas/": {
+   "title": "达拉斯—沃斯堡企业团队 AI 培训 | AI Man Jack",
+   "description": "为达拉斯—沃斯堡团队提供实操 AI 培训，上门或线上直播。2026 年已办 6 场社区活动、309 人报名，Google 17 条评价 5.0 分。每人 $499 起。",
+   "canonical": "https://aimanjack.com/zh/ai-training/dallas/",
+   "hreflang": "en,x-default,zh",
+   "h1": "达拉斯—沃斯堡 企业团队的 AI 培训，从你手头的工作出发",
+   "robots": "index, follow, max-image-preview:large, max-snippet:-1",
+   "schemaTypes": "AdministrativeArea,Answer,BreadcrumbList,City,Country,FAQPage,ListItem,Offer,OfferCatalog,Person,Place,PostalAddress,ProfessionalService,Question,Service,State,UnitPriceSpecification",
+   "ogImage": "https://aimanjack.com/img/og-2026-09-zh.jpg",
+   "bookLinks": 6,
+   "ga4": true,
+   "h1Count": 1
+  },
   "/ai-training/team-workshop/": {
    "title": "90-Minute AI Workshop for Teams | Scoped Quote | AI Man Jack",
    "description": "A 90-minute, hands-on AI workshop for one team: choose one or two real workflows, test them with your approved AI tools and leave with a review checklist. Remote or Dallas–Fort Worth onsite. Priced by scoped quote.",
@@ -80,11 +106,11 @@
    "h1Count": 1
   },
   "/ai-training/onsite-texas/": {
-   "title": "Onsite AI Training in Dallas–Fort Worth &amp; Texas | AI Man Jack",
+   "title": "Full-Day Onsite AI Training at Your Office | Texas | AI Man Jack",
    "description": "One full day of hands-on AI training at your office: fundamentals, data safety, department use cases and guided labs on real work. Onsite in Dallas–Fort Worth; elsewhere in Texas with travel quoted separately. Priced by scoped quote.",
    "canonical": "https://aimanjack.com/ai-training/onsite-texas/",
    "hreflang": "en,x-default,zh",
-   "h1": "Onsite AI training for Dallas–Fort Worth teams",
+   "h1": "A full day of onsite AI training at your office",
    "robots": "index, follow, max-image-preview:large, max-snippet:-1",
    "schemaTypes": "AdministrativeArea,BreadcrumbList,Country,ListItem,ProfessionalService,Service,State",
    "ogImage": "https://aimanjack.com/img/og-2026-09.jpg",
@@ -93,11 +119,11 @@
    "h1Count": 1
   },
   "/zh/ai-training/onsite-texas/": {
-   "title": "达拉斯—沃斯堡上门 AI 培训 | 德州企业实操课 | AI Man Jack",
+   "title": "全天上门 AI 培训 | 到贵公司现场的实操课 | AI Man Jack",
    "description": "到贵公司现场一整天的 AI 实操培训：AI 基础、数据安全、各部门应用场景，以及围绕真实工作的实操练习。达拉斯—沃斯堡上门；德州其他城市可安排，差旅另行报价。按需报价。",
    "canonical": "https://aimanjack.com/zh/ai-training/onsite-texas/",
    "hreflang": "en,x-default,zh",
-   "h1": "达拉斯—沃斯堡企业 上门 AI 培训",
+   "h1": "到贵公司现场的 全天 AI 培训",
    "robots": "index, follow, max-image-preview:large, max-snippet:-1",
    "schemaTypes": "AdministrativeArea,BreadcrumbList,Country,ListItem,ProfessionalService,Service,State",
    "ogImage": "https://aimanjack.com/img/og-2026-09-zh.jpg",
