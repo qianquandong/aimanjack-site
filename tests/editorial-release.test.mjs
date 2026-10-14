@@ -1,16 +1,65 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFile, mkdtemp, rm } from 'node:fs/promises';
+import { readFile, writeFile, mkdtemp, mkdir, cp, copyFile, rm } from 'node:fs/promises';
 import { execFileSync } from 'node:child_process';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { assertApproval, sha256, chooseRelease, weekInChicago, dateInChicago, routeOf, approvalBundle, isDallasPublicationWindow, planEditorialAction } from '../scripts/editorial-queue.mjs';
+import { ROOT, PACK, assertApproval, sha256, chooseRelease, weekInChicago, dateInChicago, routeOf, approvalBundle, isDallasPublicationWindow, planEditorialAction, inspect, loadQueue, draftFor, draftForRelease } from '../scripts/editorial-queue.mjs';
 import { allowedReleasePath } from '../scripts/publish-approved-blog.mjs';
 
 const bytes = Buffer.from('approved bilingual manuscript'), config = Buffer.from('approved site facts');
 const now = new Date('2026-10-21T14:00:00Z');
 const approval = overrides => ({ approved: true, approvedBy: 'qianquandong', draftSha256: sha256(bytes), configSha256: sha256(config), approvedAt: '2026-10-14T15:00:00Z', approvalRun: 'https://github.com/qianquandong/aimanjack-site/actions/runs/123', notBefore: '2026-10-21', ...overrides });
+
+async function editorialFixture(t) {
+  const root = await mkdtemp(join(tmpdir(), 'aimanjack-editorial-version-'));
+  t.after(() => rm(root, { recursive: true, force: true }));
+  await mkdir(join(root, PACK), { recursive: true });
+  await mkdir(join(root, PACK, 'approvals'));
+  await mkdir(join(root, 'src'));
+  await Promise.all([
+    cp(join(ROOT, PACK, 'posts'), join(root, PACK, 'posts'), { recursive: true }),
+    ...['queue.json', 'index-copy.json'].map(path => copyFile(join(ROOT, PACK, path), join(root, PACK, path))),
+    copyFile(join(ROOT, 'src/config.mjs'), join(root, 'src/config.mjs'))
+  ]);
+  const queue = await loadQueue(root), configSha256 = sha256(await readFile(join(root, 'src/config.mjs')));
+  for (const [index, item] of queue.items.slice(0, 2).entries()) {
+    const draft = await draftFor(item, root);
+    // Offline test decisions are independent of real approval/revocation records and never leave this temporary root.
+    await writeFile(join(root, PACK, 'approvals', `${item.slug}.json`), JSON.stringify({ approved: true, slug: item.slug, approvedBy: queue.owner, draftSha256: draft.digest, configSha256, approvedAt: '2026-10-14T13:00:00Z', notBefore: ['2026-10-14', '2026-10-21'][index], approvalRun: 'offline-test-fixture-only' }));
+  }
+  return root;
+}
+
+test('a real inspection selection retains the owner-approved bilingual bundle digest', async t => {
+  const root = await editorialFixture(t), report = await inspect(root, new Date('2026-10-14T18:00:00Z'));
+  const selected = chooseRelease(report).item;
+  const ownerApproval = JSON.parse(await readFile(join(root, PACK, 'approvals', `${selected.slug}.json`), 'utf8'));
+  assert.equal(selected.eligible, true);
+  const draft = await draftForRelease(selected, root);
+  assert.equal(draft.digest, ownerApproval.draftSha256);
+  assert.equal(draft.digest, selected.draftSha256);
+  await assert.rejects(draftForRelease({ ...selected, draftSha256: 'changed' }, root), /no longer matches/);
+  await assert.rejects(draftForRelease({ ...selected, slug: 'unknown-topic' }, root), /canonical draft queue/);
+});
+
+test('the real next-Wednesday queue skips the verified first version and selects the next approved topic', async t => {
+  const root = await editorialFixture(t), firstReport = await inspect(root, new Date('2026-10-14T18:00:00Z'));
+  const first = chooseRelease(firstReport).item;
+  const draft = await draftForRelease(first, root);
+  await writeFile(join(root, PACK, 'ledger.json'), JSON.stringify([{ slug: first.slug, draftSha256: draft.digest, state: 'pending-verification', week: firstReport.week }]));
+  const pending = chooseRelease(await inspect(root, new Date('2026-10-14T19:00:00Z')));
+  assert.equal(pending.pending.draftSha256, draft.digest);
+  assert.equal((await draftForRelease(pending.item, root)).digest, draft.digest);
+  await writeFile(join(root, PACK, 'ledger.json'), JSON.stringify([{ slug: first.slug, draftSha256: draft.digest, state: 'verified', week: firstReport.week, verifiedWeek: firstReport.week }]));
+  assert.equal(chooseRelease(await inspect(root, new Date('2026-10-14T19:00:00Z'))), null);
+  const nextReport = await inspect(root, new Date('2026-10-21T14:00:00Z'));
+  assert.equal(nextReport.items[0].reason, 'This version is already published and verified');
+  const next = chooseRelease(nextReport).item;
+  assert.equal(next.slug, 'choose-corporate-ai-trainer-dallas-fort-worth');
+  assert.equal((await draftForRelease(next, root)).digest, next.draftSha256);
+});
 test('approval hashes are stable across Windows and Linux line endings but preserve real text edits', () => {
   assert.equal(sha256('English\r\n中文\r\n'), sha256(Buffer.from('English\n中文\n')));
   assert.notEqual(sha256('English\n中文\n'), sha256('English\n改稿\n'));

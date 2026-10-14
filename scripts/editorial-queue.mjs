@@ -59,6 +59,14 @@ export async function draftFor(item, root = ROOT) {
   if (!post.en || !post.zh) throw new Error('Both language versions are required');
   return { post, bytes, file, digest: sha256(bytes) };
 }
+export async function draftForRelease(selected, root = ROOT) {
+  const queue = await loadQueue(root), item = queue.items.find(item => item.slug === selected?.slug);
+  if (!item) throw new Error('Selected release is not in the canonical draft queue');
+  // Inspection adds eligibility and digest fields. Only the reviewed queue item belongs in the approval bundle.
+  const draft = await draftFor(item, root);
+  if (draft.digest !== selected.draftSha256) throw new Error('Selected release digest no longer matches the reviewed bundle');
+  return draft;
+}
 export async function applyDirectoryCopy(root = ROOT) {
   const policy = await json(join(root, PACK, 'index-copy.json'));
   const path = join(root, 'src/blog.mjs'), current = await readFile(path, 'utf8');
