@@ -49,6 +49,15 @@ const banner = (w, h, sw, sh, { tag, sub, scale = 1, align = 'center' }) => page
   </div>
 </div>`);
 
+// Cover for pages that already print the name and avatar over the bottom-left (Nextdoor, GBP): tagline only, top-right.
+const quietCover = (w, h) => page(w, h, `
+<div style="position:absolute;inset:0;background:${C.ink}"></div>
+<div style="position:absolute;right:${-h * .3}px;bottom:${-h * .55}px;width:${h * 1.3}px;height:${h * 1.3}px;border-radius:50%;background:${C.accent};opacity:.16"></div>
+<div style="position:absolute;right:${w * .07}px;top:${h * .16}px;text-align:right;display:flex;flex-direction:column;gap:${h * .04}px">
+  <div style="font:700 ${h * .1}px/1.15 Satoshi;color:#fff">Hands-on AI training<br>for business teams</div>
+  <div style="font:700 ${h * .04}px/1 Satoshi;letter-spacing:.08em;text-transform:uppercase;color:${C.onDarkAccent}">Dallas–Fort Worth · Live online · English / 中文</div>
+</div>`);
+
 const TAG = 'Hands-on AI training for business teams';
 const SUB = 'Dallas–Fort Worth · Live online · English / 中文';
 const assets = {
@@ -64,6 +73,8 @@ const assets = {
   'banner-youtube-2560x1440.png': [2560, 1440, banner(2560, 1440, 1546, 423, { tag: TAG, sub: SUB, scale: 1 })],
   'banner-linkedin-1584x396.png': [1584, 396, banner(1584, 396, 1100, 300, { tag: TAG, sub: SUB, scale: .78, align: 'end' })],
   'banner-facebook-1640x624.png': [1640, 624, banner(1640, 624, 1300, 420, { tag: TAG, sub: SUB, scale: .95, align: 'end' })],
+  'cover-quiet-1640x624.png': [1640, 624, quietCover(1640, 624)],
+  'cover-quiet-1400x660.png': [1400, 660, quietCover(1400, 660)], // Nextdoor crops covers to about 2.1:1
   'banner-x-1500x500.png': [1500, 500, banner(1500, 500, 1180, 360, { tag: TAG, sub: SUB, scale: .82, align: 'end' })],
 };
 
