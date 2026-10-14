@@ -44,12 +44,16 @@ test('program buyer answers appear in visible FAQ and matching FAQ structured da
   for (const lang of ['en', 'zh']) {
     const page = trainingPages[0][lang];
     const faq = page.jsonld.find((node) => node['@type'] === 'FAQPage');
-    const answers = lang === 'en' ? TRAINING_FAQ.en : buyerQuestions(lang, 'program');
+    const answers = TRAINING_FAQ[lang];
     if (lang === 'en') {
       assert.deepEqual(answers.map(([q]) => q), ['Which tools will we use?', 'What should participants prepare?', 'Does training include software implementation?']);
       const implementation = answers.find(([q]) => q === 'Does training include software implementation?')[1];
       assert.match(implementation, /does not include software development or CRM\/ERP configuration and integration/);
       assert.match(implementation, /separate implementation scope, permissions and testing/);
+    } else {
+      assert.deepEqual(answers.map(([q]) => q), ['培训使用哪些工具？', '参与者需要准备什么？', '培训包含软件开发或系统集成吗？']);
+      const implementation = answers.find(([q]) => q === '培训包含软件开发或系统集成吗？')[1];
+      assert.equal(implementation, '培训不包含软件开发，也不包含 CRM／ERP 的配置和集成。连接真实业务系统或自动写入数据，需要另行明确实施范围、权限和测试要求。');
     }
     for (const [q, answer] of answers) {
       assert.ok(TRAINING_FAQ[lang].some((pair) => pair[0] === q && pair[1] === answer));
