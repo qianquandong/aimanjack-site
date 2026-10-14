@@ -127,7 +127,7 @@ const page = (lang) => {
 <div class="g3">${PHOTOS.map(([f, w, h, alt], i) => `<figure class="art-fig"><img src="/img/events/${f}.webp" width="${w}" height="${h}" loading="${i < 3 ? 'eager' : 'lazy'}" decoding="async" alt="${alt[lang]}"><figcaption>${alt[lang]}</figcaption></figure>`).join('')}</div></div></section>
 
 <section class="sec" id="sessions"><div class="wrap">${head(c.evK, c.evH, c.evP, `<a class="more" href="${LUMA_PROFILE}" target="_blank" rel="noopener">${c.evMore}</a>`)}
-<div class="table-wrap"><table><caption class="sr-only">${c.evH}</caption><thead><tr>${c.evHead.map((h) => `<th scope="col">${h}</th>`).join('')}</tr></thead><tbody>${rows}</tbody></table></div></div></section>
+<div class="table-wrap"><table class="events-t"><caption class="sr-only">${c.evH}</caption><thead><tr>${c.evHead.map((h) => `<th scope="col">${h}</th>`).join('')}</tr></thead><tbody>${rows}</tbody></table></div></div></section>
 
 <section class="split-photo" id="dfw-it"><img src="/img/events/dfwit-fireside-2026-07-25-two-speakers.webp" width="1600" height="1066" loading="lazy" decoding="async" alt="${zh ? 'Jack Qian 与联合讲者在 DFW IT Association 炉边谈话上答问' : 'Jack Qian and a co-speaker taking questions at the DFW IT Association fireside chat'}">
 <div><div class="eyebrow">${c.dfwK}</div><h2>${c.dfwH}</h2>${c.dfwP.map((p) => `<p>${p}</p>`).join('')}</div></section>
