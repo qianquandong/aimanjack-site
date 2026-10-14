@@ -31,15 +31,27 @@ const COPY = {
   },
 };
 
+// Reused by the training page and buying guides so retired formats cannot drift back in.
+export function trainingFormatTable(lang, { programHref = L(lang, '/ai-training/') + '#formats' } = {}) {
+  const c = COPY[lang];
+  return `<div class="format-comparison"><div class="table-wrap"><table><caption>${lang === 'zh' ? '三种团队 AI 培训形式对比' : 'Compare three formats for team AI training'}</caption>
+<thead><tr>${c.headers.map(h => `<th scope="col">${h}</th>`).join('')}</tr></thead><tbody>
+${c.rows.map(([key, h, fit, deliver, price, link]) => `<tr><th scope="row">${h}</th><td data-label="${c.headers[1]}">${fit}</td><td data-label="${c.headers[2]}">${deliver}</td><td data-label="${c.headers[3]}"><strong>${price}</strong><a href="${key === 'program' ? programHref : L(lang, OFFERS[key].path)}" data-event="${key === 'program' ? 'training_program_click' : 'offer_path_click'}" data-pos="training-compare-${key}">${link} →</a></td></tr>`).join('')}
+</tbody></table></div></div>`;
+}
+
+export function trainingFormatSummary(lang) {
+  return lang === 'zh'
+    ? `目前有三种形式：${OFFERS.workshop.minutes} 分钟团队工作坊、全天上门培训，以及 ${TRAINING.sessions} 节 × ${TRAINING.sessionMin} 分钟课程。工作坊与全天培训按需报价；四次课程每人 ${PROGRAM_PRICE} 起。人数、地点和准备工作量在书面报价中确认。`
+    : `Choose a ${OFFERS.workshop.minutes}-minute team workshop, full-day onsite training, or ${TRAINING.sessions} live ${TRAINING.sessionMin}-minute sessions. Workshop and onsite pricing is by scoped quote; the four-session program starts at ${PROGRAM_PRICE} per person. Group size, location and preparation are agreed in the written quote.`;
+}
+
 export function trainingBrief(lang) {
   const c = COPY[lang];
   return `<section class="sec buyer-guide" id="team-paths"><div class="wrap">
 <div class="sec-head"><div><div class="eyebrow">${c.k}</div><h2>${c.h}</h2><p class="lead">${c.p}</p></div></div>
 <dl class="buyer-facts">${c.facts.map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join('')}</dl>
-<div class="format-comparison"><div class="table-wrap"><table><caption>${lang === 'zh' ? '三种团队 AI 培训形式对比' : 'Compare three formats for team AI training'}</caption>
-<thead><tr>${c.headers.map(h => `<th scope="col">${h}</th>`).join('')}</tr></thead><tbody>
-${c.rows.map(([key, h, fit, deliver, price, link]) => `<tr><th scope="row">${h}</th><td data-label="${c.headers[1]}">${fit}</td><td data-label="${c.headers[2]}">${deliver}</td><td data-label="${c.headers[3]}"><strong>${price}</strong><a href="${key === 'program' ? '#formats' : L(lang, OFFERS[key].path)}" data-event="${key === 'program' ? 'training_program_click' : 'offer_path_click'}" data-pos="training-compare-${key}">${link} →</a></td></tr>`).join('')}
-</tbody></table></div></div>
+${trainingFormatTable(lang, { programHref: '#formats' })}
 <aside class="buyer-prep"><h3>${c.prep}</h3><p>${c.prepP}</p></aside>
 <nav class="buyer-links" aria-label="${c.jump}">${c.links.map(([path, label]) => `<a href="${path}">${label} ↓</a>`).join('')}</nav>
 </div></section>`;

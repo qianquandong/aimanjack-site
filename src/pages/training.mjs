@@ -5,6 +5,7 @@ import { breadcrumb } from '../components.mjs';
 import { caseProof, clientProof } from './cases.mjs';
 import { business, person, faqPage } from '../schema.mjs';
 import { trainingBrief } from '../training-buyers.mjs';
+import { buyerQuestions } from '../training-questions.mjs';
 
 const SMS = `sms:${SMS_TEL}?body=TRAINING%20-%20`;
 const S = TRAINING.sessions, M = TRAINING.sessionMin;
@@ -59,6 +60,7 @@ const C = {
     bioK: '授课讲师', bio: '“我在达拉斯举办社区 AI 工作坊，因为实用的 AI 教育应当人人可及；为企业授课，我也秉持同样的方式。每一次课程都从一项真实任务开始，并坦诚回答：这件事是否真的适合交给 AI。”', bioBy: 'AI Man Jack 创始人', bioMore: '了解更多 →',
   },
 };
+for (const lang of ['en', 'zh']) C[lang].faq.push(...buyerQuestions(lang, 'program'));
 export const TRAINING_FAQ = { en: C.en.faq, zh: C.zh.faq };
 
 // The one program card, shared by / and /ai-training/: name, price and CTA on the left, what is included on the right.
