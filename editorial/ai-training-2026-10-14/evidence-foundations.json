@@ -1,0 +1,146 @@
+{
+  "checkedOn": "2026-10-14",
+  "scope": "Three bilingual editorial draft pairs; live pages, src/posts and generated output unchanged.",
+  "approval": "All three files have status=draft and updated=undefined. User review of exact copy is still required before scheduling publication.",
+  "posts": [
+    {
+      "slug": "ai-policy-for-small-business-employees",
+      "date": "2026-10-13",
+      "englishBodyWords": 858,
+      "chineseBodyCharacters": 1499,
+      "checks": {
+        "failures": 0,
+        "warnings": 0
+      },
+      "basis": [
+        {
+          "claim": "Tool approval, input boundaries, source owners, named output reviewers and reporting fields",
+          "sources": [
+            "src/content/templates.mjs: ai-tool-approval-checklist, ai-data-boundaries-one-pager, approved-source-inventory",
+            "https://aimanjack.com/templates/ai-tool-approval-checklist/",
+            "https://aimanjack.com/templates/ai-data-boundaries-one-pager/",
+            "https://aimanjack.com/templates/approved-source-inventory/"
+          ]
+        },
+        {
+          "claim": "NIST framework is voluntary risk-management guidance; no assertion of certification or compliance",
+          "sources": [
+            "https://www.nist.gov/itl/ai-risk-management-framework"
+          ]
+        },
+        {
+          "claim": "Meeting/action-table exercise is original fictional teaching material, not a claim of a client result",
+          "sources": [
+            "Draft clearly labels the exercise synthetic",
+            "https://aimanjack.com/workflows/meeting-notes-to-action-items/"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "ai-training-curriculum-nontechnical-teams",
+      "path": "/resources/ai-training-curriculum-nontechnical-teams/",
+      "date": "2026-07-17",
+      "englishBodyWords": 985,
+      "chineseBodyCharacters": 1597,
+      "checks": {
+        "failures": 0,
+        "warnings": 2,
+        "warningsExplained": "No external citation required: this proposed lesson plan uses current service facts and existing first-party worksheets, without external research claims."
+      },
+      "basis": [
+        {
+          "claim": "Five-step method and approved/synthetic/redacted materials",
+          "sources": [
+            "https://aimanjack.com/ai-training/",
+            "https://aimanjack.com/zh/ai-training/"
+          ]
+        },
+        {
+          "claim": "Four live 90-minute sessions; follow-up two weeks after final session only belongs to four-session program; standalone extra support separately scoped",
+          "sources": [
+            "src/config.mjs: TRAINING",
+            "https://aimanjack.com/ai-training/"
+          ]
+        },
+        {
+          "claim": "Workflow fields and source-based action-list instruction",
+          "sources": [
+            "src/content/templates.mjs: ai-workflow-one-pager",
+            "https://aimanjack.com/workflows/meeting-notes-to-action-items/"
+          ]
+        },
+        {
+          "claim": "Morgan example and intentionally flawed table are fictional proposed teaching materials; no outcome data",
+          "sources": [
+            "Draft labels the exercise fictional"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "chatgpt-vs-ai-agents",
+      "path": "/resources/chatgpt-vs-ai-agents/",
+      "date": "2026-07-17",
+      "englishBodyWords": 942,
+      "chineseBodyCharacters": 1699,
+      "checks": {
+        "failures": 0,
+        "warnings": 0
+      },
+      "basis": [
+        {
+          "claim": "Agent concepts include tools and multi-step work; ChatGPT brand should not be treated as exclusively a simple chat mode",
+          "sources": [
+            "https://developers.openai.com/api/docs/guides/agents",
+            "https://developers.openai.com/cookbook/articles/chatgpt-agents-sales-meeting-prep"
+          ],
+          "caution": "No vendor plan prices, access promises or release-specific instructions stated. Recheck these official links before eventual publication."
+        },
+        {
+          "claim": "Predefined workflows differ from model-directed agents; start simple when appropriate",
+          "sources": [
+            "https://www.anthropic.com/engineering/building-effective-agents"
+          ],
+          "caution": "Only the architectural distinction is used, not older framework recommendations."
+        },
+        {
+          "claim": "Permission worksheet and Avery exercise are planning recommendations and fictional examples",
+          "sources": [
+            "src/content/templates.mjs: ai-workflow-one-pager and ai-data-boundaries-one-pager",
+            "Draft labels example fictional"
+          ]
+        }
+      ]
+    }
+  ],
+  "commonServiceFacts": {
+    "sources": [
+      "https://aimanjack.com/ai-training/",
+      "https://aimanjack.com/zh/ai-training/",
+      "src/config.mjs"
+    ],
+    "facts": [
+      "Jack Qian designs and teaches",
+      "English or Chinese",
+      "Remote across U.S.; onsite Dallas–Fort Worth",
+      "Training excludes software development and CRM/ERP configuration and integration",
+      "Live-system connections or automatic writes require separate scope, permissions and testing"
+    ],
+    "prices": "No article body adds or changes a price. Shared renderer retains existing TRAINING.programFrom anchor."
+  },
+  "notClaimed": [
+    "Measured conversion or citation probability",
+    "Completed corporate-training client results",
+    "Time savings, accuracy percentages or ROI",
+    "Legal compliance, security certification or vendor accreditation",
+    "That fictional exercises happened in a real class"
+  ],
+  "needsOwnerConfirmation": [
+    "Approval of exact English and Chinese copy before publication",
+    "Organization-specific tool plans, data permissions and reviewer names must be supplied by an actual training customer; articles do not fabricate them"
+  ],
+  "validationMethod": "Existing scripts/blog-check.mjs logic executed in memory with only ROOT/import/draft-file lookup redirected to editorial copies; no src files modified, no site build or deploy run.",
+  "packagingNote": "The current shared blog index describes articles as actual classroom field notes. Review-package labels should identify these as planning guides and fictional exercises, as the drafts do; do not present them as documented client stories."
+}
+

@@ -28,3 +28,4 @@ wrangler*.json*
 .dev.vars
 docs
 tests
+editorial

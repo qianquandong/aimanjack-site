@@ -6,7 +6,7 @@ import { dirname, extname, join, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const publicTypes = new Set(['.html', '.css', '.js', '.png', '.jpg', '.jpeg', '.webp', '.svg', '.ico', '.woff', '.woff2']);
-const internal = /^(?:src|db|functions|tests|scripts|docs|state|output|design-system|node_modules)\//;
+const internal = /^(?:src|db|functions|tests|scripts|docs|state|output|editorial|design-system|node_modules)\//;
 export async function stagePreview(repo = resolve(dirname(fileURLToPath(import.meta.url)), '..')) {
   const git = (...args) => execFileSync('git', args, { cwd: repo, encoding: 'utf8' }).trim();
   const head = git('rev-parse', 'HEAD');

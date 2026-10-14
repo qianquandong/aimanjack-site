@@ -1,0 +1,65 @@
+<!doctype html><html lang="zh"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>销售团队 AI 培训，用一组资料练完整流程</title><style>body{font:17px/1.75 system-ui,sans-serif;color:#18332c;background:#fafaf6;margin:0}main{max-width:850px;padding:32px 24px;margin:auto}h1,h2,h3{line-height:1.3}h2{margin-top:2em}a{color:#075b4a}table{border-collapse:collapse;width:100%;font-size:15px}td,th{border:1px solid #cad6cf;padding:10px;text-align:left}pre{white-space:pre-wrap;background:#eef1eb;padding:16px}aside{padding:14px 18px;background:#fff0bb;border-radius:8px}.meta{color:#50645b;font-size:14px}li{margin-bottom:6px}</style><main><a href="index.html">← 全部稿件 / All drafts</a><p class="meta">ai-training-for-sales-teams · New article / 新文章</p><aside>待 Jack 审阅，尚未批准排期。Draft for Jack’s review; not approved for publication.<br>内容版本 SHA-256: <code>98f1388e17b8df9d09135b35b160afdf7e433b190965b16948a3f4a93d198711</code></aside><h1>销售团队 AI 培训，用一组资料练完整流程</h1><p>从批准记录准备会议，再起草跟进内容，重点检查事实、未知信息和未经同意的承诺。</p><p class="meta">Proposed title: 销售团队 AI 培训：资料到跟进邮件练习 | AI Man Jack<br>Description: 销售团队 AI 培训可用一组模拟资料，练习客户简报、会议议程和跟进草稿。本文包含输入、指令、参考输出、刻意错误及核验清单，明确承诺和审批边界。</p><ul><li>销售培训应同时练习草稿生成、来源核对和承诺审核。</li><li>练习材料需要区分已确认事实、未知事项、提问和建议步骤。</li><li>本文全部案例材料为模拟，不构成真实客户成果或销售效果证明。</li><li>面向客户的消息、价格、承诺和 CRM 改动，仍由有权限的人批准。</li></ul>
+<h2>先确定任务和审核点</h2>
+<p>销售团队 AI 培训可以从熟悉的工作开始：根据批准记录准备客户会议，再根据会后记录起草跟进。参与者除了写得顺，还需要分清已记录事实与待确认问题，以及建议步骤与正式承诺。</p>
+<p>下面是一项建议教学活动，不代表真实客户项目、过去课堂经历或转化率改善。更广泛的任务见<a href="https://aimanjack.com/zh/use-cases/sales/">销售工作流</a>；本文聚焦怎样练习并检查一条完整流程。</p>
+
+<h2>准备一组模拟来源</h2>
+<p><strong>以下公司、角色、日期和细节全部虚构，仅用于教学核验。</strong>也可以在确认工具权限后，换成获准使用且适当脱敏的资料。</p>
+<table><thead><tr><th>来源</th><th>模拟内容</th></tr></thead><tbody>
+<tr><td>S1：公司介绍</td><td>练习公司 A 配送办公用品，设两个营业地点；运营主管协调补货报告。</td></tr>
+<tr><td>S2：需求记录</td><td>团队每周合并表格导出，整理补货报告，希望讨论减少重复排版。未记录预算、采购权限或实施期限。</td></tr>
+<tr><td>S3：会议安排</td><td>已约一场 30 分钟需求沟通。销售可讨论流程，并在客户批准的前提下请求脱敏样例；尚未报价格或交付日期。</td></tr>
+</tbody></table>
+<p>保留来源编号，不要求模型凭记忆补空白，也不要搜索虚构公司。练习需要一组范围小、能逐条检查的依据。</p>
+
+<h2>用五步方法写出指令</h2>
+<ol>
+<li><strong>选任务：</strong>先做会议简报和建议议程，不写依赖臆测的客户战略。</li>
+<li><strong>给背景：</strong>提供 S1—S3，说明用途与权限。</li>
+<li><strong>整理步骤：</strong>规定栏目、来源编号和未知信息的写法。</li>
+<li><strong>核对结果：</strong>逐条回查资料，检查有没有添加承诺。</li>
+<li><strong>明确边界：</strong>只生成待审草稿，由人批准客户沟通与系统改动。</li>
+</ol>
+<pre><code>只使用 S1—S3 准备需求沟通：
+1. 列已确认事实，每条标注来源。
+2. 列未知事项，包括预算、权限、时间。
+3. 提出三个了解报表流程的问题。
+4. 建议一份合计 30 分钟的议程。
+不推断采购意愿，不承诺效果，不设价格或期限。
+建议必须标成建议。不要发消息或更新 CRM。</code></pre>
+<p>先确认公司允许工具处理这些材料。本练习不假定工具具备联网、特定账号设置或销售系统连接能力。</p>
+
+<h2>对照参考答案检查输出</h2>
+<p><strong>以下答案由人工编写，属于模拟教学参考，不是真实模型运行记录。</strong>工具措辞可以不同，但事实和边界应当一致。</p>
+<ul>
+<li><strong>已确认：</strong>两个地点（S1）；表格导出用于每周报告（S2）；需求沟通已安排（S3）。</li>
+<li><strong>未知：</strong>预算、采购权限、实施期限、能否分享样例。</li>
+<li><strong>问题：</strong>哪些排版步骤重复？谁核对报告？允许查看什么资料？</li>
+<li><strong>建议议程：</strong>现行流程 10 分钟，约束与样例权限 10 分钟，问题和可能的下一步 10 分钟。</li>
+</ul>
+<p>议程中的时间分配是练习建议，并非从记录提取的约定。建议可以有用，但不能写成客户已经同意的安排。</p>
+
+<h2>找出错误，再起草跟进</h2>
+<p>刻意错误：“客户已批准预算，下周一开始实施。”来源没有这两项信息，应改为待确认事项。语气肯定不能替代依据。</p>
+<p>再加入第四份模拟来源 S4：“运营主管会在内部确认能否提供脱敏样例；销售负责提供所需字段清单；未约定期限或下次会议。”请用 S1—S4 交代背景，但已约定的行动、承诺和时间只以 S4 为依据，并与未决事项分开。</p>
+<blockquote><p>感谢介绍报表流程。您会在内部确认能否分享脱敏样例；我会提供需要查看的字段清单。时间及下次会议仍待确认。</p></blockquote>
+<p>这也是人工编写的模拟参考。如果草稿添加“请周五前发送”，就新增了期限。应删除，或明确写成供对方确认的问题，不能冒充已有约定。</p>
+
+<h2>使用核验清单并保留记录</h2>
+<ul>
+<li>每项客户事实能否追溯到批准来源？</li>
+<li>推测、问题与事实是否分开？</li>
+<li>承诺、负责人和日期是否与记录一致？</li>
+<li>价格、条款和效果表述是否有授权依据？</li>
+<li>发送或录入前是否经过销售审核？</li>
+</ul>
+<p>把指令与修正后的草稿存成操作手册。后续在允许任务中记录实际使用、错误和编辑投入。不能把课堂参考答案当成收入提升或节省时间的证据。<a href="https://aimanjack.com/zh/workflows/sales-follow-up/">销售跟进工作流</a>提供进一步的检查方法。</p>
+
+<h2>什么时候这项练习不适合</h2>
+<p>记录遗漏了承诺，就先向负责人确认。敏感价格、个人信息和客户机密资料需要相应许可。谈判决定仍由有权限的人作出。</p>
+<p>练习也不包含 CRM 自动化。软件开发、CRM 或 ERP 配置、真实系统连接和自动写入需要另行界定范围、权限与测试。</p>
+
+<h2>选择适合团队的课程</h2>
+<p>90 分钟工作坊可以聚焦一两项任务；全天上门提供更广的团队实操空间。四次项目含四节各 90 分钟实时课程，课间使用再调整，最后一课两周后由 Jack 回访。单次课程后的额外支持另议。</p>
+<p>Jack Qian 本人设计并讲授<a href="https://aimanjack.com/zh/ai-training/">AI Man Jack 培训</a>，支持中英文、全美远程及达拉斯—沃斯堡现场。四次课程项目每人 $499 起，范围和团队价格以报价确认；工具订阅另计，DFW 外差旅另行报价。讨论时带上批准样例和审核要求，即可明确练习起点。</p>
+<h2>常见问题</h2><h3>销售团队 AI 培训包含自动外联吗？</h3><p>课程覆盖约定练习与审核方法。自动发送、CRM 连接和自动写入需要另行界定实施范围、权限与测试。</p><h3>可以使用真实客户记录吗？</h3><p>只能使用获准用于相应工具和课堂环境的资料。真实记录不适合时，可先用模拟或适当脱敏的材料练习。</p><h3>本文证明了销售效果吗？</h3><p>没有。公司、记录和参考答案全部模拟，用于练习来源核对和承诺审核，不代表收入、转化或效率改善。</p><h3>必须购买某种 AI 订阅吗？</h3><p>工具依据公司审批、任务和现有权限选择。工具账号与订阅费用不包含在培训范围内。</p><h2>资料及相关页面</h2><ul><li><a href="https://aimanjack.com/zh/use-cases/sales/">销售工作流</a></li><li><a href="https://aimanjack.com/zh/workflows/sales-meeting-preparation/">客户会议准备</a></li><li><a href="https://aimanjack.com/zh/templates/follow-up-email/">跟进邮件模板</a></li></ul></main></html>
