@@ -26,7 +26,8 @@ const LEGAL = ['/privacy', '/terms', '/sms-terms'];
 
 test('home page positions AI Man Jack as practical AI training for teams, in both languages', async () => {
   const pages = await allPages();
-  for (const [lang, title, h1] of [['en', /Corporate AI Training in Dallas–Fort Worth/, /AI training for/], ['zh', /达拉斯—沃斯堡企业 AI 培训/, /达拉斯—沃斯堡/]]) {
+  // 2026-10-13: the home title/H1 no longer carry "Dallas–Fort Worth" — /ai-training/dallas/ owns that term (HANDOFF §1.1).
+  for (const [lang, title, h1] of [['en', /Corporate AI Training for Business Teams/, /AI training for/], ['zh', /企业团队 AI 实操培训/, /企业团队的/]]) {
     const home = find(pages, '/', lang);
     assert.ok(home, `missing ${lang} home`);
     assert.match(head(home.html), new RegExp(`<title>[^<]*${title.source}`));
@@ -514,4 +515,31 @@ test('no built page or llms.txt makes a 24-hour or same/next-business-day respon
   const outputs = (await allPages()).map(({ p, lang, html }) => [`${lang} ${p.path}`, html]).concat([['llms.txt', llms()]]);
   assert.ok(outputs.length > 50);
   for (const [where, text] of outputs) for (const re of PROMISES) assert.doesNotMatch(text, re, `${where} contains ${re}`);
+});
+
+// ── /ai-training/dallas/ (2026-10-13): the one local page; the home page and the onsite page must not compete for the term ──
+test('the Dallas page owns the local term, lists real sessions, and keeps guideline-safe markup', async () => {
+  const pages = await allPages();
+  const { EVENTS, EVENT_STATS } = await import('../src/content/events.mjs');
+  assert.ok(EVENT_STATS.hosted >= 6 && EVENT_STATS.registrations >= 300, 'event data is the 2026 Luma record');
+  for (const lang of ['en', 'zh']) {
+    const x = find(pages, '/ai-training/dallas/', lang), route = `${lang}:/ai-training/dallas/`;
+    assert.ok(x && !x.page.noindex, `${route} indexable`);
+    assert.match(head(x.html), lang === 'zh' ? /<title>达拉斯—沃斯堡/ : /<title>AI Training for Dallas–Fort Worth Teams/, `${route} title owns the term`);
+    const b = body(x.html), j = ld(x.html);
+    for (const e of EVENTS) assert.ok(b.includes(`datetime="${e.date}"`), `${route} lists ${e.date}`);
+    assert.ok(b.includes(String(EVENT_STATS.registrations)) && b.includes('DFW IT Association'), `${route} shows sign-ups and the invited talk`);
+    assert.ok((b.match(/<img [^>]*\/img\/events\//g) || []).length >= 6, `${route} shows real event photos`);
+    for (const p of ['/ai-training/', OFFERS.workshop.path, OFFERS.onsite.path, '/book/']) assert.ok(b.includes(`href="${urlOf(p, lang)}`), `${route} links ${p}`);
+    assert.match(j, /"@type":"FAQPage"/); assert.match(j, /"@type":"Place"/);
+    assert.doesNotMatch(j, /"@type":"(?:Review|AggregateRating)"|ratingValue/, `${route} no self-serving review markup`);
+    assert.deepEqual([...new Set([...b.matchAll(/\$\s?\d[\d,.]*/g)].map((m) => m[0]))], ['$499'], `${route} shows no amount except the approved program price`);
+    for (const re of BANNED) assert.doesNotMatch(b + j, re, `${route} contains ${re}`);
+  }
+  // Cannibalization guard: only the Dallas page carries the metro name in its <title> and <h1>.
+  for (const path of ['/', '/ai-training/', OFFERS.onsite.path]) {
+    const h = find(pages, path, 'en').html;
+    assert.doesNotMatch(h.match(/<title>[^<]*<\/title>/)[0], /Dallas–Fort Worth/, `${path} title leaves the metro term to the Dallas page`);
+    assert.doesNotMatch(h.match(/<h1[^>]*>[\s\S]*?<\/h1>/)[0], /Dallas–Fort Worth/, `${path} H1 leaves the metro term to the Dallas page`);
+  }
 });

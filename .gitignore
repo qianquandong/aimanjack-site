@@ -8,3 +8,6 @@
 node_modules/
 .dev.vars.*
 .env*
+
+# Full-resolution event photo originals (hundreds of MB) — keep local, publish only the compressed webp/jpg pairs
+img/events/raw/
