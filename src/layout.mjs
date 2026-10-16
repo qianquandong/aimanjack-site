@@ -65,6 +65,8 @@ export const statBar = (items) => `<div class="stat-bar">${items.map(([b, s]) =>
 export const PHOTOS = {
   workshop: { src: '/img/hero-workshop-1600.webp', srcset: '/img/hero-workshop-960.webp 960w, /img/hero-workshop-1600.webp 1600w, /img/hero-workshop-2400.webp 2400w', portrait: '/img/hero-workshop-portrait-960.webp', w: 1600, h: 1067, pos: '50% 40%' },
   demo: { src: '/img/events/dallas-ai-hackathon-live-demo.webp', w: 1200, h: 900, pos: '50% 35%' },
+  // A full Dallas workshop room (May 2026), from the iPhone original IMG_9798 (img/events/raw/, gitignored). Used on the use-case pages.
+  room: { src: '/img/events/dallas-ai-workshop-full-room-1600.webp', srcset: '/img/events/dallas-ai-workshop-full-room-960.webp 960w, /img/events/dallas-ai-workshop-full-room-1600.webp 1600w, /img/events/dallas-ai-workshop-full-room-2400.webp 2400w', portrait: '/img/events/dallas-ai-workshop-full-room-portrait-960.webp', w: 1600, h: 1200, pos: '50% 55%' },
   teaching: { src: '/img/jack-teaching.webp', w: 1100, h: 825, pos: '50% 30%' },
   classroom: { src: '/img/jack-classroom.webp', w: 1000, h: 750 },
 };
