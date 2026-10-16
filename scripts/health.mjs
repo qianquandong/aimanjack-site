@@ -46,6 +46,13 @@ for (const line of readFileSync("_redirects", "utf8").split("\n")) {
 }
 add("redirects", bad.length ? "FAIL" : "PASS", bad.join("; ") || "all _redirects rules hold");
 
+// 2b. Retired pages answer 410 Gone (Cloudflare Worker aimanjack-gone-410; RETIRED_PATHS in src/config.mjs + older retired URLs)
+const { RETIRED_PATHS } = await import("../src/config.mjs");
+const GONE = [...RETIRED_PATHS.flatMap((p) => [p, "/zh" + p]), "/website", "/website/", "/business-services", "/missed-call-text-back", "/products", "/products/"];
+const alive = [];
+for (const p of GONE) { const r = await get(p); if (r.status !== 410) alive.push(`${p}→${r.status}`); }
+add("gone:410", alive.length ? "FAIL" : "PASS", alive.join("; ") || `${GONE.length} retired URLs answer 410`);
+
 // 3. Sitemap ↔ pages parity: every indexable page in, every legacy route out
 const sm = (await get("/sitemap.xml")).body;
 const smUrls = [...sm.matchAll(/<loc>([^<]+)<\/loc>/g)].map((x) => x[1].replace(PROD, ""));

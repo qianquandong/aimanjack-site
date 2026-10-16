@@ -7,7 +7,7 @@ import { readdirSync, mkdirSync, writeFileSync, readFileSync, existsSync } from 
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { render, pageOf, langsOf } from '../src/layout.mjs';
-import { zhPath, SITE } from '../src/config.mjs';
+import { zhPath, SITE, FEATURES, RETIRED_PATHS } from '../src/config.mjs';
 import { llms } from '../src/llms.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -26,6 +26,7 @@ const urls = [];
 for (const file of readdirSync(join(ROOT, 'src/pages')).filter((f) => f.endsWith('.mjs')).sort()) {
   const { pages } = await import(`../src/pages/${file}`);
   for (const p of pages) {
+    if (!FEATURES.legacyReceptionistRoutes && RETIRED_PATHS.includes(p.path)) continue;   // retired: 410 at the edge, not built
     for (const lang of langsOf(p)) {
       const page = pageOf(p, lang);
       const langPath = lang === 'zh' ? zhPath(p.path) : p.path;

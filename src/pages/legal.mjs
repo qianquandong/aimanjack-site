@@ -95,7 +95,7 @@ const terms = {
 <p class="meta">Last updated: September 9, 2026 · AI Man Jack LLC, Dallas, Texas</p>
 <p>These terms describe the AI receptionist and website services sold on this site. Your signed service agreement states the exact scope for your business and prevails over this page where they differ.</p>
 <h2>1. The service</h2>
-<p>AI Man Jack LLC ("we") configures and operates an AI phone receptionist for your business, and, on plans that include it, builds and hosts a website. The AI answers from information you approve, captures caller details, and on plans that include booking, books appointments through the connected workflow. Plan contents are listed on the <a href="/pricing/">pricing page</a>.</p>
+<p>AI Man Jack LLC ("we") configures and operates an AI phone receptionist for your business, and, on plans that include it, builds and hosts a website. The AI answers from information you approve, captures caller details, and on plans that include booking, books appointments through the connected workflow. Plan contents are listed on the pricing page.</p>
 <h2>2. Fees</h2>
 <ul>
 <li>A one-time setup fee for the selected plan, due before setup begins.</li>
@@ -124,7 +124,7 @@ const terms = {
 <p class="meta">最后更新：2026 年 9 月 9 日 · AI Man Jack LLC，德州达拉斯</p>
 <p>本条款说明本站销售的 AI 前台和网站服务。你签署的服务协议写明你店铺的具体范围；两者不一致时，以服务协议为准。</p>
 <h2>1. 服务内容</h2>
-<p>AI Man Jack LLC（「我们」）为你的店铺配置并运营 AI 电话前台；在包含建站的方案里，还负责搭建和托管网站。AI 按你确认的信息回答、记录来电者信息；在包含预约的方案里，通过接好的流程完成预约。各方案内容见<a href="/zh/pricing/">价格页</a>。</p>
+<p>AI Man Jack LLC（「我们」）为你的店铺配置并运营 AI 电话前台；在包含建站的方案里，还负责搭建和托管网站。AI 按你确认的信息回答、记录来电者信息；在包含预约的方案里，通过接好的流程完成预约。各方案内容见价格页。</p>
 <h2>2. 费用</h2>
 <ul>
 <li>所选方案的一次性安装费，安装开始前支付。</li>

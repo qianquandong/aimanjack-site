@@ -21,10 +21,17 @@ export const GBP_URL = 'https://g.page/r/CWX_rCfFduC1EAI';
 
 // Positioning (PRD 2026-09-18): corporate AI training + practical AI workflow training. The AI receptionist
 // source stays in the repo but its marketing, navigation, schema and sitemap presence are off.
+// Retired AI-receptionist pages (EN paths; each also has a /zh twin). Not built while FEATURES.legacyReceptionistRoutes is false.
+// The 410 itself comes from the Cloudflare Worker aimanjack-gone-410 (zone routes, outside this repo): every path here and its
+// /zh twin must have a route there. scripts/health.mjs checks the live 410s. The page modules stay in src/ for reference.
+export const RETIRED_PATHS = ['/ai-receptionist/', '/pricing/', '/industries/', '/industries/salons/', '/industries/med-spas/', '/industries/clinics/',
+  '/industries/home-services/', '/industries/repair-services/', '/integrations/', '/tools/missed-call-calculator/', '/blog/how-much-do-missed-calls-cost/',
+  '/case-studies/ai-man-jack/', '/case-studies/car-dealership-sms/'];
+
 export const FEATURES = {
   receptionistMarketing: false,   // no receptionist copy, offers or CTAs on indexable pages
   aiDemoGlobalCTA: false,         // no "Call our AI demo" header/sticky/dialog
-  legacyReceptionistRoutes: true, // /ai-receptionist/, /pricing/, /industries/… still render (noindex, unlinked)
+  legacyReceptionistRoutes: false, // 2026-10-17 (Jack): retired. RETIRED_PATHS are not built and answer 410 Gone (Cloudflare Worker aimanjack-gone-410)
 };
 
 // Training proof and price anchor. Real counts only — never bump these for marketing.
