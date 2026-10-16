@@ -5,6 +5,7 @@
 // Writes scripts/health/YYYY-MM-DD.json and exits 1 on any FAIL. GSC / GA4 / GEO probes are
 // added by the scheduled task on top of this (see HEALTH-CHECK.md).
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
+import { homedir } from "node:os";
 
 const PROD = "https://aimanjack.com";
 // SITE=https://<branch>.aimanjack.pages.dev node scripts/health.mjs → same checks against a preview deploy (canonicals still point at PROD, by design).
@@ -108,7 +109,10 @@ const llms = (await get("/llms.txt")).body;
 add("geo:llms-current", /corporate AI training/i.test(llms) && /no public price list/i.test(llms) && !/\$\d/.test(llms) && /425-4142/.test(llms) && !/receptionist|\$199/i.test(llms) ? "PASS" : "FAIL", "llms.txt must describe corporate AI training + no public price + SMS number, and nothing about the receptionist");
 
 // 7. Data plumbing the task needs — WARN until Jack wires them (HEALTH-CHECK.md §2)
-add("creds:google-api", existsSync(`${process.env.HOME}/.config/claude-seo/google-api.json`) ? "PASS" : "WARN", "GSC/GA4/PSI via claude-seo need ~/.config/claude-seo/google-api.json");
+// homedir(), not $HOME: PowerShell on Windows has no HOME. The config is not enough on its own — the key file it points to must exist.
+const credCfg = `${homedir()}/.config/claude-seo/google-api.json`;
+const credKey = existsSync(credCfg) ? JSON.parse(readFileSync(credCfg, "utf8")).service_account_path : null;
+add("creds:google-api", credKey && existsSync(credKey) ? "PASS" : "WARN", credKey ? (existsSync(credKey) ? "GSC/GA4 credentials present" : `config found, key file missing: ${credKey}`) : "GSC/GA4/PSI via claude-seo need ~/.config/claude-seo/google-api.json");
 
 const out = { date: today, checks };
 if (!PREVIEW) writeFileSync(`scripts/health/${today}.json`, JSON.stringify(out, null, 1) + "\n");
