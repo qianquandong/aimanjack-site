@@ -30,6 +30,10 @@ Real workflow case study (${SITE}/case-studies/livestream-agency-scheduling/):
 - [Home](${SITE}/): what AI Man Jack helps teams do, entry points to tools, use cases, workflows and training
 - [Corporate AI training](${SITE}/ai-training/): the five-part curriculum, who it is for, formats and pricing, Google reviews, FAQ
 - [AI training in Dallas–Fort Worth](${SITE}/ai-training/dallas/): the local page — community AI sessions hosted in Dallas and Plano in 2026 with dates, venues and sign-up counts, the DFW IT Association fireside chat Jack was invited to speak at, where onsite training runs, Google reviews, FAQ
+- [Microsoft Copilot training for teams](${SITE}/ai-training/copilot/): hands-on Microsoft 365 Copilot training in Word, Excel, Outlook, Teams and PowerPoint; Dallas–Fort Worth onsite or online; priced by quote
+- [ChatGPT training for employees](${SITE}/ai-training/chatgpt/): Projects, custom GPTs, files and data analysis, company-account data rules; priced by quote
+- [Claude training for business teams](${SITE}/ai-training/claude/): Projects, Skills, long documents and writing; priced by quote
+- [Grok and Grok Bot training](${SITE}/ai-training/grok/): real-time research and xAI's Grok Bot agents with scoped access and human approvals; priced by quote
 - [90-minute team workshop](${SITE}/ai-training/team-workshop/): one live session for one team on one or two real workflows; remote or Dallas–Fort Worth onsite; priced by scoped quote (no public price)
 - [Full-day onsite AI training, Texas](${SITE}/ai-training/onsite-texas/): one onsite day — fundamentals, data safety, department use cases, guided labs; Dallas–Fort Worth, elsewhere in Texas with travel quoted separately; priced by scoped quote (no public price)
 - [Free AI tools](${SITE}/tools/): the AI Readiness Assessment — 10 questions, deterministic score across people, usage, processes, knowledge, tools, governance, leadership and measurement; no email required

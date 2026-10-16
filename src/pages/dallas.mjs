@@ -26,9 +26,9 @@ const PHOTOS = [
 
 const C = {
   en: {
-    title: 'AI Training for Dallas–Fort Worth Teams | AI Man Jack',
+    title: 'Corporate AI Training & Workshops in Dallas–Fort Worth | AI Man Jack',
     description: `Hands-on AI training for Dallas–Fort Worth teams, onsite or live online. ${EVENT_STATS.hosted} community sessions, ${EVENT_STATS.registrations} sign-ups and ${PROOF.reviews} Google reviews at ${PROOF.rating} in 2026. From ${PROGRAM_PRICE}/person.`,
-    og: { title: 'AI training for Dallas–Fort Worth teams', description: `Onsite in Dallas, Plano, Frisco, Richardson or Fort Worth, or live online. Real sessions, real sign-up counts, real reviews. From ${PROGRAM_PRICE}/person.` },
+    og: { title: 'Corporate AI training & workshops in Dallas–Fort Worth', description: `Onsite in Dallas, Plano, Frisco, Richardson or Fort Worth, or live online. Real sessions, real sign-up counts, real reviews. From ${PROGRAM_PRICE}/person.` },
     crumb: 'Dallas–Fort Worth',
     eyebrow: 'Dallas · Plano · Frisco · Richardson · Irving · McKinney · Fort Worth · Live online across the U.S. · English or Chinese',
     h1: 'AI training for <em>Dallas–Fort Worth</em> business teams, built on the work you already do',
@@ -68,7 +68,7 @@ const C = {
     ld: { name: 'AI Training for Dallas–Fort Worth Teams', desc: `Hands-on corporate AI training for business teams in Dallas–Fort Worth: onsite at the company’s office in Dallas, Fort Worth, Plano, Richardson, Frisco, McKinney, Irving or Arlington, or live online. Taught by Jack Qian in English or Chinese. ${S} live ${M}-minute sessions from ${PROGRAM_PRICE} per person; 90-minute workshop and full onsite day by scoped quote.` },
   },
   zh: {
-    title: '达拉斯—沃斯堡企业团队 AI 培训 | AI Man Jack',
+    title: '达拉斯—沃斯堡企业 AI 培训与团队工作坊 | AI Man Jack',
     description: `为达拉斯—沃斯堡团队提供实操 AI 培训，上门或线上直播。2026 年已办 ${EVENT_STATS.hosted} 场社区活动、${EVENT_STATS.registrations} 人报名，Google ${PROOF.reviews} 条评价 ${PROOF.rating} 分。每人 ${PROGRAM_PRICE} 起。`,
     og: { title: '达拉斯—沃斯堡团队 AI 培训', description: `Dallas、Plano、Frisco、Richardson、Fort Worth 上门，或线上直播。真实活动、真实报名数、真实评价。每人 ${PROGRAM_PRICE} 起。` },
     crumb: '达拉斯—沃斯堡',
@@ -138,7 +138,8 @@ const page = (lang) => {
 ${chooser(lang, { pos: 'dallas' })}
 
 <section class="sec tight" id="tools"><div class="wrap">${head(c.toolsK, c.toolsH, c.toolsP)}
-<div class="g4">${c.tools.map(([h, p]) => `<div class="card"><h3>${h}</h3><p>${p}</p></div>`).join('')}</div></div></section>
+<div class="g4">${c.tools.map(([h, p]) => { const k = { ChatGPT: 'chatgpt', 'Microsoft Copilot': 'copilot', Claude: 'claude' }[h]; return `<div class="card"><h3>${k ? `<a href="${L(lang, `/ai-training/${k}/`)}">${h} ${zh ? '培训' : 'training'} →</a>` : h}</h3><p>${p}</p></div>`; }).join('')}</div>
+<p style="margin-top:20px">${zh ? `也教 <a href="${L(lang, '/ai-training/grok/')}">Grok 与 Grok Bot</a>（实时调研和能在你们工具里干活的 AI 智能体）。` : `We also teach <a href="${L(lang, '/ai-training/grok/')}">Grok and Grok Bot</a>: real-time research and AI agents that work inside your tools.`}</p></div></section>
 
 <section class="sec tight" id="testimonials"><div class="wrap">${head(c.revK, c.revH, c.revP, `<a class="more" href="${GBP_URL}" target="_blank" rel="noopener">${c.revMore}</a>`)}
 <div class="quote-grid">${c.rev.map(([name, q]) => `<figure class="quote"><span class="stars" aria-label="5 stars">★★★★★</span><blockquote style="margin:0;flex-grow:1"><p>${q}</p></blockquote><figcaption><b>${name}</b> <span>· ${c.revBy}</span></figcaption></figure>`).join('')}</div></div></section>
@@ -166,3 +167,6 @@ ${ctaBand(lang, { pos: 'dallas-final' })}`,
 };
 
 export const pages = [{ path: PATH, priority: 0.9, changefreq: 'monthly', en: page('en'), zh: page('zh') }];
+
+// Shared with the tool pages (src/pages/tool-training.mjs) so the same verified Google review quotes are used everywhere.
+export const REVIEWS = { en: C.en.rev, zh: C.zh.rev, by: { en: C.en.revBy, zh: C.zh.revBy } };

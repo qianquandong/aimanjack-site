@@ -35,7 +35,7 @@ const C = {
       items: [`${S} live ${M}-minute sessions, workflow instructions and a repeatable playbook`, 'Two weeks after the final session, Jack checks whether each workflow should continue, change or stop', 'The review considers actual use, output accuracy and the effort needed to check the work'],
       note: 'Custom team pricing available. Exact content changes based on the team’s tasks.' },
     faq: [
-      ['Which tools will we use?', 'Training uses tools your company has approved, which may include ChatGPT, Claude, Gemini or Microsoft Copilot. The selection depends on your team’s tasks and access.'],
+      ['Which tools will we use?', 'Training uses tools your company has approved, which may include <a href="/ai-training/chatgpt/">ChatGPT</a>, <a href="/ai-training/claude/">Claude</a>, Gemini, <a href="/ai-training/copilot/">Microsoft Copilot</a> or <a href="/ai-training/grok/">Grok</a>. The selection depends on your team’s tasks and access.'],
       ['What should participants prepare?', `Bring a few recurring tasks and suitable sample material. Participants need a laptop and access to the agreed tool. Onsite sessions also require reliable Wi-Fi and a shared screen or projector. <a href="${OFFERS.onsite.path}">Onsite preparation details</a>.`],
       ['Does training include software implementation?', 'Training does not include software development or CRM/ERP configuration and integration. Connecting to live systems or automatically updating records requires a separate implementation scope, permissions and testing.'],
     ],
@@ -67,7 +67,7 @@ const C = {
       items: [`四节 ${M} 分钟实时课程、工作流说明及可复用的操作手册`, '最后一节课结束两周后，Jack 会回访，了解工作流是否用于实际任务、输出是否足够准确，以及核验需要投入多少精力', '再讨论哪些流程应继续、调整或停止'],
       note: '具体内容会根据团队任务调整。团队可定制报价。' },
     faq: [
-      ['培训使用哪些工具？', '使用公司已批准的工具，可能包括 ChatGPT、Claude、Gemini 或 Microsoft Copilot。具体选择取决于团队的任务和现有使用权限。'],
+      ['培训使用哪些工具？', '使用公司已批准的工具，可能包括 <a href="/zh/ai-training/chatgpt/">ChatGPT</a>、<a href="/zh/ai-training/claude/">Claude</a>、Gemini、<a href="/zh/ai-training/copilot/">Microsoft Copilot</a> 或 <a href="/zh/ai-training/grok/">Grok</a>。具体选择取决于团队的任务和现有使用权限。'],
       ['参与者需要准备什么？', `准备几项重复性任务和适合练习的示例材料，并携带笔记本电脑，确保能够使用约定的工具。上门培训还需要稳定的 Wi-Fi，以及共用屏幕或投影设备。<a href="/zh${OFFERS.onsite.path}">查看上门培训准备事项</a>。`],
       ['培训包含软件开发或系统集成吗？', '培训不包含软件开发，也不包含 CRM／ERP 的配置和集成。连接真实业务系统或自动写入数据，需要另行明确实施范围、权限和测试要求。'],
     ],

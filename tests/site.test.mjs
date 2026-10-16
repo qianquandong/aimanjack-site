@@ -529,7 +529,7 @@ test('the Dallas page owns the local term, lists real sessions, and keeps guidel
   for (const lang of ['en', 'zh']) {
     const x = find(pages, '/ai-training/dallas/', lang), route = `${lang}:/ai-training/dallas/`;
     assert.ok(x && !x.page.noindex, `${route} indexable`);
-    assert.match(head(x.html), lang === 'zh' ? /<title>达拉斯—沃斯堡/ : /<title>AI Training for Dallas–Fort Worth Teams/, `${route} title owns the term`);
+    assert.match(head(x.html), lang === 'zh' ? /<title>达拉斯—沃斯堡/ : /<title>Corporate AI Training &(?:amp;)? Workshops in Dallas–Fort Worth/, `${route} title owns the term`);
     const b = body(x.html), j = ld(x.html);
     for (const e of EVENTS) assert.ok(b.includes(`datetime="${e.date}"`), `${route} lists ${e.date}`);
     assert.ok(b.includes(String(EVENT_STATS.registrations)) && b.includes('DFW IT Association'), `${route} shows sign-ups and the invited talk`);
@@ -545,5 +545,24 @@ test('the Dallas page owns the local term, lists real sessions, and keeps guidel
     const h = find(pages, path, 'en').html;
     assert.doesNotMatch(h.match(/<title>[^<]*<\/title>/)[0], /Dallas–Fort Worth/, `${path} title leaves the metro term to the Dallas page`);
     assert.doesNotMatch(h.match(/<h1[^>]*>[\s\S]*?<\/h1>/)[0], /Dallas–Fort Worth/, `${path} H1 leaves the metro term to the Dallas page`);
+  }
+});
+
+test('tool training pages: indexable, full FAQ, no public price anywhere, and a working quick-quote form', async () => {
+  const pages = await allPages();
+  const { TOOL_PAGES } = await import('../src/pages/tool-training.mjs');
+  for (const key of TOOL_PAGES) for (const lang of ['en', 'zh']) {
+    const path = `/ai-training/${key}/`, x = find(pages, path, lang), route = `${lang}:${path}`;
+    assert.ok(x && !x.page.noindex, `${route} indexable`);
+    const h = head(x.html), b = body(x.html), j = ld(x.html);
+    assert.equal((b.match(/<h1[\s>]/g) || []).length, 1, `${route} one H1`);
+    if (lang === 'en') assert.match(h, /<title>[^<]*(Copilot|ChatGPT|Claude|Grok)[^<]*Dallas[^<]*<\/title>/, `${route} title names the tool and Dallas`);
+    assert.ok((j.match(/"@type":"Question"/g) || []).length >= 12, `${route} FAQ has at least 12 questions`);
+    assert.doesNotMatch(b + j, /\$\s?\d/, `${route} prints no price`);
+    assert.doesNotMatch(j, /"@type":"Offer"|"price"|"(?:Review|AggregateRating)"/, `${route} no Offer/price or review markup`);
+    assert.match(b, /<form class="qf" id="qq-form" action="\/v1\/intake" method="post"/, `${route} quick-quote form`);
+    assert.ok(b.includes('name="kind" value="quick"') && b.includes(`name="tool" value="${key}"`) && b.includes(`name="page" value="${urlOf(path, lang)}"`), `${route} form carries kind/tool/page`);
+    for (const p of ['/ai-training/dallas/', '/ai-training/', ...TOOL_PAGES.filter((k) => k !== key).map((k) => `/ai-training/${k}/`)]) assert.ok(b.includes(`href="${urlOf(p, lang)}`), `${route} links ${p}`);
+    for (const re of BANNED) assert.doesNotMatch(b + j, re, `${route} contains ${re}`);
   }
 });

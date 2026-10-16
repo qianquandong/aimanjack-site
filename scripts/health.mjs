@@ -11,7 +11,7 @@ const PROD = "https://aimanjack.com";
 const SITE = (process.env.SITE || PROD).replace(/\/$/, "");
 const PREVIEW = SITE !== PROD;
 // Indexable routes (PRD 2026-09-18 §77). Add /ai-training-dallas/, /ai-workflow-training/, /ai-workshops/ and the team pages as they ship.
-const EN = ["/", "/ai-training/", "/ai-training/dallas/", "/ai-training/team-workshop/", "/ai-training/onsite-texas/", "/blog/", "/about/", "/contact/", "/book/",
+const EN = ["/", "/ai-training/", "/ai-training/dallas/", "/ai-training/copilot/", "/ai-training/chatgpt/", "/ai-training/claude/", "/ai-training/grok/", "/ai-training/team-workshop/", "/ai-training/onsite-texas/", "/blog/", "/about/", "/contact/", "/book/",
   // Blog posts pinned to their pre-2026-09 URLs because Copilot cites them (scripts/bing-cited-pages.txt). Must stay 200, never 301.
   "/resources/chatgpt-vs-ai-agents/", "/resources/ai-training-curriculum-nontechnical-teams/"];
 // Resource library (bilingual since the 2026-09 redesign): hubs plus one detail page of each type as a canary.
