@@ -1,5 +1,5 @@
 {
- "capturedAt": "2026-10-14",
+ "capturedAt": "2026-10-16",
  "pages": {
   "/": {
    "title": "Corporate AI Training for Business Teams | AI Man Jack",
@@ -29,27 +29,27 @@
   },
   "/ai-training/": {
    "title": "Corporate AI Training for Employees | 4 Sessions | AI Man Jack",
-   "description": "Four live 90-minute AI training sessions built around your real work. Programs start at $499/person. Custom team pricing. Remote across the U.S. and onsite in Dallas–Fort Worth.",
+   "description": "Practical AI training for business owners and nontechnical teams. Four live 90-minute sessions from $499/person. Online across the U.S. or onsite in Dallas–Fort Worth, in English or Chinese.",
    "canonical": "https://aimanjack.com/ai-training/",
    "hreflang": "en,x-default,zh",
-   "h1": "AI training built around the work you  already do",
+   "h1": "Corporate AI training for your team’s  everyday work",
    "robots": "index, follow, max-image-preview:large, max-snippet:-1",
    "schemaTypes": "AdministrativeArea,Answer,BreadcrumbList,City,Country,FAQPage,ListItem,Offer,Person,PostalAddress,ProfessionalService,Question,Service,State,UnitPriceSpecification",
    "ogImage": "https://aimanjack.com/img/og-2026-09.jpg",
-   "bookLinks": 8,
+   "bookLinks": 7,
    "ga4": true,
    "h1Count": 1
   },
   "/zh/ai-training/": {
    "title": "企业员工 AI 培训 | 四次定制实操课程 | AI Man Jack",
-   "description": "四节 90 分钟的实时 AI 培训课，围绕你的真实工作设计。每人 $499 起，团队可定制报价。全美远程授课，达拉斯—沃斯堡可上门。",
+   "description": "围绕团队日常工作开展的企业 AI 实操培训。四节 90 分钟实时课程，每人 $499 起。全美远程，达拉斯—沃斯堡可上门，中文或英文授课。",
    "canonical": "https://aimanjack.com/zh/ai-training/",
    "hreflang": "en,x-default,zh",
-   "h1": "围绕你 手头工作 设计的 AI 培训",
+   "h1": "围绕团队 日常工作 开展的 企业 AI 实操培训",
    "robots": "index, follow, max-image-preview:large, max-snippet:-1",
    "schemaTypes": "AdministrativeArea,Answer,BreadcrumbList,City,Country,FAQPage,ListItem,Offer,Person,PostalAddress,ProfessionalService,Question,Service,State,UnitPriceSpecification",
    "ogImage": "https://aimanjack.com/img/og-2026-09-zh.jpg",
-   "bookLinks": 8,
+   "bookLinks": 7,
    "ga4": true,
    "h1Count": 1
   },
@@ -133,10 +133,10 @@
   },
   "/blog/": {
    "title": "Resources: AI Training and AI Workflow Notes | AI Man Jack",
-   "description": "Notes from Jack Qian for team leads: how to pick the task, how to teach non-technical staff to use AI, when a workflow is really working. Only what was actually done.",
+   "description": "Practical AI training guides for team leads: choosing tasks, preparing safe exercises, comparing formats and checking workflow use and output quality.",
    "canonical": "https://aimanjack.com/blog/",
    "hreflang": "en,x-default,zh",
-   "h1": "Field notes from the sessions",
+   "h1": "Practical AI training guides",
    "robots": "index, follow, max-image-preview:large, max-snippet:-1",
    "schemaTypes": "BreadcrumbList,CollectionPage,ListItem,ProfessionalService",
    "ogImage": "https://aimanjack.com/img/og-2026-09.jpg",
@@ -146,10 +146,10 @@
   },
   "/zh/blog/": {
    "title": "资源：员工 AI 培训与 AI 工作流实践笔记 | AI Man Jack",
-   "description": "Jack Qian 为团队负责人撰写的实践笔记：如何选择任务、如何培训非技术员工使用 AI、如何判断一条工作流是否真正有效。只记录实际做过的事。",
+   "description": "Jack Qian 为企业团队负责人整理的 AI 培训指南：选择任务、准备练习、比较课程形式，以及核验工作流的实际使用和输出质量。",
    "canonical": "https://aimanjack.com/zh/blog/",
    "hreflang": "en,x-default,zh",
-   "h1": "来自课堂的实践笔记",
+   "h1": "企业 AI 培训实用指南",
    "robots": "index, follow, max-image-preview:large, max-snippet:-1",
    "schemaTypes": "BreadcrumbList,CollectionPage,ListItem,ProfessionalService",
    "ogImage": "https://aimanjack.com/img/og-2026-09-zh.jpg",
