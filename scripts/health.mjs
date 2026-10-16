@@ -11,7 +11,7 @@ const PROD = "https://aimanjack.com";
 const SITE = (process.env.SITE || PROD).replace(/\/$/, "");
 const PREVIEW = SITE !== PROD;
 // Indexable routes (PRD 2026-09-18 §77). Add /ai-training-dallas/, /ai-workflow-training/, /ai-workshops/ and the team pages as they ship.
-const EN = ["/", "/ai-training/", "/ai-training/dallas/", "/ai-training/team-workshop/", "/ai-training/onsite-texas/", "/blog/", "/about/", "/contact/", "/book/",
+const EN = ["/", "/ai-training/", "/ai-training/dallas/", "/ai-training/copilot/", "/ai-training/chatgpt/", "/ai-training/claude/", "/ai-training/grok/", "/ai-training/team-workshop/", "/ai-training/onsite-texas/", "/blog/", "/about/", "/contact/", "/book/",
   // Blog posts pinned to their pre-2026-09 URLs because Copilot cites them (scripts/bing-cited-pages.txt). Must stay 200, never 301.
   "/resources/chatgpt-vs-ai-agents/", "/resources/ai-training-curriculum-nontechnical-teams/"];
 // Resource library (bilingual since the 2026-09 redesign): hubs plus one detail page of each type as a canary.
@@ -103,7 +103,7 @@ else {
 const robots = (await get("/robots.txt")).body;
 add("geo:robots", /User-agent: \*\s+Allow: \//.test(robots) && !/Disallow: \/\s*$/m.test(robots) ? "PASS" : "FAIL", "AI crawlers (GPTBot/OAI-SearchBot/PerplexityBot/ClaudeBot) must not be blocked");
 const llms = (await get("/llms.txt")).body;
-add("geo:llms-current", /corporate AI training/i.test(llms) && /\$499 per person/.test(llms) && /425-4142/.test(llms) && !/receptionist|\$199/i.test(llms) ? "PASS" : "FAIL", "llms.txt must describe corporate AI training + $499/person program + SMS number, and nothing about the receptionist");
+add("geo:llms-current", /corporate AI training/i.test(llms) && /no public price list/i.test(llms) && !/\$\d/.test(llms) && /425-4142/.test(llms) && !/receptionist|\$199/i.test(llms) ? "PASS" : "FAIL", "llms.txt must describe corporate AI training + no public price + SMS number, and nothing about the receptionist");
 
 // 7. Data plumbing the task needs — WARN until Jack wires them (HEALTH-CHECK.md §2)
 add("creds:google-api", existsSync(`${process.env.HOME}/.config/claude-seo/google-api.json`) ? "PASS" : "WARN", "GSC/GA4/PSI via claude-seo need ~/.config/claude-seo/google-api.json");

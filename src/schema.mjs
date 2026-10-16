@@ -13,14 +13,13 @@ export const AREA = [
 export const BUSINESS_REF = { '@type': 'ProfessionalService', '@id': `${SITE}/#business`, name: 'AI Man Jack', url: `${SITE}/`, telephone: '+1-469-425-4142', email: EMAIL };
 
 export const trainingOffer = (lang) => ({
-  '@type': 'Offer', priceCurrency: 'USD', price: String(TRAINING.programFrom),
-  priceSpecification: { '@type': 'UnitPriceSpecification', price: String(TRAINING.programFrom), priceCurrency: 'USD', unitText: zh(lang) ? '每人' : 'per person' },
+  '@type': 'Offer',   // no price: every format is quoted per team (Jack, 2026-10-17)
   itemOffered: { '@type': 'Service', '@id': `${SITE}/#training`, name: zh(lang) ? '四次定制 AI 工作流培训项目' : '4-Session Customized AI Workflow Training Program', url: `${SITE}${langPath(lang, '/ai-training/')}`,
     serviceType: zh(lang) ? '企业员工 AI 实操培训' : 'Corporate AI training for employees',
     provider: { '@id': `${SITE}/#business` }, areaServed: [...AREA, { '@type': 'Country', name: 'United States' }],
     description: zh(lang)
-      ? `围绕学员已经在做的工作定制的实操 AI 培训：${TRAINING.sessions} 节 ${TRAINING.sessionMin} 分钟实时课程，每人 $${TRAINING.programFrom} 起，团队可定制报价。全美远程授课，达拉斯—沃斯堡可上门，中英文皆可。如需更短的入门，也可以安排 90 分钟团队专题。`
-      : `Hands-on AI training customized around the work people already do: ${TRAINING.sessions} live ${TRAINING.sessionMin}-minute sessions, starting at $${TRAINING.programFrom} per person, with custom team pricing. Remote anywhere in the U.S., onsite in Dallas–Fort Worth, in English or Chinese. A 90-minute team session is available on request as a shorter first step.` },
+      ? `围绕学员已经在做的工作定制的实操 AI 培训：${TRAINING.sessions} 节 ${TRAINING.sessionMin} 分钟实时课程，按团队书面报价。全美远程授课，达拉斯—沃斯堡可上门，中英文皆可。如需更短的入门，也可以安排 90 分钟团队专题。`
+      : `Hands-on AI training customized around the work people already do: ${TRAINING.sessions} live ${TRAINING.sessionMin}-minute sessions, priced for each team by written quote. Remote anywhere in the U.S., onsite in Dallas–Fort Worth, in English or Chinese. A 90-minute team session is available on request as a shorter first step.` },
 });
 
 // Self-serving LocalBusiness reviews are ineligible for Google's review rich results.

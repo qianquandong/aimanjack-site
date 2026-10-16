@@ -93,7 +93,7 @@ test('a valid submission makes exactly one receipt with normalized fields, separ
   assert.equal(p.payload.attendees, 12);
   assert.equal(p.consent_request, true);
   assert.equal(p.consent_newsletter, false);
-  assert.equal(p.consent_notice_version, 'privacy-2026-10-08-draft');
+  assert.equal(p.consent_notice_version, 'privacy-2026-10-17-draft');
   assert.equal(p.form_version, 'intake-2026-10-08');
   assert.deepEqual(p.utm, { utm_source: 'linkedin', utm_medium: 'social', utm_campaign: 'q4-launch', referrer_host: 'linkedin.com', landing_path: '/ai-training/team-workshop/', first_touch_at: new Date(1760000000000).toISOString() });
   assert.equal(p.self_reported_source, 'linkedin');
@@ -328,4 +328,49 @@ test('migration: consent ledger has no FK to receipts, erase_subject is a servic
   for (const tbl of ['intake_receipts', 'consent_events', 'intake_rate_limits']) assert.match(code, new RegExp(`alter table revenue\\.${tbl} enable row level security;`));
   assert.doesNotMatch(code, /create policy/i, 'no anon/authenticated policies');
   assert.doesNotMatch(code, /grant [^;]* to (anon|authenticated)/i);
+});
+
+// ── Quick quote (kind=quick) from the tool pages, 2026-10-17 ──
+const quick = (over = {}) => ({ kind: 'quick', name: 'Dana Reyes', email: 'Dana.Reyes@northwind-example.com', attendees: '15', budget: 'not sure yet',
+  workflows: 'Copilot in Excel for the ops team', tool: 'copilot', page: '/ai-training/copilot/', consent_request: true, lang: 'en',
+  form_version: 'intake-2026-10-17', fill_ms: '9000', company_url: '', ...over });
+
+test('quick quote: name + email + consent is enough; stored as kind=quick with the tool and page', async (t) => {
+  const db = fake(t);
+  const r = await send(quick({ attendees: '', budget: '', workflows: '' }));
+  assert.equal(r.status, 201, JSON.stringify(await r.clone().json()));
+  const { p } = db.records[0];
+  assert.equal(p.payload.kind, 'quick');
+  assert.equal(p.payload.tool, 'copilot');
+  assert.equal(p.payload.page, '/ai-training/copilot/');
+  assert.equal(p.payload.attendees, null);
+  assert.equal(p.payload.company_domain, 'northwind-example.com');
+  assert.equal(p.form_version, 'intake-2026-10-17');
+  const full = await send(quick({ email: 'sam@northwind-example.com' }));
+  assert.equal(full.status, 201);
+  assert.equal(db.records[1].p.payload.attendees, 15);
+  assert.equal(db.records[1].p.payload.budget, 'not sure yet');
+});
+
+test('quick quote: bad email, bad headcount and missing consent are rejected; unknown tool/page are not trusted', async (t) => {
+  const db = fake(t);
+  const bad = await send(quick({ email: 'nope', attendees: '0' }));
+  assert.equal(bad.status, 400);
+  assert.deepEqual((await bad.json()).fields.sort(), ['attendees', 'email']);
+  assert.equal((await (await send(quick({ consent_request: false }))).json()).error, 'consent_required');
+  const odd = await send(quick({ tool: 'gemini<script>', page: 'https://evil.example/' }));
+  assert.equal(odd.status, 201);
+  assert.equal(db.records.at(-1).p.payload.tool, 'general');
+  assert.equal(db.records.at(-1).p.payload.page, null);
+});
+
+test('quick quote without JS returns to the tool page anchor, and only to our own training paths', async (t) => {
+  fake(t);
+  const ok = await send(quick({ page: '/zh/ai-training/claude/', lang: 'zh', consent_request: 'yes' }), { form: true });
+  assert.equal(ok.status, 303);
+  assert.equal(ok.headers.get('location'), '/zh/ai-training/claude/#quote-received');
+  const no = await send(quick({ consent_request: '' }), { form: true });
+  assert.equal(no.headers.get('location'), '/ai-training/copilot/#quote-not-sent');
+  const evil = await send(quick({ page: '//evil.example/', consent_request: 'yes', email: 'x@northwind-example.com' }), { form: true });
+  assert.equal(evil.headers.get('location'), '/contact/quote/#received', 'an untrusted page falls back to the quote page');
 });

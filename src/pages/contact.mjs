@@ -1,4 +1,4 @@
-import { SITE, EMAIL, SMS_TEL, SMS_DISPLAY, BOOK_URL, QUOTE_URL, PROGRAM_PRICE, INTAKE_FORM_VERSION } from '../config.mjs';
+import { SITE, EMAIL, SMS_TEL, SMS_DISPLAY, BOOK_URL, QUOTE_URL, INTAKE_FORM_VERSION } from '../config.mjs';
 import { pageHero, breadcrumb, BUSINESS_REF, L, T } from '../components.mjs';
 
 const copy = {
@@ -65,7 +65,7 @@ const Q = {
     opt: {
       industry: [['professional_services', 'Professional services'], ['manufacturing', 'Manufacturing'], ['distribution', 'Distribution and logistics'], ['construction', 'Construction and field services'], ['healthcare', 'Healthcare'], ['finance', 'Financial services and insurance'], ['real_estate', 'Real estate'], ['retail', 'Retail and e-commerce'], ['technology', 'Technology'], ['nonprofit_education', 'Nonprofit and education'], ['public_sector', 'Public sector'], ['other', 'Other']],
       headcount: [['1-19', '1–19 employees'], ['20-49', '20–49 employees'], ['50-99', '50–99 employees'], ['100-249', '100–249 employees'], ['250-999', '250–999 employees'], ['1000+', '1,000 or more employees']],
-      format: [['workshop_90', '90-minute team workshop'], ['onsite_day', 'Full-day onsite (Texas)'], ['four_session', `4 × 90-min program (from ${PROGRAM_PRICE}/person)`], ['not_sure', 'Not sure yet']],
+      format: [['workshop_90', '90-minute team workshop'], ['onsite_day', 'Full-day onsite (Texas)'], ['four_session', '4 × 90-min program'], ['not_sure', 'Not sure yet']],
       location: [['remote', 'Remote (video)'], ['dfw_onsite', 'Onsite in Dallas–Fort Worth'], ['other_texas', 'Onsite elsewhere in Texas (travel quoted separately)']],
       timing: [['within_month', 'Within a month'], ['one_to_three', 'In 1–3 months'], ['three_plus', 'In more than 3 months'], ['exploring', 'Just exploring']],
       source: [['search', 'Search engine'], ['ai_assistant', 'AI assistant (ChatGPT, Claude, Perplexity…)'], ['linkedin', 'LinkedIn'], ['referral', 'Referral'], ['event', 'Event or workshop'], ['social_other', 'Other social media'], ['other', 'Other']],
@@ -94,7 +94,7 @@ const Q = {
     opt: {
       industry: [['professional_services', '专业服务'], ['manufacturing', '制造业'], ['distribution', '分销与物流'], ['construction', '建筑与现场服务'], ['healthcare', '医疗健康'], ['finance', '金融与保险'], ['real_estate', '房地产'], ['retail', '零售与电商'], ['technology', '科技'], ['nonprofit_education', '非营利与教育'], ['public_sector', '政府与公共部门'], ['other', '其他']],
       headcount: [['1-19', '1–19 人'], ['20-49', '20–49 人'], ['50-99', '50–99 人'], ['100-249', '100–249 人'], ['250-999', '250–999 人'], ['1000+', '1,000 人以上']],
-      format: [['workshop_90', '90 分钟团队工作坊'], ['onsite_day', '全天上门培训（德州）'], ['four_session', `4 × 90 分钟课程项目（每人 ${PROGRAM_PRICE} 起）`], ['not_sure', '还没确定']],
+      format: [['workshop_90', '90 分钟团队工作坊'], ['onsite_day', '全天上门培训（德州）'], ['four_session', '4 × 90 分钟课程项目'], ['not_sure', '还没确定']],
       location: [['remote', '远程（视频）'], ['dfw_onsite', '达拉斯—沃斯堡上门'], ['other_texas', '德州其他城市上门（差旅另行报价）']],
       timing: [['within_month', '一个月内'], ['one_to_three', '1–3 个月内'], ['three_plus', '3 个月以后'], ['exploring', '先了解一下']],
       source: [['search', '搜索引擎'], ['ai_assistant', 'AI 助手（ChatGPT、Claude、Perplexity 等）'], ['linkedin', 'LinkedIn'], ['referral', '朋友或同事推荐'], ['event', '活动或工作坊'], ['social_other', '其他社交媒体'], ['other', '其他']],

@@ -1,5 +1,5 @@
 // /ai-training/ — the corporate AI training pillar (design canvas: Training / ZH-Training). Indexable, self-canonical.
-import { SITE, SMS_TEL, SMS_DISPLAY, GBP_URL, TRAINING, PROGRAM_PRICE, OFFERS } from '../config.mjs';
+import { SITE, SMS_TEL, SMS_DISPLAY, GBP_URL, TRAINING, OFFERS } from '../config.mjs';
 import { planBtn, photoHero, ctaBand, L } from '../layout.mjs';
 import { breadcrumb } from '../components.mjs';
 import { business, person, faqPage } from '../schema.mjs';
@@ -10,14 +10,14 @@ const S = TRAINING.sessions, M = TRAINING.sessionMin;
 const C = {
   en: {
     title: 'Corporate AI Training for Employees | 4 Sessions | AI Man Jack',
-    description: `Practical AI training for business owners and nontechnical teams. Four live ${M}-minute sessions from ${PROGRAM_PRICE}/person. Online across the U.S. or onsite in Dallas–Fort Worth, in English or Chinese.`,
+    description: `Practical AI training for business owners and nontechnical teams. Four live ${M}-minute sessions, priced for your team. Online across the U.S. or onsite in Dallas–Fort Worth, in English or Chinese.`,
     og: { title: 'Corporate AI Training for Your Team’s Everyday Work', description: 'Work through familiar business tasks with Jack Qian using company-approved tools. Practise giving clear instructions, reviewing outputs and setting data boundaries.', alt: 'Jack Qian teaching a hands-on AI training session in Dallas' },
     crumb: 'AI training', eyebrow: 'Remote across the U.S. · Dallas–Fort Worth onsite · English or Chinese',
     h1: 'Corporate AI training for your team’s <em>everyday work</em>',
     sub: 'Learn to apply AI to the tasks your team already handles—from preparing for customer meetings to documenting processes and drafting reports.',
     intro: 'AI Man Jack offers practical training for business owners and nontechnical teams, personally designed and taught by Jack Qian.',
     seePricing: 'See pricing & format', text: 'Prefer to text? Send TRAINING to', heroAlt: 'A full classroom in Dallas at one of Jack Qian’s hands-on AI workshops',
-    stats: [[PROGRAM_PRICE, `Per person · ${S}-session program starts here`], [`${S} × ${M} min`, 'Live sessions'], ['Custom', 'Your team’s tasks and approved tools'], ['Remote U.S.', 'Dallas–Fort Worth onsite available']],
+    stats: [['By quote', 'Priced for your team’s size and goals'], [`${S} × ${M} min`, 'Live sessions'], ['Custom', 'Your team’s tasks and approved tools'], ['Remote U.S.', 'Dallas–Fort Worth onsite available']],
     teams: [
       ['sales', 'Sales', 'Research an account, prepare for a meeting or draft a follow-up email from call notes.', 'Explore sales workflows'],
       ['operations', 'Operations and administration', 'Turn meeting notes into action items, draft a procedure from a walkthrough or prepare a weekly report from a spreadsheet export.', 'Explore operations workflows'],
@@ -30,26 +30,26 @@ const C = {
       ['Review the output.', 'Check facts, missing context and unsupported claims, including practice with a deliberately flawed example.'],
       ['Set clear boundaries.', 'Agree which information can be used and where a person must approve the result.'],
     ],
-    fmt: { k: 'Core program', big: `${S} sessions`, sub: `${S} × ${M}-minute live sessions`, chip: `Starting at ${PROGRAM_PRICE}/person`,
+    fmt: { k: 'Core program', big: `${S} sessions`, sub: `${S} × ${M}-minute live sessions`, chip: 'Priced by quote',
       p: 'In the four-session program, participants try their workflows between meetings and bring back questions, errors and review difficulties. Later sessions address what needs improvement.',
       items: [`${S} live ${M}-minute sessions, workflow instructions and a repeatable playbook`, 'Two weeks after the final session, Jack checks whether each workflow should continue, change or stop', 'The review considers actual use, output accuracy and the effort needed to check the work'],
       note: 'Custom team pricing available. Exact content changes based on the team’s tasks.' },
     faq: [
-      ['Which tools will we use?', 'Training uses tools your company has approved, which may include ChatGPT, Claude, Gemini or Microsoft Copilot. The selection depends on your team’s tasks and access.'],
+      ['Which tools will we use?', 'Training uses tools your company has approved, which may include <a href="/ai-training/chatgpt/">ChatGPT</a>, <a href="/ai-training/claude/">Claude</a>, Gemini, <a href="/ai-training/copilot/">Microsoft Copilot</a> or <a href="/ai-training/grok/">Grok</a>. The selection depends on your team’s tasks and access.'],
       ['What should participants prepare?', `Bring a few recurring tasks and suitable sample material. Participants need a laptop and access to the agreed tool. Onsite sessions also require reliable Wi-Fi and a shared screen or projector. <a href="${OFFERS.onsite.path}">Onsite preparation details</a>.`],
       ['Does training include software implementation?', 'Training does not include software development or CRM/ERP configuration and integration. Connecting to live systems or automatically updating records requires a separate implementation scope, permissions and testing.'],
     ],
   },
   zh: {
     title: '企业员工 AI 培训 | 四次定制实操课程 | AI Man Jack',
-    description: `围绕团队日常工作开展的企业 AI 实操培训。四节 ${M} 分钟实时课程，每人 ${PROGRAM_PRICE} 起。全美远程，达拉斯—沃斯堡可上门，中文或英文授课。`,
+    description: `围绕团队日常工作开展的企业 AI 实操培训。四节 ${M} 分钟实时课程，按团队报价。全美远程，达拉斯—沃斯堡可上门，中文或英文授课。`,
     og: { title: '围绕团队日常工作开展的企业 AI 实操培训', description: '从客户会议、流程文档到报告，结合团队已经在做的任务，练习使用 AI、核验输出，并明确数据与审批边界。', alt: 'Jack Qian 在达拉斯主讲 AI 实操培训' },
     crumb: 'AI 培训', eyebrow: '全美实时远程授课 · 达拉斯—沃斯堡（DFW）可上门 · 中文或英文授课',
     h1: '围绕团队<em style="white-space:nowrap">日常工作</em>开展的<br>企业 AI 实操培训',
     sub: '从准备客户会议，到整理工作流程、起草报告，结合团队已经在做的任务，练习如何使用 AI，以及如何核验它的输出。',
     intro: 'AI Man Jack 为企业老板和非技术团队提供实操培训，由 Jack Qian 本人设计课程并授课。',
     seePricing: '查看价格与形式', text: '更习惯短信？发送 TRAINING 至', heroAlt: '达拉斯，Jack Qian 主讲的一场 AI 实操工作坊，教室座无虚席',
-    stats: [[`${PROGRAM_PRICE}/人`, '四次课程项目起步价'], [`${S} × ${M} 分钟`, '实时课程'], ['定制', '围绕团队实际任务'], ['全美远程', '达拉斯—沃斯堡可上门']],
+    stats: [['按需报价', '按团队人数和目标报价'], [`${S} × ${M} 分钟`, '实时课程'], ['定制', '围绕团队实际任务'], ['全美远程', '达拉斯—沃斯堡可上门']],
     teams: [
       ['sales', '销售', '调研客户、准备会议，或根据通话记录起草跟进邮件。', '查看销售工作流'],
       ['operations', '运营与行政', '将会议记录整理为待办事项，根据操作讲解起草流程文档，或使用导出的表格数据准备周报。', '查看运营工作流'],
@@ -62,12 +62,12 @@ const C = {
       ['核对输出。', '检查事实、遗漏的信息和缺少依据的说法，并通过刻意设置错误的示例练习发现问题。'],
       ['明确数据与审批边界。', '确定哪些信息可以使用，以及哪些结果在使用前必须由人审批。'],
     ],
-    fmt: { k: '核心项目', big: `${S} 节课`, sub: `${S} 节 ${M} 分钟实时课程`, chip: `每人 ${PROGRAM_PRICE} 起`,
+    fmt: { k: '核心项目', big: `${S} 节课`, sub: `${S} 节 ${M} 分钟实时课程`, chip: '按需报价',
       p: '四次课程项目安排参与者在课间尝试使用工作流，再带着疑问、错误和核验中遇到的困难回来讨论。之后的课程围绕需要改进的地方继续练习。',
       items: [`四节 ${M} 分钟实时课程、工作流说明及可复用的操作手册`, '最后一节课结束两周后，Jack 会回访，了解工作流是否用于实际任务、输出是否足够准确，以及核验需要投入多少精力', '再讨论哪些流程应继续、调整或停止'],
       note: '具体内容会根据团队任务调整。团队可定制报价。' },
     faq: [
-      ['培训使用哪些工具？', '使用公司已批准的工具，可能包括 ChatGPT、Claude、Gemini 或 Microsoft Copilot。具体选择取决于团队的任务和现有使用权限。'],
+      ['培训使用哪些工具？', '使用公司已批准的工具，可能包括 <a href="/zh/ai-training/chatgpt/">ChatGPT</a>、<a href="/zh/ai-training/claude/">Claude</a>、Gemini、<a href="/zh/ai-training/copilot/">Microsoft Copilot</a> 或 <a href="/zh/ai-training/grok/">Grok</a>。具体选择取决于团队的任务和现有使用权限。'],
       ['参与者需要准备什么？', `准备几项重复性任务和适合练习的示例材料，并携带笔记本电脑，确保能够使用约定的工具。上门培训还需要稳定的 Wi-Fi，以及共用屏幕或投影设备。<a href="/zh${OFFERS.onsite.path}">查看上门培训准备事项</a>。`],
       ['培训包含软件开发或系统集成吗？', '培训不包含软件开发，也不包含 CRM／ERP 的配置和集成。连接真实业务系统或自动写入数据，需要另行明确实施范围、权限和测试要求。'],
     ],
@@ -86,7 +86,7 @@ const englishPage = () => {
   const formats = [
     ['workshop', `${OFFERS.workshop.minutes}-minute team workshop`, 'One team wants to explore one or two focused tasks.', 'Guided workflow exercises, written instructions, an output-review checklist and notes on data boundaries.', 'Customized quote', 'Workshop details'],
     ['onsite', 'Full-day onsite training', 'Several teams need shared working rules and time to practise together.', 'Department use cases, guided labs, review checklists and a next-step plan with owners.', 'Customized quote', 'Onsite details'],
-    ['program', 'Four-session program', 'Your team wants to practise between meetings and refine its workflows.', `Four live ${M}-minute sessions, workflow instructions and a repeatable playbook.`, `From ${PROGRAM_PRICE} per person`, 'Program details'],
+    ['program', 'Four-session program', 'Your team wants to practise between meetings and refine its workflows.', `Four live ${M}-minute sessions, workflow instructions and a repeatable playbook.`, 'Priced by quote', 'Program details'],
   ];
   const headers = ['Format', 'A good fit when…', 'What it covers', 'Pricing'];
   return {
@@ -131,7 +131,7 @@ const chinesePage = () => {
   const formats = [
     ['workshop', `${OFFERS.workshop.minutes} 分钟团队工作坊`, '一个团队想先围绕一到两项明确的任务试做。', '在指导下练习工作流，整理操作说明、输出核验清单和数据使用边界。', '按需定制报价', '工作坊详情'],
     ['onsite', '全天上门培训', '多个团队需要统一使用规则，并留出时间集中练习。', '各部门应用场景、实操练习、核验清单，以及明确负责人的后续计划。', '按需定制报价', '上门培训详情'],
-    ['program', '四次课程项目', '希望在课间实际使用工作流，再逐次调整。', `四节 ${M} 分钟实时课程、工作流说明及可复用的操作手册。`, `每人 ${PROGRAM_PRICE} 起`, '课程详情'],
+    ['program', '四次课程项目', '希望在课间实际使用工作流，再逐次调整。', `四节 ${M} 分钟实时课程、工作流说明及可复用的操作手册。`, '按需报价', '课程详情'],
   ];
   const headers = ['培训形式', '适合什么情况', '主要内容', '价格'];
   return {

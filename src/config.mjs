@@ -32,8 +32,7 @@ export const FEATURES = {
 export const PROOF = { talks: 5, perTalk: '50+', hackathon: 37, reviews: 17, rating: '5.0', reviewsCheckedOn: '2026-10-12' };
 // The only public offer since 2026-09-28: the four-session program, priced per person. The half-day workshop was taken off the
 // site (not repriced); a 90-minute session is mentioned only as a shorter first step. Change a price here only.
-export const TRAINING = { programFrom: 499, sessions: 4, sessionMin: 90 };
-export const PROGRAM_PRICE = `$${TRAINING.programFrom}`;
+export const TRAINING = { sessions: 4, sessionMin: 90 };   // no public price (Jack, 2026-10-17): every format is quoted per team
 
 // Team formats (Revenue OS v6, W-001, 2026-10-08). Only custom-four has an owner-approved public price. The 90-minute team workshop
 // and the full-day onsite day are OWNER-UNAPPROVED: they are published with NO price — "Request a scoped quote" only. Proposed
@@ -46,7 +45,8 @@ export const OFFERS = {
 };
 export const QUOTE_URL = '/contact/quote/';   // quote-intake form (src/pages/contact.mjs) → POST /v1/intake
 export const INTAKE_FORM_VERSION = 'intake-2026-10-08';
-export const CONSENT_NOTICE_VERSION = 'privacy-2026-10-08-draft';   // bump with every change to the quote-form consent wording or /privacy
+export const QUICK_FORM_VERSION = 'intake-2026-10-17';   // short "easy quote" form on the tool pages (src/quick-quote.mjs), kind=quick
+export const CONSENT_NOTICE_VERSION = 'privacy-2026-10-17-draft';   // bump with every change to the quote-form consent wording or /privacy
 
 export const BUSINESS_SAME_AS = [GBP_URL, 'https://nextdoor.com/page/ai-man-jack-melissa-tx/', 'https://www.linkedin.com/in/quandong-qian-156563191/', 'https://www.youtube.com/@JackBuildAI', 'https://x.com/JackQianAI', 'https://www.facebook.com/profile.php?id=100084925451350'];
 export const JACK_SAME_AS = ['https://realagentusecases.com/', 'https://luma.com/user/usr-FlERJUF6Mcrie58', 'https://github.com/qianquandong', 'https://www.linkedin.com/in/quandong-qian-156563191/', 'https://www.youtube.com/@JackBuildAI', 'https://x.com/JackQianAI', 'https://www.threads.com/@jack_qian616', 'https://www.facebook.com/profile.php?id=100084925451350', 'https://nextdoor.com/page/ai-man-jack-melissa-tx/'];
