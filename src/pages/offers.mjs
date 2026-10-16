@@ -3,7 +3,7 @@
 // fails on any other $ figure on these pages). /ai-training/ stays the canonical four-session page; there is no duplicate of it.
 // JSON-LD: Service + BreadcrumbList + business reference only — no Offer price, no Review / AggregateRating / FAQPage.
 // Copy describes a proposed format: the owner reviews agenda, inclusions and group-size wording before production.
-import { SITE, BOOK_URL, PROGRAM_PRICE, OFFERS, QUOTE_URL } from '../config.mjs';
+import { SITE, BOOK_URL, OFFERS, QUOTE_URL } from '../config.mjs';
 import { L } from '../layout.mjs';
 import { T } from '../i18n.mjs';
 import { breadcrumb } from '../components.mjs';
@@ -23,13 +23,13 @@ const CHOOSER = {
     cards: [
       ['workshop', '90-minute workshop', 'One live session for one team: test one or two AI workflows on tasks people already do.', 'Scoped quote', 'See the workshop'],
       ['onsite', 'Full-day onsite (Texas)', 'A full day at your office: data safety, department use cases and guided labs on real work.', 'Scoped quote · travel outside Dallas–Fort Worth quoted separately', 'See onsite training'],
-      ['program', '4 × 90-min program', 'Four live sessions built around the work you already do, one workflow at a time.', `From ${PROGRAM_PRICE}/person`, 'See the program'],
+      ['program', '4 × 90-min program', 'Four live sessions built around the work you already do, one workflow at a time.', 'Priced by quote', 'See the program'],
     ] },
   zh: { k: '团队培训', h: '选一个起点', p: '每种形式都是围绕团队真实工作的 AI 培训，不是 ERP 或 CRM 定制开发。',
     cards: [
       ['workshop', '90 分钟团队工作坊', '一个团队、一次实时课程：用大家手头的真实任务，测试一到两条 AI 工作流。', '按需报价', '了解工作坊'],
       ['onsite', '全天上门培训（德州）', '到贵公司现场一整天：数据安全、各部门应用场景，以及围绕真实工作的实操练习。', '按需报价 · 达拉斯—沃斯堡以外差旅另计', '了解上门培训'],
-      ['program', '4 × 90 分钟课程项目', '四节实时课程，围绕你已经在做的工作，一次落地一条工作流。', `每人 ${PROGRAM_PRICE} 起`, '查看课程项目'],
+      ['program', '4 × 90 分钟课程项目', '四节实时课程，围绕你已经在做的工作，一次落地一条工作流。', '按需报价', '查看课程项目'],
     ] },
 };
 export function chooser(lang, { pos, programHref }) {
@@ -65,9 +65,9 @@ const C = {
       fmt: [['Length', '90 minutes, live'], ['Delivery', 'Remote by video anywhere in the U.S., or onsite in Dallas–Fort Worth'], ['Elsewhere in Texas', 'On request; travel is quoted separately'], ['Language', 'English or Chinese'], ['Group size', 'Agreed in the quote, so the trainer can check each person’s workflow']],
       priceK: 'Pricing', priceH: 'Scoped quote',
       priceP: 'Pricing depends on team size, location and preparation. Send the quote request or book a 20-minute workflow call; you receive a written scope and price before anything is agreed.',
-      priceNote: `The only published price on this site is the <a href="${PROG('en')}">four-session program</a>, from ${PROGRAM_PRICE} per person.`,
+      priceNote: `We do not publish prices: every format, including the <a href="${PROG('en')}">four-session program</a>, is quoted in writing for your team.`,
       faqK: 'Common questions', faqH: 'About the workshop',
-      faq: [['Is this a software or automation build?', 'No. It is AI training. Your team learns to use approved AI tools on its own tasks. We do not build, configure or integrate ERP, CRM or other business systems. If a task touches those systems, we work on the parts around them — preparing notes, drafting updates, checking exports — not on the systems themselves.'], ['How many people can attend?', 'It is agreed in the quote. The session is hands-on, so the trainer needs to see each person’s workflow; a larger group can be split into two sessions.'], ['Which AI tools do you use?', 'The ones your company has already approved — for example ChatGPT, Claude, Gemini or Microsoft Copilot. The method works the same across tools.'], ['Can the workshop lead into the four-session program?', `Yes, if the workshop shows the team would benefit from more. The <a href="${PROG('en')}">four-session program</a> starts at ${PROGRAM_PRICE} per person and continues on the same kind of real tasks. There is no obligation.`], ['Why is there no price on this page?', 'Because the price depends on how many people attend, where the session runs and how much preparation the tasks need. You get a written quote for your team instead of a number that may not fit.']],
+      faq: [['Is this a software or automation build?', 'No. It is AI training. Your team learns to use approved AI tools on its own tasks. We do not build, configure or integrate ERP, CRM or other business systems. If a task touches those systems, we work on the parts around them — preparing notes, drafting updates, checking exports — not on the systems themselves.'], ['How many people can attend?', 'It is agreed in the quote. The session is hands-on, so the trainer needs to see each person’s workflow; a larger group can be split into two sessions.'], ['Which AI tools do you use?', 'The ones your company has already approved — for example ChatGPT, Claude, Gemini or Microsoft Copilot. The method works the same across tools.'], ['Can the workshop lead into the four-session program?', `Yes, if the workshop shows the team would benefit from more. The <a href="${PROG('en')}">four-session program</a> is quoted the same way and continues on the same kind of real tasks. There is no obligation.`], ['Why is there no price on this page?', 'Because the price depends on how many people attend, where the session runs and how much preparation the tasks need. You get a written quote for your team instead of a number that may not fit.']],
       ctaH: 'Plan your team’s workshop', ctaP: 'Tell us about the team and the work, or talk it through on a 20-minute workflow call first.',
       ld: { name: '90-Minute AI Team Workshop', desc: 'A 90-minute, hands-on AI training session for one team, built on one or two of the team’s real workflows, using company-approved AI tools and synthetic or approved data. Remote or onsite in Dallas–Fort Worth. AI training, not software implementation. Priced by scoped quote.' },
     },
@@ -93,9 +93,9 @@ const C = {
       fmt: [['时长', '90 分钟，实时授课'], ['授课方式', '全美远程视频授课，或在达拉斯—沃斯堡上门'], ['德州其他城市', '可按需安排，差旅另行报价'], ['语言', '中文或英文'], ['人数', '在报价中确定，确保讲师能逐一检查每个人的工作流']],
       priceK: '价格', priceH: '按需报价',
       priceP: '价格取决于团队人数、授课地点和准备工作量。提交报价申请，或预约 20 分钟工作流咨询；在确认任何安排之前，你都会先收到书面的服务范围和报价。',
-      priceNote: `本站唯一公开标价的是<a href="${PROG('zh')}">四次课程项目</a>，每人 ${PROGRAM_PRICE} 起。影响团队培训价格的因素，见<a href="/zh/ai-peixun-shi/">《AI 培训学费一般是多少》</a>。`,
+      priceNote: `本站不公开标价：包括<a href="${PROG('zh')}">四次课程项目</a>在内，每种形式都按团队书面报价。影响团队培训价格的因素，见<a href="/zh/ai-peixun-shi/">《AI 培训学费一般是多少》</a>。`,
       faqK: '常见问题', faqH: '关于工作坊',
-      faq: [['这是软件或自动化开发项目吗？', '不是，这是 AI 培训。团队学的是用已批准的 AI 工具处理自己的任务。我们不开发、配置或对接 ERP、CRM 等业务系统。如果某项任务涉及这些系统，我们处理的是系统之外的那部分工作，比如整理记录、起草更新、核对导出的数据，而不是系统本身。'], ['可以有多少人参加？', '人数在报价中确定。工作坊以实操为主，讲师需要看到每个人的工作流；人多的话可以拆成两场。'], ['用哪些 AI 工具？', '贵公司已批准的工具，例如 ChatGPT、Claude、Gemini 或 Microsoft Copilot。方法在各种工具上通用。'], ['工作坊之后可以接着上四次课程项目吗？', `可以，前提是工作坊证明团队确实需要更多培训。<a href="${PROG('zh')}">四次课程项目</a>每人 ${PROGRAM_PRICE} 起，继续围绕同类真实任务展开，没有续约义务。`], ['为什么这一页没有标价？', '因为价格取决于参加人数、授课地点和任务所需的准备工作量。与其给一个未必合适的数字，不如为你的团队出一份书面报价。']],
+      faq: [['这是软件或自动化开发项目吗？', '不是，这是 AI 培训。团队学的是用已批准的 AI 工具处理自己的任务。我们不开发、配置或对接 ERP、CRM 等业务系统。如果某项任务涉及这些系统，我们处理的是系统之外的那部分工作，比如整理记录、起草更新、核对导出的数据，而不是系统本身。'], ['可以有多少人参加？', '人数在报价中确定。工作坊以实操为主，讲师需要看到每个人的工作流；人多的话可以拆成两场。'], ['用哪些 AI 工具？', '贵公司已批准的工具，例如 ChatGPT、Claude、Gemini 或 Microsoft Copilot。方法在各种工具上通用。'], ['工作坊之后可以接着上四次课程项目吗？', `可以，前提是工作坊证明团队确实需要更多培训。<a href="${PROG('zh')}">四次课程项目</a>同样按团队报价，继续围绕同类真实任务展开，没有续约义务。`], ['为什么这一页没有标价？', '因为价格取决于参加人数、授课地点和任务所需的准备工作量。与其给一个未必合适的数字，不如为你的团队出一份书面报价。']],
       ctaH: '规划团队的工作坊', ctaP: '告诉我们团队和工作的情况，或先预约一次 20 分钟工作流咨询聊一聊。',
       ld: { name: '90 分钟团队 AI 工作坊', desc: '为一个团队安排的 90 分钟 AI 实操培训，围绕团队的一到两项真实工作流，使用公司已批准的 AI 工具和模拟或已批准的数据。远程或达拉斯—沃斯堡上门。属于 AI 培训，不是软件实施。按需报价。' },
     },
@@ -125,7 +125,7 @@ const C = {
       fmt: [['Length', 'One full day, breaks included'], ['Dallas–Fort Worth', 'Onsite at your office — Dallas, Fort Worth, Plano, Richardson, Frisco, McKinney, Arlington and everywhere between. <a href="/ai-training/dallas/">The sessions we have run in Dallas–Fort Worth →</a>'], ['Elsewhere in Texas', 'On request — for example Austin, Houston, San Antonio or Odessa. Travel and lodging are quoted separately; there is no flat price outside Dallas–Fort Worth'], ['Language', 'English or Chinese'], ['Group size', 'Agreed in the quote, based on the room and how many people the trainer can check during the labs']],
       priceK: 'Pricing', priceH: 'Scoped quote',
       priceP: 'Pricing depends on team size, location and preparation. Travel outside Dallas–Fort Worth is quoted separately. Send the onsite quote request or book a 20-minute workflow call to receive a written scope and price.',
-      priceNote: `The only published price on this site is the <a href="${PROG('en')}">four-session program</a>, from ${PROGRAM_PRICE} per person.`,
+      priceNote: `We do not publish prices: every format, including the <a href="${PROG('en')}">four-session program</a>, is quoted in writing for your team.`,
       faqK: 'Common questions', faqH: 'About onsite training',
       faq: [['Do you set up AI inside our CRM or ERP?', 'No. This is AI training, not a custom ERP or CRM build. We teach people to use approved AI tools for the work around those systems; we do not integrate, configure or change them.'], ['Can you come to Odessa or another Texas city?', 'Yes, on request. Travel and lodging are quoted separately for any location outside Dallas–Fort Worth, so there is no flat price for those days.'], ['Can the day be split across departments?', 'Yes. The use-case and lab blocks can be grouped by department; the data-safety block is shared, so everyone works to the same rules.'], ['What do we need to provide?', 'A room with a screen and Wi-Fi, a laptop for each attendee with the approved AI tool, and two or three real tasks from each person before the day.'], ['Is there a remote option?', `Yes. The <a href="${L('en', OFFERS.workshop.path)}">90-minute team workshop</a> and the <a href="${PROG('en')}">four-session program</a> can both run remotely.`]],
       ctaH: 'Plan an onsite day', ctaP: 'Tell us where, how many people and which teams, or talk it through on a 20-minute workflow call first.',
@@ -154,7 +154,7 @@ const C = {
       fmt: [['时长', '一整天，含休息时间'], ['达拉斯—沃斯堡', '到贵公司现场授课：Dallas、Fort Worth、Plano、Richardson、Frisco、McKinney、Arlington 及周边。<a href="/zh/ai-training/dallas/">我们在达拉斯—沃斯堡办过的活动 →</a>'], ['德州其他城市', '可按需安排，例如 Austin、Houston、San Antonio 或 Odessa。差旅和住宿另行报价，达拉斯—沃斯堡以外没有固定价格'], ['语言', '中文或英文'], ['人数', '在报价中确定，取决于场地以及讲师在实操环节能照顾到的人数']],
       priceK: '价格', priceH: '按需报价',
       priceP: '价格取决于团队人数、授课地点和准备工作量，达拉斯—沃斯堡以外的差旅另行报价。提交上门培训报价申请，或预约 20 分钟工作流咨询，即可获得书面的服务范围和报价。',
-      priceNote: `本站唯一公开标价的是<a href="${PROG('zh')}">四次课程项目</a>，每人 ${PROGRAM_PRICE} 起。影响团队培训价格的因素，见<a href="/zh/ai-peixun-shi/">《AI 培训学费一般是多少》</a>。`,
+      priceNote: `本站不公开标价：包括<a href="${PROG('zh')}">四次课程项目</a>在内，每种形式都按团队书面报价。影响团队培训价格的因素，见<a href="/zh/ai-peixun-shi/">《AI 培训学费一般是多少》</a>。`,
       faqK: '常见问题', faqH: '关于上门培训',
       faq: [['你们会在我们的 CRM 或 ERP 里部署 AI 吗？', '不会。这是 AI 培训，不是 ERP 或 CRM 定制开发。我们教员工把已批准的 AI 工具用在这些系统周边的工作上，不对系统做对接、配置或改动。'], ['可以到 Odessa 或德州其他城市上门吗？', '可以，按需安排。达拉斯—沃斯堡以外的地点，差旅和住宿都另行报价，因此没有固定价格。'], ['一天的培训可以按部门分开吗？', '可以。应用场景和实操环节可以按部门分组；数据安全部分大家一起上，确保所有人遵守同一套规则。'], ['我们需要准备什么？', '一间有屏幕和 Wi-Fi 的会议室，每位学员一台能使用已批准 AI 工具的笔记本电脑，以及每人在培训前提交的两三项真实任务。'], ['有远程的选择吗？', `有。<a href="${L('zh', OFFERS.workshop.path)}">90 分钟团队工作坊</a>和<a href="${PROG('zh')}">四次课程项目</a>都可以远程进行。`]],
       ctaH: '规划一天上门培训', ctaP: '告诉我们地点、人数和涉及的团队，或先预约一次 20 分钟工作流咨询聊一聊。',

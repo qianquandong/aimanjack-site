@@ -131,7 +131,7 @@ function track(n,p){gtag('event',n,Object.assign({page:location.pathname,languag
 window.amjTrack=track;
 // Motion (2026-09): count-up on .stat-bar numbers + pointer position for the .prog spotlight. Scroll reveals are CSS-only (style.css "MOTION").
 // The HTML always carries the final number; this only replays it, and not at all under prefers-reduced-motion.
-// Prices and formats ($499/person, 4 × 90 min) are not counted up: only counts of people, talks and ratings.
+// Formats (4 × 90 min) are not counted up: only counts of people, talks and ratings.
 if(!matchMedia('(prefers-reduced-motion:reduce)').matches&&'IntersectionObserver' in window){
  var io=new IntersectionObserver(function(es){es.forEach(function(en){if(!en.isIntersecting)return;io.unobserve(en.target);
   var el=en.target,t=el.textContent,m=t.match(/\d[\d,]*(\.\d+)?/);if(!m||/[$×]/.test(t))return;

@@ -3,7 +3,7 @@
 // a 30-minute call, a 9/24 receptionist workshop and self-serving AggregateRating schema. Now generated, tested and in the sitemap
 // like every other page. No EN twin exists, so the route has only `zh` (hreflang zh + x-default → the zh URL).
 // Prices: only the owner-approved four-session price; the workshop and onsite day are "按需报价" with no number.
-import { SITE, BOOK_URL, PROGRAM_PRICE, PROOF, TRAINING, OFFERS, QUOTE_URL } from '../config.mjs';
+import { SITE, BOOK_URL, PROOF, TRAINING, OFFERS, QUOTE_URL } from '../config.mjs';
 import { L } from '../layout.mjs';
 import { T } from '../i18n.mjs';
 import { breadcrumb } from '../components.mjs';
@@ -23,15 +23,15 @@ const webPage = (path, name, description) => ({ '@type': 'WebPage', '@id': `${SI
 
 const priceGuide = () => {
   const title = 'AI 培训学费一般是多少？企业团队培训价格的 5 个影响因素 | AI Man Jack';
-  const description = `AI 培训学费一般是多少？公司给团队请 AI 培训，价格主要由人数、定制程度、数据敏感度、授课地点和课后跟进决定。AI Man Jack 的四次课程项目每人 ${PROGRAM_PRICE} 起；90 分钟工作坊和全天上门培训按需报价。`;
+  const description = `AI 培训学费一般是多少？公司给团队请 AI 培训，价格主要由人数、定制程度、数据敏感度、授课地点和课后跟进决定。AI Man Jack 的所有培训形式都按团队书面报价。`;
   const bc = breadcrumb(lang, [[T.zh.nav.training, '/ai-training/'], ['AI 培训学费一般是多少', PRICE_GUIDE]]);
   return {
     title, description,
     body: `${hero(bc, 'AI 培训 · 价格说明 · 达拉斯—沃斯堡及全美远程', 'AI 培训学费一般是多少？<br>先看清影响价格的 5 个因素',
-      `AI Man Jack 的四次课程项目每人 ${PROGRAM_PRICE} 起，包含 ${TRAINING.sessions} 节 × ${TRAINING.sessionMin} 分钟实时课程；90 分钟团队工作坊和全天上门培训按需报价。这一页解释我们的报价范围和需要提前确认的费用，不把它当作整个市场的统一价格。`, 'fee-hero')}
+      `AI Man Jack 的四次课程项目（${TRAINING.sessions} 节 × ${TRAINING.sessionMin} 分钟实时课程）、90 分钟团队工作坊和全天上门培训，都按团队书面报价。这一页解释我们的报价范围和需要提前确认的费用，不把它当作整个市场的统一价格。`, 'fee-hero')}
 
 <section class="sec tight" id="our-prices"><div class="wrap g2" style="gap:24px"><div class="big-card"><h2>先说我们的价格</h2><dl class="kv">
-<dt>${a('/ai-training/', '四次课程项目', 'fee-prices')}</dt><dd>每人 ${PROGRAM_PRICE} 起，${TRAINING.sessions} 节 × ${TRAINING.sessionMin} 分钟实时课程，围绕学员手头的工作定制；团队可定制报价。</dd>
+<dt>${a('/ai-training/', '四次课程项目', 'fee-prices')}</dt><dd>按团队报价，${TRAINING.sessions} 节 × ${TRAINING.sessionMin} 分钟实时课程，围绕学员手头的工作定制；团队可定制报价。</dd>
 <dt>${a(OFFERS.workshop.path, '90 分钟团队工作坊', 'fee-prices')}</dt><dd>按需报价：价格取决于人数、授课地点和准备工作量。</dd>
 <dt>${a(OFFERS.onsite.path, '全天上门培训（德州）', 'fee-prices')}</dt><dd>按需报价；达拉斯—沃斯堡以外的差旅和住宿另行报价，没有固定价格。</dd></dl></div>
 <div class="big-card oakc"><h2>为什么只有一种形式标了价</h2><p>本站唯一公开标价的是四次课程项目。另外两种形式在确定人数、地点和任务之前，我们不给一个笼统的数字，而是提交申请后出一份书面的服务范围和报价。</p><p>无论哪种形式，都是 AI 培训，不是 ERP 或 CRM 定制开发。</p>${ctas('fee-prices')}</div></div></section>
@@ -50,7 +50,7 @@ ${nums([
 
 <section class="sec tight" id="faq"><div class="wrap">${head('常见问题', '关于价格，直接回答')}
 ${faq([
-  [`四次课程项目每人 ${PROGRAM_PRICE} 包含什么？`, `${TRAINING.sessions} 节 ${TRAINING.sessionMin} 分钟的实时课程，围绕学员已经在做的工作设计，一次落地一条工作流；课间实际使用，下一节课再修正。团队价格根据人数、目标和准备工作量定制。详情见${a('/ai-training/', 'AI 培训页')}。`],
+  [`四次课程项目包含什么？`, `${TRAINING.sessions} 节 ${TRAINING.sessionMin} 分钟的实时课程，围绕学员已经在做的工作设计，一次落地一条工作流；课间实际使用，下一节课再修正。团队价格根据人数、目标和准备工作量定制。详情见${a('/ai-training/', 'AI 培训页')}。`],
   ['90 分钟工作坊和全天上门培训为什么没有标价？', '因为价格取决于人数、授课地点和任务所需的准备工作量。提交报价申请后，我们会给出书面的服务范围和报价。'],
   ['能到德州其他城市上门吗？', '可以按需安排，例如 Odessa、Austin、Houston 或 San Antonio。达拉斯—沃斯堡以外的差旅和住宿另行报价。'],
   ['用中文还是英文授课？', '都可以，由同一位讲师授课，课程资料提供中英文两个版本。'],
@@ -89,7 +89,7 @@ ${nums([
 <dt>课后跟进</dt><dd>四次课程项目的每节课都从上次以来的实际使用情况开始；最后一节课结束两周后，再确认每条工作流应继续、调整还是停止。</dd>
 <dt>形式</dt><dd>${a(OFFERS.workshop.path, '90 分钟团队工作坊', 'choose-answers')}、${a(OFFERS.onsite.path, '德州全天上门培训', 'choose-answers')}、${a('/ai-training/', `${TRAINING.sessions} × ${TRAINING.sessionMin} 分钟课程项目`, 'choose-answers')}；先了解情况，再推荐。</dd>
 <dt>数据规则</dt><dd>课程一开始就讲：已批准的工具、禁止输入的信息、由谁签字确认。</dd>
-<dt>价格</dt><dd>四次课程项目每人 ${PROGRAM_PRICE} 起；90 分钟工作坊和全天上门培训按需报价，达拉斯—沃斯堡以外的差旅另计。详见${a(PRICE_GUIDE, '《AI 培训学费一般是多少》', 'choose-answers')}。</dd>
+<dt>价格</dt><dd>四次课程项目、90 分钟工作坊和全天上门培训均按需报价，达拉斯—沃斯堡以外的差旅另计。详见${a(PRICE_GUIDE, '《AI 培训学费一般是多少》', 'choose-answers')}。</dd>
 <dt>语言</dt><dd>中文或英文，同一位讲师。</dd>
 <dt>不做的事</dt><dd>我们做 AI 培训，不做 ERP 或 CRM 定制开发。</dd></dl>${ctas('choose-answers')}</div></div></section>`,
     jsonld: [webPage(CHOOSE_GUIDE, title, description), BUSINESS_REF, bc.ld],

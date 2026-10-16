@@ -103,7 +103,7 @@ else {
 const robots = (await get("/robots.txt")).body;
 add("geo:robots", /User-agent: \*\s+Allow: \//.test(robots) && !/Disallow: \/\s*$/m.test(robots) ? "PASS" : "FAIL", "AI crawlers (GPTBot/OAI-SearchBot/PerplexityBot/ClaudeBot) must not be blocked");
 const llms = (await get("/llms.txt")).body;
-add("geo:llms-current", /corporate AI training/i.test(llms) && /\$499 per person/.test(llms) && /425-4142/.test(llms) && !/receptionist|\$199/i.test(llms) ? "PASS" : "FAIL", "llms.txt must describe corporate AI training + $499/person program + SMS number, and nothing about the receptionist");
+add("geo:llms-current", /corporate AI training/i.test(llms) && /no public price list/i.test(llms) && !/\$\d/.test(llms) && /425-4142/.test(llms) && !/receptionist|\$199/i.test(llms) ? "PASS" : "FAIL", "llms.txt must describe corporate AI training + no public price + SMS number, and nothing about the receptionist");
 
 // 7. Data plumbing the task needs — WARN until Jack wires them (HEALTH-CHECK.md §2)
 add("creds:google-api", existsSync(`${process.env.HOME}/.config/claude-seo/google-api.json`) ? "PASS" : "WARN", "GSC/GA4/PSI via claude-seo need ~/.config/claude-seo/google-api.json");

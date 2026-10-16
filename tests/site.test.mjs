@@ -141,7 +141,8 @@ test('legacy receptionist routes still render but are noindex and out of the sit
 test('llms.txt describes training and nothing about the receptionist', () => {
   const t = llms();
   assert.match(t, /corporate AI training/i);
-  assert.match(t, /\$499 per person/);
+  assert.match(t, /no public price list/i);
+  assert.doesNotMatch(t, /\$\s?\d/, 'llms.txt states no price');
   assert.doesNotMatch(t, /\$1,500|half-day/i);
   assert.match(t, /aimanjack\.com\/ai-training\//);
   for (const re of [/receptionist/i, /\$199/, /517-2968/, /demo line/i]) assert.doesNotMatch(t, re);
@@ -282,8 +283,8 @@ test('the four-session program is the only offer on Home and Training; the clien
   const pages = await allPages();
   for (const path of ['/', '/ai-training/']) {
     const b = body(find(pages, path, 'en').html), z = body(find(pages, path, 'zh').html);
-    for (const re of [/\$499\/person/, /4 × 90 min/, /Custom (?:team )?pricing available/, /Remote across the U\.S\./, /Dallas–Fort Worth onsite/]) assert.match(b, re, `${path} shows ${re}`);
-    for (const re of [/\$499/, /4 × 90 分钟/, /定制报价/, /全美远程/]) assert.match(z, re, `zh ${path} shows ${re}`);
+    for (const re of [/Priced by quote/, /4 × 90 min/, /Remote across the U\.S\./, /Dallas–Fort Worth onsite/]) assert.match(b, re, `${path} shows ${re}`);
+    for (const re of [/按需报价/, /4 × 90 分钟/, /全美远程/]) assert.match(z, re, `zh ${path} shows ${re}`);
     for (const x of [b, z]) {
       assert.equal((x.match(/<div class="prog[ "]/g) || []).length, 1, `${path} has exactly one offer card`);
       assert.match(x, /class="prog dark on-dark solo"/);
@@ -300,7 +301,7 @@ test('the four-session program is the only offer on Home and Training; the clien
   for (const x of pages.filter((x) => !x.page.noindex && !x.p.path.startsWith('/blog/'))) assert.doesNotMatch(body(x.html) + ld(x.html), /\$1,500|Book a Workshop|预约团队培训/, `${x.lang}:${x.p.path}`);
   for (const lang of ['en', 'zh']) {
     assert.doesNotMatch(body(find(pages, '/book/', lang).html), /workshop in one call|规划团队的工作坊|team workshop|团队工作坊/);
-    assert.match(ld(find(pages, '/ai-training/', lang).html), /"price":"499"/);
+    assert.doesNotMatch(ld(find(pages, '/ai-training/', lang).html), /"price"/, 'no price in structured data');
   }
 });
 
@@ -334,7 +335,7 @@ test('team workshop and onsite pages are indexable, bilingual, self-canonical, i
       assert.match(b, lang === 'zh' ? /按需报价/ : /Scoped quote/, `${route} pricing status`);
       assert.match(b, lang === 'zh' ? /价格取决于团队人数、授课地点和准备工作量/ : /Pricing depends on team size, location and preparation/, `${route} pricing drivers`);
       assert.match(b, lang === 'zh' ? /不是 ERP 或 CRM 定制开发/ : /not a custom ERP or CRM build/, `${route} says training, not an ERP/CRM build`);
-      assert.deepEqual([...new Set([...b.matchAll(/\$\s?\d[\d,.]*/g)].map((m) => m[0]))], ['$499'], `${route} shows no amount except the approved program price`);
+      assert.deepEqual([...new Set([...b.matchAll(/\$\s?\d[\d,.]*/g)].map((m) => m[0]))], [], `${route} shows no price`);
       for (const re of UNAPPROVED) assert.doesNotMatch(b + j, re, `${route} ${re}`);
       assert.match(b, /<div class="faq"><details/, `${route} FAQ is plain HTML`);
       assert.match(j, /"@type":"Service"/);
@@ -385,7 +386,8 @@ test('the two Chinese buyer guides are generated, current, and free of retired p
     assert.doesNotMatch(h, /hreflang="(?:en|zh-CN)"/, `zh${path} advertises no EN twin`);
     assert.ok(sitemap.includes(`<loc>${url}</loc>`), `zh${path} in sitemap`);
     assert.ok(b.includes('href="/zh/contact/quote/"') && b.includes('href="/zh/book/"'), `zh${path} CTAs point at the quote form and the workflow call`);
-    assert.match(b, /\$499/, `zh${path} states the approved program price`);
+    assert.doesNotMatch(b, /\$\s?\d/, `zh${path} states no price`);
+    assert.match(b, /按需报价|按团队报价|按团队书面报价/, `zh${path} says pricing is by quote`);
     for (const re of [...UNAPPROVED, /半天/, /30 ?分钟/, /24 ?小时/, /9 月 24/, /AI 前台/, /\/zh\/pricing\//]) assert.doesNotMatch(b + j, re, `zh${path} ${re}`);
     assert.doesNotMatch(j, /AggregateRating|"Review"|ratingValue|"price"/, `zh${path} carries no rating or price schema`);
   }
@@ -537,7 +539,7 @@ test('the Dallas page owns the local term, lists real sessions, and keeps guidel
     for (const p of ['/ai-training/', OFFERS.workshop.path, OFFERS.onsite.path, '/book/']) assert.ok(b.includes(`href="${urlOf(p, lang)}`), `${route} links ${p}`);
     assert.match(j, /"@type":"FAQPage"/); assert.match(j, /"@type":"Place"/);
     assert.doesNotMatch(j, /"@type":"(?:Review|AggregateRating)"|ratingValue/, `${route} no self-serving review markup`);
-    assert.deepEqual([...new Set([...b.matchAll(/\$\s?\d[\d,.]*/g)].map((m) => m[0]))], ['$499'], `${route} shows no amount except the approved program price`);
+    assert.deepEqual([...new Set([...b.matchAll(/\$\s?\d[\d,.]*/g)].map((m) => m[0]))], [], `${route} shows no price`);
     for (const re of BANNED) assert.doesNotMatch(b + j, re, `${route} contains ${re}`);
   }
   // Cannibalization guard: only the Dallas page carries the metro name in its <title> and <h1>.
@@ -565,4 +567,14 @@ test('tool training pages: indexable, full FAQ, no public price anywhere, and a 
     for (const p of ['/ai-training/dallas/', '/ai-training/', ...TOOL_PAGES.filter((k) => k !== key).map((k) => `/ai-training/${k}/`)]) assert.ok(b.includes(`href="${urlOf(p, lang)}`), `${route} links ${p}`);
     for (const re of BANNED) assert.doesNotMatch(b + j, re, `${route} contains ${re}`);
   }
+});
+
+test('no public price on any indexable page or in llms.txt (Jack, 2026-10-17: every format is quoted per team)', async () => {
+  const pages = await allPages();
+  // Legal pages are excluded: /terms still carries the retired receptionist product's billing terms, a legal text Jack edits himself.
+  for (const x of pages.filter((x) => !x.page.noindex && !LEGAL.includes(x.p.path))) {
+    assert.doesNotMatch(body(x.html).replace(/<pre[\s\S]*?<\/pre>/g, ''), /\$\s?\d/, `${x.lang}:${x.p.path} prints a price`);   // <pre> = illustrative example output, not our prices
+    assert.doesNotMatch(ld(x.html), /"price":"(?!0")|"priceSpecification"/, `${x.lang}:${x.p.path} has price markup`);
+  }
+  assert.doesNotMatch(llms(), /\$\s?\d/);
 });

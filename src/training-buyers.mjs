@@ -1,5 +1,5 @@
 // Buyer guidance shared with the existing offers; no additional offer or local doorway route.
-import { OFFERS, PROGRAM_PRICE, TRAINING, GBP_URL, PROOF } from './config.mjs';
+import { OFFERS, TRAINING, GBP_URL, PROOF } from './config.mjs';
 import { L } from './layout.mjs';
 
 const COPY = {
@@ -11,7 +11,7 @@ const COPY = {
     rows: [
       ['workshop', '90-minute team workshop', 'One team wants to try one or two focused tasks.', 'A guided workflow exercise and an output-review checklist.', 'Scoped quote', 'Workshop details'],
       ['onsite', 'Full-day onsite', 'Several teams need shared data rules and time to practise together.', 'Department use cases, guided labs and a next-step plan with owners.', 'Scoped quote; travel outside DFW quoted separately', 'Onsite details'],
-      ['program', `${TRAINING.sessions} × ${TRAINING.sessionMin}-minute program`, 'Your team wants to use workflows between sessions and improve what breaks.', 'Four live sessions, workflow instructions and a repeatable playbook.', `From ${PROGRAM_PRICE}/person; custom team pricing`, 'Program & pricing'],
+      ['program', `${TRAINING.sessions} × ${TRAINING.sessionMin}-minute program`, 'Your team wants to use workflows between sessions and improve what breaks.', 'Four live sessions, workflow instructions and a repeatable playbook.', 'Priced by quote', 'Program & pricing'],
     ],
     prep: 'Before training', prepP: 'Choose a recurring task and a company-approved AI tool. Prepare synthetic or redacted examples and decide who can approve the output. For onsite labs, provide laptops, reliable Wi-Fi and a shared screen.',
     jump: 'Explore the program', links: [['#teams', 'Team use cases'], ['#curriculum', 'Training method'], ['#formats', '4-session plan'], ['#testimonials', 'Google reviews'], ['#faq', 'Questions & answers']],
@@ -24,7 +24,7 @@ const COPY = {
     rows: [
       ['workshop', '90 分钟团队工作坊', '一个团队先试做一到两项明确的任务。', '在指导下练习工作流，并使用输出核验清单。', '按需报价', '工作坊详情'],
       ['onsite', '全天上门培训', '多个团队需要统一数据规则，并留出时间集中练习。', '各部门应用场景、实操练习，以及明确负责人的后续计划。', '按需报价；DFW 以外差旅另计', '上门培训详情'],
-      ['program', `${TRAINING.sessions} × ${TRAINING.sessionMin} 分钟课程`, '希望在课间实际使用工作流，再带着问题回来改进。', '四节实时课程、工作流说明，以及可复用的操作手册。', `每人 ${PROGRAM_PRICE} 起；团队定制报价`, '课程安排与价格'],
+      ['program', `${TRAINING.sessions} × ${TRAINING.sessionMin} 分钟课程`, '希望在课间实际使用工作流，再带着问题回来改进。', '四节实时课程、工作流说明，以及可复用的操作手册。', '按需报价', '课程安排与价格'],
     ],
     prep: '课前准备', prepP: '选一项重复性任务和公司已批准的 AI 工具，准备模拟或脱敏的练习材料，并确定谁来核验输出。上门实操还需要笔记本电脑、稳定的 Wi-Fi 和共用屏幕。',
     jump: '查看课程细节', links: [['#teams', '各团队应用场景'], ['#curriculum', '培训方法'], ['#formats', '四次课程安排'], ['#testimonials', 'Google 评价'], ['#faq', '常见问题']],
@@ -42,8 +42,8 @@ ${c.rows.map(([key, h, fit, deliver, price, link]) => `<tr><th scope="row">${h}<
 
 export function trainingFormatSummary(lang) {
   return lang === 'zh'
-    ? `目前有三种形式：${OFFERS.workshop.minutes} 分钟团队工作坊、全天上门培训，以及 ${TRAINING.sessions} 节 × ${TRAINING.sessionMin} 分钟课程。工作坊与全天培训按需报价；四次课程每人 ${PROGRAM_PRICE} 起。人数、地点和准备工作量在书面报价中确认。`
-    : `Choose a ${OFFERS.workshop.minutes}-minute team workshop, full-day onsite training, or ${TRAINING.sessions} live ${TRAINING.sessionMin}-minute sessions. Workshop and onsite pricing is by scoped quote; the four-session program starts at ${PROGRAM_PRICE} per person. Group size, location and preparation are agreed in the written quote.`;
+    ? `目前有三种形式：${OFFERS.workshop.minutes} 分钟团队工作坊、全天上门培训，以及 ${TRAINING.sessions} 节 × ${TRAINING.sessionMin} 分钟课程。每种形式都按需报价。人数、地点和准备工作量在书面报价中确认。`
+    : `Choose a ${OFFERS.workshop.minutes}-minute team workshop, full-day onsite training, or ${TRAINING.sessions} live ${TRAINING.sessionMin}-minute sessions. Every format is priced by a scoped quote. Group size, location and preparation are agreed in the written quote.`;
 }
 
 export function trainingBrief(lang) {

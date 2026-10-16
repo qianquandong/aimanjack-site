@@ -57,7 +57,7 @@
 <dt>课后跟进</dt><dd>四次课程项目的每节课都从上次以来的实际使用情况开始；最后一节课结束两周后，再确认每条工作流应继续、调整还是停止。</dd>
 <dt>形式</dt><dd><a href="/zh/ai-training/team-workshop/" data-event="guide_link_click" data-pos="choose-answers">90 分钟团队工作坊</a>、<a href="/zh/ai-training/onsite-texas/" data-event="guide_link_click" data-pos="choose-answers">德州全天上门培训</a>、<a href="/zh/ai-training/" data-event="guide_link_click" data-pos="choose-answers">4 × 90 分钟课程项目</a>；先了解情况，再推荐。</dd>
 <dt>数据规则</dt><dd>课程一开始就讲：已批准的工具、禁止输入的信息、由谁签字确认。</dd>
-<dt>价格</dt><dd>四次课程项目每人 $499 起；90 分钟工作坊和全天上门培训按需报价，达拉斯—沃斯堡以外的差旅另计。详见<a href="/zh/ai-peixun-shi/" data-event="guide_link_click" data-pos="choose-answers">《AI 培训学费一般是多少》</a>。</dd>
+<dt>价格</dt><dd>四次课程项目、90 分钟工作坊和全天上门培训均按需报价，达拉斯—沃斯堡以外的差旅另计。详见<a href="/zh/ai-peixun-shi/" data-event="guide_link_click" data-pos="choose-answers">《AI 培训学费一般是多少》</a>。</dd>
 <dt>语言</dt><dd>中文或英文，同一位讲师。</dd>
 <dt>不做的事</dt><dd>我们做 AI 培训，不做 ERP 或 CRM 定制开发。</dd></dl><div class="cta-row"><a class="btn btn-primary" href="/zh/contact/quote/" data-event="quote_cta_click" data-pos="choose-answers">申请报价</a><a class="btn btn-secondary" href="/zh/book/" data-event="workshop_cta_click" data-pos="choose-answers">预约 20 分钟通话</a></div></div></div></section>
 </main>
@@ -81,7 +81,7 @@ function track(n,p){gtag('event',n,Object.assign({page:location.pathname,languag
 window.amjTrack=track;
 // Motion (2026-09): count-up on .stat-bar numbers + pointer position for the .prog spotlight. Scroll reveals are CSS-only (style.css "MOTION").
 // The HTML always carries the final number; this only replays it, and not at all under prefers-reduced-motion.
-// Prices and formats ($499/person, 4 × 90 min) are not counted up: only counts of people, talks and ratings.
+// Formats (4 × 90 min) are not counted up: only counts of people, talks and ratings.
 if(!matchMedia('(prefers-reduced-motion:reduce)').matches&&'IntersectionObserver' in window){
  var io=new IntersectionObserver(function(es){es.forEach(function(en){if(!en.isIntersecting)return;io.unobserve(en.target);
   var el=en.target,t=el.textContent,m=t.match(/\d[\d,]*(\.\d+)?/);if(!m||/[$×]/.test(t))return;

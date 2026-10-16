@@ -1,6 +1,6 @@
 // / — what AI Man Jack helps teams accomplish, and the way into the library (design canvas: Main / ZH-Main).
 // Curriculum, format details, reviews and FAQ live on /ai-training/. Numbers come from config.mjs.
-import { SITE, TRAINING, PROOF, PROGRAM_PRICE, GBP_URL } from '../config.mjs';
+import { SITE, TRAINING, PROOF, GBP_URL } from '../config.mjs';
 import { planBtn, photoHero, ctaBand, href, L } from '../layout.mjs';
 import { T } from '../i18n.mjs';
 import { business, person, website } from '../schema.mjs';
@@ -20,13 +20,13 @@ const C = {
   en: {
     // 2026-10-13: the home page no longer competes with /ai-training/dallas/ for the local term (HANDOFF §1.1). DFW stays in the eyebrow and body.
     title: 'Corporate AI Training for Business Teams | AI Man Jack',
-    description: `Hands-on corporate AI training for business teams. Jack Qian teaches onsite in Dallas–Fort Worth or live online, in English or Chinese. Four-session programs from ${PROGRAM_PRICE}/person.`,
-    og: { title: 'Hands-on AI training for business teams', description: `Hands-on training with Jack Qian, in English or Chinese. Four live ${M}-minute sessions from ${PROGRAM_PRICE}/person. Onsite in Dallas–Fort Worth or live online across the U.S.` },
+    description: `Hands-on corporate AI training for business teams. Jack Qian teaches onsite in Dallas–Fort Worth or live online, in English or Chinese. Team pricing by quote.`,
+    og: { title: 'Hands-on AI training for business teams', description: `Hands-on training with Jack Qian, in English or Chinese. Four live ${M}-minute sessions, priced for your team. Onsite in Dallas–Fort Worth or live online across the U.S.` },
     eyebrow: '<a href="/ai-training/dallas/">Dallas–Fort Worth onsite</a> · Remote across the U.S. · English or Chinese', h1: 'AI training for<br><em>business teams</em>,<br>built on real work.',
     sub: 'Jack Qian teaches non-technical teams to use <a href="/ai-training/chatgpt/">ChatGPT</a>, <a href="/ai-training/claude/">Claude</a>, Gemini or <a href="/ai-training/copilot/">Copilot</a> on work they already do. Bring a sales, marketing or operations task; build a repeatable workflow and learn how to check its output.',
     seeProgram: 'See the 4-Session Program',
     heroAlt: 'A full classroom in Dallas at one of Jack Qian’s hands-on AI workshops',
-    stats: [[`${PROGRAM_PRICE}/person`, `${S}-session customized program starts here`], [`${S} × ${M} min`, 'Live, hands-on sessions'], [PROOF.hackathon, 'builders at one Dallas AI hackathon'], [`${PROOF.rating} ★`, `<a href="${GBP_URL}" target="_blank" rel="noopener">${PROOF.reviews} Google reviews ↗</a>`]],
+    stats: [['Custom', 'Priced for your team’s size and goals'], [`${S} × ${M} min`, 'Live, hands-on sessions'], [PROOF.hackathon, 'builders at one Dallas AI hackathon'], [`${PROOF.rating} ★`, `<a href="${GBP_URL}" target="_blank" rel="noopener">${PROOF.reviews} Google reviews ↗</a>`]],
     learnK: 'What you learn', learnH: 'Four things you can do after training',
     learn: [['Find the right AI use cases', 'Pick the tasks in your own week that are worth handing to AI, and skip the ones that are not.'], ['Build repeatable workflows', 'Go from a one-off prompt to a workflow that runs the same way next week.'], ['Verify AI output', 'Know which results can go straight out, which must be checked, and which should never be left to AI.'], ['Apply AI to real work', 'Leave with a working workflow for a task you already do, not a demo of someone else’s.']],
     roomK: 'Real rooms', roomH: 'Built in front of real people. Now applied to real businesses.',
@@ -34,7 +34,7 @@ const C = {
     roomAlt: 'Hands-on session: everyone working on their own task.', by: 'Dallas-based · teaches every session himself', about: 'About Jack →',
     teamK: 'Explore by team', teamH: 'Where does your team start?', teamMore: 'All use cases →', owners: 'Run a small business? See how the program works for owners & operators →',
     progK: 'Training program', progH: 'The core program, built around your work', progMore: 'Session-by-session plan and pricing →',
-    prog: { k: 'Core program', big: `${S} sessions`, sub: `${S} × ${M} min · customized · live`, chip: `Starting at ${PROGRAM_PRICE}/person`,
+    prog: { k: 'Core program', big: `${S} sessions`, sub: `${S} × ${M} min · customized · live`, chip: 'Priced by quote',
         p: 'We work directly on the tasks you already do and build practical AI workflows around them. The curriculum changes with the business or team.',
         items: [`Four live ${M}-minute sessions`, 'Built around your actual work', 'One workflow at a time', 'Review what worked between sessions', 'Human verification built into every workflow', 'Remote anywhere in the U.S.'],
         cta: 'See the 4-Session Program', note: 'Training a team? Custom pricing available.' },
@@ -46,13 +46,13 @@ const C = {
   },
   zh: {
     title: '企业团队 AI 实操培训 | AI Man Jack',
-    description: `为企业团队提供实操 AI 培训：销售、运营、市场和管理层各带一项真实任务来，带一条能用的工作流和核验方法走。Jack Qian 亲自授课，达拉斯—沃斯堡可上门，全美线上直播，中英文授课。四次课程每人 ${PROGRAM_PRICE} 起，团队按需报价。`,
-    og: { title: '企业团队 AI 实操培训', description: `Jack Qian 中英文亲自授课。四节 ${M} 分钟课程，每人 ${PROGRAM_PRICE} 起。达拉斯—沃斯堡可上门，全美可远程。` },
+    description: `为企业团队提供实操 AI 培训：销售、运营、市场和管理层各带一项真实任务来，带一条能用的工作流和核验方法走。Jack Qian 亲自授课，达拉斯—沃斯堡可上门，全美线上直播，中英文授课。四次课程项目按团队报价。`,
+    og: { title: '企业团队 AI 实操培训', description: `Jack Qian 中英文亲自授课。四节 ${M} 分钟课程，按团队报价。达拉斯—沃斯堡可上门，全美可远程。` },
     eyebrow: '<a href="/zh/ai-training/dallas/">达拉斯—沃斯堡上门</a> · 全美远程 · 中英文授课', h1: '企业团队的<br><em>AI 实操培训</em>，<br>从真实工作出发。',
     sub: 'Jack Qian 带非技术团队，把 <a href="/zh/ai-training/chatgpt/">ChatGPT</a>、<a href="/zh/ai-training/claude/">Claude</a>、Gemini 或 <a href="/zh/ai-training/copilot/">Copilot</a> 用在日常工作中。从你手头的销售、市场或运营任务出发，搭建可复用的工作流，并学会核验 AI 的输出。',
     seeProgram: '查看四次课程项目',
     heroAlt: '达拉斯，Jack Qian 主讲的一场 AI 实操工作坊，教室座无虚席',
-    stats: [[`${PROGRAM_PRICE}/人`, '四次定制课程项目起步价'], [`${S} × ${M} 分钟`, '实时互动的实操课'], [PROOF.hackathon, '人参与达拉斯 AI 黑客松'], [`${PROOF.rating} ★`, `<a href="${GBP_URL}" target="_blank" rel="noopener">${PROOF.reviews} 条 Google 评价 ↗</a>`]],
+    stats: [['定制', '按团队人数和目标报价'], [`${S} × ${M} 分钟`, '实时互动的实操课'], [PROOF.hackathon, '人参与达拉斯 AI 黑客松'], [`${PROOF.rating} ★`, `<a href="${GBP_URL}" target="_blank" rel="noopener">${PROOF.reviews} 条 Google 评价 ↗</a>`]],
     learnK: '培训成果', learnH: '培训结束后，你能做到的四件事',
     learn: [['识别合适的 AI 应用场景', '从日常工作中筛选出值得交给 AI 的任务，同时明确哪些并不适合。'], ['搭建可复用的工作流', '从一次性的提示词，升级为下周依然能稳定运行的工作流。'], ['核验 AI 的输出', '清楚哪些结果可以直接使用、哪些必须复核、哪些不应交给 AI。'], ['应用于真实工作', '带走的是针对自身任务的可用工作流，而不是别人的演示案例。']],
     roomK: '真实课堂', roomH: '先在真实课堂中打磨，如今用在真实的生意里。',
@@ -60,7 +60,7 @@ const C = {
     roomAlt: '实操环节：每位学员都在处理自己的任务。', by: '常驻达拉斯 · 每场课程均亲自授课', about: '了解 Jack →',
     teamK: '按团队浏览', teamH: '你的团队从哪里开始？', teamMore: '全部应用场景 →', owners: '自己经营小企业？看看课程项目怎么帮老板和经营者 →',
     progK: '培训项目', progH: '核心项目，围绕你的工作来做', progMore: '每节课安排与价格 →',
-    prog: { k: '核心项目', big: `${S} 节课`, sub: `${S} × ${M} 分钟 · 定制 · 实时授课`, chip: `每人 ${PROGRAM_PRICE} 起`,
+    prog: { k: '核心项目', big: `${S} 节课`, sub: `${S} × ${M} 分钟 · 定制 · 实时授课`, chip: '按需报价',
         p: '直接围绕你已经在做的任务，搭建真正用得上的 AI 工作流。课程内容随企业或团队的情况调整。',
         items: [`四节 ${M} 分钟的实时课程`, '围绕你的真实工作设计', '一次落地一条工作流', '课间复盘哪些有效', '每条工作流都设有人工核验环节', '全美远程授课'],
         cta: '查看四次课程项目', note: '团队培训？可定制报价。' },

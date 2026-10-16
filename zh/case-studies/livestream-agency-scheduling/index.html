@@ -61,7 +61,7 @@
 <div class="eyebrow">工作流</div><h3 class="h3">分步骤的 AI 工作流</h3><p>每条都有提示词、示例、人工核验清单，以及不适用的情况。</p><span class="res-cta">浏览工作流 →</span></a><a class="card link-card res-card" href="/zh/ai-training/" data-search="企业 ai 培训 每位学员带一项真实任务来，带一条工作流和一套核验方法走。 培训 " data-event="resource_to_training_click">
 <div class="eyebrow">培训</div><h3 class="h3">企业 AI 培训</h3><p>每位学员带一项真实任务来，带一条工作流和一套核验方法走。</p><span class="res-cta">了解培训方式 →</span></a></div></div></section>
 <section class="cta-band on-dark" id="start"><img src="/img/jack-classroom.webp" width="1000" height="750" loading="lazy" decoding="async" alt="">
-<div><h2>带一项真实任务来，<br>带一条<em>可用的工作流</em>走。</h2><p>预约一次简短沟通，带上一项真实任务。我们一起判断这项任务适不适合交给 AI，以及四次课程项目应该从哪里开始。</p><a class="btn btn-primary btn-lg" href="/zh/book/" data-event="workshop_cta_click" data-pos="case-study-final">预约工作流咨询</a><p class="alt band-price">四次课程项目每人 $499 起，团队可定制报价。</p>
+<div><h2>带一项真实任务来，<br>带一条<em>可用的工作流</em>走。</h2><p>预约一次简短沟通，带上一项真实任务。我们一起判断这项任务适不适合交给 AI，以及四次课程项目应该从哪里开始。</p><a class="btn btn-primary btn-lg" href="/zh/book/" data-event="workshop_cta_click" data-pos="case-study-final">预约工作流咨询</a><p class="alt band-price">每个项目都按团队报价，先拿一份书面报价。</p>
 <p class="alt">或发送邮件至 <a href="mailto:jack@aimanjack.com" data-event="email_training_click" data-pos="case-study-final">jack@aimanjack.com</a> · 短信发送 TRAINING 至 <a href="sms:+14694254142?body=TRAINING%20-%20" data-event="sms_training_click" data-pos="case-study-final">(469) 425-4142</a></p></div></section>
 </main>
 <footer class="ftr"><div class="wrap">
@@ -84,7 +84,7 @@ function track(n,p){gtag('event',n,Object.assign({page:location.pathname,languag
 window.amjTrack=track;
 // Motion (2026-09): count-up on .stat-bar numbers + pointer position for the .prog spotlight. Scroll reveals are CSS-only (style.css "MOTION").
 // The HTML always carries the final number; this only replays it, and not at all under prefers-reduced-motion.
-// Prices and formats ($499/person, 4 × 90 min) are not counted up: only counts of people, talks and ratings.
+// Formats (4 × 90 min) are not counted up: only counts of people, talks and ratings.
 if(!matchMedia('(prefers-reduced-motion:reduce)').matches&&'IntersectionObserver' in window){
  var io=new IntersectionObserver(function(es){es.forEach(function(en){if(!en.isIntersecting)return;io.unobserve(en.target);
   var el=en.target,t=el.textContent,m=t.match(/\d[\d,]*(\.\d+)?/);if(!m||/[$×]/.test(t))return;

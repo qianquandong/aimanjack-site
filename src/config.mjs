@@ -32,8 +32,7 @@ export const FEATURES = {
 export const PROOF = { talks: 5, perTalk: '50+', hackathon: 37, reviews: 17, rating: '5.0', reviewsCheckedOn: '2026-10-12' };
 // The only public offer since 2026-09-28: the four-session program, priced per person. The half-day workshop was taken off the
 // site (not repriced); a 90-minute session is mentioned only as a shorter first step. Change a price here only.
-export const TRAINING = { programFrom: 499, sessions: 4, sessionMin: 90 };
-export const PROGRAM_PRICE = `$${TRAINING.programFrom}`;
+export const TRAINING = { sessions: 4, sessionMin: 90 };   // no public price (Jack, 2026-10-17): every format is quoted per team
 
 // Team formats (Revenue OS v6, W-001, 2026-10-08). Only custom-four has an owner-approved public price. The 90-minute team workshop
 // and the full-day onsite day are OWNER-UNAPPROVED: they are published with NO price — "Request a scoped quote" only. Proposed
