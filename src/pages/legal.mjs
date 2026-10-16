@@ -2,7 +2,7 @@ import { EMAIL } from '../config.mjs';
 import { breadcrumb, BUSINESS_REF } from '../components.mjs';
 
 // /privacy and /sms-terms: English text is unchanged from the previous site (A2P review pages).
-// Chinese versions are translations of the same text. /terms is new; Jack reviews before production.
+// Chinese versions are translations of the same text. /terms was rewritten for the AI training service on 2026-10-17.
 // 2026-10-08 (Revenue OS v6, W-002/W-007): /privacy gains one appended block, QUOTE_ANALYTICS below, covering the training quote form,
 // Supabase as processor, Google Analytics 4 and how to opt out. The A2P SMS paragraphs above it are untouched.
 // DRAFT_REQUIRES_OWNER_LEGAL_REVIEW: the QUOTE_ANALYTICS wording (EN + ZH) is a draft, not legal advice, and must be reviewed by the
@@ -91,61 +91,60 @@ const sms = {
 };
 
 const terms = {
-  en: { title: 'Terms of Service | AI Man Jack', description: 'Terms for AI Man Jack LLC’s AI receptionist and website services: fees, included minutes, cancellation, ownership of website, domain and data, service limits and contact.', crumb: 'Terms', h1: 'Terms of Service', body: `
-<p class="meta">Last updated: September 9, 2026 · AI Man Jack LLC, Dallas, Texas</p>
-<p>These terms describe the AI receptionist and website services sold on this site. Your signed service agreement states the exact scope for your business and prevails over this page where they differ.</p>
+  // 2026-10-17: rewritten for the AI training service; the AI receptionist service (and its per-minute billing) is retired.
+  en: { title: 'Terms of Service | AI Man Jack', description: 'Terms for AI Man Jack LLC’s AI training services: scope and written quotes, scheduling, your responsibilities, data, limits, liability and contact.', crumb: 'Terms', h1: 'Terms of Service', body: `
+<p class="meta">Last updated: October 17, 2026 · AI Man Jack LLC, Dallas, Texas</p>
+<p>These terms describe the AI training services offered on this site: team workshops, onsite training days and multi-session programs. Your written quote or signed agreement states the exact scope, schedule and price for your team and prevails over this page where they differ.</p>
 <h2>1. The service</h2>
-<p>AI Man Jack LLC ("we") configures and operates an AI phone receptionist for your business, and, on plans that include it, builds and hosts a website. The AI answers from information you approve, captures caller details, and on plans that include booking, books appointments through the connected workflow. Plan contents are listed on the pricing page.</p>
-<h2>2. Fees</h2>
+<p>AI Man Jack LLC ("we") designs and delivers hands-on AI training for your team, onsite or live online. Sessions use the AI tools your company has approved and tasks your team brings. We teach people to use those tools; we do not build, configure or integrate software, and we do not provide or resell tool licenses.</p>
+<h2>2. Quotes and fees</h2>
 <ul>
-<li>A one-time setup fee for the selected plan, due before setup begins.</li>
-<li>A monthly fee, billed in advance, which includes the plan’s voice minutes for that month. Unused minutes do not roll over.</li>
-<li>Voice overage at $0.45 per minute, billed with the following month.</li>
-<li>Any messaging or third-party charges are confirmed in writing before contracting. Nothing is added silently.</li>
+<li>Every engagement is priced by a written quote. We do not publish a price list.</li>
+<li>The quote states what is included, the number of participants, the schedule, and when payment is due.</li>
+<li>Travel outside Dallas–Fort Worth, and any third-party costs, are confirmed in writing before you agree. Nothing is added silently.</li>
 </ul>
-<h2>3. Your responsibilities</h2>
+<h2>3. Scheduling and changes</h2>
+<p>Dates are confirmed in writing. If you need to reschedule or cancel, tell us as early as you can; the notice period and any fees for late changes are stated in your quote or agreement.</p>
+<h2>4. Your responsibilities</h2>
 <ul>
-<li>Provide accurate hours, services, prices and policies, and tell us when they change.</li>
-<li>Authorize call forwarding or the use of a new number for the AI.</li>
-<li>Remain responsible for the content of the answers you approve and for laws that apply to your business, including any notice requirements for recorded calls and any rules that apply to health, legal or financial information.</li>
+<li>Provide access to the AI tools your company has approved, and any room, screen and network needed for onsite sessions.</li>
+<li>Decide which company information may be used in exercises, and remove confidential, personal or customer data that should not be entered into an AI tool.</li>
+<li>Remain responsible for how your organization uses AI after the training, including review of outputs and compliance with the laws and policies that apply to your business.</li>
 </ul>
-<h2>4. Service limits</h2>
-<p>The AI answers only from approved information and may still make mistakes. When it should not answer, it runs the fallback you chose: message, transfer, or a text to you. We do not guarantee call volume, bookings, revenue, search rankings or AI-assistant recommendations. We aim for continuous availability but do not guarantee uptime; if a phone or booking connection fails, the fallback runs and we are notified.</p>
-<h2>5. Term and cancellation</h2>
-<p>Service is month to month. You may cancel at any time with the notice stated in your service agreement. On cancellation, included hosting ends, forwarding is switched off, and you keep your website files and your domain. A number you forwarded to the AI is yours and is simply no longer forwarded. A number we provisioned for your business can be transferred or ported to you at the end of service, subject to carrier requirements.</p>
-<h2>6. Data</h2>
-<p>Call and message data is processed to deliver the service and is not sold. We do not store call recordings or conversation transcripts; only the structured result of a call (intent, booking details, hand-off) is kept. See the <a href="/privacy">Privacy Policy</a> and <a href="/sms-terms">SMS Terms</a>.</p>
+<h2>5. Limits</h2>
+<p>AI tools can produce incorrect output; the training teaches people to check it, but we do not guarantee any particular result, productivity gain, revenue or adoption. Tool features, availability and data terms are set by their vendors and can change.</p>
+<h2>6. Materials and data</h2>
+<p>Training materials we provide may be used inside your organization. Information you share with us is used only to prepare and deliver the training and is not sold. See the <a href="/privacy">Privacy Policy</a>.</p>
 <h2>7. Liability</h2>
-<p>To the extent permitted by Texas law, our total liability for any claim relating to the service is limited to the fees you paid in the three months before the claim, and we are not liable for indirect or consequential losses, including lost bookings or revenue.</p>
+<p>To the extent permitted by Texas law, our total liability for any claim relating to the service is limited to the fees you paid for the engagement the claim relates to, and we are not liable for indirect or consequential losses.</p>
 <h2>8. Governing law and contact</h2>
 <p>These terms are governed by the laws of the State of Texas. Questions: <a href="mailto:${EMAIL}">${EMAIL}</a>.</p>
 <p><a href="/">&larr; Back to home</a></p>` },
-  zh: { title: '服务条款 | AI Man Jack', description: 'AI Man Jack LLC 的 AI 前台和网站服务条款：费用、包含分钟数、取消、网站/域名/数据归属、服务边界和联系方式。', crumb: '服务条款', h1: '服务条款', body: `
-<p class="meta">最后更新：2026 年 9 月 9 日 · AI Man Jack LLC，德州达拉斯</p>
-<p>本条款说明本站销售的 AI 前台和网站服务。你签署的服务协议写明你店铺的具体范围；两者不一致时，以服务协议为准。</p>
+  zh: { title: '服务条款 | AI Man Jack', description: 'AI Man Jack LLC 的 AI 培训服务条款：服务范围与书面报价、日程安排、你的责任、数据、服务边界、责任限制和联系方式。', crumb: '服务条款', h1: '服务条款', body: `
+<p class="meta">最后更新：2026 年 10 月 17 日 · AI Man Jack LLC，德州达拉斯</p>
+<p>本条款说明本站提供的 AI 培训服务：团队工作坊、上门培训和多次课程项目。你收到的书面报价或签署的协议写明团队的具体范围、日程和价格；两者不一致时，以书面报价或协议为准。</p>
 <h2>1. 服务内容</h2>
-<p>AI Man Jack LLC（「我们」）为你的店铺配置并运营 AI 电话前台；在包含建站的方案里，还负责搭建和托管网站。AI 按你确认的信息回答、记录来电者信息；在包含预约的方案里，通过接好的流程完成预约。各方案内容见价格页。</p>
-<h2>2. 费用</h2>
+<p>AI Man Jack LLC（「我们」）为你的团队设计并提供实操 AI 培训，可上门或线上直播。课程使用贵公司已批准的 AI 工具和团队带来的真实任务。我们教的是如何使用这些工具；不开发、配置或对接软件，也不提供或转售工具许可证。</p>
+<h2>2. 报价与费用</h2>
 <ul>
-<li>所选方案的一次性安装费，安装开始前支付。</li>
-<li>月费预付，包含该月的方案内通话分钟。未用完的分钟不累积。</li>
-<li>超出部分每分钟 $0.45，随下月账单收取。</li>
-<li>如有短信或第三方费用，签约前书面确认。不会悄悄加。</li>
+<li>每项合作都按书面报价计费。我们不公开价目表。</li>
+<li>报价写明包含的内容、参加人数、日程和付款时间。</li>
+<li>达拉斯—沃斯堡以外的差旅及任何第三方费用，都会在你确认前书面说明。不会悄悄加。</li>
 </ul>
-<h2>3. 你的责任</h2>
+<h2>3. 日程与变更</h2>
+<p>日期以书面确认为准。如需改期或取消，请尽早告知；通知期限以及临时变更的费用（如有）写在报价或协议中。</p>
+<h2>4. 你的责任</h2>
 <ul>
-<li>提供准确的营业时间、服务、价格和规定，有变动及时告知。</li>
-<li>授权呼叫转接，或者同意 AI 使用新号码。</li>
-<li>你确认的回答内容由你负责；适用于你店铺的法律也由你负责遵守，包括通话录音的告知要求，以及涉及健康、法律或金融信息的规定。</li>
+<li>提供贵公司已批准的 AI 工具的使用权限；上门培训时提供会议室、屏幕和网络。</li>
+<li>决定哪些公司信息可以用于练习，并去除不应输入 AI 工具的保密信息、个人信息或客户数据。</li>
+<li>培训结束后，贵公司如何使用 AI 由你方负责，包括复核输出，以及遵守适用于你业务的法律和制度。</li>
 </ul>
-<h2>4. 服务边界</h2>
-<p>AI 只按确认过的信息回答，仍可能出错。它不该答的时候，按你选的兜底方式处理：留言、转接或短信通知你。我们不保证来电量、预约数、营收、搜索排名或 AI 助手推荐。我们尽力保持持续可用，但不保证在线率；电话或预约对接故障时，兜底流程接上，我们会收到通知。</p>
-<h2>5. 期限和取消</h2>
-<p>服务按月。你可以随时取消，通知期见服务协议。取消后，包含的托管停止，转接关闭，网站文件和域名归你。你转接给 AI 的自有号码归你，只是不再转接；我们帮你申请的号码，服务结束时可以按运营商规定转到你名下。</p>
-<h2>6. 数据</h2>
-<p>通话和短信数据仅用于提供服务，不出售。我们不保存通话录音和对话文字记录，只保留一通电话的结构化结果（意图、预约信息、交接）。见<a href="/zh/privacy">隐私政策</a>和<a href="/zh/sms-terms">短信条款</a>。</p>
+<h2>5. 服务边界</h2>
+<p>AI 工具可能产生错误的输出；培训会教大家如何核验，但我们不保证任何特定结果、效率提升、营收或使用率。工具的功能、可用性和数据条款由厂商决定，可能会变化。</p>
+<h2>6. 资料与数据</h2>
+<p>我们提供的培训资料可在贵公司内部使用。你提供给我们的信息只用于准备和开展培训，不出售。见<a href="/zh/privacy">隐私政策</a>。</p>
 <h2>7. 责任限制</h2>
-<p>在德州法律允许的范围内，我们对与服务相关的任何索赔的全部责任，以索赔前三个月你支付的费用为上限；对间接或衍生损失，包括错失的预约或营收，不承担责任。</p>
+<p>在德州法律允许的范围内，我们对与服务相关的任何索赔的全部责任，以该项合作中你已支付的费用为上限；对间接或衍生损失不承担责任。</p>
 <h2>8. 适用法律和联系</h2>
 <p>本条款适用德克萨斯州法律。问题请发邮件到 <a href="mailto:${EMAIL}">${EMAIL}</a>。</p>
 <p><a href="/zh/">&larr; 返回首页</a></p>` },
