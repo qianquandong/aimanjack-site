@@ -13,14 +13,14 @@ const S = {
   en: { answerK: 'The short answer', fitK: 'Where AI fits', fitH: (team) => `The work, grouped the way ${team} runs it`, fitLead: 'Linked items have a full workflow with steps, a prompt and a review checklist.',
     startK: 'Start here', startH: (d) => `${d} workflows to run this week`, chargeK: 'Where a person stays in charge', chargeH: 'AI drafts. A person signs.',
     trainK: 'Training', trainH: (team) => `Train ${team} on these workflows`, trainP: 'A four-session program where each person builds these on their own real work, uses them between sessions, and catches deliberately flawed outputs.', trainTags: [`${LEN} min`, 'Priced by quote'],
-    suffix: 'Practical Workflows and Templates', heroAlt: 'A team demonstrating what it built at a Dallas session',
+    suffix: 'Practical Workflows and Templates', heroAlt: 'A full room of business professionals working on laptops at a hands-on AI workshop in Dallas',
     hubTitle: 'AI Use Cases for Real Teams: Sales, Marketing, Operations, Leadership | AI Man Jack', hubDesc: 'See where AI saves time and improves quality in everyday work, by team: sales, marketing, operations and leadership. Every use case links to a step-by-step workflow.',
     hubK: 'Use cases', hubH: 'AI use cases for <em>real</em> teams', hubP: 'See where AI can save time, improve quality and change how everyday work gets done. Pick a team; every linked use case opens a workflow with steps, a prompt and a review checklist.',
     rowsK: 'Explore by team', rowsH: 'Where does your team start?', more: 'Search all workflows →', count: (n) => `${n} workflows` },
   zh: { answerK: '核心结论', fitK: '适用环节', fitH: (team) => `按${team}的工作方式分组`, fitLead: '带箭头的条目提供完整工作流，包括操作步骤、提示词和核验清单。',
     startK: '从这里开始', startH: (d) => `本周即可上手的${d}工作流`, chargeK: '由人把关的环节', chargeH: 'AI 负责起草，人负责签字。',
     trainK: '培训', trainH: (team) => `为${team}培训这些工作流`, trainP: '四次课程项目中，每位学员基于自己的真实工作搭建这些工作流，课间实际使用，并找出刻意设置的错误输出。', trainTags: [`${LEN} 分钟`, '按需报价'],
-    suffix: '实用工作流与模板', heroAlt: '达拉斯的一场课程中，一个小组正在演示自己搭建的成果',
+    suffix: '实用工作流与模板', heroAlt: '达拉斯的一场 AI 实操工作坊，满屋子的学员正在用笔记本电脑动手练习',
     hubTitle: '面向真实团队的 AI 应用场景：销售、市场、运营、管理层 | AI Man Jack', hubDesc: '按团队了解 AI 在日常工作中节省时间、提升质量的环节：销售、市场、运营与管理层。每个应用场景都关联到一条分步骤的工作流。',
     hubK: '应用场景', hubH: '面向<em>真实</em>团队的 AI 应用场景', hubP: '了解 AI 能在哪些环节节省时间、提升质量，并改变日常工作的方式。选择一个团队；每个带链接的应用场景都会打开一条包含步骤、提示词与核验清单的工作流。',
     rowsK: '按团队浏览', rowsH: '你的团队从哪里开始？', more: '搜索全部工作流 →', count: (n) => `${n} 条工作流` },
@@ -37,7 +37,7 @@ const detail = (u0) => page({
       : `<a href="${href(lang, `/workflows/${i.wf}/`)}" style="display:flex;justify-content:space-between;gap:12px;padding:14px 0;border-bottom:1px solid var(--line);font-size:16px;font-weight:700;text-decoration:none"><span>${loc(workflowBySlug[i.wf], lang).short || loc(workflowBySlug[i.wf], lang).title.replace(/ with AI$/, '')}</span><span style="color:var(--accent)" aria-hidden="true">→</span></a>`;
     return {
       view: 'use_case_view', hero: 'photo', title: `${u.title}: ${s.suffix} | AI Man Jack`, description: u.description,
-      body: `${photoHero({ photo: 'demo', alt: s.heroAlt, size: 'sm', inner: `<div class="hero-main" style="padding-bottom:56px"><div class="col-a" style="grid-column:span 7;gap:20px">${bc.html}<h1 class="lg">${u.title}</h1></div><p style="grid-column:span 5">${u.hero || u.card}</p></div>` })}
+      body: `${photoHero({ photo: 'room', alt: s.heroAlt, size: 'sm', inner: `<div class="hero-main" style="padding-bottom:56px"><div class="col-a" style="grid-column:span 7;gap:20px">${bc.html}<h1 class="lg">${u.title}</h1></div><p style="grid-column:span 5">${u.hero || u.card}</p></div>` })}
 <section class="sec" style="padding-bottom:96px"><div class="wrap g12" style="row-gap:16px"><div style="grid-column:span 3"><div class="eyebrow">${s.answerK}</div></div><p class="answer" style="grid-column:4 / span 9">${u.answer}</p></div></section>
 <section class="sec tight"><div class="wrap">${secHead(s.fitK, s.fitH(u.team), { lead: s.fitLead })}
 <div class="g4">${u.groups.map(([g, items], i) => `<div class="card" style="padding:28px;display:flex;flex-direction:column"><span style="font-size:13px;font-weight:700;color:var(--accent-text);margin-bottom:6px">${String(i + 1).padStart(2, '0')}</span><h3 style="margin-bottom:10px">${g}</h3>${items.map(item).join('')}</div>`).join('')}</div></div></section>
@@ -56,7 +56,7 @@ const index = () => page({
     const s = S[lang], r = R[lang], bc = crumbs(lang, [[r.useCases, '/use-cases/']]);
     return {
       view: 'use_case_view', hero: 'photo', title: s.hubTitle, description: s.hubDesc,
-      body: `${photoHero({ photo: 'demo', alt: s.heroAlt, size: 'sm', inner: `<div class="hero-main" style="padding-bottom:56px"><div class="col-a" style="grid-column:span 7;gap:20px">${bc.html}<h1 class="lg">${s.hubH}</h1></div><p style="grid-column:span 5">${s.hubP}</p></div>` })}
+      body: `${photoHero({ photo: 'room', alt: s.heroAlt, size: 'sm', inner: `<div class="hero-main" style="padding-bottom:56px"><div class="col-a" style="grid-column:span 7;gap:20px">${bc.html}<h1 class="lg">${s.hubH}</h1></div><p style="grid-column:span 5">${s.hubP}</p></div>` })}
 <section class="sec"><div class="wrap">${secHead(s.rowsK, s.rowsH, { more: [href(lang, '/workflows/'), s.more] })}
 <div class="rows">${USE_CASES.map((u0, i) => { const u = loc(u0, lang); return `<a href="${href(lang, `/use-cases/${u.slug}/`)}" data-event="use_case_click" data-pos="hub"><span class="n">${String(i + 1).padStart(2, '0')}</span><h3>${u.title}</h3><p>${u.card} <b style="color:var(--accent-text);font-weight:700;white-space:nowrap">${s.count(WORKFLOWS.filter((w) => w.department === u.slug).length)}</b></p><span class="go" aria-hidden="true">→</span></a>`; }).join('')}</div></div></section>
 ${band(lang, { pos: 'use-cases-index' })}`,
