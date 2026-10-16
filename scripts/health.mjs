@@ -61,12 +61,7 @@ add("sitemap:pages", missing.length ? "FAIL" : "PASS", missing.length ? `missing
 const leaked = LEGACY.filter((p) => smUrls.includes(p) || smUrls.includes("/zh" + p));
 add("sitemap:legacy-out", leaked.length ? "FAIL" : "PASS", leaked.length ? `legacy in sitemap: ${leaked.join(",")}` : "no legacy receptionist routes in sitemap");
 
-// 4. Legacy routes: 200 + noindex (robots.txt must NOT block them, or crawlers never read the noindex)
-for (const p of LEGACY) {
-  const r = await get(p);
-  const robots = m(r.body, /<meta name="robots" content="([^"]*)"/);
-  add(`legacy:${p}`, r.status === 200 && /noindex/.test(robots) ? "PASS" : "FAIL", `HTTP ${r.status}, robots="${robots}"`);
-}
+// 4. Legacy routes: retired 2026-10-17 — they answer 410 Gone, checked in 2b ("gone:410"). The old 200 + noindex check is gone.
 
 // 5. On-page invariants per indexable page vs baseline
 const snap = {};
