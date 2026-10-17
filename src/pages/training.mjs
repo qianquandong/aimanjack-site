@@ -79,6 +79,18 @@ export const TRAINING_FAQ = { en: C.en.faq, zh: C.zh.faq };
 // It is the only offer card on the site (2026-09-28); shorter formats are a line of text, never a competing card.
 export const progCard = ({ k, big, sub, chip, p, items, note }, cta) => `<div class="prog dark on-dark solo"><div class="prog-main"><span class="k">${k}</span><span class="big">${big}</span><span class="sub">${sub}</span><span class="chip">${chip}</span><p>${p}</p>${cta}${note ? `<span class="note">${note}</span>` : ''}</div><ul class="ticks">${items.map((x) => `<li><span>${x}</span></li>`).join('')}</ul></div>`;
 
+// Source: Jack Qian, 2026-10-17, confirmed in this website review that these ranges come from his learners' feedback.
+// Self-reported weekly estimates, not timed measurements. No sample size or survey method was supplied; do not invent
+// either, attribute the ranges to the unfinished client program, or turn them into a guarantee or Review markup.
+const learnerFeedback = (lang) => {
+  const zh = lang === 'zh';
+  return `<section class="sec tight" id="learner-feedback"><div class="wrap">
+<div class="sec-head"><div><div class="eyebrow">${zh ? '学员反馈' : 'Learner feedback'}</div><h2>${zh ? '学员自报的每周节约时间' : 'Learner-reported weekly time savings'}</h2><p class="lead">${zh ? '学员将 AI 用于工作后，向 Jack 反馈的每周节约时间如下。' : 'After applying AI to their work, learners have shared the following weekly time-saving estimates with Jack.'}</p></div></div>
+<div class="g2"><div class="oak"><b style="font-size:36px">5–7</b><span>${zh ? '小时／周 · 普通员工／个人贡献者（IC）' : 'hours per week · Individual contributors (ICs)'}</span></div><div class="oak"><b style="font-size:36px">3–4</b><span>${zh ? '小时／周 · 高管' : 'hours per week · Executives'}</span></div></div>
+<p class="review-source">${zh ? '来源：Jack Qian 于 2026 年 10 月 17 日汇总的学员反馈。这是学员自报的估算，未经独立计时验证；实际节约时间因岗位、任务和使用方式而异。' : 'Source: learner feedback summarized by Jack Qian on October 17, 2026. These are self-reported estimates, not independently timed measurements; results vary by role, task and use.'}</p>
+</div></section>`;
+};
+
 // The existing home-page owner link now lands on useful buying guidance, not a one-line aside.
 // Keep this audience within the corporate-training pillar instead of creating another competing service URL.
 const ownerGuide = (lang) => {
@@ -137,6 +149,8 @@ ${ownerGuide('en')}
 ${progCard(c.fmt, planBtn('en', { pos: 'training-format' }))}
 <p class="prog-alt">This follow-up belongs to the four-session program. Additional support after a standalone workshop or onsite day is separately scoped.</p></div></section>
 
+${learnerFeedback('en')}
+
 <section class="sec tight" id="about"><div class="wrap"><div class="big-card" style="flex-direction:row;align-items:center;gap:32px;flex-wrap:wrap"><img src="/img/jack-portrait-256.webp" width="256" height="256" loading="lazy" decoding="async" alt="Jack Qian" style="width:120px;height:120px;border-radius:50%;object-fit:cover;flex:none">
 <div style="display:flex;flex-direction:column;gap:16px;flex:1 1 320px"><h2>Meet your instructor</h2><p>Jack Qian runs AI Man Jack LLC in Dallas, Texas. He designs and teaches the sessions himself.</p><p id="community-proof">His background includes business planning at a Dallas semiconductor company, building AI workflows and organizing community AI events. He also writes <a href="https://realagentusecases.com/">Real Agent Use Cases</a>, a newsletter about practical agents and workflows.</p><p><a class="more" href="/about/">More about Jack →</a> · <a href="/ai-training/dallas/">Dallas–Fort Worth sessions and venues →</a></p></div></div>
 <aside class="buyer-prep"><h3>Workflow implementation example</h3><p>The <a href="/case-studies/livestream-agency-scheduling/">livestream-agency scheduling case study</a> describes a rules-based system that prepares a weekly schedule draft. An operations lead still reviews, edits and publishes the schedule. It is an implementation case, rather than evidence of training outcomes; net time savings have not been established.</p></aside>
@@ -183,6 +197,8 @@ ${ownerGuide('zh')}
 <section class="sec" id="formats"><div class="wrap">${head('四次课程项目', '在四次课程之间使用，再带着问题回来')}
 ${progCard(c.fmt, planBtn('zh', { pos: 'training-format' }))}
 <p class="prog-alt"><strong>两周回访属于四次课程项目。</strong>单次工作坊或全天上门培训后的额外支持，需要另行确认范围。</p></div></section>
+
+${learnerFeedback('zh')}
 
 <section class="sec tight" id="about"><div class="wrap"><div class="big-card" style="flex-direction:row;align-items:center;gap:32px;flex-wrap:wrap"><img src="/img/jack-portrait-256.webp" width="256" height="256" loading="lazy" decoding="async" alt="Jack Qian" style="width:120px;height:120px;border-radius:50%;object-fit:cover;flex:none">
 <div style="display:flex;flex-direction:column;gap:16px;flex:1 1 320px"><h2>由谁授课</h2><p>Jack Qian 在德州达拉斯经营 AI Man Jack LLC，由他本人设计并讲授课程。</p><p id="community-proof">他的经历包括在达拉斯一家半导体公司从事业务规划、搭建 AI 工作流，以及组织本地社区 AI 活动。他也撰写 <a href="https://realagentusecases.com/">Real Agent Use Cases</a>，介绍实际应用中的 AI 智能体和工作流。</p><p><a class="more" href="/zh/about/">了解 Jack →</a> · <a href="/zh/ai-training/dallas/">查看达拉斯—沃斯堡的活动与场地 →</a></p></div></div>

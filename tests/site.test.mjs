@@ -305,6 +305,23 @@ test('the four-session program is the only offer on Home and Training; the clien
   }
 });
 
+test('owner-confirmed learner feedback is attributed, self-reported and separate from client case results', async () => {
+  const pages = await allPages();
+  for (const lang of ['en', 'zh']) {
+    const html = find(pages, '/ai-training/', lang).html;
+    const feedback = body(html).match(/<section class="sec tight" id="learner-feedback">([\s\S]*?)<\/section>/)?.[1];
+    assert.ok(feedback, `${lang} has a visible learner-feedback section`);
+    assert.match(feedback, /5–7/);
+    assert.match(feedback, /3–4/);
+    assert.match(feedback, /Jack Qian/);
+    assert.match(feedback, lang === 'zh' ? /学员自报.*未经独立计时验证/ : /self-reported estimates, not independently timed measurements/);
+    assert.match(feedback, lang === 'zh' ? /岗位、任务和使用方式而异/ : /results vary by role, task and use/);
+    assert.doesNotMatch(feedback, /guaranteed|guarantee|survey of|sample of|保证|百分之|\d+%/i);
+    assert.doesNotMatch(ld(html), /"@type":"(?:Review|AggregateRating)"|5–7|3–4/, 'feedback is not rating markup or an offer guarantee');
+    assert.match(body(html), lang === 'zh' ? /这是系统实施案例，不作为培训效果的证明；目前也尚未核实净节省时间/ : /It is an implementation case, rather than evidence of training outcomes; net time savings have not been established/);
+  }
+});
+
 // ── Revenue OS v6 (2026-10-08): team formats, quote intake, consent-aware analytics ─────────────────────────────────────
 const { OFFERS, QUOTE_URL, INTAKE_FORM_VERSION, CONSENT_NOTICE_VERSION, GA4_ID } = await import('../src/config.mjs');
 const urlOf = (path, lang) => (lang === 'zh' ? (path === '/' ? '/zh/' : '/zh' + path) : path);
