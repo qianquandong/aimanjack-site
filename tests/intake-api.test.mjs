@@ -378,3 +378,13 @@ test('quick quote without JS returns to the tool page anchor, and only to our ow
   const evil = await send(quick({ page: '//evil.example/', consent_request: 'yes', email: 'x@northwind-example.com' }), { form: true });
   assert.equal(evil.headers.get('location'), '/contact/quote/#received', 'an untrusted page falls back to the quote page');
 });
+
+test('quick quote from the home pages keeps the page and returns there without JS', async (t) => {
+  const db = fake(t);
+  assert.equal((await send(quick({ tool: 'general', page: '/', email: 'home@northwind-example.com' }))).status, 201);
+  assert.equal(db.records.at(-1).p.payload.page, '/');
+  const zh = await send(quick({ tool: 'general', page: '/zh/', lang: 'zh', consent_request: 'yes', email: 'zh@northwind-example.com' }), { form: true });
+  assert.equal(zh.headers.get('location'), '/zh/#quote-received');
+  const other = await send(quick({ page: '/blog/', consent_request: 'yes', email: 'blog@northwind-example.com' }), { form: true });
+  assert.equal(other.headers.get('location'), '/contact/quote/#received', 'pages without the form stay untrusted');
+});

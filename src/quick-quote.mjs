@@ -12,7 +12,7 @@ const FT = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term
 const Q = {
   en: {
     k: 'Get a quote', h: 'Interested in booking?<br>Get an easy quote.',
-    p: 'Tell us roughly how many people and what you have in mind. Jack replies by email within one business day with a format and a written price for your team. No call needed unless you want one.',
+    p: 'Tell us roughly how many people and what you have in mind. Jack replies by email within one business day. Once the details are clear, you get a recommended format and a written price for your team. No call needed unless you want one.',
     name: 'Your name', email: 'Email address', people: 'Number of people', budget: 'Approximate budget (optional)', budgetPh: 'A range, or “not sure yet”',
     msg: 'Your message (optional)', msgPh: 'Which tool your team uses, what work you want help with, and any dates. Please leave out confidential or customer data.',
     consent: 'I agree to be contacted about this request.', news: 'Send me occasional AI training tips. Optional; unsubscribe any time.',
@@ -24,7 +24,7 @@ const Q = {
   },
   zh: {
     k: '获取报价', h: '想给团队安排培训？<br>留个邮箱，拿一份报价。',
-    p: '大概说一下人数和想法。Jack 会在 1 个工作日内通过邮件回复推荐的形式和书面报价。不一定要通话，除非你想先聊聊。',
+    p: '大概说一下人数和想法。Jack 会在 1 个工作日内通过邮件回复；确认需求后，再给出推荐的培训形式和书面报价。不一定要通话，除非你想先聊聊。',
     name: '姓名', email: '邮箱', people: '参加人数', budget: '大致预算（选填）', budgetPh: '一个范围，或“还没定”',
     msg: '补充说明（选填）', msgPh: '团队用的是哪个工具、希望 AI 帮忙哪些工作、大概时间。请不要填写保密信息或客户数据。',
     consent: '我同意就本次申请接受联系。', news: '给我发送不定期的 AI 培训技巧。选填，可随时退订。',

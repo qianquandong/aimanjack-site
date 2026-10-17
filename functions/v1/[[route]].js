@@ -370,7 +370,7 @@ function validateIntake(b) {
 // optional. `page` must be one of our training paths: the no-JS 303 returns there. Same store, consent ledger and rate limit.
 // Tool pages send the tool; department pages (2026-10-18) send the department.
 const QUICK_TOOLS = ['copilot', 'chatgpt', 'claude', 'grok', 'sales', 'marketing', 'operations', 'leadership', 'general'];
-const QUICK_PAGE = /^\/(zh\/)?ai-training\/([a-z0-9-]+\/)?$/;
+const QUICK_PAGE = /^\/(zh\/)?(ai-training\/([a-z0-9-]+\/)?)?$/;   // also the home pages, which carry the quick form since 2026-10-17
 function validateQuickIntake(b) {
   const errors = [], v = { kind: 'quick' };
   const str = (k) => (typeof b[k] === 'string' ? b[k].trim() : typeof b[k] === 'number' ? String(b[k]) : '');
