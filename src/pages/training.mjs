@@ -95,8 +95,8 @@ const englishPage = () => {
 <div class="cta-row">${planBtn('en', { pos: 'training-hero', id: 'hero-cta' })}<a class="btn btn-secondary" href="#formats" data-event="training_program_click" data-pos="training-hero">${c.seePricing}</a></div><span class="hero-contact">${c.text} <a href="${SMS}" data-event="sms_training_click" data-pos="training-hero">${SMS_DISPLAY}</a></span></div>` })}
 
 <section class="sec" id="teams"><div class="wrap">${head('Your team’s tasks', 'Start with work your team knows', 'The training takes shape around your team’s responsibilities, available tools and approved source material. Example exercises include:')}
-<div class="g3">${c.teams.map(([slug, name, example, label]) => `<div class="oak" id="team-${slug}" style="gap:18px;padding:30px 28px"><h3 style="font-size:26px">${name}</h3><p>${example}</p><a class="more" href="/use-cases/${slug}/">${label} →</a></div>`).join('')}</div>
-<p class="prog-alt" id="team-owners">No coding experience is required. The focus is on choosing useful tasks, giving clear instructions and checking the result before using it.</p></div></section>
+<div class="g3">${c.teams.map(([slug, name, example, label]) => `<div class="oak" id="team-${slug}" style="gap:18px;padding:30px 28px"><h3 style="font-size:26px">${name}</h3><p>${example}</p><a class="more" href="/ai-training/${slug}-teams/" data-event="department_training_click" data-pos="training-teams">AI training for ${slug} teams →</a><a class="more" href="/use-cases/${slug}/">${label} →</a></div>`).join('')}</div>
+<p class="prog-alt" id="team-owners">No coding experience is required. The focus is on choosing useful tasks, giving clear instructions and checking the result before using it. Leading the rollout? See <a href="/ai-training/leadership-teams/">AI training for leadership teams</a>.</p></div></section>
 
 <section class="sec buyer-guide" id="team-paths"><div class="wrap">${head('Training formats', 'Choose a format that fits your team')}
 <div class="format-comparison"><div class="table-wrap"><table><caption>Compare three formats for team AI training</caption><thead><tr>${headers.map(h => `<th scope="col">${h}</th>`).join('')}</tr></thead><tbody>
@@ -140,8 +140,8 @@ const chinesePage = () => {
 <div class="cta-row">${planBtn('zh', { pos: 'training-hero', id: 'hero-cta' })}<a class="btn btn-secondary" href="#formats" data-event="training_program_click" data-pos="training-hero">${c.seePricing}</a></div><span class="hero-contact">${c.text} <a href="${SMS}" data-event="sms_training_click" data-pos="training-hero">${SMS_DISPLAY}</a></span></div>` })}
 
 <section class="sec" id="teams"><div class="wrap">${head('实际工作任务', '从团队熟悉的工作开始', '课程围绕团队的实际职责、可用工具和经批准的资料设计。可以用于练习的任务包括：')}
-<div class="g3">${c.teams.map(([slug, name, example, label]) => `<div class="oak" id="team-${slug}" style="gap:18px;padding:30px 28px"><h3 style="font-size:26px">${name}</h3><p>${example}</p><a class="more" href="/zh/use-cases/${slug}/">${label} →</a></div>`).join('')}</div>
-<p class="prog-alt" id="team-owners">无需编程经验。培训重点是选择合适的任务、给出清晰的指令，并在使用结果前做好核验。</p></div></section>
+<div class="g3">${c.teams.map(([slug, name, example, label]) => `<div class="oak" id="team-${slug}" style="gap:18px;padding:30px 28px"><h3 style="font-size:26px">${name}</h3><p>${example}</p><a class="more" href="/zh/ai-training/${slug}-teams/" data-event="department_training_click" data-pos="training-teams">${name}团队 AI 培训 →</a><a class="more" href="/zh/use-cases/${slug}/">${label} →</a></div>`).join('')}</div>
+<p class="prog-alt" id="team-owners">无需编程经验。培训重点是选择合适的任务、给出清晰的指令，并在使用结果前做好核验。负责推动落地？见<a href="/zh/ai-training/leadership-teams/">管理层 AI 培训</a>。</p></div></section>
 
 <section class="sec buyer-guide" id="team-paths"><div class="wrap">${head('培训形式', '选择适合团队的培训形式')}
 <div class="format-comparison"><div class="table-wrap"><table><caption>三种团队 AI 培训形式对比</caption><thead><tr>${headers.map(h => `<th scope="col">${h}</th>`).join('')}</tr></thead><tbody>

@@ -262,13 +262,23 @@ const TOOLS = {
   },
 };
 
+export const head = (k, h, p) => `<div class="sec-head"><div><div class="eyebrow">${k}</div><h2>${h}</h2>${p ? `<p class="lead">${p}</p>` : ''}</div></div>`;
+// Formats (no prices), local block and Google reviews: shared by the tool pages and the department pages (src/pages/department-training.mjs).
+export const sharedBlocks = (lang, pos) => { const s = SHARED[lang], rev = REVIEWS[lang].slice(0, 3);
+  return `<section class="sec tight" id="formats"><div class="wrap">${head(s.formatsK, s.formatsH, s.formatsP)}
+<div class="g3">${s.formats.map(([h, p, href]) => `<a class="card" href="${L(lang, href)}" data-event="offer_path_click" data-pos="${pos}-formats" style="text-decoration:none;color:inherit"><h3>${h}</h3><p>${p}</p><span class="muted" style="font-size:14px;font-weight:600">${s.byQuote} · ${s.see} →</span></a>`).join('')}</div></div></section>
+
+<section class="sec tight" id="local"><div class="wrap">${head(s.localK, s.localH)}<p style="max-width:860px">${s.localP}</p></div></section>
+
+<section class="sec tight" id="testimonials"><div class="wrap"><div class="sec-head"><div><div class="eyebrow">${s.revK}</div><h2>${s.revH}</h2></div><a class="more" href="${GBP_URL}" target="_blank" rel="noopener">${s.revMore}</a></div>
+<div class="quote-grid">${rev.map(([n, q]) => `<figure class="quote"><span class="stars" aria-label="5 stars">★★★★★</span><blockquote style="margin:0;flex-grow:1"><p>${q}</p></blockquote><figcaption><b>${n}</b> <span>· ${REVIEWS.by[lang]}</span></figcaption></figure>`).join('')}</div></div></section>`; };
+export { SHARED, NAME as TOOL_NAME, pathOf as toolPath };
+
 const page = (key, lang) => {
   const s = SHARED[lang], t = TOOLS[key][lang], zh = lang === 'zh', path = pathOf(key), url = `${SITE}${L(lang, path)}`, name = NAME[key];
   const bc = breadcrumb(lang, [[s.crumb, '/ai-training/'], [name, path]]);
-  const head = (k, h, p) => `<div class="sec-head"><div><div class="eyebrow">${k}</div><h2>${h}</h2>${p ? `<p class="lead">${p}</p>` : ''}</div></div>`;
   const faq = [...t.faq, ...s.faq.map(([q, a]) => [q.replace('How much does it cost?', `How much does ${name} training cost?`).replace('费用是多少？', `${name} 培训费用是多少？`), a])];
   const others = TOOL_PAGES.filter((k) => k !== key);
-  const rev = REVIEWS[lang].slice(0, 3);
   return {
     title: t.title, description: t.description, view: 'tool_training_view', bodyClass: 'training-page tool-page',
     body: `<section class="page-hero"><div class="wrap">${bc.html}<p class="eyebrow">${s.eyebrow}</p><h1 class="brand-hero-title" style="max-width:1080px">${t.h1}</h1><p class="lead" style="max-width:780px">${t.sub}</p>
@@ -285,13 +295,7 @@ const page = (key, lang) => {
 
 <section class="sec tight" id="data"><div class="wrap"><div class="big-card oakc"><h2>${t.dataH}</h2><p>${t.dataP}</p></div></div></section>
 
-<section class="sec tight" id="formats"><div class="wrap">${head(s.formatsK, s.formatsH, s.formatsP)}
-<div class="g3">${s.formats.map(([h, p, href]) => `<a class="card" href="${L(lang, href)}" data-event="offer_path_click" data-pos="${key}-formats" style="text-decoration:none;color:inherit"><h3>${h}</h3><p>${p}</p><span class="muted" style="font-size:14px;font-weight:600">${s.byQuote} · ${s.see} →</span></a>`).join('')}</div></div></section>
-
-<section class="sec tight" id="local"><div class="wrap">${head(s.localK, s.localH)}<p style="max-width:860px">${s.localP}</p></div></section>
-
-<section class="sec tight" id="testimonials"><div class="wrap"><div class="sec-head"><div><div class="eyebrow">${s.revK}</div><h2>${s.revH}</h2></div><a class="more" href="${GBP_URL}" target="_blank" rel="noopener">${s.revMore}</a></div>
-<div class="quote-grid">${rev.map(([n, q]) => `<figure class="quote"><span class="stars" aria-label="5 stars">★★★★★</span><blockquote style="margin:0;flex-grow:1"><p>${q}</p></blockquote><figcaption><b>${n}</b> <span>· ${REVIEWS.by[lang]}</span></figcaption></figure>`).join('')}</div></div></section>
+${sharedBlocks(lang, key)}
 
 <section class="sec tight" id="other-tools"><div class="wrap">${head(s.otherK, s.otherH)}
 <div class="g3">${others.map((k) => `<a class="card" href="${L(lang, pathOf(k))}" style="text-decoration:none;color:inherit"><h3>${NAME[k]} ${zh ? '培训' : 'training'} →</h3><p>${TOOLS[k][lang].description.split(/[:：]/)[0]}</p></a>`).join('')}</div></div></section>

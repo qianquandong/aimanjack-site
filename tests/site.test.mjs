@@ -569,6 +569,33 @@ test('tool training pages: indexable, full FAQ, no public price anywhere, and a 
   }
 });
 
+test('department training pages: buying pages that link to (and do not compete with) the use-case pages', async () => {
+  const pages = await allPages();
+  const { DEPT_PAGES, deptPath } = await import('../src/pages/department-training.mjs');
+  for (const key of DEPT_PAGES) for (const lang of ['en', 'zh']) {
+    const path = deptPath(key), x = find(pages, path, lang), route = `${lang}:${path}`;
+    assert.ok(x && !x.page.noindex, `${route} indexable`);
+    const h = head(x.html), b = body(x.html), j = ld(x.html);
+    assert.equal((b.match(/<h1[\s>]/g) || []).length, 1, `${route} one H1`);
+    if (lang === 'en') assert.match(h, /<title>AI Training for \w+ Teams in Dallas \| AI Man Jack<\/title>/, `${route} title`);
+    assert.doesNotMatch(h.match(/<title>[^<]*<\/title>/)[0] + b.match(/<h1[^>]*>[\s\S]*?<\/h1>/)[0], /Dallas–Fort Worth|达拉斯—沃斯堡/, `${route} leaves the metro term to the Dallas page`);
+    assert.ok((j.match(/"@type":"Question"/g) || []).length >= 12, `${route} FAQ has at least 12 questions`);
+    assert.doesNotMatch(b + j, /\$\s?\d/, `${route} prints no price`);
+    assert.doesNotMatch(j, /"@type":"Offer"|"price"|"(?:Review|AggregateRating)"/, `${route} no Offer/price or review markup`);
+    assert.ok(b.includes('name="kind" value="quick"') && b.includes(`name="tool" value="${key}"`) && b.includes(`name="page" value="${urlOf(path, lang)}"`), `${route} form carries kind/tool/page`);
+    for (const p of [`/use-cases/${key}/`, '/ai-training/copilot/', ...DEPT_PAGES.filter((k) => k !== key).map(deptPath)]) assert.ok(b.includes(`href="${urlOf(p, lang)}`), `${route} links ${p}`);
+    for (const re of BANNED) assert.doesNotMatch(b + j, re, `${route} contains ${re}`);
+    // The use-case page is the informational twin: it links back, and its title stays about use cases, not training.
+    const uc = find(pages, `/use-cases/${key}/`, lang);
+    assert.ok(body(uc.html).includes(`href="${urlOf(path, lang)}"`), `${lang}:/use-cases/${key}/ links its training page`);
+    assert.doesNotMatch(head(uc.html).match(/<title>[^<]*<\/title>/)[0], /Training|培训/, `${lang}:/use-cases/${key}/ title stays informational`);
+  }
+  for (const lang of ['en', 'zh']) for (const p of ['/ai-training/', '/ai-training/dallas/']) {
+    const b = body(find(pages, p, lang).html);
+    assert.ok(b.includes(`href="${urlOf(deptPath('sales'), lang)}`) && b.includes(`href="${urlOf(deptPath('leadership'), lang)}`), `${lang}:${p} links department pages`);
+  }
+});
+
 test('no public price on any indexable page or in llms.txt (Jack, 2026-10-17: every format is quoted per team)', async () => {
   const pages = await allPages();
   // Legal pages are excluded: /terms still carries the retired receptionist product's billing terms, a legal text Jack edits himself.

@@ -362,6 +362,10 @@ test('quick quote: bad email, bad headcount and missing consent are rejected; un
   assert.equal(odd.status, 201);
   assert.equal(db.records.at(-1).p.payload.tool, 'general');
   assert.equal(db.records.at(-1).p.payload.page, null);
+  // Department pages (2026-10-18) send the department as the tool.
+  assert.equal((await send(quick({ tool: 'sales', page: '/ai-training/sales-teams/', email: 'dept@example.com' }))).status, 201);
+  assert.equal(db.records.at(-1).p.payload.tool, 'sales');
+  assert.equal(db.records.at(-1).p.payload.page, '/ai-training/sales-teams/');
 });
 
 test('quick quote without JS returns to the tool page anchor, and only to our own training paths', async (t) => {
