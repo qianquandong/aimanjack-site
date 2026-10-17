@@ -4,32 +4,43 @@ import { mkdtemp, mkdir, writeFile, readFile, readdir, rm, copyFile } from 'node
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { execFileSync } from 'node:child_process';
+import { createHmac } from 'node:crypto';
 import { onRequest } from '../functions/v1/[[route]].js';
 import previewWorker from '../src/preview-worker.mjs';
 import { stagePreview } from '../scripts/stage-preview.mjs';
 
 test('every preview API fails closed even with production credentials or a wrong mode flag', async (t) => {
-  t.mock.method(globalThis, 'fetch', () => { throw new Error('preview must not call any external service'); });
-  const endpoints = ['availability', 'bookings', 'bookings/some-id', 'coupons', 'admin/email-config', 'admin/m365/connect', 'admin/m365/poll', 'admin/m365/disconnect', 'notifications/process', 'notifications/requeue', 'intake', 'ros-events', 'ros-events/process', 'ros-events/1/replay'];
+  let externalCalls = 0;
+  t.mock.method(globalThis, 'fetch', () => { externalCalls++; throw new Error('preview must not call any external service'); });
+  const endpoints = ['availability', 'bookings', 'bookings/some-id', 'coupons', 'admin/email-config', 'admin/m365/connect', 'admin/m365/poll', 'admin/m365/disconnect', 'notifications/process', 'notifications/requeue', 'intake', 'ros-events', 'ros-events/process', 'ros-events/1/replay', 'mailerlite/process', 'mailerlite/health', 'mailerlite/webhook'];
+  const processToken = 'p'.repeat(40), webhookSecret = 'w'.repeat(32);
+  const webhookBody = JSON.stringify({ id: '42', email: 'isolation@example.invalid', status: 'unsubscribed', event: 'subscriber.unsubscribed' });
+  const headers = { authorization: `Bearer ${processToken}`, 'content-type': 'application/json',
+    signature: createHmac('sha256', webhookSecret).update(webhookBody).digest('hex') };
   const cases = [
     ['https://review.aimanjack.pages.dev', { SITE_ENV: 'preview' }],
     ['https://review.aimanjack.pages.dev', { SITE_ENV: 'production' }],
+    ['https://aimanjack.com', { SITE_ENV: 'preview' }],
     ['https://aimanjack.com', { SITE_ENV: 'production', CF_PAGES_BRANCH: 'fix/mail' }],
     ['https://aimanjack.com', {}],
     ['http://localhost:8788', { SITE_ENV: 'production' }],
   ];
   for (const [origin, settings] of cases) for (const path of endpoints) for (const method of ['GET', 'POST', 'PATCH', 'DELETE']) {
-    const response = await onRequest({ request: new Request(`${origin}/v1/${path}`, { method }),
-      env: { SUPABASE_URL: 'https://lalmvbxibkozmtnpfbcw.supabase.co', SB_SECRET_KEY: 'fake-live-key', ADMIN_TOKEN: 'fake-admin', ROS_EVENTS_ENABLED: 'true', ROS_EVENT_PROCESS_TOKEN: 'p'.repeat(40), ...settings },
+    const response = await onRequest({ request: new Request(`${origin}/v1/${path}`, { method, headers, ...(['POST', 'PATCH', 'DELETE'].includes(method) ? { body: webhookBody } : {}) }),
+      env: { SUPABASE_URL: 'https://lalmvbxibkozmtnpfbcw.supabase.co', SB_SECRET_KEY: 'fake-live-key', ADMIN_TOKEN: 'fake-admin', ROS_EVENTS_ENABLED: 'true', ROS_EVENT_PROCESS_TOKEN: processToken,
+        MAILERLITE_SYNC_ENABLED: 'true', MAILERLITE_DOI_ACKNOWLEDGED: 'true', MAILERLITE_QUOTE_GROUP_ID: '123',
+        MAILERLITE_API_TOKEN: 'mock-complete-provider-api-token', MAILERLITE_PROCESS_TOKEN: processToken,
+        MAILERLITE_WEBHOOK_SECRET: webhookSecret, EMAIL_HASH_SECRET: 'i'.repeat(40), ...settings },
       params: { route: path.split('/') }, waitUntil() { throw new Error('preview must not start background work'); } });
     assert.equal(response.status, 503, `${origin} ${method} ${path}`);
     assert.equal((await response.json()).error, 'preview_read_only');
   }
+  assert.equal(externalCalls, 0, 'preview/local/branch/hostname rejection must precede every database or provider call');
 });
 
 test('inert preview Worker blocks API and writes before accessing any binding', async () => {
   const env = new Proxy({}, { get() { throw new Error('no binding access'); } });
-  for (const path of ['/v1/availability', '/v1/admin/m365/connect', '/api/test']) for (const method of ['GET', 'HEAD', 'POST', 'PATCH', 'DELETE']) {
+  for (const path of ['/v1/availability', '/v1/admin/m365/connect', '/v1/mailerlite/process', '/v1/mailerlite/health', '/v1/mailerlite/webhook', '/api/test']) for (const method of ['GET', 'HEAD', 'POST', 'PATCH', 'DELETE']) {
     assert.equal((await previewWorker.fetch(new Request('https://preview.invalid' + path, { method }), env)).status, 503);
   }
   assert.equal((await previewWorker.fetch(new Request('https://preview.invalid/book/', { method: 'POST' }), env)).status, 503);

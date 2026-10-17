@@ -15,6 +15,11 @@ SITE_ENV = "preview"
 [env.production.vars]
 SITE_ENV = "production"
 ROS_EVENTS_ENABLED = "false" # Enable only after outbox migration + receiver + scheduled processor are approved.
+MAILERLITE_SYNC_ENABLED = "true" # Owner-approved 2026-10-17; independent DB capture and CRM scheduler switches control rollout.
+MAILERLITE_DOI_ACKNOWLEDGED = "true" # API double opt-in and jack@ sender verified in the account UI on 2026-10-16.
+MAILERLITE_QUOTE_GROUP_ID = "201548479243224466" # Empty dedicated Website - Get Quote Marketing group, API read verified.
+# MAILERLITE_API_TOKEN, MAILERLITE_PROCESS_TOKEN, MAILERLITE_WEBHOOK_SECRET: production secrets, never checked in.
+# Existing EMAIL_HASH_SECRET (32+ chars) must remain stable: both quote intake and signed suppression callbacks use it.
 # Booking data lives in Supabase (project aimanjack-crm, schema `booking`; db/schema.sql).
 SUPABASE_URL = "https://lalmvbxibkozmtnpfbcw.supabase.co"
 # Site mail transport (owner decision 2026-10-09, revenue-os#2): NO Cloudflare Workers Paid ⇒ no Cloudflare Email
