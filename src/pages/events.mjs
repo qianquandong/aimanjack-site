@@ -26,7 +26,7 @@ const T = {
     when: 'When', where: 'Where', format: 'Format', language: 'Language', host: 'Hosted by', reg: 'Sign-ups',
     inPerson: 'In person', live: 'Live online', regNote: `as shown on Luma, checked ${EVENTS_CHECKED_ON}; attendance is usually a little lower`,
     byJack: 'Jack Qian (AI Man Jack)', byOrg: (o) => `${o}; Jack Qian was the invited featured speaker`, withGuest: (g) => `Jack Qian, with guest ${g}`,
-    lumaPage: 'Event page on Luma ↗', agendaH: 'What was on the agenda', photosH: 'Photos', afterH: 'Why it matters for teams',
+    lumaPage: 'Event page on Luma ↗', agendaH: 'What was on the agenda', notesK: 'Talk notes, on Jack’s own site Real Agent Use Cases:', photosH: 'Photos', afterH: 'Why it matters for teams',
     nextTraining: 'Related training:', prev: '← Earlier session', next: 'Later session →', all: 'All sessions',
     eventSuffix: 'Dallas AI session | AI Man Jack', freeNote: 'Free community session.',
   },
@@ -42,7 +42,7 @@ const T = {
     when: '时间', where: '地点', format: '形式', language: '语言', host: '主办', reg: '报名',
     inPerson: '线下', live: '线上直播', regNote: `Luma 显示的报名人数，核对于 ${EVENTS_CHECKED_ON}；实际到场通常略少`,
     byJack: 'Jack Qian（AI Man Jack）', byOrg: (o) => `${o}；Jack Qian 受邀担任特邀讲者`, withGuest: (g) => `Jack Qian，嘉宾 ${g}`,
-    lumaPage: 'Luma 活动页 ↗', agendaH: '议程', photosH: '现场照片', afterH: '对企业团队的意义',
+    lumaPage: 'Luma 活动页 ↗', agendaH: '议程', notesK: '讲稿笔记（Jack 自己的网站 Real Agent Use Cases）：', photosH: '现场照片', afterH: '对企业团队的意义',
     nextTraining: '相关培训：', prev: '← 上一场', next: '下一场 →', all: '全部活动',
     eventSuffix: '达拉斯 AI 活动 | AI Man Jack', freeNote: '免费社区活动。',
   },
@@ -86,13 +86,13 @@ const page = (e, i, lang) => {
     title: `${name} | AI Man Jack`, description: c.summary.slice(0, 158), view: 'event_page_view', bodyClass: 'events-page',
     body: `<section class="page-hero"><div class="wrap">${bc.html}<p class="eyebrow"><time datetime="${e.date}">${eventDate(e.date, lang)}</time> · ${cityOf(e, lang)} · ${e.role === 'speaker' ? t.invited : t.signups(e.registrations)}</p><h1 class="brand-hero-title" style="max-width:1000px">${name}</h1><p class="lead" style="max-width:780px">${c.summary}${e.role === 'host' ? ` ${t.freeNote}` : ''}</p></div></section>
 <section class="sec tight" id="photos"><div class="wrap"><div class="sec-head"><div><div class="eyebrow">${t.photosH}</div></div></div><div class="g3">${gallery}</div></div></section>
-<section class="sec tight" id="agenda"><div class="wrap g2" style="gap:32px;align-items:start"><div><h2>${t.agendaH}</h2><ul class="ticks arrow" style="margin-top:16px">${c.covered.map((x) => `<li><span>${x}</span></li>`).join('')}</ul><h2 style="margin-top:32px">${t.afterH}</h2><p style="margin-top:12px">${c.after}</p><p style="margin-top:12px">${t.nextTraining} <a href="${L(lang, c.next[0])}">${c.next[1]} →</a></p></div>
+<section class="sec tight" id="agenda"><div class="wrap g2" style="gap:32px;align-items:start"><div><h2>${t.agendaH}</h2><ul class="ticks arrow" style="margin-top:16px">${c.covered.map((x) => `<li><span>${x}</span></li>`).join('')}</ul>${e.notes ? `<p style="margin-top:16px">${t.notesK} ${e.notes.map((x) => `<a href="${x[lang]}" target="_blank" rel="noopener" data-event="talk_notes_click">${x.label[lang]} ↗</a>`).join(' · ')}</p>` : ''}<h2 style="margin-top:32px">${t.afterH}</h2><p style="margin-top:12px">${c.after}</p><p style="margin-top:12px">${t.nextTraining} <a href="${L(lang, c.next[0])}">${c.next[1]} →</a></p></div>
 <div class="big-card"><dl class="kv" style="margin:0">${facts.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join('')}</dl></div></div></section>
 <section class="sec tight"><div class="wrap" style="display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap">${prev ? `<a class="more" href="${L(lang, prev.path)}">${t.prev}</a>` : '<span></span>'}<a class="more" href="${L(lang, HUB)}">${t.all}</a>${next ? `<a class="more" href="${L(lang, next.path)}">${t.next}</a>` : '<span></span>'}</div></section>
 ${ctaBand(lang, { pos: 'event-page' })}`,
     jsonld: [{ '@type': 'Event', '@id': `${url}#event`, name, url, description: c.summary, startDate: e.start, endDate: e.end, eventStatus: 'https://schema.org/EventScheduled',
       eventAttendanceMode: e.mode === 'online' ? 'https://schema.org/OnlineEventAttendanceMode' : 'https://schema.org/OfflineEventAttendanceMode',
-      location, image: e.photos.map(([f]) => `${SITE}${img(f)}`), inLanguage: e.lang ? (e.lang.en.includes('English') && !e.lang.en.includes('Chinese') ? 'en' : 'zh') : undefined,
+      location, image: e.photos.map(([f]) => `${SITE}${img(f)}`), subjectOf: e.notes ? e.notes.map((x) => ({ '@type': 'CreativeWork', name: x.label[lang], url: x[lang], author: { '@id': `${SITE}/#jack` } })) : undefined, inLanguage: e.lang ? (e.lang.en.includes('English') && !e.lang.en.includes('Chinese') ? 'en' : 'zh') : undefined,
       organizer: e.role === 'speaker' ? { '@type': 'Organization', name: e.organizer } : { '@id': `${SITE}/#business` },
       performer: [{ '@id': `${SITE}/#jack` }, ...(e.guest ? [{ '@type': 'Person', name: e.guest }] : [])],
       ...(e.role === 'host' ? { isAccessibleForFree: true } : {}) }, person(), BUSINESS_REF, bc.ld],
