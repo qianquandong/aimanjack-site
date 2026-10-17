@@ -6,7 +6,7 @@ export const post = {
   slug: 'copilot-chat-vs-microsoft-365-copilot',
   date: '2026-10-17',
   updated: undefined,
-  status: 'draft',
+  status: 'published',
   en: {
     keyword: 'Copilot Chat vs Microsoft 365 Copilot',
     title: 'Copilot Chat vs Microsoft 365 Copilot for Teams | AI Man Jack',
@@ -22,7 +22,7 @@ export const post = {
     ],
     sections: `
 <h2>The question that comes up in the first ten minutes</h2>
-<p>The first module of our <a href="/ai-training/copilot/">Microsoft Copilot training</a> is called “Copilot Chat vs. Copilot in the apps”, and it is there because the room is almost never on the same version. A few people have a Microsoft 365 Copilot license, most have Copilot Chat, and some have both open in different tabs without knowing which is which. The Copilot Chat vs Microsoft 365 Copilot question decides what each person can practise, so we answer it before anyone writes a prompt.</p>
+<p>The first module of our <a href="/ai-training/copilot/">Microsoft Copilot training</a> is called “Copilot Chat vs. Copilot in the apps”, and it comes first because the two are easy to confuse: the free work chat and the paid license look alike but reach different data. The Copilot Chat vs Microsoft 365 Copilot question decides what each person can practise, so we answer it before anyone writes a prompt.</p>
 <p>The names do not help. Both say Copilot, both show up in the browser and in the Microsoft 365 app, and both answer in a chat window. The difference is what each one can read.</p>
 
 <h2>What each one can read</h2>
@@ -85,7 +85,7 @@ export const post = {
     ],
     sections: `
 <h2>开课十分钟内一定会被问到的问题</h2>
-<p>Copilot Chat 和 Microsoft 365 Copilot 先学哪个，是我们 <a href="/zh/ai-training/copilot/">Microsoft Copilot 团队培训</a>开课就要回答的问题。第一个模块叫“Copilot Chat 与应用内 Copilot”，放在最前面，是因为教室里几乎从来不是同一个版本：少数人有 Microsoft 365 Copilot 许可证，多数人用的是 Copilot Chat，还有人两个都开在不同标签页里，分不清哪个是哪个。两者的区别决定了每个人能练什么，所以在写第一句提示词之前先讲清楚。</p>
+<p>Copilot Chat 和 Microsoft 365 Copilot 先学哪个，是我们 <a href="/zh/ai-training/copilot/">Microsoft Copilot 团队培训</a>开课就要回答的问题。第一个模块叫“Copilot Chat 与应用内 Copilot”，放在最前面，是因为这两个很容易混淆：免费的工作版对话和付费许可证看起来差不多，能读到的数据却不一样。两者的区别决定了每个人能练什么，所以在写第一句提示词之前先讲清楚。</p>
 <p>名字帮不上忙。两个都叫 Copilot，都出现在浏览器和 Microsoft 365 应用里，都是在对话框里回答。真正的区别在于各自能读到什么。</p>
 
 <h2>两个版本各自能读到什么</h2>
