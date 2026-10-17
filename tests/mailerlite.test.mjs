@@ -255,11 +255,29 @@ test('provider deleted/forgotten lookup records global tombstone and never upser
   assert.equal(mutations(p).length, 0);
 });
 
-test('configuration, scheduler and implementation are inert and independent of the existing CRM/ROS funnel', async () => {
+test('production enrollment requires explicit settings while preview and a fresh database stay disabled', async () => {
   const toml = await readFile(new URL('../wrangler.toml', import.meta.url), 'utf8');
-  assert.match(toml, /MAILERLITE_SYNC_ENABLED = "false"/);
-  assert.match(toml, /MAILERLITE_DOI_ACKNOWLEDGED = "true"/);
-  assert.match(toml, /MAILERLITE_QUOTE_GROUP_ID = "201548479243224466"/);
+  // Read only the quoted settings used here, by section: a production rollout must not change preview defaults.
+  const sections = new Map(); let section;
+  for (const line of toml.split(/\r?\n/)) {
+    const heading = /^\s*\[([^\]]+)\]\s*$/.exec(line);
+    if (heading) { section = {}; sections.set(heading[1], section); continue; }
+    const setting = /^\s*([A-Z][A-Z0-9_]*)\s*=\s*"([^"]*)"/.exec(line);
+    if (setting && section) section[setting[1]] = setting[2];
+  }
+  for (const name of ['vars', 'env.preview.vars']) {
+    const settings = sections.get(name);
+    assert.equal(settings?.SITE_ENV, 'preview', `${name} must remain a preview environment`);
+    assert.notEqual(settings.MAILERLITE_SYNC_ENABLED, 'true', `${name} cannot enable newsletter enrollment`);
+  }
+  const production = sections.get('env.production.vars');
+  assert.equal(production?.SITE_ENV, 'production');
+  assert.ok(['true', 'false'].includes(production.MAILERLITE_SYNC_ENABLED), 'production enrollment must be explicitly enabled or paused');
+  if (production.MAILERLITE_SYNC_ENABLED === 'true') {
+    assert.equal(production.MAILERLITE_DOI_ACKNOWLEDGED, 'true', 'an enabled rollout requires verified API double opt-in');
+    assert.match(production.MAILERLITE_QUOTE_GROUP_ID ?? '', /^[0-9]{1,30}$/, 'an enabled rollout requires a valid configured group');
+  }
   const sql = await readFile(new URL('../db/migrations/2026-10-16-mailerlite-quote-outbox.sql', import.meta.url), 'utf8');
+  assert.match(sql, /enabled\s+boolean\s+not null\s+default false/, 'a fresh database cannot start enrollment merely by applying the migration');
   assert.ok(!sql.includes('insert into revenue.funnel_')); assert.ok(!sql.includes('create or replace function revenue.record_intake'));
 });

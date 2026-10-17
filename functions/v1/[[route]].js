@@ -311,7 +311,7 @@ const INTAKE_ENUMS = {
   timing: ['within_month', 'one_to_three', 'three_plus', 'exploring'],
   source: ['search', 'ai_assistant', 'linkedin', 'referral', 'event', 'social_other', 'other'],
 };
-const INTAKE_CONSENT_NOTICE_VERSION = 'privacy-2026-10-16-mailerlite-draft';   // keep equal to CONSENT_NOTICE_VERSION in src/config.mjs (tested)
+const INTAKE_CONSENT_NOTICE_VERSION = 'privacy-2026-10-17-mailerlite';   // keep equal to CONSENT_NOTICE_VERSION in src/config.mjs (tested)
 const INTAKE_MIN_FILL_MS = 3000;
 const yes = (v) => v === true || v === 'yes' || v === 'on' || v === 'true';
 const errInfo = (e) => `${e?.status ?? ''} ${e?.code ?? e?.name ?? 'error'}`.trim();   // never the message: it may quote a row

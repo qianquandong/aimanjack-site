@@ -497,7 +497,7 @@ test('GA4 never receives a booking manage token; GPC and the opt-out switch keep
   assert.equal((await runSiteScript(home, { url: 'https://feat.aimanjack.pages.dev/' })).appended.length, 0);
 });
 
-test('privacy policy discloses the quote form, Supabase, GA4 and how to opt out, marked for legal review, with no invented address', async () => {
+test('privacy policy discloses the quote form, MailerLite, Supabase, GA4 and opt out, records owner approval, and invents no address', async () => {
   const pages = await allPages();
   for (const lang of ['en', 'zh']) {
     const b = body(find(pages, '/privacy', lang).html);
@@ -505,7 +505,9 @@ test('privacy policy discloses the quote form, Supabase, GA4 and how to opt out,
     assert.doesNotMatch(b, /\b\d{2,5} [A-Z][a-z]+ (?:St|Street|Ave|Avenue|Rd|Road|Blvd|Dr|Drive|Pkwy|Suite)\b|\bTX \d{5}\b|P\.?O\.? Box/, `${lang} privacy states no mailing address`);
   }
   const src = await readFile(new URL('../src/pages/legal.mjs', import.meta.url), 'utf8');
-  assert.match(src, /DRAFT_REQUIRES_OWNER_LEGAL_REVIEW/);
+  assert.match(src, /OWNER_APPROVED_QUOTE_NOTICE: 2026-10-17/);
+  assert.match(src, /Future wording changes require owner \/ counsel review before production/);
+  for (const lang of ['en', 'zh']) assert.match(body(find(pages, '/privacy', lang).html), /MailerLite/);
 });
 
 test('deploy gate runs the test suite with a glob (node --test tests/ fails on Node 22)', async () => {

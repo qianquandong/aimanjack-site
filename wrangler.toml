@@ -15,7 +15,7 @@ SITE_ENV = "preview"
 [env.production.vars]
 SITE_ENV = "production"
 ROS_EVENTS_ENABLED = "false" # Enable only after outbox migration + receiver + scheduled processor are approved.
-MAILERLITE_SYNC_ENABLED = "false" # Independent quote opt-in adapter; DB switch is also false. No historical import.
+MAILERLITE_SYNC_ENABLED = "true" # Owner-approved 2026-10-17; independent DB capture and CRM scheduler switches control rollout.
 MAILERLITE_DOI_ACKNOWLEDGED = "true" # API double opt-in and jack@ sender verified in the account UI on 2026-10-16.
 MAILERLITE_QUOTE_GROUP_ID = "201548479243224466" # Empty dedicated Website - Get Quote Marketing group, API read verified.
 # MAILERLITE_API_TOKEN, MAILERLITE_PROCESS_TOKEN, MAILERLITE_WEBHOOK_SECRET: production secrets, never checked in.
