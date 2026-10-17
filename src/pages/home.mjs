@@ -12,6 +12,8 @@ import { templateBySlug } from '../content/templates.mjs';
 import { loc } from '../resources.mjs';
 import { templateCard } from './workflows.mjs';
 import { TOOLS, toolCard } from './freetools.mjs';
+import { REVIEWS } from './dallas.mjs';
+import { quickQuote } from '../quick-quote.mjs';
 
 const S = TRAINING.sessions, M = TRAINING.sessionMin;
 const talks = (w) => w[PROOF.talks] || PROOF.talks;
@@ -43,6 +45,9 @@ const C = {
     howK: 'How engagement works', howH: 'From first call to a workflow that survives', step: 'Step',
     how: [['A short workflow call', 'Tell me what you or your team does every week, which tools you already use, and where work keeps repeating.'], ['A recommended training plan', 'Who should attend, which workflows to start with, and a written price, sent by email.'], ['Four live sessions on real work', 'We build and improve workflows using work you actually do, not canned demos.'], ['Use it, then keep, change or stop', 'Each session starts with what worked, what broke and what should change. Keep the workflows that are accurate and useful; change or stop the rest.']],
     bandH: 'Bring one task.<br>We’ll make it <em>work.</em>',
+    revK: 'Reviewed on Google', revH: 'What attendees say', revMore: `Read all ${PROOF.reviews} reviews on Google ↗`, revBy: 'Google review',
+    trustK: 'Safe and measurable', trustH: 'What your company can count on',
+    trust: [['Your approved tools', 'Training runs on the AI tools your company already licenses or approves. No new accounts are required to attend.'], ['Your data stays out of practice', 'Exercises use synthetic or redacted examples. We show which settings on your plan keep business data out of model training.'], ['A person checks every output', 'Every workflow includes a review step: what can go out as is, what needs a check, and what should never be left to AI.'], ['A 30-day check', 'About 30 days after the last session, we review which workflows the team still uses, what broke and what to change next.']],
   },
   zh: {
     title: '企业团队 AI 实操培训 | AI Man Jack',
@@ -69,6 +74,9 @@ const C = {
     howK: '合作流程', howH: '从首次沟通，到真正落地的工作流', step: '第 {n} 步',
     how: [['一次简短的工作流沟通', '说说你或团队每周都在做什么、已经在用哪些工具，以及哪些工作总在重复。'], ['一份推荐的培训方案', '通过邮件给出建议：谁来参加、从哪几条工作流开始，以及书面报价。'], ['四节围绕真实工作的实时课程', '用你实际在做的工作来搭建、改进工作流，不用预设的演示案例。'], ['课间使用，再决定保留、调整或停止', '每节课都从上次以来哪些有效、哪些出了问题、哪些要调整开始。准确又有用的工作流留下，其余的调整或停用。']],
     bandH: '带一项任务来，<br>我们让它<em>真正运转</em>。',
+    revK: 'Google 评价', revH: '学员怎么说', revMore: `查看 Google 上全部 ${PROOF.reviews} 条评价 ↗`, revBy: 'Google 评价',
+    trustK: '安全、可衡量', trustH: '企业可以放心的几件事',
+    trust: [['用公司已批准的工具', '培训使用公司已经购买或批准的 AI 工具，参加培训不需要另开新账号。'], ['练习不用真实数据', '练习使用模拟或脱敏的材料。我们会说明在你们的方案里，哪些设置能让业务数据不被用于模型训练。'], ['每个输出都有人核验', '每条工作流都设有核验环节：哪些可以直接发出、哪些要先检查、哪些不应交给 AI。'], ['30 天回访', '最后一节课结束约 30 天后，一起复盘团队还在用哪些工作流、哪里出了问题、下一步改什么。']],
   },
 };
 
@@ -92,6 +100,8 @@ ${clientProof(lang, 'home')}
 <div class="byline"><img src="/img/jack-portrait-256.webp" width="256" height="256" loading="lazy" decoding="async" alt="Jack Qian"><div><b>Jack Qian</b><span>${c.by}</span></div><a href="${L(lang, '/about/')}">${c.about}</a></div></div></section>
 
 ${caseProof(lang)}
+<section class="sec tight" id="testimonials"><div class="wrap">${head(c.revK, c.revH, [GBP_URL, c.revMore])}
+<div class="quote-grid">${[0, 1, 4].map((i) => REVIEWS[lang][i]).map(([name, q]) => `<figure class="quote"><span class="stars" aria-label="5 stars">★★★★★</span><blockquote style="margin:0;flex-grow:1"><p>${q}</p></blockquote><figcaption><b>${name}</b> <span>· ${c.revBy}</span></figcaption></figure>`).join('')}</div></div></section>
 <section class="sec" id="teams"><div class="wrap">${head(c.teamK, c.teamH, [href(lang, '/use-cases/'), c.teamMore])}
 <div class="rows">${USE_CASES.map((u, i) => { const x = loc(u, lang); return `<a href="${href(lang, `/use-cases/${u.slug}/`)}" data-event="use_case_click" data-pos="home"><span class="n">${n2(i)}</span><h3>${x.title}</h3><p>${x.card}</p><span class="go" aria-hidden="true">→</span></a>`; }).join('')}</div><p class="rows-more"><a href="${L(lang, '/ai-training/')}#team-owners" data-event="use_case_click" data-pos="home-owners">${c.owners}</a></p></div></section>
 
@@ -106,6 +116,10 @@ ${progCard(c.prog, `<a class="btn btn-primary" href="${L(lang, '/ai-training/')}
 
 <section class="sec" id="how"><div class="wrap">${head(c.howK, c.howH)}
 <ol class="steps-line">${c.how.map(([h, p], i) => `<li><span class="n">${c.step.includes('{n}') ? c.step.replace('{n}', i + 1) : `${c.step} ${i + 1}`}</span><h3>${h}</h3><p>${p}</p></li>`).join('')}</ol></div></section>
+
+<section class="sec tight" id="trust"><div class="wrap">${head(c.trustK, c.trustH)}
+<div class="g4">${c.trust.map(([h, p], i) => `<div class="oak learn-card"><span class="n">${n2(i)}</span><h3>${h}</h3><p>${p}</p></div>`).join('')}</div></div></section>
+${quickQuote(lang, { tool: 'general', path: '/' })}
 ${ctaBand(lang, { h: c.bandH, pos: 'home-final' })}`,
     jsonld: [business(lang), person(), website()],
   };
