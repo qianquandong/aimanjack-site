@@ -4,332 +4,332 @@
   {
    "id": "up:/",
    "status": "PASS",
-   "detail": "HTTP 200 324ms"
+   "detail": "HTTP 200 494ms"
   },
   {
    "id": "perf:home-fetch",
    "status": "PASS",
-   "detail": "324ms full fetch (PSI weekly gives the real CWV)"
+   "detail": "494ms full fetch (PSI weekly gives the real CWV)"
   },
   {
    "id": "up:/zh/",
    "status": "PASS",
-   "detail": "HTTP 200 203ms"
+   "detail": "HTTP 200 98ms"
   },
   {
    "id": "up:/ai-training/",
    "status": "PASS",
-   "detail": "HTTP 200 291ms"
+   "detail": "HTTP 200 108ms"
   },
   {
    "id": "up:/zh/ai-training/",
    "status": "PASS",
-   "detail": "HTTP 200 237ms"
+   "detail": "HTTP 200 103ms"
   },
   {
    "id": "up:/ai-training/dallas/",
    "status": "PASS",
-   "detail": "HTTP 200 207ms"
+   "detail": "HTTP 200 98ms"
   },
   {
    "id": "up:/zh/ai-training/dallas/",
    "status": "PASS",
-   "detail": "HTTP 200 159ms"
+   "detail": "HTTP 200 87ms"
   },
   {
    "id": "up:/ai-training/copilot/",
    "status": "PASS",
-   "detail": "HTTP 200 218ms"
+   "detail": "HTTP 200 69ms"
   },
   {
    "id": "up:/zh/ai-training/copilot/",
    "status": "PASS",
-   "detail": "HTTP 200 225ms"
+   "detail": "HTTP 200 90ms"
   },
   {
    "id": "up:/ai-training/chatgpt/",
    "status": "PASS",
-   "detail": "HTTP 200 285ms"
+   "detail": "HTTP 200 98ms"
   },
   {
    "id": "up:/zh/ai-training/chatgpt/",
    "status": "PASS",
-   "detail": "HTTP 200 184ms"
+   "detail": "HTTP 200 102ms"
   },
   {
    "id": "up:/ai-training/claude/",
    "status": "PASS",
-   "detail": "HTTP 200 208ms"
+   "detail": "HTTP 200 91ms"
   },
   {
    "id": "up:/zh/ai-training/claude/",
    "status": "PASS",
-   "detail": "HTTP 200 240ms"
+   "detail": "HTTP 200 75ms"
   },
   {
    "id": "up:/ai-training/grok/",
    "status": "PASS",
-   "detail": "HTTP 200 205ms"
+   "detail": "HTTP 200 76ms"
   },
   {
    "id": "up:/zh/ai-training/grok/",
    "status": "PASS",
-   "detail": "HTTP 200 282ms"
+   "detail": "HTTP 200 103ms"
   },
   {
    "id": "up:/ai-training/sales-teams/",
    "status": "PASS",
-   "detail": "HTTP 200 141ms"
+   "detail": "HTTP 200 191ms"
   },
   {
    "id": "up:/zh/ai-training/sales-teams/",
    "status": "PASS",
-   "detail": "HTTP 200 111ms"
+   "detail": "HTTP 200 105ms"
   },
   {
    "id": "up:/ai-training/marketing-teams/",
    "status": "PASS",
-   "detail": "HTTP 200 160ms"
+   "detail": "HTTP 200 110ms"
   },
   {
    "id": "up:/zh/ai-training/marketing-teams/",
    "status": "PASS",
-   "detail": "HTTP 200 170ms"
+   "detail": "HTTP 200 101ms"
   },
   {
    "id": "up:/ai-training/operations-teams/",
    "status": "PASS",
-   "detail": "HTTP 200 82ms"
+   "detail": "HTTP 200 136ms"
   },
   {
    "id": "up:/zh/ai-training/operations-teams/",
    "status": "PASS",
-   "detail": "HTTP 200 223ms"
+   "detail": "HTTP 200 67ms"
   },
   {
    "id": "up:/ai-training/leadership-teams/",
    "status": "PASS",
-   "detail": "HTTP 200 113ms"
+   "detail": "HTTP 200 165ms"
   },
   {
    "id": "up:/zh/ai-training/leadership-teams/",
    "status": "PASS",
-   "detail": "HTTP 200 120ms"
+   "detail": "HTTP 200 141ms"
   },
   {
    "id": "up:/events/",
    "status": "PASS",
-   "detail": "HTTP 200 222ms"
+   "detail": "HTTP 200 76ms"
   },
   {
    "id": "up:/zh/events/",
    "status": "PASS",
-   "detail": "HTTP 200 195ms"
+   "detail": "HTTP 200 80ms"
   },
   {
    "id": "up:/ai-training/team-workshop/",
    "status": "PASS",
-   "detail": "HTTP 200 118ms"
+   "detail": "HTTP 200 81ms"
   },
   {
    "id": "up:/zh/ai-training/team-workshop/",
    "status": "PASS",
-   "detail": "HTTP 200 110ms"
+   "detail": "HTTP 200 66ms"
   },
   {
    "id": "up:/ai-training/onsite-texas/",
    "status": "PASS",
-   "detail": "HTTP 200 138ms"
+   "detail": "HTTP 200 93ms"
   },
   {
    "id": "up:/zh/ai-training/onsite-texas/",
    "status": "PASS",
-   "detail": "HTTP 200 156ms"
+   "detail": "HTTP 200 78ms"
   },
   {
    "id": "up:/blog/",
    "status": "PASS",
-   "detail": "HTTP 200 184ms"
+   "detail": "HTTP 200 88ms"
   },
   {
    "id": "up:/zh/blog/",
    "status": "PASS",
-   "detail": "HTTP 200 208ms"
+   "detail": "HTTP 200 73ms"
   },
   {
    "id": "up:/about/",
    "status": "PASS",
-   "detail": "HTTP 200 234ms"
+   "detail": "HTTP 200 60ms"
   },
   {
    "id": "up:/zh/about/",
    "status": "PASS",
-   "detail": "HTTP 200 171ms"
+   "detail": "HTTP 200 76ms"
   },
   {
    "id": "up:/contact/",
    "status": "PASS",
-   "detail": "HTTP 200 262ms"
+   "detail": "HTTP 200 86ms"
   },
   {
    "id": "up:/zh/contact/",
    "status": "PASS",
-   "detail": "HTTP 200 268ms"
+   "detail": "HTTP 200 78ms"
   },
   {
    "id": "up:/book/",
    "status": "PASS",
-   "detail": "HTTP 200 174ms"
+   "detail": "HTTP 200 65ms"
   },
   {
    "id": "up:/zh/book/",
    "status": "PASS",
-   "detail": "HTTP 200 218ms"
+   "detail": "HTTP 200 83ms"
   },
   {
    "id": "up:/resources/chatgpt-vs-ai-agents/",
    "status": "PASS",
-   "detail": "HTTP 200 216ms"
+   "detail": "HTTP 200 84ms"
   },
   {
    "id": "up:/zh/resources/chatgpt-vs-ai-agents/",
    "status": "PASS",
-   "detail": "HTTP 200 177ms"
+   "detail": "HTTP 200 68ms"
   },
   {
    "id": "up:/resources/ai-training-curriculum-nontechnical-teams/",
    "status": "PASS",
-   "detail": "HTTP 200 220ms"
+   "detail": "HTTP 200 85ms"
   },
   {
    "id": "up:/zh/resources/ai-training-curriculum-nontechnical-teams/",
    "status": "PASS",
-   "detail": "HTTP 200 224ms"
+   "detail": "HTTP 200 65ms"
   },
   {
    "id": "up:/tools/",
    "status": "PASS",
-   "detail": "HTTP 200 225ms"
+   "detail": "HTTP 200 77ms"
   },
   {
    "id": "up:/zh/tools/",
    "status": "PASS",
-   "detail": "HTTP 200 212ms"
+   "detail": "HTTP 200 80ms"
   },
   {
    "id": "up:/tools/ai-readiness-assessment/",
    "status": "PASS",
-   "detail": "HTTP 200 130ms"
+   "detail": "HTTP 200 81ms"
   },
   {
    "id": "up:/zh/tools/ai-readiness-assessment/",
    "status": "PASS",
-   "detail": "HTTP 200 247ms"
+   "detail": "HTTP 200 79ms"
   },
   {
    "id": "up:/use-cases/",
    "status": "PASS",
-   "detail": "HTTP 200 180ms"
+   "detail": "HTTP 200 94ms"
   },
   {
    "id": "up:/zh/use-cases/",
    "status": "PASS",
-   "detail": "HTTP 200 217ms"
+   "detail": "HTTP 200 80ms"
   },
   {
    "id": "up:/use-cases/sales/",
    "status": "PASS",
-   "detail": "HTTP 200 215ms"
+   "detail": "HTTP 200 90ms"
   },
   {
    "id": "up:/zh/use-cases/sales/",
    "status": "PASS",
-   "detail": "HTTP 200 138ms"
+   "detail": "HTTP 200 65ms"
   },
   {
    "id": "up:/workflows/",
    "status": "PASS",
-   "detail": "HTTP 200 221ms"
+   "detail": "HTTP 200 82ms"
   },
   {
    "id": "up:/zh/workflows/",
    "status": "PASS",
-   "detail": "HTTP 200 247ms"
+   "detail": "HTTP 200 82ms"
   },
   {
    "id": "up:/workflows/prospect-research/",
    "status": "PASS",
-   "detail": "HTTP 200 167ms"
+   "detail": "HTTP 200 64ms"
   },
   {
    "id": "up:/zh/workflows/prospect-research/",
    "status": "PASS",
-   "detail": "HTTP 200 171ms"
+   "detail": "HTTP 200 81ms"
   },
   {
    "id": "up:/templates/",
    "status": "PASS",
-   "detail": "HTTP 200 169ms"
+   "detail": "HTTP 200 86ms"
   },
   {
    "id": "up:/zh/templates/",
    "status": "PASS",
-   "detail": "HTTP 200 274ms"
+   "detail": "HTTP 200 56ms"
   },
   {
    "id": "up:/templates/sales-meeting-prep/",
    "status": "PASS",
-   "detail": "HTTP 200 157ms"
+   "detail": "HTTP 200 80ms"
   },
   {
    "id": "up:/zh/templates/sales-meeting-prep/",
    "status": "PASS",
-   "detail": "HTTP 200 177ms"
+   "detail": "HTTP 200 81ms"
   },
   {
    "id": "up:/templates/ai-data-boundaries-one-pager/",
    "status": "PASS",
-   "detail": "HTTP 200 220ms"
+   "detail": "HTTP 200 82ms"
   },
   {
    "id": "up:/zh/templates/ai-data-boundaries-one-pager/",
    "status": "PASS",
-   "detail": "HTTP 200 247ms"
+   "detail": "HTTP 200 69ms"
   },
   {
    "id": "up:/case-studies/",
    "status": "PASS",
-   "detail": "HTTP 200 201ms"
+   "detail": "HTTP 200 74ms"
   },
   {
    "id": "up:/zh/case-studies/",
    "status": "PASS",
-   "detail": "HTTP 200 205ms"
+   "detail": "HTTP 200 90ms"
   },
   {
    "id": "up:/case-studies/livestream-agency-scheduling/",
    "status": "PASS",
-   "detail": "HTTP 200 234ms"
+   "detail": "HTTP 200 57ms"
   },
   {
    "id": "up:/zh/case-studies/livestream-agency-scheduling/",
    "status": "PASS",
-   "detail": "HTTP 200 220ms"
+   "detail": "HTTP 200 81ms"
   },
   {
    "id": "up:/sitemap.xml",
    "status": "PASS",
-   "detail": "HTTP 200 117ms"
+   "detail": "HTTP 200 54ms"
   },
   {
    "id": "up:/robots.txt",
    "status": "PASS",
-   "detail": "HTTP 200 83ms"
+   "detail": "HTTP 200 45ms"
   },
   {
    "id": "up:/llms.txt",
    "status": "PASS",
-   "detail": "HTTP 200 217ms"
+   "detail": "HTTP 200 66ms"
   },
   {
    "id": "up:404",
@@ -2229,7 +2229,7 @@
   {
    "id": "drift",
    "status": "PASS",
-   "detail": "baseline captured → scripts/seo-baseline.json"
+   "detail": "no on-page drift vs baseline (intentional change? rerun with --baseline)"
   },
   {
    "id": "geo:robots",
@@ -2244,7 +2244,7 @@
   {
    "id": "creds:google-api",
    "status": "WARN",
-   "detail": "config found, key file missing: C:/Users/qianq/.config/claude-seo/service-account.json"
+   "detail": "GSC/GA4/PSI via claude-seo need ~/.config/claude-seo/google-api.json"
   }
  ]
 }
