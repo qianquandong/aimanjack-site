@@ -93,7 +93,7 @@ test('a valid submission makes exactly one receipt with normalized fields, separ
   assert.equal(p.payload.attendees, 12);
   assert.equal(p.consent_request, true);
   assert.equal(p.consent_newsletter, false);
-  assert.equal(p.consent_notice_version, 'privacy-2026-10-17-draft');
+  assert.equal(p.consent_notice_version, 'privacy-2026-10-16-mailerlite-draft');
   assert.equal(p.form_version, 'intake-2026-10-08');
   assert.deepEqual(p.utm, { utm_source: 'linkedin', utm_medium: 'social', utm_campaign: 'q4-launch', referrer_host: 'linkedin.com', landing_path: '/ai-training/team-workshop/', first_touch_at: new Date(1760000000000).toISOString() });
   assert.equal(p.self_reported_source, 'linkedin');

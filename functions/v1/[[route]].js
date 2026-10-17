@@ -27,6 +27,7 @@ import { createNotifier, composeMessages, describeMailConfig, alertFromEnv, book
 import { m365Send, m365Status, m365StartConnect, m365PollConnect, m365Disconnect, m365Ready } from '../../src/m365-mail.mjs';
 import { reserveMailSend, isMailQuotaError } from '../../src/mail-quota.mjs';
 import { productionApiEnabled } from '../../src/deployment-safety.mjs';
+import { mailerliteRoute } from '../mailerlite.mjs';
 
 const SOURCES = new Set(['web', 'voice', 'sms', 'admin']);
 // 'admin' suppresses the owner's own notice, so it is honoured only with the admin token; anything else is 'web'.
@@ -310,7 +311,7 @@ const INTAKE_ENUMS = {
   timing: ['within_month', 'one_to_three', 'three_plus', 'exploring'],
   source: ['search', 'ai_assistant', 'linkedin', 'referral', 'event', 'social_other', 'other'],
 };
-const INTAKE_CONSENT_NOTICE_VERSION = 'privacy-2026-10-17-draft';   // keep equal to CONSENT_NOTICE_VERSION in src/config.mjs (tested)
+const INTAKE_CONSENT_NOTICE_VERSION = 'privacy-2026-10-16-mailerlite-draft';   // keep equal to CONSENT_NOTICE_VERSION in src/config.mjs (tested)
 const INTAKE_MIN_FILL_MS = 3000;
 const yes = (v) => v === true || v === 'yes' || v === 'on' || v === 'true';
 const errInfo = (e) => `${e?.status ?? ''} ${e?.code ?? e?.name ?? 'error'}`.trim();   // never the message: it may quote a row
@@ -666,6 +667,7 @@ export async function onRequest(ctx) {
   if (!productionApiEnabled(env, req)) return fail(503, 'preview_read_only', 'Read-only preview. Booking and email APIs are disabled.');
   const url = new URL(req.url), origin = url.origin, [res, id, extra] = params.route || [];
   try {
+    if (res === 'mailerlite') return await mailerliteRoute({env,req,id,extra,db:(path,o)=>sb(env,path,o)});
     if (res === 'ros-events') return await rosEventsRoute({env,req,id,extra,db:(path,o)=>sb(env,path,o)});
     if (rosEnabled(env) && ((res === 'bookings' && ['POST','PATCH','DELETE'].includes(req.method)) || (res === 'intake' && req.method === 'POST'))) {
       try { if (await sb(env,'rpc/ros_ready',{method:'POST',schema:'revenue',body:{}}) !== true) throw Error('not_ready'); }
