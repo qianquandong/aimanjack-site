@@ -48,7 +48,8 @@ const T = {
   },
 };
 
-const placeText = (e, lang) => e.place ? [e.place.name, e.place.street !== e.place.name && !e.place.name.includes(e.place.street) ? e.place.street : '', e.place.city, e.place.zip && `TX ${e.place.zip}`].filter(Boolean).join(', ') : T[lang].live;
+// A venue whose name is already its street address (the LBJ room) is not repeated.
+const placeText = (e, lang) => e.place ? [e.place.name, /^\d/.test(e.place.name) ? '' : e.place.street, e.place.city, e.place.zip && `TX ${e.place.zip}`].filter(Boolean).join(', ') : T[lang].live;
 const cityOf = (e, lang) => (e.mode === 'online' ? T[lang].online : VENUES[e.venue].short[lang]);
 
 const hub = (lang) => {
