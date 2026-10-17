@@ -1,9 +1,12 @@
-// /book/ — Jack's own booking page (BOOKING-PLAN.md W1). Static shell + one inline script that talks to /v1/*.
-// Same page handles ?id=<booking> for reschedule / cancel (the id is the customer's manage token).
+// /book/ — booking page. Since 2026-10-17 the calendar is Cal.com (cal.com/aimanjack/ai-workflow-call, synced to Jack's
+// Outlook calendar): the self-built /v1 booking widget never received a single web booking (Supabase booking.bookings
+// held only phone/SMS/test rows), and Jack could not rely on its notifications. Cal.com sends the confirmations and the
+// reschedule/cancel links. The /book/ URL stays, so every "Book a call" button on the site and outside keeps working.
+// The /v1 booking API and the old ?id= manage links are no longer linked from here.
 import { SITE, EMAIL, SMS_TEL, SMS_DISPLAY } from '../config.mjs';
-import { pageHero, breadcrumb, BUSINESS_REF, T } from '../components.mjs';
+import { breadcrumb, BUSINESS_REF } from '../components.mjs';
 
-const BUSINESS = 'aimanjack', SERVICE = 'demo-call', TZ = 'America/Chicago';
+export const CAL_URL = 'https://cal.com/aimanjack/ai-workflow-call';
 
 const copy = {
   en: {
@@ -11,34 +14,16 @@ const copy = {
     description: 'Pick a time for a 20-minute call with Jack. Bring one task and get a recommendation on which workflows to start with and how the 4-session program would fit. Times are US Central. Change or cancel from your confirmation link.',
     crumb: 'Book a call', eyebrow: 'Book a call · 20 minutes · free', h1: 'Bring one task. Let’s see where AI can actually help.',
     sub: 'Tell me what you or your team does every week. I’ll recommend which workflows to start with and how the 4-session program would fit your business or team. I’ll call you at the time you pick.',
-    s: {
-      day: 'Pick a day', time: 'Pick a time', you: 'Your details', tz: 'All times are US Central (Dallas).',
-      name: 'Your name', phone: 'Mobile number', email: 'Email (optional, for a confirmation)', biz: 'Company (optional)', goal: 'What work do you want AI to help with? Add team size if it’s for a team (optional)', goalPh: 'e.g. weekly reports, website updates, sales research, content, SOPs, operations', submit: 'Confirm booking', working: 'Booking…',
-      loading: 'Loading times…', none: `No open times in the next 30 days. Text Jack at ${SMS_DISPLAY} instead.`,
-      doneH: 'You’re booked.', doneP: 'Jack will call {phone} at {time}.', doneLink: 'Save this link to change or cancel:',
-      manageH: 'Your appointment', manageP: '{time} · Jack calls {phone}', change: 'Change time', cancel: 'Cancel appointment', changeH: 'Pick a new time',
-      confirmMove: 'Move your call to {time}?', confirmCancel: 'Cancel this appointment?', moved: 'Moved to {time}.', cancelled: 'This appointment was cancelled.',
-      closed: 'It is too close to the appointment to change it online. Text Jack at ' + SMS_DISPLAY + '.',
-      taken: 'That time was just taken. Pick another one.', yes: 'Yes, do it', no: 'Go back', moreDays: 'More dates', moreTimes: 'More times', notFound: 'We could not find that booking.',
-      error: `Something went wrong. Try again, or text Jack at ${SMS_DISPLAY}.`, bookAnother: 'Book a new time',
-    },
+    tz: 'Times show in your own time zone. The confirmation email has links to change or cancel.',
+    frame: 'Booking calendar for a 20-minute call with Jack Qian', open: 'Calendar not loading? Book on Cal.com →',
   },
   zh: {
     title: '预约 20 分钟工作流咨询，规划你的 AI 培训 | AI Man Jack',
     description: '选择一个时间，与 Jack 进行 20 分钟通话。带上一项任务，Jack 会建议先从哪几条工作流开始，以及四次课程项目怎么安排最合适。时间均为美国中部时间，可通过确认链接改期或取消。',
     crumb: '预约通话', eyebrow: '预约通话 · 20 分钟 · 免费', h1: '带一项任务来，<br>看看 AI 到底能帮上什么。',
     sub: '说说你或团队每周都在做什么，我会建议先从哪几条工作流开始，以及四次课程项目怎么安排最适合你的企业或团队。到了约定时间，我会给你打电话。',
-    s: {
-      day: '选择日期', time: '选择时间', you: '填写信息', tz: '所有时间均为美国中部时间（达拉斯）',
-      name: '姓名', phone: '手机号码', email: '邮箱（选填）', biz: '公司（选填）', goal: '希望 AI 帮你做哪些工作？如果是团队，请写上人数（选填）', goalPh: '例如：周报、网站更新、销售调研、内容、SOP、日常运营', submit: '确认预约', working: '正在预约…',
-      loading: '正在加载可选时间…', none: `未来 30 天暂无可预约时间，请发送短信至 ${SMS_DISPLAY} 联系 Jack。`,
-      doneH: '预约成功。', doneP: 'Jack 将于 {time} 致电 {phone}。', doneLink: '如需改期或取消，请使用此链接：',
-      manageH: '你的预约', manageP: '{time} · Jack 将致电 {phone}', change: '更改时间', cancel: '取消预约', changeH: '选择新的时间',
-      confirmMove: '将通话改至 {time}？', confirmCancel: '确定取消这次预约？', moved: '已改至 {time}。', cancelled: '该预约已取消。',
-      closed: '距离通话时间过近，无法在线更改。请发送短信至 ' + SMS_DISPLAY + ' 联系 Jack。',
-      taken: '该时间刚刚被预约，请选择其他时间。', yes: '确定', no: '返回', moreDays: '更多日期', moreTimes: '更多时间', notFound: '未找到该预约。',
-      error: `出现问题，请重试，或发送短信至 ${SMS_DISPLAY} 联系 Jack。`, bookAnother: '重新预约',
-    },
+    tz: '时间按你所在的时区显示。确认邮件里有改期和取消的链接。',
+    frame: '预约与 Jack Qian 的 20 分钟通话', open: '日历加载不出来？到 Cal.com 预约 →',
   },
 };
 
@@ -48,79 +33,19 @@ const INFO = {
   zh: { top: '与 Jack 的 20 分钟通话', steps: [['通话中：', '了解你或团队每周的工作、已经在用的工具，以及哪些工作总在重复。'], ['通话之后：', 'Jack 会亲自整理，并通过邮件发送推荐方案（谁来参加、从哪几条工作流开始）和书面报价。'], ['之后：', '围绕你的真实工作实时授课，全美远程或在达拉斯—沃斯堡上门。']], alt: ['更习惯短信？发送 <strong>TRAINING</strong> 至', '，或发邮件至', '。'] },
 };
 
-// One script for both languages; strings come from window.BK.
-const script = `<script>
-(function(){var S=window.BK,D=document,$=function(i){return D.getElementById(i)},loc=S.lang==='zh'?'zh-CN':'en-US';
-var q=new URLSearchParams(location.search),bookingId=q.get('id'),avail=[],picked=null,booking=null;
-var fmtDay=new Intl.DateTimeFormat(loc,{timeZone:S.tz,weekday:'short',month:'short',day:'numeric'});
-var fmtTime=new Intl.DateTimeFormat(loc,{timeZone:S.tz,hour:'numeric',minute:'2-digit'});
-var fmtFull=new Intl.DateTimeFormat(loc,{timeZone:S.tz,weekday:'long',month:'long',day:'numeric',hour:'numeric',minute:'2-digit'});
-var ph=function(p){var m=/^\\+1(\\d{3})(\\d{3})(\\d{4})$/.exec(p);return m?'('+m[1]+') '+m[2]+'-'+m[3]:p};
-var t=function(k,v){return S.s[k].replace(/\\{(\\w+)\\}/g,function(_,n){return v[n]})};
-var msg=function(m){$('bk-msg').textContent=m||''};
-var errText=function(e){return e==='slot_unavailable'?S.s.taken:e==='cancel_window'?S.s.closed:e==='booking_not_found'?S.s.notFound:S.s.error};
-var api=function(m,p,b){return fetch(p,{method:m,headers:{'content-type':'application/json','idempotency-key':crypto.randomUUID(),'x-source':'web'},body:b?JSON.stringify(b):undefined}).then(function(r){return r.json().then(function(j){return r.ok?j:Promise.reject(j)})})};
-var show=function(id,on){$(id).hidden=!on};
-function ask(text,yes){$('bk-ask-p').textContent=text;show('bk-ask',true);$('bk-ask').scrollIntoView({behavior:'smooth',block:'center'});$('bk-yes').onclick=function(){show('bk-ask',false);yes()};$('bk-no').onclick=function(){show('bk-ask',false)}}
-function chips(el,items,label,on,more){el.innerHTML='';var vis=more?more.pick(items):items;
- vis.forEach(function(it){var b=D.createElement('button');b.type='button';b.className='bk-chip';b.textContent=label(it);b.setAttribute('aria-pressed','false');b.addEventListener('click',function(){el.querySelectorAll('.bk-chip').forEach(function(x){x.setAttribute('aria-pressed','false')});b.setAttribute('aria-pressed','true');on(it)});el.appendChild(b)});
- if(vis.length<items.length){var m=D.createElement('button');m.type='button';m.className='bk-chip bk-more';m.textContent=more.label;m.addEventListener('click',function(){chips(el,items,label,on)});el.appendChild(m)}}
-var firstDays=function(a){return a.slice(0,5)};
-var firstTimes=function(a){var h=a.filter(function(s){return new Date(s.start_at).getUTCMinutes()%30===0});return (h.length?h:a).slice(0,8)};
-function loadTimes(){msg(S.s.loading);show('bk-pick',true);
- return api('GET','/v1/availability?business='+S.business+'&service='+S.service).then(function(r){avail=r.days;msg('');
-  if(!avail.length){msg(S.s.none);return}
-  chips($('bk-days'),avail,function(d){return fmtDay.format(new Date(d.slots[0].start_at))},function(d){show('bk-time',true);picked=null;
-   chips($('bk-slots'),d.slots,function(s){return fmtTime.format(new Date(s.start_at))},function(s){picked=s;bookingId?move(s):(show('bk-form',true),$('bk-name').focus())},{label:S.s.moreTimes,pick:firstTimes})},{label:S.s.moreDays,pick:firstDays})
- }).catch(function(e){msg(errText(e&&e.error))})}
-function done(b,head,line){booking=b;show('bk-ask',false);show('bk-pick',false);show('bk-time',false);show('bk-form',false);show('bk-manage',false);show('bk-done',true);
- $('bk-done-h').textContent=head;$('bk-done-p').textContent=line;var a=$('bk-done-link');a.href=b.manage_url;a.textContent=b.manage_url;show('bk-done-linkwrap',b.status==='confirmed')}
-$('bk-form').addEventListener('submit',function(e){e.preventDefault();if(!picked)return;var btn=$('bk-submit');btn.disabled=true;btn.textContent=S.s.working;msg('');
- api('POST','/v1/bookings',{business:S.business,service:S.service,start_at:picked.start_at,staff:picked.staff_id,customer_name:$('bk-name').value,customer_phone:$('bk-phone').value,customer_email:$('bk-email').value||undefined,note:[$('bk-biz').value,$('bk-goal').value].filter(Boolean).join(' — ')||undefined})
- .then(function(b){track('booking_complete');done(b,S.s.doneH,t('doneP',{phone:ph(b.customer_phone),time:fmtFull.format(new Date(b.start_at))}))})
- .catch(function(e){msg(errText(e&&e.error));if(e&&e.error==='slot_unavailable')loadTimes()}).then(function(){btn.disabled=false;btn.textContent=S.s.submit})});
-function move(s){var when=fmtFull.format(new Date(s.start_at));ask(t('confirmMove',{time:when}),function(){msg('');
- api('PATCH','/v1/bookings/'+bookingId,{start_at:s.start_at,staff:s.staff_id}).then(function(b){track('booking_reschedule');done(b,t('moved',{time:when}),t('manageP',{time:when,phone:ph(b.customer_phone)}))})
- .catch(function(e){msg(errText(e&&e.error));if(e&&e.error==='slot_unavailable')loadTimes()})})}
-function manage(){api('GET','/v1/bookings/'+bookingId).then(function(b){booking=b;var when=fmtFull.format(new Date(b.start_at));
- if(b.status!=='confirmed'){done(b,S.s.cancelled,when);return}
- show('bk-manage',true);$('bk-manage-p').textContent=t('manageP',{time:when,phone:ph(b.customer_phone)});
- if(!b.changeable){msg(S.s.closed);$('bk-change').disabled=true;$('bk-cancel').disabled=true}
- $('bk-change').addEventListener('click',function(){$('bk-pick-h').textContent=S.s.changeH;loadTimes();$('bk-pick').scrollIntoView({behavior:'smooth'})});
- $('bk-cancel').addEventListener('click',function(){ask(S.s.confirmCancel,function(){
-  api('DELETE','/v1/bookings/'+bookingId).then(function(b){track('booking_cancel');done(b,S.s.cancelled,when)}).catch(function(e){msg(errText(e&&e.error))})})})
- }).catch(function(e){msg(errText(e&&e.error))})}
-function track(n){if(window.dataLayer)(function(){window.dataLayer.push(arguments)})('event',n,{page:location.pathname,language:S.lang})}
-var g=q.get('goal');if(g&&$('bk-goal'))$('bk-goal').value=g.slice(0,200);
-bookingId?manage():loadTimes();
-})();
-</script>`;
-
 const page = (lang) => {
-  const c = copy[lang], s = c.s, info = INFO[lang], bc = breadcrumb(lang, [[c.crumb, '/book/']]);
+  const c = copy[lang], info = INFO[lang], bc = breadcrumb(lang, [[c.crumb, '/book/']]);
+  const embed = `${CAL_URL}?embed=true&layout=month_view&theme=light`;
   return {
     title: c.title, description: c.description, view: 'booking_start',
     body: `<div class="wrap book-grid"><div class="book-info">${bc.html}<div class="eyebrow">${c.eyebrow}</div><h1 class="sm" style="font-size:clamp(40px,5vw,72px)">${c.h1}</h1><p class="lead">${c.sub}</p>
 <ol class="book-steps">${info.steps.map(([b, t], i) => `<li><span class="n">0${i + 1}</span><span><strong>${b}</strong> <span>${t}</span></span></li>`).join('')}</ol>
 <div class="book-alt"><img src="/img/jack-portrait-256.webp" width="256" height="256" alt="Jack Qian"><span>${info.alt[0]} <a href="sms:${SMS_TEL}?body=TRAINING%20-%20" data-event="sms_training_click" data-pos="book">${SMS_DISPLAY}</a>${info.alt[1]} <a href="mailto:${EMAIL}" data-event="email_training_click" data-pos="book">${EMAIL}</a>${info.alt[2]}</span></div></div>
 <div class="book-form"><section class="bk" data-nosnippet>
-<div class="bk-top"><b>${info.top}</b><span>${s.tz}</span></div>
-<div id="bk-manage" class="bk-card" hidden><h2 class="h3">${s.manageH}</h2><p id="bk-manage-p"></p><div class="cta-row" style="margin-top:16px"><button type="button" class="btn btn-secondary" id="bk-change">${s.change}</button><button type="button" class="btn btn-ghost" id="bk-cancel">${s.cancel}</button></div></div>
-<div id="bk-pick" hidden><h2 class="bk-h" id="bk-pick-h">${s.day}</h2><div id="bk-days" class="bk-chips"></div></div>
-<div id="bk-time" hidden><h2 class="bk-h">${s.time}</h2><div id="bk-slots" class="bk-chips"></div></div>
-<form id="bk-form" class="bk-form" hidden autocomplete="on"><h2 class="bk-h">${s.you}</h2>
-<label>${s.name}<input id="bk-name" name="name" autocomplete="name" required maxlength="80"></label>
-<label>${s.phone}<input id="bk-phone" name="tel" type="tel" autocomplete="tel" required inputmode="tel" minlength="10"></label>
-<label>${s.email}<input id="bk-email" name="email" type="email" autocomplete="email" maxlength="120"></label>
-<label>${s.biz}<input id="bk-biz" name="organization" autocomplete="organization" maxlength="120"></label>
-<label>${s.goal}<input id="bk-goal" name="goal" maxlength="200" placeholder="${s.goalPh}"></label>
-<button class="btn btn-primary" id="bk-submit" type="submit">${s.submit}</button></form>
-<div id="bk-done" class="bk-card bk-done" hidden><h2 class="h3" id="bk-done-h"></h2><p id="bk-done-p"></p><p id="bk-done-linkwrap">${s.doneLink}<br><a id="bk-done-link" href="/book/"></a></p><p><a class="btn btn-secondary btn-sm" href="${lang === 'zh' ? '/zh/book/' : '/book/'}">${s.bookAnother}</a></p></div>
-<div id="bk-ask" class="bk-card bk-ask" hidden><p id="bk-ask-p"></p><div class="cta-row" style="margin-top:12px"><button type="button" class="btn btn-primary btn-sm" id="bk-yes">${s.yes}</button><button type="button" class="btn btn-ghost btn-sm" id="bk-no">${s.no}</button></div></div>
-<p id="bk-msg" class="bk-msg" role="status" aria-live="polite"></p>
-</section></div></div>
-<script>window.BK=${JSON.stringify({ lang, tz: TZ, business: BUSINESS, service: SERVICE, s })}</script>
-${script}`,
+<div class="bk-top"><b>${info.top}</b><span>${c.tz}</span></div>
+<iframe src="${embed}" title="${c.frame}" loading="lazy" style="width:100%;min-height:720px;border:0;border-radius:16px;background:#fff"></iframe>
+<p class="bk-msg"><a href="${CAL_URL}" target="_blank" rel="noopener" data-event="booking_calcom_click" data-pos="book">${c.open}</a></p>
+</section></div></div>`,
     jsonld: [{ '@type': 'WebPage', '@id': `${SITE}${lang === 'zh' ? '/zh' : ''}/book/`, name: c.title, about: { '@id': `${SITE}/#business` } }, BUSINESS_REF, bc.ld],
   };
 };
