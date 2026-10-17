@@ -402,6 +402,8 @@ test('a new quote is forwarded to the CRM, signed, once; a CRM outage never fail
   assert.equal(p.receipt_id, (await r.json()).receipt_id);
   assert.equal(p.kind, 'full');
   assert.equal(p.email, 'dana.reyes@northwind-example.com');
+  for (const [k, x] of Object.entries(p)) if (!['attendees'].includes(k)) assert.notEqual(x, null, `${k} is never null (CRM schema)`);
+  assert.deepEqual(Object.keys(p).sort(), ['attendees', 'budget', 'company', 'company_domain', 'consent_newsletter', 'email', 'kind', 'lang', 'name', 'page', 'received_at', 'receipt_id', 'tool', 'workflows'], 'exactly the CRM strict schema fields');
   await send(valid(), { e });
   assert.equal(db.crm.length, 1, 'a deduped retry is not forwarded again');
   await send(quick({ email: 'q@northwind-example.com' }), { e });
