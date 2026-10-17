@@ -5,6 +5,7 @@
 // The /v1 booking API and the old ?id= manage links are no longer linked from here.
 import { SITE, EMAIL, SMS_TEL, SMS_DISPLAY } from '../config.mjs';
 import { breadcrumb, BUSINESS_REF } from '../components.mjs';
+import { calBookingTrackingScript } from '../cal-booking-tracking.mjs';
 
 export const CAL_URL = 'https://cal.com/aimanjack/ai-workflow-call';
 
@@ -43,9 +44,9 @@ const page = (lang) => {
 <div class="book-alt"><img src="/img/jack-portrait-256.webp" width="256" height="256" alt="Jack Qian"><span>${info.alt[0]} <a href="sms:${SMS_TEL}?body=TRAINING%20-%20" data-event="sms_training_click" data-pos="book">${SMS_DISPLAY}</a>${info.alt[1]} <a href="mailto:${EMAIL}" data-event="email_training_click" data-pos="book">${EMAIL}</a>${info.alt[2]}</span></div></div>
 <div class="book-form"><section class="bk" data-nosnippet>
 <div class="bk-top"><b>${info.top}</b><span>${c.tz}</span></div>
-<iframe src="${embed}" title="${c.frame}" loading="lazy" style="width:100%;min-height:720px;border:0;border-radius:16px;background:#fff"></iframe>
-<p class="bk-msg"><a href="${CAL_URL}" target="_blank" rel="noopener" data-event="booking_calcom_click" data-pos="book">${c.open}</a></p>
-</section></div></div>`,
+<iframe id="cal-booking-frame" src="${embed}" title="${c.frame}" loading="lazy" style="width:100%;min-height:720px;border:0;border-radius:16px;background:#fff"></iframe>
+<p class="bk-msg"><a id="cal-booking-link" href="${CAL_URL}" target="_blank" rel="noopener" data-event="booking_calcom_click" data-pos="book">${c.open}</a></p>
+</section></div></div>${calBookingTrackingScript}`,
     jsonld: [{ '@type': 'WebPage', '@id': `${SITE}${lang === 'zh' ? '/zh' : ''}/book/`, name: c.title, about: { '@id': `${SITE}/#business` } }, BUSINESS_REF, bc.ld],
   };
 };
