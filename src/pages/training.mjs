@@ -79,6 +79,41 @@ export const TRAINING_FAQ = { en: C.en.faq, zh: C.zh.faq };
 // It is the only offer card on the site (2026-09-28); shorter formats are a line of text, never a competing card.
 export const progCard = ({ k, big, sub, chip, p, items, note }, cta) => `<div class="prog dark on-dark solo"><div class="prog-main"><span class="k">${k}</span><span class="big">${big}</span><span class="sub">${sub}</span><span class="chip">${chip}</span><p>${p}</p>${cta}${note ? `<span class="note">${note}</span>` : ''}</div><ul class="ticks">${items.map((x) => `<li><span>${x}</span></li>`).join('')}</ul></div>`;
 
+// Source: Jack Qian, 2026-10-17, confirmed in this website review that these ranges come from his learners' feedback.
+// Self-reported weekly estimates, not timed measurements. No sample size or survey method was supplied; do not invent
+// either, attribute the ranges to the unfinished client program, or turn them into a guarantee or Review markup.
+const learnerFeedback = (lang) => {
+  const zh = lang === 'zh';
+  return `<section class="sec tight" id="learner-feedback"><div class="wrap">
+<div class="sec-head"><div><div class="eyebrow">${zh ? '学员反馈' : 'Learner feedback'}</div><h2>${zh ? '学员自报的每周节约时间' : 'Learner-reported weekly time savings'}</h2><p class="lead">${zh ? '学员将 AI 用于工作后，向 Jack 反馈的每周节约时间如下。' : 'After applying AI to their work, learners have shared the following weekly time-saving estimates with Jack.'}</p></div></div>
+<div class="g2"><div class="oak"><b style="font-size:36px">5–7</b><span>${zh ? '小时／周 · 普通员工／个人贡献者（IC）' : 'hours per week · Individual contributors (ICs)'}</span></div><div class="oak"><b style="font-size:36px">3–4</b><span>${zh ? '小时／周 · 高管' : 'hours per week · Executives'}</span></div></div>
+<p class="review-source">${zh ? '来源：Jack Qian 于 2026 年 10 月 17 日汇总的学员反馈。这是学员自报的估算，未经独立计时验证；实际节约时间因岗位、任务和使用方式而异。' : 'Source: learner feedback summarized by Jack Qian on October 17, 2026. These are self-reported estimates, not independently timed measurements; results vary by role, task and use.'}</p>
+</div></section>`;
+};
+
+// The existing home-page owner link now lands on useful buying guidance, not a one-line aside.
+// Keep this audience within the corporate-training pillar instead of creating another competing service URL.
+const ownerGuide = (lang) => {
+  const zh = lang === 'zh';
+  const examples = zh ? [
+    ['客户跟进', '从脱敏的会议记录和已批准的服务说明，起草包含下一步行动的邮件。发送前由人核对价格、承诺、收件人和日期。', '/templates/follow-up-email/', '查看跟进邮件模板'],
+    ['每周经营简报', '用经过核验的汇总数据和工作记录，起草一页周报。原始表格保留为依据，负责人核对数字、异常和解释。', '/templates/weekly-executive-summary/', '查看周报模板'],
+    ['员工操作说明', '把负责人提供的操作步骤整理成检查清单。负责人逐项确认顺序、例外和审批要求，再让员工试用。', '/templates/sop-builder/', '查看操作流程模板'],
+  ] : [
+    ['Customer follow-ups', 'Use redacted meeting notes and an approved service description to draft an email with next steps. A person checks prices, commitments, recipients and dates before sending.', '/templates/follow-up-email/', 'Preview the follow-up template'],
+    ['Weekly business updates', 'Turn checked summary figures and work notes into a one-page update. Keep the source spreadsheet; the owner checks the numbers, exceptions and explanations.', '/templates/weekly-executive-summary/', 'Preview the weekly update template'],
+    ['Staff procedures', 'Turn a process owner’s walkthrough into a checklist. The owner confirms the sequence, exceptions and approval steps before another employee tries it.', '/templates/sop-builder/', 'Preview the procedure template'],
+  ];
+  return `<section class="sec tight" id="team-owners"><div class="wrap">
+<div class="sec-head"><div><div class="eyebrow">${zh ? '老板与经营团队' : 'Owners & operators'}</div><h2>${zh ? '小企业 AI 培训，从一项每周都要做的工作开始' : 'AI training for small business owners and teams'}</h2><p class="lead">${zh ? '同一批人兼顾客户、营销和行政时，先选一项容易核验的重复性任务。Jack 会结合现有工具与工作方式设计练习，中文或英文授课，全美远程或达拉斯—沃斯堡上门。' : 'When the same people handle customers, marketing and administration, start with one recurring task you can check. Jack shapes the exercises around your current tools and way of working, in English or Chinese, live online across the U.S. or onsite in Dallas–Fort Worth.'}</p></div></div>
+<p>${zh ? '先选一个练习示例，打开模板查看操作说明与核验步骤。课程使用模拟、脱敏或公司已批准的材料，再结合团队的任务调整练习。' : 'Choose an example exercise and open its template to see the instructions and review steps. Training uses synthetic, redacted or company-approved material, with exercises adapted to your team’s tasks.'}</p>
+<div class="g3" style="margin-top:24px">${examples.map(([h, p, path, label]) => `<div class="oak"><h3>${h}</h3><p>${p}</p><a class="more" href="${L(lang, path)}">${label} →</a></div>`).join('')}</div>
+<aside class="buyer-prep"><h3>${zh ? '先明确输入、结果和核验人' : 'Define the input, the output and who checks it'}</h3><p>${zh ? '咨询时说明谁做这项工作、多久做一次、有哪些可用资料，以及什么结果才算可用。需要严格计算或固定规则的部分，先考虑表格公式或代码；AI 可用于起草和整理文字。培训不包含软件开发或 CRM／ERP 集成。' : 'For the initial conversation, describe who does the task, how often, the available sources and what an acceptable result looks like. Exact calculations or fixed rules may belong in spreadsheet formulas or code; AI can help draft and organize text. Training does not include software development or CRM/ERP integration.'}</p></aside>
+<p>${zh ? '每种形式均按团队书面报价，工具订阅另计。四次课程项目包含课间练习和最后一节课结束两周后的复盘，关注实际使用、输出准确性和核验成本；单次工作坊或上门培训后的额外支持另行确定范围。' : 'Every format is quoted for your team; tool subscriptions are separate. The four-session program includes practice between meetings and a review two weeks after the final session, covering actual use, output accuracy and review effort. Additional support after a standalone workshop or onsite day is separately scoped.'}</p>
+<nav class="buyer-links" aria-label="${zh ? '小企业培训准备资料' : 'Small business training preparation'}"><a href="${L(lang, '/templates/team-ai-training-brief/')}">${zh ? '填写团队培训需求清单' : 'Prepare a team training brief'} →</a><a href="${L(lang, '/blog/ai-training-costs-small-business-teams/')}">${zh ? '了解培训报价包含什么' : 'Understand training scope and costs'} →</a><a href="${L(lang, '/contact/quote/')}?format=${OFFERS.program.format}" data-event="quote_cta_click" data-pos="training-owners">${zh ? '申请团队报价' : 'Request a team quote'} →</a></nav>
+</div></section>`;
+};
+
 // The approved English copy is page-local so shared buying guides and the Chinese page stay unchanged.
 const englishPage = () => {
   const c = C.en, bc = breadcrumb('en', [[c.crumb, '/ai-training/']]);
@@ -96,13 +131,15 @@ const englishPage = () => {
 
 <section class="sec" id="teams"><div class="wrap">${head('Your team’s tasks', 'Start with work your team knows', 'The training takes shape around your team’s responsibilities, available tools and approved source material. Example exercises include:')}
 <div class="g3">${c.teams.map(([slug, name, example, label]) => `<div class="oak" id="team-${slug}" style="gap:18px;padding:30px 28px"><h3 style="font-size:26px">${name}</h3><p>${example}</p><a class="more" href="/ai-training/${slug}-teams/" data-event="department_training_click" data-pos="training-teams">AI training for ${slug} teams →</a><a class="more" href="/use-cases/${slug}/">${label} →</a></div>`).join('')}</div>
-<p class="prog-alt" id="team-owners">No coding experience is required. The focus is on choosing useful tasks, giving clear instructions and checking the result before using it. Leading the rollout? See <a href="/ai-training/leadership-teams/">AI training for leadership teams</a>.</p></div></section>
+<p class="prog-alt">No coding experience is required. The focus is on choosing useful tasks, giving clear instructions and checking the result before using it. Run a small business? See the <a href="#team-owners">owner and small-team training guide</a>. Leading the rollout? See <a href="/ai-training/leadership-teams/">AI training for leadership teams</a>.</p></div></section>
 
 <section class="sec buyer-guide" id="team-paths"><div class="wrap">${head('Training formats', 'Choose a format that fits your team')}
 <div class="format-comparison"><div class="table-wrap"><table><caption>Compare three formats for team AI training</caption><thead><tr>${headers.map(h => `<th scope="col">${h}</th>`).join('')}</tr></thead><tbody>
 ${formats.map(([key, name, fit, includes, price, label]) => `<tr><th scope="row">${name}</th><td data-label="${headers[1]}">${fit}</td><td data-label="${headers[2]}">${includes}</td><td data-label="${headers[3]}"><strong>${price}</strong><a href="${key === 'program' ? '#formats' : OFFERS[key].path}" data-event="${key === 'program' ? 'training_program_click' : 'offer_path_click'}" data-pos="training-compare-${key}">${label} →</a></td></tr>`).join('')}
 </tbody></table></div></div>
 <p style="margin-top:18px;color:var(--muted)">Group size, goals and preparation requirements determine the final scope and price. AI tool accounts and subscriptions are separate. Travel outside Dallas–Fort Worth is quoted separately.</p></div></section>
+
+${ownerGuide('en')}
 
 <section class="sec dark" id="curriculum"><div class="wrap g12">
 <div style="grid-column:span 4;display:flex;flex-direction:column;gap:20px"><div class="eyebrow">Training method</div><h2 style="font-size:clamp(36px,4.4vw,64px);line-height:1">Practise the task—and how to check it</h2><p style="font-size:17px;line-height:1.65">Exercises follow a practical sequence.</p><p style="font-size:15.5px;line-height:1.65">Exercises use synthetic, redacted or company-approved sample material. Tool selection and data rules are agreed before the session.</p></div>
@@ -111,6 +148,8 @@ ${formats.map(([key, name, fit, includes, price, label]) => `<tr><th scope="row"
 <section class="sec" id="formats"><div class="wrap">${head('The four-session program', 'Put workflows to use between sessions')}
 ${progCard(c.fmt, planBtn('en', { pos: 'training-format' }))}
 <p class="prog-alt">This follow-up belongs to the four-session program. Additional support after a standalone workshop or onsite day is separately scoped.</p></div></section>
+
+${learnerFeedback('en')}
 
 <section class="sec tight" id="about"><div class="wrap"><div class="big-card" style="flex-direction:row;align-items:center;gap:32px;flex-wrap:wrap"><img src="/img/jack-portrait-256.webp" width="256" height="256" loading="lazy" decoding="async" alt="Jack Qian" style="width:120px;height:120px;border-radius:50%;object-fit:cover;flex:none">
 <div style="display:flex;flex-direction:column;gap:16px;flex:1 1 320px"><h2>Meet your instructor</h2><p>Jack Qian runs AI Man Jack LLC in Dallas, Texas. He designs and teaches the sessions himself.</p><p id="community-proof">His background includes business planning at a Dallas semiconductor company, building AI workflows and organizing community AI events. He also writes <a href="https://realagentusecases.com/">Real Agent Use Cases</a>, a newsletter about practical agents and workflows.</p><p><a class="more" href="/about/">More about Jack →</a> · <a href="/ai-training/dallas/">Dallas–Fort Worth sessions and venues →</a></p></div></div>
@@ -141,13 +180,15 @@ const chinesePage = () => {
 
 <section class="sec" id="teams"><div class="wrap">${head('实际工作任务', '从团队熟悉的工作开始', '课程围绕团队的实际职责、可用工具和经批准的资料设计。可以用于练习的任务包括：')}
 <div class="g3">${c.teams.map(([slug, name, example, label]) => `<div class="oak" id="team-${slug}" style="gap:18px;padding:30px 28px"><h3 style="font-size:26px">${name}</h3><p>${example}</p><a class="more" href="/zh/ai-training/${slug}-teams/" data-event="department_training_click" data-pos="training-teams">${name}团队 AI 培训 →</a><a class="more" href="/zh/use-cases/${slug}/">${label} →</a></div>`).join('')}</div>
-<p class="prog-alt" id="team-owners">无需编程经验。培训重点是选择合适的任务、给出清晰的指令，并在使用结果前做好核验。负责推动落地？见<a href="/zh/ai-training/leadership-teams/">管理层 AI 培训</a>。</p></div></section>
+<p class="prog-alt">无需编程经验。培训重点是选择合适的任务、给出清晰的指令，并在使用结果前做好核验。自己经营企业？见<a href="#team-owners">小企业老板与团队培训指南</a>。负责推动落地？见<a href="/zh/ai-training/leadership-teams/">管理层 AI 培训</a>。</p></div></section>
 
 <section class="sec buyer-guide" id="team-paths"><div class="wrap">${head('培训形式', '选择适合团队的培训形式')}
 <div class="format-comparison"><div class="table-wrap"><table><caption>三种团队 AI 培训形式对比</caption><thead><tr>${headers.map(h => `<th scope="col">${h}</th>`).join('')}</tr></thead><tbody>
 ${formats.map(([key, name, fit, includes, price, label]) => `<tr><th scope="row">${name}</th><td data-label="${headers[1]}">${fit}</td><td data-label="${headers[2]}">${includes}</td><td data-label="${headers[3]}"><strong>${price}</strong><a href="${key === 'program' ? '#formats' : L('zh', OFFERS[key].path)}" data-event="${key === 'program' ? 'training_program_click' : 'offer_path_click'}" data-pos="training-compare-${key}">${label} →</a></td></tr>`).join('')}
 </tbody></table></div></div>
 <p style="margin-top:18px;color:var(--muted)">最终范围和报价根据团队人数、目标及所需准备工作确定。培训费不包含 AI 工具账号或订阅费用。DFW 以外的差旅费用另行报价。</p></div></section>
+
+${ownerGuide('zh')}
 
 <section class="sec dark" id="curriculum"><div class="wrap g12">
 <div style="grid-column:span 4;display:flex;flex-direction:column;gap:20px"><div class="eyebrow">实操方法</div><h2 style="font-size:clamp(36px,4.4vw,64px);line-height:1.2">练习怎么做，也练习怎么核验</h2><p style="font-size:17px;line-height:1.65">实操练习按以下五步展开。</p><p style="font-size:15.5px;line-height:1.65">练习使用模拟、脱敏或经公司批准的示例材料。课前会确认可用工具及数据使用规则。</p></div>
@@ -156,6 +197,8 @@ ${formats.map(([key, name, fit, includes, price, label]) => `<tr><th scope="row"
 <section class="sec" id="formats"><div class="wrap">${head('四次课程项目', '在四次课程之间使用，再带着问题回来')}
 ${progCard(c.fmt, planBtn('zh', { pos: 'training-format' }))}
 <p class="prog-alt"><strong>两周回访属于四次课程项目。</strong>单次工作坊或全天上门培训后的额外支持，需要另行确认范围。</p></div></section>
+
+${learnerFeedback('zh')}
 
 <section class="sec tight" id="about"><div class="wrap"><div class="big-card" style="flex-direction:row;align-items:center;gap:32px;flex-wrap:wrap"><img src="/img/jack-portrait-256.webp" width="256" height="256" loading="lazy" decoding="async" alt="Jack Qian" style="width:120px;height:120px;border-radius:50%;object-fit:cover;flex:none">
 <div style="display:flex;flex-direction:column;gap:16px;flex:1 1 320px"><h2>由谁授课</h2><p>Jack Qian 在德州达拉斯经营 AI Man Jack LLC，由他本人设计并讲授课程。</p><p id="community-proof">他的经历包括在达拉斯一家半导体公司从事业务规划、搭建 AI 工作流，以及组织本地社区 AI 活动。他也撰写 <a href="https://realagentusecases.com/">Real Agent Use Cases</a>，介绍实际应用中的 AI 智能体和工作流。</p><p><a class="more" href="/zh/about/">了解 Jack →</a> · <a href="/zh/ai-training/dallas/">查看达拉斯—沃斯堡的活动与场地 →</a></p></div></div>
