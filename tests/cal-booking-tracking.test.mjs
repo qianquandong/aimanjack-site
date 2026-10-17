@@ -19,6 +19,13 @@ const settle = () => new Promise((resolve) => setImmediate(resolve));
 function harness({ url = 'https://aimanjack.com/book/', session = new Map(), local = new Map(), storageReadError = false,
   storageWriteError = false, gpc = false, digest = webcrypto.subtle.digest.bind(webcrypto.subtle), html } = {}) {
   const listeners = [], calls = [], attributes = new Map([['src', baseEmbed]]), fallbackAttributes = new Map([['href', CAL_URL]]), source = {};
+  const pendingDigests = new Set();
+  const trackedDigest = (...args) => {
+    const pending = Promise.resolve(digest(...args));
+    pendingDigests.add(pending);
+    pending.then(() => pendingDigests.delete(pending), () => pendingDigests.delete(pending));
+    return pending;
+  };
   const u = new URL(url);
   const store = (values, readError = false, writeError = false) => ({
     getItem(key) { if (readError) throw new Error('blocked storage'); return values.get(key) ?? null; },
@@ -30,7 +37,7 @@ function harness({ url = 'https://aimanjack.com/book/', session = new Map(), loc
     document: { getElementById: (id) => id === 'cal-booking-frame' ? frame : id === 'cal-booking-link' ? fallback : null },
     location: u, navigator: { globalPrivacyControl: gpc }, URL, URLSearchParams, TextEncoder,
     localStorage: store(local), sessionStorage: store(session, storageReadError, storageWriteError),
-    crypto: { subtle: { digest } },
+    crypto: { subtle: { digest: trackedDigest } },
     amjTrack: (name, props) => calls.push([name, props]),
     addEventListener: (type, fn) => { if (type === 'message') listeners.push(fn); },
   };
@@ -43,7 +50,11 @@ function harness({ url = 'https://aimanjack.com/book/', session = new Map(), loc
     emit(message = valid(), overrides = {}) {
       for (const fn of listeners) fn({ isTrusted: true, origin: 'https://cal.com', source, data: message, ...overrides });
     },
-    async flush() { for (let i = 0; i < 8; i++) await settle(); },
+    async flush() {
+      // WebCrypto uses the worker pool; event-loop turns cannot establish completion on a busy runner.
+      // Its awaiting tracking continuation runs before this Promise.allSettled continuation.
+      while (pendingDigests.size) await Promise.allSettled(Array.from(pendingDigests));
+    },
   };
 }
 
@@ -87,6 +98,26 @@ test('pending, unknown, unpaid, wrong-event and invalid UID records fail closed'
   await h.flush(); assert.equal(h.calls.length, 0);
   h.emit({ ...valid(), data: { ...valid().data, status: 'accepted' } });
   await h.flush(); assert.equal(h.calls.length, 1, 'documented accepted status is case-normalized only');
+});
+
+test('flush waits for delayed real WebCrypto completion instead of a fixed number of event-loop turns', async () => {
+  let release;
+  const h = harness({ digest: (...args) => new Promise((resolve) => {
+    release = () => resolve(webcrypto.subtle.digest(...args));
+  }) });
+  h.emit({ ...valid(), data: { ...valid().data, status: 'accepted' } });
+  let flushed = false;
+  const completion = h.flush().then(() => { flushed = true; });
+  try {
+    // Keep the real digest behind an explicit gate beyond the old eight-turn flush.
+    for (let i = 0; i < 12; i++) await settle();
+    assert.equal(h.calls.length, 0, 'unresolved digest must not produce an event');
+    assert.equal(flushed, false, 'flush must still await the in-flight digest');
+  } finally {
+    release();
+    await completion;
+  }
+  assert.equal(h.calls.length, 1, 'accepted booking is counted after the real digest resolves');
 });
 
 test('concurrent duplicate messages count once and hashed dedup survives page refresh', async () => {

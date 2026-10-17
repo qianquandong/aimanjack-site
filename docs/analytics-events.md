@@ -61,4 +61,8 @@ For campaign continuity, the iframe and existing external fallback link receive 
 
 The parent bridge cannot observe completion after a visitor leaves for the external Cal.com fallback link, a Google Business Profile Cal.com link, or another direct Cal.com link. Do not report those clicks as bookings. Cross-domain/server-side attribution and Google Ads import must be verified separately; adding this code alone does not enable Google Ads bidding, import a conversion or establish attribution for ad click identifiers.
 
+GA4 setup uses the exact code event `booking_complete`, marked as a key event, counted once per event, with no default monetary value. Do not create a URL/page-view rule or send a synthetic production event to make it appear in reports. Google Ads must import that exact event from the linked property and its conversion category, counting method and Primary/Secondary setting must be read back separately. A saved key-event definition with no stream data is configuration evidence only, not a completed appointment or a verified advertising conversion. Account authorization and private review evidence remain outside the published site.
+
+The offline harness waits for the actual WebCrypto digest promises before checking analytics calls. A fixed number of event-loop turns can finish before SHA-256 on a busy build worker; the delayed-digest regression covers this case without changing the production bridge or weakening the full build/test gate.
+
 Sources: [Cal.com embed events](https://cal.com/help/embedding/embed-events), [Cal.com embedded UTM tracking](https://cal.com/help/embedding/utm-tracking-embed), [Cal.com booking UTM tracking](https://cal.com/help/bookings/utm-tracking).
