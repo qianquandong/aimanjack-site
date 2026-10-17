@@ -92,7 +92,7 @@ const page = (e, i, lang) => {
 ${ctaBand(lang, { pos: 'event-page' })}`,
     jsonld: [{ '@type': 'Event', '@id': `${url}#event`, name, url, description: c.summary, startDate: e.start, endDate: e.end, eventStatus: 'https://schema.org/EventScheduled',
       eventAttendanceMode: e.mode === 'online' ? 'https://schema.org/OnlineEventAttendanceMode' : 'https://schema.org/OfflineEventAttendanceMode',
-      location, image: e.photos.map(([f]) => `${SITE}${img(f)}`), inLanguage: e.lang ? (e.lang.en.includes('English') && !e.lang.en.includes('Chinese') ? 'en' : 'zh') : undefined,
+      location, image: e.photos.map(([f]) => `${SITE}${img(f)}`), subjectOf: e.notes ? e.notes.map((x) => ({ '@type': 'CreativeWork', name: x.label[lang], url: x[lang], author: { '@id': `${SITE}/#jack` } })) : undefined, inLanguage: e.lang ? (e.lang.en.includes('English') && !e.lang.en.includes('Chinese') ? 'en' : 'zh') : undefined,
       organizer: e.role === 'speaker' ? { '@type': 'Organization', name: e.organizer } : { '@id': `${SITE}/#business` },
       performer: [{ '@id': `${SITE}/#jack` }, ...(e.guest ? [{ '@type': 'Person', name: e.guest }] : [])],
       ...(e.role === 'host' ? { isAccessibleForFree: true } : {}) }, person(), BUSINESS_REF, bc.ld],

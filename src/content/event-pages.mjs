@@ -57,10 +57,14 @@ export const EVENT_PAGES = {
   },
   '2026-05-17': {
     slug: 'openclaw-ai-agents-meetup-2026-05-17', luma: 'https://luma.com/u1tw9z8m',
-    // Jack's own write-ups of the talk (realagentusecases.com, © Jack Qian; both episodes dated 2026.05.17). Linked 2026-10-16 at his request.
+    // Jack's own write-ups of the talks (realagentusecases.com, © Jack Qian). Jack confirmed 2026-10-16 he presented Episodes 01, 02, 04, 05
+    // and 06 that day, plus enterprise knowledge bases (no write-up for that one yet).
     notes: [
       { en: 'https://realagentusecases.com/en/agent-101/', zh: 'https://realagentusecases.com/agent-101/', label: { en: 'Episode 01 · What an AI agent is', zh: '第 01 期 · AI Agent 基础' } },
       { en: 'https://realagentusecases.com/en/agent-101/02-multi-agent/', zh: 'https://realagentusecases.com/agent-101/02-multi-agent/', label: { en: 'Episode 02 · Multi-agent and Skills', zh: '第 02 期 · Multi-agent 与 Skills' } },
+      { en: 'https://realagentusecases.com/en/agent-101/04-obsidian-second-brain/', zh: 'https://realagentusecases.com/agent-101/04-obsidian-second-brain/', label: { en: 'Episode 04 · Obsidian second brain', zh: '第 04 期 · Obsidian 第二大脑' } },
+      { en: 'https://realagentusecases.com/en/agent-101/05-talk-to-ai/', zh: 'https://realagentusecases.com/agent-101/05-talk-to-ai/', label: { en: 'Episode 05 · How to talk to AI', zh: '第 05 期 · 怎样和 AI 说话' } },
+      { en: 'https://realagentusecases.com/en/agent-101/06-track-ai-trends/', zh: 'https://realagentusecases.com/agent-101/06-track-ai-trends/', label: { en: 'Episode 06 · Tracking AI trends', zh: '第 06 期 · 追踪 AI 趋势' } },
     ],
     start: '2026-05-17T13:30:00-05:00', end: '2026-05-17T16:00:00-05:00', time: { en: '1:30–4:00 PM', zh: '下午 1:30–4:00' },
     place: { name: '2711 LBJ Freeway, Suite 136A', street: '2711 Lyndon B Johnson Fwy #136A', city: 'Dallas', zip: '75234' },
@@ -71,13 +75,13 @@ export const EVENT_PAGES = {
     ],
     en: {
       summary: 'OpenClaw meetup #2, “Into the world of AI agents”: how Claude Code and OpenClaw turn AI from one chat assistant into several agents that split up a job like a small team. 70 people signed up — the largest session of the year.',
-      covered: ['What “AI agent” actually means (a model that uses tools in a loop, not a product label), and how to rewrite “use AI to boost productivity” into one action you can check.', 'Multi-agent workflows: several agents with clear roles working together on a complex task, demonstrated with Claude Code and real cases.', 'E-commerce: product selection, listing copy, listing, customer service and the weekly review.', 'Teaching: course design, slides, practice exercises and student feedback.', 'Customer service teams: sorting questions, drafting replies, keeping the knowledge base current and summarising tickets.', 'Developers: breaking down requirements, writing code, testing, review and documentation.'],
+      covered: ['What “AI agent” actually means (a model that uses tools in a loop, not a product label), and how to rewrite “use AI to boost productivity” into one action you can check.', 'Multi-agent workflows: several agents with clear roles working together on a complex task, demonstrated with Claude Code and real cases.', 'Enterprise knowledge bases: organizing a company’s documents so AI can work from them.', 'A second brain in Obsidian: local markdown, backlinks and AI, so past notes come back when you need them.', 'How to talk to AI: a prompt is a spec, not a spell — give context and an acceptance test instead of “write me a …”.', 'Tracking AI trends: one weekly brief from sources sorted by signal, instead of scrolling more news.', 'E-commerce: product selection, listing copy, listing, customer service and the weekly review.', 'Teaching: course design, slides, practice exercises and student feedback.', 'Customer service teams: sorting questions, drafting replies, keeping the knowledge base current and summarising tickets.', 'Developers: breaking down requirements, writing code, testing, review and documentation.'],
       after: 'It was pitched well beyond engineers — at founders, e-commerce sellers, teachers, content creators, product managers and students who want an “AI team” for their own work.',
       next: ['/ai-training/claude/', 'Claude training for business teams'],
     },
     zh: {
       summary: 'OpenClaw 聚会 #2「走进 AI Agent 的世界」：用 Claude Code 和 OpenClaw，让 AI 从一个聊天助手变成多个分工明确、像小团队一样协作的 agent。报名 70 人，是今年规模最大的一场。',
-      covered: ['“AI Agent”到底指什么（会调用工具、循环执行的模型，而不是产品标签），以及怎样把“用 AI 提升效率”改写成一个能检验的具体动作。', 'Multi-Agent 工作流：多个角色清楚的 agent 协作完成复杂任务，用 Claude Code 和真实案例演示。', '电商：选品、文案、上架、客服到复盘。', '教学：课程设计、课件制作、练习生成到学员反馈。', '客服团队：问题分类、回复生成、知识库维护到工单总结。', '开发者：需求拆解、代码实现、测试、review 到文档整理。'],
+      covered: ['“AI Agent”到底指什么（会调用工具、循环执行的模型，而不是产品标签），以及怎样把“用 AI 提升效率”改写成一个能检验的具体动作。', 'Multi-Agent 工作流：多个角色清楚的 agent 协作完成复杂任务，用 Claude Code 和真实案例演示。', '企业知识库：把公司的资料整理成 AI 能用的知识库。', '用 Obsidian 搭第二大脑：本地 Markdown、双向链接加 AI，需要的时候能把过去的笔记找回来。', '怎样和 AI 说话：提示词是规格说明，不是咒语——给背景和验收标准，而不是一句“帮我写个……”。', '追踪 AI 趋势：按信号强弱给信息源分级，每周一份简报，而不是刷更多新闻。', '电商：选品、文案、上架、客服到复盘。', '教学：课程设计、课件制作、练习生成到学员反馈。', '客服团队：问题分类、回复生成、知识库维护到工单总结。', '开发者：需求拆解、代码实现、测试、review 到文档整理。'],
       after: '面向的远不止工程师：创业者、电商从业者、老师、内容创作者、产品经理和学生，所有想用 AI 提升效率的人。',
       next: ['/ai-training/claude/', 'Claude 企业团队培训'],
     },
