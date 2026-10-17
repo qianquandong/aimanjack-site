@@ -92,6 +92,26 @@
 <details><summary>中文还是英文授课？</summary><div class="faq-a"><p>都可以。用团队最顺手的语言上课，资料中英文都有。</p></div></details>
 <details><summary>有结业证书吗？</summary><div class="faq-a"><p>没有。成果是每个人在自己已经在做的任务上有一条能用的工作流，外加一份核验输出的清单。课程项目结束两周后，Jack 会回访哪些工作流留下了、改了、停了。</p></div></details></div></div></section>
 
+<section class="sec tight kit-form" id="rollout-kit"><div class="wrap g12">
+<div style="grid-column:span 5;display:flex;flex-direction:column;gap:14px"><div class="eyebrow">免费下载</div><h2 style="font-size:clamp(28px,3vw,44px)">小团队 AI 落地套件</h2><p class="lead">五张一页纸工作表，按团队落地的顺序排好：挑任务、批工具、定数据边界、写下工作流、两周复盘。免费 PDF，中英文都有。</p></div>
+<div style="grid-column:7 / span 6">
+<div id="kf-dept-marketing-ok" class="qf-note ok" role="status" tabindex="-1"><h3>请查收邮箱。</h3><p>套件正在发出。如果 MailerLite 请你先确认邮箱，点一下确认链接，PDF 随后就到。几分钟后还没收到，请看看推广或垃圾邮件文件夹。</p></div>
+<form class="qf kf" action="https://assets.mailerlite.com/jsonp/2719495/forms/201552495966684189/subscribe" method="post" data-ok="kf-dept-marketing-ok" data-pos="dept-marketing" data-l='{"sending":"正在发送…","submit":"发给我","err":"没有提交成功。请再试一次，或发邮件到 jack@aimanjack.com 索取。"}'>
+<input type="hidden" name="ml-submit" value="1"><input type="hidden" name="anticsrf" value="true">
+<div class="field"><label for="kf-dept-marketing-name">姓名</label><input id="kf-dept-marketing-name" name="fields[name]" type="text" required maxlength="100" autocomplete="name"></div>
+<div class="field"><label for="kf-dept-marketing-email">工作邮箱</label><input id="kf-dept-marketing-email" name="fields[email]" type="email" required maxlength="254" autocomplete="email" inputmode="email" placeholder="you@company.com"></div>
+<fieldset><label class="check" for="kf-dept-marketing-consent"><input id="kf-dept-marketing-consent" name="kit_consent" type="checkbox" value="yes" required><span>把套件和几封简短的跟进邮件发给我。随时可以退订。</span></label></fieldset>
+<button class="btn btn-primary btn-lg" type="submit" data-event="kit_request_submit" data-pos="dept-marketing">发给我</button>
+<p class="qf-msg" role="status" aria-live="polite"></p>
+</form></div></div></section>
+<script>
+(function(){document.querySelectorAll('form.kf').forEach(function(f){var s=f.querySelector('button'),m=f.querySelector('.qf-msg'),ok=document.getElementById(f.dataset.ok),L=JSON.parse(f.dataset.l);
+f.addEventListener('submit',function(e){e.preventDefault();if(!f.reportValidity())return;s.disabled=true;s.textContent=L.sending;m.textContent='';
+var d=new FormData(f);d.delete('kit_consent');
+fetch(f.action,{method:'POST',body:d,mode:'no-cors'}).then(function(){f.hidden=true;ok.setAttribute('data-show','');ok.focus();
+if(window.dataLayer)window.dataLayer.push(['event','kit_request',{page:location.pathname,pos:f.dataset.pos}])})
+.catch(function(){m.textContent=L.err}).then(function(){s.disabled=false;s.textContent=L.submit})})})})();
+</script>
 <section class="sec quick-quote" id="quote"><div class="wrap g12">
 <div style="grid-column:span 5;display:flex;flex-direction:column;gap:16px"><div class="eyebrow">获取报价</div><h2 style="font-size:clamp(32px,3.6vw,52px)">想给团队安排培训？<br>留个邮箱，拿一份报价。</h2><p class="lead">大概说一下人数和想法。Jack 会通过邮件回复推荐的形式和书面报价。不一定要通话，除非你想先聊聊。</p></div>
 <div style="grid-column:7 / span 6">

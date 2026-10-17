@@ -4,6 +4,7 @@ import { workflowBySlug } from '../content/workflows.mjs';
 import { useCaseBySlug } from '../content/usecases.mjs';
 import { SITE, R, L, href, loc, directory, related, darkCode, copyScript, band, crumbs, ticks, meta, page } from '../resources.mjs';
 import { workflowCard, templateCard } from './workflows.mjs';
+import { kitForm } from '../kit-form.mjs';
 
 const S = {
   en: { eyebrow: 'Template', team: 'Team', roles: 'For', tools: 'Tools', body: 'The template · copy and paste', copy: 'Copy template', needK: 'Before you start', needH: 'What you need first', howK: 'Four steps', howH: 'How to use it', tipsK: 'Customise', tipsH: 'Make it yours',
@@ -56,6 +57,7 @@ const index = () => page({
 <div style="grid-column:span 7;display:flex;flex-direction:column;gap:20px">${bc.html}<div class="eyebrow">${s.hubK}</div><h1 class="lg" style="font-size:clamp(42px,6.1vw,88px)">${s.hubH}</h1></div>
 <p class="lead" style="grid-column:9 / span 4;font-size:18px">${s.hubP}</p></div></section>
 <section class="sec tight"><div class="wrap">${directory({ lang, noun: s.noun, cards: TEMPLATES.map((t) => templateCard(t, lang, 'h2')) })}</div></section>
+${kitForm(lang, 'templates-index')}
 ${band(lang, { h: s.bandH, pos: 'templates-index' })}`,
       jsonld: [{ '@type': 'CollectionPage', '@id': `${SITE}${L(lang, '/templates/')}`, name: s.hubH, inLanguage: lang, isPartOf: { '@id': `${SITE}/#website` } }, bc.ld],
     };
