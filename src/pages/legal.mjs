@@ -43,6 +43,7 @@ const privacy = {
 <p>Messages are sent from <strong>(469) 425-4142</strong> only to phone numbers that have called or texted us first. Message frequency: one message per missed call, plus any replies in a conversation you initiate. Message and data rates may apply. Reply STOP at any time to opt out of receiving messages, or reply HELP for help.</p>
 <h2>How we use information</h2>
 <p>We use your phone number to send the messages described above on behalf of the business you contacted. We use a coupon email only to deliver and administer that coupon, not to subscribe you to marketing. We do not sell personal information or use it for advertising.</p>
+<p><strong>Free AI Rollout Kit.</strong> If you ask for the kit, your name and email go to our email provider, MailerLite, which sends you the PDF and a few follow-up emails from Jack. Every email has an unsubscribe link; unsubscribing stops them. Calls you book are scheduled through Cal.com.</p>
 <p>Service providers process data only to operate these features: Supabase stores booking and coupon records, and Cloudflare hosts the site and sends coupon and booking emails. We retain the coupon record as needed to prevent duplicate issuance and redemption. Contact us to request access, correction, or deletion where applicable; we may retain a minimal record when necessary to prevent fraud or comply with law.</p>
 ${QUOTE_ANALYTICS.en}
 <h2>Contact</h2>
@@ -59,6 +60,7 @@ ${QUOTE_ANALYTICS.en}
 <p>短信仅从 <strong>(469) 425-4142</strong> 发给先拨打或发短信给我们的号码。发送频率：每次漏接一条，加上你发起的对话中的回复。可能产生短信和数据费用。随时回复 STOP 退订，回复 HELP 获取帮助。</p>
 <h2>我们如何使用信息</h2>
 <p>我们用你的电话号码代表你联系的商家发送上述短信。优惠券 email 只用于发送和管理这张优惠券，不会把你加入营销邮件。我们不出售个人信息，也不用于广告。</p>
+<p><strong>免费的 AI 落地套件。</strong>领取套件时，你的姓名和邮箱会交给我们的邮件服务商 MailerLite，用于发送 PDF 和 Jack 的几封跟进邮件。每封邮件都有退订链接，退订后就不会再收到。你预约的通话通过 Cal.com 安排。</p>
 <p>服务商只为运行这些功能处理数据：Supabase 保存预约和优惠券记录；Cloudflare 托管网站，并发送优惠券和预约邮件。为防止重复领取和重复核销，我们会按需要保留优惠券记录。你可以联系我们申请查阅、更正或删除适用的信息；为防欺诈或遵守法律，我们可能保留必要的最少记录。</p>
 ${QUOTE_ANALYTICS.zh}
 <h2>联系</h2>

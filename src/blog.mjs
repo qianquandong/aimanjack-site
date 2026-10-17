@@ -4,6 +4,7 @@
 // generated from its <h2>s, one inline CTA and three onward links (workflow, template, tool).
 import { SITE, TRAINING } from './config.mjs';
 import { L, esc, href, planBtn, ctaBand } from './layout.mjs';
+import { kitForm } from './kit-form.mjs';
 import { breadcrumb, faq, faqJsonLd, BUSINESS_REF, T } from './components.mjs';
 import { card, R, loc } from './resources.mjs';
 import { workflowBySlug } from './content/workflows.mjs';
@@ -72,6 +73,7 @@ export function postPage(post, lang) {
 <p class="callout">${s.pillar(c.pillar[0], L(lang, c.pillar[1]))}</p>${related}
 ${c.faq?.length ? `<h2>${s.faq}</h2>${faq(lang, c.faq, { heading: false })}` : ''}${sources}
 <div class="cta-card on-dark"><div><b>${s.ctaH}</b><span>${s.ctaSub}</span></div>${planBtn(lang, { pos: 'article', cls: 'btn-sm' })}</div></article></div></div>
+${kitForm(lang, 'blog')}
 <section class="sec tight"><div class="wrap"><div class="sec-head"><div><div class="eyebrow">${s.moreK}</div><h2>${s.moreH}</h2></div><a class="more" href="${L(lang, BLOG_PATH)}">${s.all}</a></div><div class="g3">${onward(lang).join('')}</div></div></section>`,
     jsonld,
   };

@@ -11,6 +11,7 @@ import { person, faqPage, AREA } from '../schema.mjs';
 import { EVENT_STATS } from '../content/events.mjs';
 import { REVIEWS } from './dallas.mjs';
 import { quickQuote } from '../quick-quote.mjs';
+import { kitForm } from '../kit-form.mjs';
 
 export const TOOL_PAGES = ['copilot', 'chatgpt', 'claude', 'grok'];
 const pathOf = (k) => `/ai-training/${k}/`;
@@ -303,6 +304,7 @@ ${sharedBlocks(lang, key)}
 <section class="sec" id="faq"><div class="wrap g12"><div style="grid-column:span 4;display:flex;flex-direction:column;gap:16px"><div class="eyebrow">${s.faqK}</div><h2 style="font-size:clamp(32px,3.6vw,52px)">${s.faqH(name)}</h2></div>
 <div class="faq" style="grid-column:6 / span 7">${faq.map(([q, a], i) => `<details${i === 0 ? ' open' : ''}><summary>${q}</summary><div class="faq-a"><p>${a}</p></div></details>`).join('\n')}</div></div></section>
 
+${kitForm(lang, `tool-${key}`)}
 ${quickQuote(lang, { tool: key, path })}`,
     jsonld: [
       BUSINESS_REF, person(),

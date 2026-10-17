@@ -83,6 +83,26 @@
 <details><summary>Is it taught in English or Chinese?</summary><div class="faq-a"><p>Either. Sessions run in whichever language the room works in, and the materials come in both.</p></div></details>
 <details><summary>Do people get a certificate?</summary><div class="faq-a"><p>No. The outcome is a working workflow on a task each person already does, plus a checklist for checking the output. Two weeks after a program ends, Jack checks which workflows were kept, changed or stopped.</p></div></details></div></div></section>
 
+<section class="sec tight kit-form" id="rollout-kit"><div class="wrap g12">
+<div style="grid-column:span 5;display:flex;flex-direction:column;gap:14px"><div class="eyebrow">Free download</div><h2 style="font-size:clamp(28px,3vw,44px)">The AI Rollout Kit for small teams</h2><p class="lead">Five one-page worksheets in the order a team needs them: pick the work, approve the tools, set data rules, write the workflow down, review after two weeks. A free PDF, in English or Chinese.</p><p class="muted" style="font-size:14px">Prefer Chinese? <a href="/zh/templates/">中文版</a></p></div>
+<div style="grid-column:7 / span 6">
+<div id="kf-tool-claude-ok" class="qf-note ok" role="status" tabindex="-1"><h3>Check your inbox.</h3><p>The kit is on its way. If MailerLite asks you to confirm your email, click the link and the PDF follows. Nothing after a few minutes? Look in Promotions or Spam.</p></div>
+<form class="qf kf" action="https://assets.mailerlite.com/jsonp/2719495/forms/201552363184457178/subscribe" method="post" data-ok="kf-tool-claude-ok" data-pos="tool-claude" data-l='{"sending":"Sending…","submit":"Send me the kit","err":"That did not go through. Try again, or email jack@aimanjack.com and ask for the kit."}'>
+<input type="hidden" name="ml-submit" value="1"><input type="hidden" name="anticsrf" value="true">
+<div class="field"><label for="kf-tool-claude-name">Your name</label><input id="kf-tool-claude-name" name="fields[name]" type="text" required maxlength="100" autocomplete="name"></div>
+<div class="field"><label for="kf-tool-claude-email">Work email</label><input id="kf-tool-claude-email" name="fields[email]" type="email" required maxlength="254" autocomplete="email" inputmode="email" placeholder="you@company.com"></div>
+<fieldset><label class="check" for="kf-tool-claude-consent"><input id="kf-tool-claude-consent" name="kit_consent" type="checkbox" value="yes" required><span>Email me the kit and a few short follow-ups from Jack. Unsubscribe anytime.</span></label></fieldset>
+<button class="btn btn-primary btn-lg" type="submit" data-event="kit_request_submit" data-pos="tool-claude">Send me the kit</button>
+<p class="qf-msg" role="status" aria-live="polite"></p>
+</form></div></div></section>
+<script>
+(function(){document.querySelectorAll('form.kf').forEach(function(f){var s=f.querySelector('button'),m=f.querySelector('.qf-msg'),ok=document.getElementById(f.dataset.ok),L=JSON.parse(f.dataset.l);
+f.addEventListener('submit',function(e){e.preventDefault();if(!f.reportValidity())return;s.disabled=true;s.textContent=L.sending;m.textContent='';
+var d=new FormData(f);d.delete('kit_consent');
+fetch(f.action,{method:'POST',body:d,mode:'no-cors'}).then(function(){f.hidden=true;ok.setAttribute('data-show','');ok.focus();
+if(window.dataLayer)window.dataLayer.push(['event','kit_request',{page:location.pathname,pos:f.dataset.pos}])})
+.catch(function(){m.textContent=L.err}).then(function(){s.disabled=false;s.textContent=L.submit})})})})();
+</script>
 <section class="sec quick-quote" id="quote"><div class="wrap g12">
 <div style="grid-column:span 5;display:flex;flex-direction:column;gap:16px"><div class="eyebrow">Get a quote</div><h2 style="font-size:clamp(32px,3.6vw,52px)">Interested in booking?<br>Get an easy quote.</h2><p class="lead">Tell us roughly how many people and what you have in mind. Jack replies by email with a format and a written price for your team. No call needed unless you want one.</p></div>
 <div style="grid-column:7 / span 6">

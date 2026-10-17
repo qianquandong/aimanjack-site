@@ -4,7 +4,7 @@
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: geolocation=(), camera=(), microphone=(), interest-cohort=()
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://*.google-analytics.com https://*.googletagmanager.com; font-src 'self'; connect-src 'self' https://cloudflareinsights.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com; frame-src https://cal.com https://app.cal.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://*.google-analytics.com https://*.googletagmanager.com; font-src 'self'; connect-src 'self' https://assets.mailerlite.com https://cloudflareinsights.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com; frame-src https://cal.com https://app.cal.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self' https://assets.mailerlite.com; object-src 'none'
 
 # Fingerprinted by ?v= (style.css) or by filename (fonts, images),
 # so a year is safe — changing one changes its URL.
@@ -26,3 +26,8 @@
   Cache-Control: no-store
   X-Robots-Tag: noindex, nofollow
   Referrer-Policy: no-referrer
+
+# Rollout kit PDFs (scripts/rollout-kit.mjs): delivered by email, kept out of search results.
+/downloads/*
+  X-Robots-Tag: noindex
+  Cache-Control: public, max-age=86400
