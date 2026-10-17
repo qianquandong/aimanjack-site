@@ -52,7 +52,7 @@ f.addEventListener('submit',function(e){e.preventDefault();
 })();
 </script>`;
 
-// tool: copilot | chatgpt | claude | grok | general. path: the page's own path (no-JS submits return there).
+// tool: copilot | chatgpt | claude | grok | sales | marketing | operations | leadership | general. path: the page's own path (no-JS submits return there).
 export function quickQuote(lang, { tool = 'general', path }) {
   const c = Q[lang], page = L(lang, path);
   const hidden = [['kind', 'quick'], ['tool', tool], ['page', page], ['lang', lang], ['form_version', QUICK_FORM_VERSION], ['fill_ms', ''], ...FT.map((k) => [`ft_${k}`, ''])]
