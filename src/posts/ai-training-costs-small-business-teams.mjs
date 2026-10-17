@@ -6,7 +6,7 @@ export const post = {
   "en": {
     "keyword": "AI training costs",
     "title": "AI Training Costs for Small Business Teams | AI Man Jack",
-    "description": "Compare AI training costs across a workshop, onsite day and four-session program. See the published starting price, exclusions and inputs for a scoped quote.",
+    "description": "Compare AI training costs for a workshop, onsite day and four-session program. See what shapes your team quote, what is included and what costs extra.",
     "h1": "AI training costs for small business teams depend on the work",
     "sub": "Compare what each format covers, what sits outside the fee and what a trainer needs before giving your team a useful quote.",
     "takeaways": [
@@ -57,7 +57,7 @@ export const post = {
   "zh": {
     "keyword": "企业 AI 培训费用",
     "title": "企业 AI 培训费用：三种形式怎么比 | AI Man Jack",
-    "description": "给小企业团队比较 AI 培训费用：90 分钟工作坊、全天上门与四次课程分别适合什么，公开起步价包含哪些条件，哪些费用另计，以及询价前要准备什么。",
+    "description": "给小企业团队比较 AI 培训费用：90 分钟工作坊、全天上门与四次课程分别适合什么，团队报价取决于哪些条件，哪些费用另计，以及询价前要准备什么。",
     "h1": "企业 AI 培训费用，先按任务和范围比较",
     "sub": "先看团队要练什么、课后保留什么、谁来核验，再比较报价。这里列出 Aimanjack 的公开价格条件和询价所需信息。",
     "takeaways": [
