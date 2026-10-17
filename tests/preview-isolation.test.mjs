@@ -37,12 +37,13 @@ test('inert preview Worker blocks API and writes before accessing any binding', 
 
 test('preview staging publishes only public files plus the inert worker, with no production configuration', async (t) => {
   const root = await mkdtemp(join(tmpdir(), 'site-preview-test-')); t.after(() => rm(root, { recursive: true, force: true }));
-  for (const dir of ['functions/v1', 'src', 'db', 'state', 'docs']) await mkdir(join(root, dir), { recursive: true });
+  for (const dir of ['functions/v1', 'src', 'db', 'state', 'docs', 'editorial/review']) await mkdir(join(root, dir), { recursive: true });
   const files = {
     'index.html': '<body><a href="https://aimanjack.com/book/">Book</a></body>', 'style.css': 'body{}',
     'functions/v1/api.js': 'DO NOT PUBLISH API', 'src/private.js': 'DO NOT PUBLISH SOURCE',
     'db/private.sql': 'DO NOT PUBLISH DB', '.dev.vars': 'PRIVATE_KEY=test-only', '.env.production': 'PRIVATE=test-only',
     'wrangler.toml': 'DO NOT PUBLISH CONFIG', 'state/private.json': '{}', 'docs/private.html': 'DO NOT PUBLISH DOCS',
+    'editorial/review/draft.html': 'DO NOT PUBLISH UNAPPROVED DRAFT',
   };
   for (const [path, content] of Object.entries(files)) await writeFile(join(root, path), content);
   execFileSync('git', ['init', '-q'], { cwd: root }); execFileSync('git', ['add', '.'], { cwd: root });

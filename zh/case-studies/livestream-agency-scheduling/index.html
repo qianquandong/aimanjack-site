@@ -61,13 +61,13 @@
 <div class="eyebrow">工作流</div><h3 class="h3">分步骤的 AI 工作流</h3><p>每条都有提示词、示例、人工核验清单，以及不适用的情况。</p><span class="res-cta">浏览工作流 →</span></a><a class="card link-card res-card" href="/zh/ai-training/" data-search="企业 ai 培训 每位学员带一项真实任务来，带一条工作流和一套核验方法走。 培训 " data-event="resource_to_training_click">
 <div class="eyebrow">培训</div><h3 class="h3">企业 AI 培训</h3><p>每位学员带一项真实任务来，带一条工作流和一套核验方法走。</p><span class="res-cta">了解培训方式 →</span></a></div></div></section>
 <section class="cta-band on-dark" id="start"><img src="/img/jack-classroom.webp" width="1000" height="750" loading="lazy" decoding="async" alt="">
-<div><h2>带一项真实任务来，<br>带一条<em>可用的工作流</em>走。</h2><p>预约一次简短沟通，带上一项真实任务。我们一起判断这项任务适不适合交给 AI，以及四次课程项目应该从哪里开始。</p><a class="btn btn-primary btn-lg" href="/zh/book/" data-event="workshop_cta_click" data-pos="case-study-final">预约工作流咨询</a><p class="alt band-price">四次课程项目每人 $499 起，团队可定制报价。</p>
+<div><h2>带一项真实任务来，<br>带一条<em>可用的工作流</em>走。</h2><p>预约一次简短沟通，带上一项真实任务。我们一起判断这项任务适不适合交给 AI，以及四次课程项目应该从哪里开始。</p><a class="btn btn-primary btn-lg" href="/zh/book/" data-event="workshop_cta_click" data-pos="case-study-final">预约工作流咨询</a><p class="alt band-price">每个项目都按团队报价，先拿一份书面报价。</p>
 <p class="alt">或发送邮件至 <a href="mailto:jack@aimanjack.com" data-event="email_training_click" data-pos="case-study-final">jack@aimanjack.com</a> · 短信发送 TRAINING 至 <a href="sms:+14694254142?body=TRAINING%20-%20" data-event="sms_training_click" data-pos="case-study-final">(469) 425-4142</a></p></div></section>
 </main>
 <footer class="ftr"><div class="wrap">
 <div class="ftr-top"><div class="ftr-brand"><a class="logo" href="/zh/" aria-label="AI Man Jack"><svg width="36" height="36" viewBox="0 0 64 64" aria-hidden="true"><rect class="mark-bg" width="64" height="64" rx="16"/><g transform="translate(15 49)"><path class="mark-j" d="M0.88 -9.328V-11.616H7.744V-9.328Q7.744 -8.052 8.58 -7.04Q9.416 -6.028 11.44 -6.028Q13.42 -6.028 14.256 -6.996Q15.092 -7.964 15.092 -9.592V-32.56H22.22V-9.152Q22.22 -6.38 20.922 -4.18Q19.624 -1.98 17.226 -0.704Q14.828 0.572 11.528 0.572Q7.964 0.572 5.588 -0.726Q3.212 -2.024 2.046 -4.268Q0.88 -6.512 0.88 -9.328Z"/></g><circle cx="46.5" cy="18" r="5.5" fill="#A8552F"/></svg><span>AI Man Jack</span></a><p>为达拉斯—沃斯堡地区及远程团队提供实操型 AI 培训，支持中英文授课。</p></div>
 <div class="ftr-cols">
-<div><h2>AI 培训</h2><a href="/zh/ai-training/">企业培训</a><a href="/zh/ai-training/dallas/">达拉斯—沃斯堡</a><a href="/zh/ai-training/team-workshop/">90 分钟工作坊</a><a href="/zh/ai-training/onsite-texas/">德州上门培训</a><a href="/zh/tools/">免费工具</a><a href="/zh/templates/">模板</a><a href="/zh/workflows/">工作流</a></div>
+<div><h2>AI 培训</h2><a href="/zh/ai-training/">企业培训</a><a href="/zh/ai-training/dallas/">达拉斯—沃斯堡</a><a href="/zh/events/">社区活动</a><a href="/zh/ai-training/team-workshop/">90 分钟工作坊</a><a href="/zh/ai-training/onsite-texas/">德州上门培训</a><a href="/zh/tools/">免费工具</a><a href="/zh/templates/">模板</a><a href="/zh/workflows/">工作流</a></div>
 <div><h2>按团队</h2><a href="/zh/use-cases/sales/">销售</a><a href="/zh/use-cases/marketing/">市场</a><a href="/zh/use-cases/operations/">运营</a><a href="/zh/use-cases/leadership/">管理层</a></div>
 <div><h2>资源</h2><a href="/zh/blog/">实践指南</a><a href="/zh/case-studies/">案例</a><a href="https://realagentusecases.com/">Real Agent Use Cases ↗</a></div>
 <div><h2>公司</h2><a href="/zh/about/">关于</a><a href="/zh/contact/">联系</a><a href="/zh/book/">预约通话</a></div>
@@ -84,7 +84,7 @@ function track(n,p){gtag('event',n,Object.assign({page:location.pathname,languag
 window.amjTrack=track;
 // Motion (2026-09): count-up on .stat-bar numbers + pointer position for the .prog spotlight. Scroll reveals are CSS-only (style.css "MOTION").
 // The HTML always carries the final number; this only replays it, and not at all under prefers-reduced-motion.
-// Prices and formats ($499/person, 4 × 90 min) are not counted up: only counts of people, talks and ratings.
+// Formats (4 × 90 min) are not counted up: only counts of people, talks and ratings.
 if(!matchMedia('(prefers-reduced-motion:reduce)').matches&&'IntersectionObserver' in window){
  var io=new IntersectionObserver(function(es){es.forEach(function(en){if(!en.isIntersecting)return;io.unobserve(en.target);
   var el=en.target,t=el.textContent,m=t.match(/\d[\d,]*(\.\d+)?/);if(!m||/[$×]/.test(t))return;

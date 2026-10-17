@@ -47,7 +47,8 @@ test('training proof remains visible without self-serving rating markup, and off
       const html = find(pages, path, lang).html;
       assert.doesNotMatch(ld(html), /"@type":"(?:Review|AggregateRating)"/);
       assert.ok(body(html).includes(GBP_URL), `${lang}:${path} keeps its Google source`);
-      assert.ok(body(html).includes(String(PROOF.reviews)), `${lang}:${path} keeps the checked review count`);
+      // The approved training copy links to Google without repeating a dated review count.
+      if (path !== '/ai-training/') assert.ok(body(html).includes(String(PROOF.reviews)), `${lang}:${path} keeps the checked review count`);
     }
     for (const path of ['/ai-training/team-workshop/', '/ai-training/onsite-texas/']) {
       const nodes = JSON.parse(ld(find(pages, path, lang).html))['@graph'];
@@ -140,7 +141,8 @@ test('legacy receptionist routes still render but are noindex and out of the sit
 test('llms.txt describes training and nothing about the receptionist', () => {
   const t = llms();
   assert.match(t, /corporate AI training/i);
-  assert.match(t, /\$499 per person/);
+  assert.match(t, /no public price list/i);
+  assert.doesNotMatch(t, /\$\s?\d/, 'llms.txt states no price');
   assert.doesNotMatch(t, /\$1,500|half-day/i);
   assert.match(t, /aimanjack\.com\/ai-training\//);
   for (const re of [/receptionist/i, /\$199/, /517-2968/, /demo line/i]) assert.doesNotMatch(t, re);
@@ -281,21 +283,25 @@ test('the four-session program is the only offer on Home and Training; the clien
   const pages = await allPages();
   for (const path of ['/', '/ai-training/']) {
     const b = body(find(pages, path, 'en').html), z = body(find(pages, path, 'zh').html);
-    for (const re of [/\$499\/person/, /4 × 90 min/, /Custom (?:team )?pricing available/, /Remote across the U\.S\./, /Dallas–Fort Worth onsite/]) assert.match(b, re, `${path} shows ${re}`);
-    for (const re of [/\$499/, /4 × 90 分钟/, /定制报价/, /全美远程/]) assert.match(z, re, `zh ${path} shows ${re}`);
+    for (const re of [/Priced by quote/, /4 × 90 min/, /Remote across the U\.S\./, /Dallas–Fort Worth onsite/]) assert.match(b, re, `${path} shows ${re}`);
+    for (const re of [/按需报价/, /4 × 90 分钟/, /全美远程/]) assert.match(z, re, `zh ${path} shows ${re}`);
     for (const x of [b, z]) {
       assert.equal((x.match(/<div class="prog[ "]/g) || []).length, 1, `${path} has exactly one offer card`);
       assert.match(x, /class="prog dark on-dark solo"/);
       assert.doesNotMatch(x, /\$1,500|Half day|half-day workshop|半天工作坊|Scoped after|Three ways to|Ways to work together/, `${path} shows no competing format`);
       assert.doesNotMatch(x, /gun|firearm|枪|California retail|hours? saved|ROI of|省了 ?\d+ ?小时/i, `${path} client proof stays unnamed and claims nothing`);
     }
-    assert.match(b, /In progress/); assert.match(z, /进行中/);
+    // The training rewrites omit the unfinished client card; both home pages keep its status.
+    if (path !== '/ai-training/') {
+      assert.match(b, /In progress/);
+      assert.match(z, /进行中/);
+    }
   }
   // every primary CTA on the money pages goes to /book/ or to the program; no page-level CTA points at a workshop
   for (const x of pages.filter((x) => !x.page.noindex && !x.p.path.startsWith('/blog/'))) assert.doesNotMatch(body(x.html) + ld(x.html), /\$1,500|Book a Workshop|预约团队培训/, `${x.lang}:${x.p.path}`);
   for (const lang of ['en', 'zh']) {
     assert.doesNotMatch(body(find(pages, '/book/', lang).html), /workshop in one call|规划团队的工作坊|team workshop|团队工作坊/);
-    assert.match(ld(find(pages, '/ai-training/', lang).html), /"price":"499"/);
+    assert.doesNotMatch(ld(find(pages, '/ai-training/', lang).html), /"price"/, 'no price in structured data');
   }
 });
 
@@ -329,7 +335,7 @@ test('team workshop and onsite pages are indexable, bilingual, self-canonical, i
       assert.match(b, lang === 'zh' ? /按需报价/ : /Scoped quote/, `${route} pricing status`);
       assert.match(b, lang === 'zh' ? /价格取决于团队人数、授课地点和准备工作量/ : /Pricing depends on team size, location and preparation/, `${route} pricing drivers`);
       assert.match(b, lang === 'zh' ? /不是 ERP 或 CRM 定制开发/ : /not a custom ERP or CRM build/, `${route} says training, not an ERP/CRM build`);
-      assert.deepEqual([...new Set([...b.matchAll(/\$\s?\d[\d,.]*/g)].map((m) => m[0]))], ['$499'], `${route} shows no amount except the approved program price`);
+      assert.deepEqual([...new Set([...b.matchAll(/\$\s?\d[\d,.]*/g)].map((m) => m[0]))], [], `${route} shows no price`);
       for (const re of UNAPPROVED) assert.doesNotMatch(b + j, re, `${route} ${re}`);
       assert.match(b, /<div class="faq"><details/, `${route} FAQ is plain HTML`);
       assert.match(j, /"@type":"Service"/);
@@ -380,7 +386,8 @@ test('the two Chinese buyer guides are generated, current, and free of retired p
     assert.doesNotMatch(h, /hreflang="(?:en|zh-CN)"/, `zh${path} advertises no EN twin`);
     assert.ok(sitemap.includes(`<loc>${url}</loc>`), `zh${path} in sitemap`);
     assert.ok(b.includes('href="/zh/contact/quote/"') && b.includes('href="/zh/book/"'), `zh${path} CTAs point at the quote form and the workflow call`);
-    assert.match(b, /\$499/, `zh${path} states the approved program price`);
+    assert.doesNotMatch(b, /\$\s?\d/, `zh${path} states no price`);
+    assert.match(b, /按需报价|按团队报价|按团队书面报价/, `zh${path} says pricing is by quote`);
     for (const re of [...UNAPPROVED, /半天/, /30 ?分钟/, /24 ?小时/, /9 月 24/, /AI 前台/, /\/zh\/pricing\//]) assert.doesNotMatch(b + j, re, `zh${path} ${re}`);
     assert.doesNotMatch(j, /AggregateRating|"Review"|ratingValue|"price"/, `zh${path} carries no rating or price schema`);
   }
@@ -524,7 +531,7 @@ test('the Dallas page owns the local term, lists real sessions, and keeps guidel
   for (const lang of ['en', 'zh']) {
     const x = find(pages, '/ai-training/dallas/', lang), route = `${lang}:/ai-training/dallas/`;
     assert.ok(x && !x.page.noindex, `${route} indexable`);
-    assert.match(head(x.html), lang === 'zh' ? /<title>达拉斯—沃斯堡/ : /<title>AI Training for Dallas–Fort Worth Teams/, `${route} title owns the term`);
+    assert.match(head(x.html), lang === 'zh' ? /<title>达拉斯—沃斯堡/ : /<title>Corporate AI Training &(?:amp;)? Workshops in Dallas–Fort Worth/, `${route} title owns the term`);
     const b = body(x.html), j = ld(x.html);
     for (const e of EVENTS) assert.ok(b.includes(`datetime="${e.date}"`), `${route} lists ${e.date}`);
     assert.ok(b.includes(String(EVENT_STATS.registrations)) && b.includes('DFW IT Association'), `${route} shows sign-ups and the invited talk`);
@@ -532,7 +539,7 @@ test('the Dallas page owns the local term, lists real sessions, and keeps guidel
     for (const p of ['/ai-training/', OFFERS.workshop.path, OFFERS.onsite.path, '/book/']) assert.ok(b.includes(`href="${urlOf(p, lang)}`), `${route} links ${p}`);
     assert.match(j, /"@type":"FAQPage"/); assert.match(j, /"@type":"Place"/);
     assert.doesNotMatch(j, /"@type":"(?:Review|AggregateRating)"|ratingValue/, `${route} no self-serving review markup`);
-    assert.deepEqual([...new Set([...b.matchAll(/\$\s?\d[\d,.]*/g)].map((m) => m[0]))], ['$499'], `${route} shows no amount except the approved program price`);
+    assert.deepEqual([...new Set([...b.matchAll(/\$\s?\d[\d,.]*/g)].map((m) => m[0]))], [], `${route} shows no price`);
     for (const re of BANNED) assert.doesNotMatch(b + j, re, `${route} contains ${re}`);
   }
   // Cannibalization guard: only the Dallas page carries the metro name in its <title> and <h1>.
@@ -541,4 +548,82 @@ test('the Dallas page owns the local term, lists real sessions, and keeps guidel
     assert.doesNotMatch(h.match(/<title>[^<]*<\/title>/)[0], /Dallas–Fort Worth/, `${path} title leaves the metro term to the Dallas page`);
     assert.doesNotMatch(h.match(/<h1[^>]*>[\s\S]*?<\/h1>/)[0], /Dallas–Fort Worth/, `${path} H1 leaves the metro term to the Dallas page`);
   }
+});
+
+test('tool training pages: indexable, full FAQ, no public price anywhere, and a working quick-quote form', async () => {
+  const pages = await allPages();
+  const { TOOL_PAGES } = await import('../src/pages/tool-training.mjs');
+  for (const key of TOOL_PAGES) for (const lang of ['en', 'zh']) {
+    const path = `/ai-training/${key}/`, x = find(pages, path, lang), route = `${lang}:${path}`;
+    assert.ok(x && !x.page.noindex, `${route} indexable`);
+    const h = head(x.html), b = body(x.html), j = ld(x.html);
+    assert.equal((b.match(/<h1[\s>]/g) || []).length, 1, `${route} one H1`);
+    if (lang === 'en') assert.match(h, /<title>[^<]*(Copilot|ChatGPT|Claude|Grok)[^<]*Dallas[^<]*<\/title>/, `${route} title names the tool and Dallas`);
+    assert.ok((j.match(/"@type":"Question"/g) || []).length >= 12, `${route} FAQ has at least 12 questions`);
+    assert.doesNotMatch(b + j, /\$\s?\d/, `${route} prints no price`);
+    assert.doesNotMatch(j, /"@type":"Offer"|"price"|"(?:Review|AggregateRating)"/, `${route} no Offer/price or review markup`);
+    assert.match(b, /<form class="qf" id="qq-form" action="\/v1\/intake" method="post"/, `${route} quick-quote form`);
+    assert.ok(b.includes('name="kind" value="quick"') && b.includes(`name="tool" value="${key}"`) && b.includes(`name="page" value="${urlOf(path, lang)}"`), `${route} form carries kind/tool/page`);
+    for (const p of ['/ai-training/dallas/', '/ai-training/', ...TOOL_PAGES.filter((k) => k !== key).map((k) => `/ai-training/${k}/`)]) assert.ok(b.includes(`href="${urlOf(p, lang)}`), `${route} links ${p}`);
+    for (const re of BANNED) assert.doesNotMatch(b + j, re, `${route} contains ${re}`);
+  }
+});
+
+test('department training pages: buying pages that link to (and do not compete with) the use-case pages', async () => {
+  const pages = await allPages();
+  const { DEPT_PAGES, deptPath } = await import('../src/pages/department-training.mjs');
+  for (const key of DEPT_PAGES) for (const lang of ['en', 'zh']) {
+    const path = deptPath(key), x = find(pages, path, lang), route = `${lang}:${path}`;
+    assert.ok(x && !x.page.noindex, `${route} indexable`);
+    const h = head(x.html), b = body(x.html), j = ld(x.html);
+    assert.equal((b.match(/<h1[\s>]/g) || []).length, 1, `${route} one H1`);
+    if (lang === 'en') assert.match(h, /<title>AI Training for \w+ Teams in Dallas \| AI Man Jack<\/title>/, `${route} title`);
+    assert.doesNotMatch(h.match(/<title>[^<]*<\/title>/)[0] + b.match(/<h1[^>]*>[\s\S]*?<\/h1>/)[0], /Dallas–Fort Worth|达拉斯—沃斯堡/, `${route} leaves the metro term to the Dallas page`);
+    assert.ok((j.match(/"@type":"Question"/g) || []).length >= 12, `${route} FAQ has at least 12 questions`);
+    assert.doesNotMatch(b + j, /\$\s?\d/, `${route} prints no price`);
+    assert.doesNotMatch(j, /"@type":"Offer"|"price"|"(?:Review|AggregateRating)"/, `${route} no Offer/price or review markup`);
+    assert.ok(b.includes('name="kind" value="quick"') && b.includes(`name="tool" value="${key}"`) && b.includes(`name="page" value="${urlOf(path, lang)}"`), `${route} form carries kind/tool/page`);
+    for (const p of [`/use-cases/${key}/`, '/ai-training/copilot/', ...DEPT_PAGES.filter((k) => k !== key).map(deptPath)]) assert.ok(b.includes(`href="${urlOf(p, lang)}`), `${route} links ${p}`);
+    for (const re of BANNED) assert.doesNotMatch(b + j, re, `${route} contains ${re}`);
+    // The use-case page is the informational twin: it links back, and its title stays about use cases, not training.
+    const uc = find(pages, `/use-cases/${key}/`, lang);
+    assert.ok(body(uc.html).includes(`href="${urlOf(path, lang)}"`), `${lang}:/use-cases/${key}/ links its training page`);
+    assert.doesNotMatch(head(uc.html).match(/<title>[^<]*<\/title>/)[0], /Training|培训/, `${lang}:/use-cases/${key}/ title stays informational`);
+  }
+  for (const lang of ['en', 'zh']) for (const p of ['/ai-training/', '/ai-training/dallas/']) {
+    const b = body(find(pages, p, lang).html);
+    assert.ok(b.includes(`href="${urlOf(deptPath('sales'), lang)}`) && b.includes(`href="${urlOf(deptPath('leadership'), lang)}`), `${lang}:${p} links department pages`);
+  }
+});
+
+test('no public price on any indexable page or in llms.txt (Jack, 2026-10-17: every format is quoted per team)', async () => {
+  const pages = await allPages();
+  // Legal pages are excluded: /terms still carries the retired receptionist product's billing terms, a legal text Jack edits himself.
+  for (const x of pages.filter((x) => !x.page.noindex && !LEGAL.includes(x.p.path))) {
+    assert.doesNotMatch(body(x.html).replace(/<pre[\s\S]*?<\/pre>/g, ''), /\$\s?\d/, `${x.lang}:${x.p.path} prints a price`);   // <pre> = illustrative example output, not our prices
+    assert.doesNotMatch(ld(x.html), /"price":"(?!0")|"priceSpecification"/, `${x.lang}:${x.p.path} has price markup`);
+  }
+  assert.doesNotMatch(llms(), /\$\s?\d/);
+});
+
+test('every community session has an event page with Event markup, real photos on disk and links back', async () => {
+  const pages = await allPages();
+  const { EVENTS } = await import('../src/content/events.mjs');
+  const { EVENT_PAGES } = await import('../src/content/event-pages.mjs');
+  const { existsSync } = await import('node:fs');
+  for (const ev of EVENTS) {
+    const d = EVENT_PAGES[ev.date];
+    assert.ok(d, `${ev.date} has event-page detail`);
+    for (const [file] of d.photos) assert.ok(existsSync(new URL(`../img/events/${file}.webp`, import.meta.url)), `${file}.webp exists`);
+    for (const lang of ['en', 'zh']) {
+      const path = `/events/${d.slug}/`, x = find(pages, path, lang), route = `${lang}:${path}`;
+      assert.ok(x && !x.page.noindex, `${route} indexable`);
+      const b = body(x.html), j = ld(x.html);
+      assert.equal((b.match(/<h1[\s>]/g) || []).length, 1, `${route} one H1`);
+      assert.match(j, /"@type":"Event"/); assert.ok(j.includes(`"startDate":"${d.start}"`), `${route} startDate`);
+      assert.ok(b.includes(`href="${urlOf('/events/', lang)}"`), `${route} links the hub`);
+      if (ev.role === 'host') assert.ok(b.includes(String(ev.registrations)), `${route} shows the Luma sign-ups`);
+    }
+  }
+  for (const lang of ['en', 'zh']) { const hub = body(find(pages, '/events/', lang).html); for (const ev of EVENTS) assert.ok(hub.includes(`/events/${EVENT_PAGES[ev.date].slug}/`), `hub lists ${ev.date}`); }
 });

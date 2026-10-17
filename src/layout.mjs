@@ -48,7 +48,7 @@ function footer(lang) {
   return `<footer class="ftr"><div class="wrap">
 <div class="ftr-top"><div class="ftr-brand">${logo(lang)}<p>${f.tagline}</p></div>
 <div class="ftr-cols">
-${col(f.training, [[L(lang, '/ai-training/'), f.corporate], [L(lang, '/ai-training/dallas/'), f.dallas], [L(lang, OFFERS.workshop.path), f.workshops], [L(lang, OFFERS.onsite.path), f.onsite], [href(lang, '/tools/'), f.tools], [href(lang, '/templates/'), f.templates], [href(lang, '/workflows/'), f.workflows]])}
+${col(f.training, [[L(lang, '/ai-training/'), f.corporate], [L(lang, '/ai-training/dallas/'), f.dallas], [L(lang, '/events/'), f.events], [L(lang, OFFERS.workshop.path), f.workshops], [L(lang, OFFERS.onsite.path), f.onsite], [href(lang, '/tools/'), f.tools], [href(lang, '/templates/'), f.templates], [href(lang, '/workflows/'), f.workflows]])}
 ${col(f.teams, [[href(lang, '/use-cases/sales/'), f.sales], [href(lang, '/use-cases/marketing/'), f.marketing], [href(lang, '/use-cases/operations/'), f.operations], [href(lang, '/use-cases/leadership/'), f.leadership]])}
 ${col(f.resources, [[L(lang, '/blog/'), f.guides], [L(lang, '/case-studies/'), f.cases], ['https://realagentusecases.com/', f.newsletter]])}
 ${col(f.company, [[L(lang, '/about/'), f.about], [L(lang, '/contact/'), f.contact], [L(lang, BOOK_URL), f.book]])}
@@ -65,6 +65,8 @@ export const statBar = (items) => `<div class="stat-bar">${items.map(([b, s]) =>
 export const PHOTOS = {
   workshop: { src: '/img/hero-workshop-1600.webp', srcset: '/img/hero-workshop-960.webp 960w, /img/hero-workshop-1600.webp 1600w, /img/hero-workshop-2400.webp 2400w', portrait: '/img/hero-workshop-portrait-960.webp', w: 1600, h: 1067, pos: '50% 40%' },
   demo: { src: '/img/events/dallas-ai-hackathon-live-demo.webp', w: 1200, h: 900, pos: '50% 35%' },
+  // A full Dallas workshop room (May 2026), from the iPhone original IMG_9798 (img/events/raw/, gitignored). Used on the use-case pages.
+  room: { src: '/img/events/dallas-ai-workshop-full-room-1600.webp', srcset: '/img/events/dallas-ai-workshop-full-room-960.webp 960w, /img/events/dallas-ai-workshop-full-room-1600.webp 1600w, /img/events/dallas-ai-workshop-full-room-2400.webp 2400w', portrait: '/img/events/dallas-ai-workshop-full-room-portrait-960.webp', w: 1600, h: 1200, pos: '50% 55%' },
   teaching: { src: '/img/jack-teaching.webp', w: 1100, h: 825, pos: '50% 30%' },
   classroom: { src: '/img/jack-classroom.webp', w: 1000, h: 750 },
 };
@@ -94,7 +96,7 @@ function track(n,p){gtag('event',n,Object.assign({page:location.pathname,languag
 window.amjTrack=track;
 // Motion (2026-09): count-up on .stat-bar numbers + pointer position for the .prog spotlight. Scroll reveals are CSS-only (style.css "MOTION").
 // The HTML always carries the final number; this only replays it, and not at all under prefers-reduced-motion.
-// Prices and formats ($499/person, 4 × 90 min) are not counted up: only counts of people, talks and ratings.
+// Formats (4 × 90 min) are not counted up: only counts of people, talks and ratings.
 if(!matchMedia('(prefers-reduced-motion:reduce)').matches&&'IntersectionObserver' in window){
  var io=new IntersectionObserver(function(es){es.forEach(function(en){if(!en.isIntersecting)return;io.unobserve(en.target);
   var el=en.target,t=el.textContent,m=t.match(/\\d[\\d,]*(\\.\\d+)?/);if(!m||/[$×]/.test(t))return;

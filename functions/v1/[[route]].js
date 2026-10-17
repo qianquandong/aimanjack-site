@@ -310,7 +310,7 @@ const INTAKE_ENUMS = {
   timing: ['within_month', 'one_to_three', 'three_plus', 'exploring'],
   source: ['search', 'ai_assistant', 'linkedin', 'referral', 'event', 'social_other', 'other'],
 };
-const INTAKE_CONSENT_NOTICE_VERSION = 'privacy-2026-10-08-draft';   // keep equal to CONSENT_NOTICE_VERSION in src/config.mjs (tested)
+const INTAKE_CONSENT_NOTICE_VERSION = 'privacy-2026-10-17-draft';   // keep equal to CONSENT_NOTICE_VERSION in src/config.mjs (tested)
 const INTAKE_MIN_FILL_MS = 3000;
 const yes = (v) => v === true || v === 'yes' || v === 'on' || v === 'true';
 const errInfo = (e) => `${e?.status ?? ''} ${e?.code ?? e?.name ?? 'error'}`.trim();   // never the message: it may quote a row
@@ -364,6 +364,33 @@ function validateIntake(b) {
   return { errors: [...new Set(errors)], v };
 }
 
+// Quick quote (2026-10-17): the short "Get an easy quote" form on the tool pages (src/quick-quote.mjs). Only name, email and
+// the request consent are required; people, budget (free text, so no price ranges are printed on our pages) and message are
+// optional. `page` must be one of our training paths: the no-JS 303 returns there. Same store, consent ledger and rate limit.
+// Tool pages send the tool; department pages (2026-10-18) send the department.
+const QUICK_TOOLS = ['copilot', 'chatgpt', 'claude', 'grok', 'sales', 'marketing', 'operations', 'leadership', 'general'];
+const QUICK_PAGE = /^\/(zh\/)?ai-training\/([a-z0-9-]+\/)?$/;
+function validateQuickIntake(b) {
+  const errors = [], v = { kind: 'quick' };
+  const str = (k) => (typeof b[k] === 'string' ? b[k].trim() : typeof b[k] === 'number' ? String(b[k]) : '');
+  const text = (k, max, required) => { const s = str(k); if (s.length > max || (required && !s)) errors.push(k); return s.slice(0, max); };
+  v.name = text('name', 100, true);
+  v.email = str('email').toLowerCase();
+  if (!emailOk(v.email)) errors.push('email');
+  const a = str('attendees'), n = Number(a);
+  if (a && (!Number.isInteger(n) || n < 1 || n > 500)) errors.push('attendees');
+  v.attendees = a && Number.isInteger(n) ? n : null;
+  v.budget = text('budget', 100, false);
+  v.workflows = text('workflows', 2000, false);
+  v.tool = QUICK_TOOLS.includes(str('tool')) ? str('tool') : 'general';
+  v.page = QUICK_PAGE.test(str('page')) ? str('page') : null;
+  v.lang = str('lang') === 'zh' ? 'zh' : 'en';
+  const fv = str('form_version');
+  v.form_version = /^intake-\d{4}-\d{2}-\d{2}$/.test(fv) ? fv : 'unknown';
+  v.utm = firstTouchOf(b);
+  return { errors: [...new Set(errors)], v };
+}
+
 // First-touch attribution from ft_* fields (see src/layout.mjs). Campaign tags, referring host, landing path, first-seen time. No PII.
 function firstTouchOf(b) {
   const utm = {};
@@ -391,6 +418,9 @@ async function intakeRateLimit(env, req, email) {
 
 function intakeOwnerText(v, receiptId) {
   const label = (k, x) => `${k}: ${x ?? ''}`;
+  if (v.kind === 'quick') return [`New quick quote request (${receiptId})`, '', label('Name', v.name), label('Email', v.email), label('Tool page', v.tool),
+    label('People', v.attendees), label('Approximate budget', v.budget), label('Page', v.page), label('Newsletter opt-in', v.consent_newsletter ? 'yes' : 'no'), '', 'Message:', v.workflows,
+    '', 'This is a quote request, not a booked meeting. Reply to the sender directly.'].join('\n');
   return [`New training quote request (${receiptId})`, '', label('Name', v.name), label('Email', v.email), label('Company', v.company), label('Website', v.company_website),
     label('Industry', v.industry), label('Company size', v.headcount), label('Attendees', v.attendees), label('Format', v.format),
     label('Location', v.location + (v.location_city ? ` (${v.location_city})` : '')), label('Timing', v.timing), label('Tools', v.tools),
@@ -402,15 +432,17 @@ async function intake(env, req, ctx) {
   const origin = req.headers.get('origin'), allowed = env.SITE_ORIGIN || 'https://aimanjack.com';
   if (!origin || (origin !== allowed && !/^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin))) return fail(403, 'origin_not_allowed', 'Use the quote form on aimanjack.com.');
   const { form, body } = await readIntakeBody(req);
-  const back = (anchor, lang) => new Response(null, { status: 303, headers: { location: `${lang === 'zh' ? '/zh' : ''}/contact/quote/#${anchor}`, 'cache-control': 'no-store' } });
   const lang = body?.lang === 'zh' ? 'zh' : 'en';
-  const reply = (status, data, anchor) => (form ? back(anchor, lang) : json(data, status));
+  const quick = body?.kind === 'quick';
+  const quickPage = quick && typeof body.page === 'string' && QUICK_PAGE.test(body.page) ? body.page : null;
+  const back = (anchor) => new Response(null, { status: 303, headers: { location: quickPage ? `${quickPage}#quote-${anchor}` : `${lang === 'zh' ? '/zh' : ''}/contact/quote/#${anchor}`, 'cache-control': 'no-store' } });
+  const reply = (status, data, anchor) => (form ? back(anchor) : json(data, status));
   if (!body || typeof body !== 'object') return reply(400, { ok: false, error: 'bad_body' }, 'not-sent');
   // Bots: honeypot filled, or submitted faster than a person can fill the form. Answer like a success; store nothing.
   const fill = body.fill_ms === undefined || body.fill_ms === '' ? null : Number(body.fill_ms);
   if (clean(body.company_url, 200) || (fill !== null && Number.isFinite(fill) && fill < INTAKE_MIN_FILL_MS)) return reply(200, { ok: true }, 'received');
   if (!yes(body.consent_request)) return reply(400, { ok: false, error: 'consent_required', fields: ['consent_request'] }, 'not-sent');
-  const { errors, v } = validateIntake(body);
+  const { errors, v } = quick ? validateQuickIntake(body) : validateIntake(body);
   if (errors.length) return reply(400, { ok: false, error: 'invalid', fields: errors }, 'not-sent');
   v.consent_newsletter = yes(body.consent_newsletter);   // optional, never assumed: absent or unticked = false
 
@@ -427,9 +459,12 @@ async function intake(env, req, ctx) {
   const ip = clean(req.headers.get('cf-connecting-ip'), 64);
   const ipHash = await ipHmac(env, 'intake-ip', ip);
   if (!ipHash) console.warn('intake: IP_HASH_SALT unset; ip_hash stored as null');
-  const payload = { name: v.name, email: v.email, company: v.company, company_website: v.company_website || null, company_domain: companyDomain, industry: v.industry, headcount: v.headcount,
-    attendees: v.attendees, format: v.format, location: v.location, location_city: v.location_city || null, workflows: v.workflows, tools: v.tools || null,
-    timing: v.timing, source: v.source, source_detail: v.source_detail || null, lang: v.lang, fill_ms: fill, timer: fill === null ? 'absent' : 'ok' };
+  const payload = quick
+    ? { kind: 'quick', name: v.name, email: v.email, company: null, company_domain: companyDomain, attendees: v.attendees, budget: v.budget || null,
+      workflows: v.workflows || null, tool: v.tool, page: v.page, lang: v.lang, fill_ms: fill, timer: fill === null ? 'absent' : 'ok' }
+    : { name: v.name, email: v.email, company: v.company, company_website: v.company_website || null, company_domain: companyDomain, industry: v.industry, headcount: v.headcount,
+      attendees: v.attendees, format: v.format, location: v.location, location_city: v.location_city || null, workflows: v.workflows, tools: v.tools || null,
+      timing: v.timing, source: v.source, source_detail: v.source_detail || null, lang: v.lang, fill_ms: fill, timer: fill === null ? 'absent' : 'ok' };
   const receipt = { dedupe_key: dedupeKey, form_version: v.form_version, payload, consent_request: true, consent_newsletter: v.consent_newsletter,
     consent_notice_version: INTAKE_CONSENT_NOTICE_VERSION, utm: v.utm, self_reported_source: v.source, ip_hash: ipHash,
     subject_email_hash: subjectHash };
@@ -447,7 +482,8 @@ async function intake(env, req, ctx) {
   if (!rec.deduped) {
     const later = (p, what) => { const job = p.catch((e) => console.error(what, errInfo(e))); if (ctx.waitUntil) ctx.waitUntil(job); };
     if (!transportGap(env)) for (const to of parseOwnerEmails(env.OWNER_EMAIL).list) {
-      later(sendMail(env, { to, subject: `[quote request] ${v.company} · ${v.format}`, text: intakeOwnerText(v, receiptId), reply_to: v.email }), 'intake owner email failed');
+      const subject = quick ? `[quote request] ${v.tool} · ${v.attendees ?? '?'} people · ${companyDomain}` : `[quote request] ${v.company} · ${v.format}`;
+      later(sendMail(env, { to, subject, text: intakeOwnerText(v, receiptId), reply_to: v.email }), 'intake owner email failed');
     }
 
   }

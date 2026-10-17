@@ -5,13 +5,14 @@
 // Writes scripts/health/YYYY-MM-DD.json and exits 1 on any FAIL. GSC / GA4 / GEO probes are
 // added by the scheduled task on top of this (see HEALTH-CHECK.md).
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
+import { homedir } from "node:os";
 
 const PROD = "https://aimanjack.com";
 // SITE=https://<branch>.aimanjack.pages.dev node scripts/health.mjs → same checks against a preview deploy (canonicals still point at PROD, by design).
 const SITE = (process.env.SITE || PROD).replace(/\/$/, "");
 const PREVIEW = SITE !== PROD;
 // Indexable routes (PRD 2026-09-18 §77). Add /ai-training-dallas/, /ai-workflow-training/, /ai-workshops/ and the team pages as they ship.
-const EN = ["/", "/ai-training/", "/ai-training/dallas/", "/ai-training/team-workshop/", "/ai-training/onsite-texas/", "/blog/", "/about/", "/contact/", "/book/",
+const EN = ["/", "/ai-training/", "/ai-training/dallas/", "/ai-training/copilot/", "/ai-training/chatgpt/", "/ai-training/claude/", "/ai-training/grok/", "/ai-training/sales-teams/", "/ai-training/marketing-teams/", "/ai-training/operations-teams/", "/ai-training/leadership-teams/", "/events/", "/ai-training/team-workshop/", "/ai-training/onsite-texas/", "/blog/", "/about/", "/contact/", "/book/",
   // Blog posts pinned to their pre-2026-09 URLs because Copilot cites them (scripts/bing-cited-pages.txt). Must stay 200, never 301.
   "/resources/chatgpt-vs-ai-agents/", "/resources/ai-training-curriculum-nontechnical-teams/"];
 // Resource library (bilingual since the 2026-09 redesign): hubs plus one detail page of each type as a canary.
@@ -46,6 +47,13 @@ for (const line of readFileSync("_redirects", "utf8").split("\n")) {
 }
 add("redirects", bad.length ? "FAIL" : "PASS", bad.join("; ") || "all _redirects rules hold");
 
+// 2b. Retired pages answer 410 Gone (Cloudflare Worker aimanjack-gone-410; RETIRED_PATHS in src/config.mjs + older retired URLs)
+const { RETIRED_PATHS } = await import("../src/config.mjs");
+const GONE = [...RETIRED_PATHS.flatMap((p) => [p, "/zh" + p]), "/website", "/website/", "/business-services", "/missed-call-text-back", "/products", "/products/"];
+const alive = [];
+for (const p of GONE) { const r = await get(p); if (r.status !== 410) alive.push(`${p}→${r.status}`); }
+add("gone:410", alive.length ? "FAIL" : "PASS", alive.join("; ") || `${GONE.length} retired URLs answer 410`);
+
 // 3. Sitemap ↔ pages parity: every indexable page in, every legacy route out
 const sm = (await get("/sitemap.xml")).body;
 const smUrls = [...sm.matchAll(/<loc>([^<]+)<\/loc>/g)].map((x) => x[1].replace(PROD, ""));
@@ -54,12 +62,7 @@ add("sitemap:pages", missing.length ? "FAIL" : "PASS", missing.length ? `missing
 const leaked = LEGACY.filter((p) => smUrls.includes(p) || smUrls.includes("/zh" + p));
 add("sitemap:legacy-out", leaked.length ? "FAIL" : "PASS", leaked.length ? `legacy in sitemap: ${leaked.join(",")}` : "no legacy receptionist routes in sitemap");
 
-// 4. Legacy routes: 200 + noindex (robots.txt must NOT block them, or crawlers never read the noindex)
-for (const p of LEGACY) {
-  const r = await get(p);
-  const robots = m(r.body, /<meta name="robots" content="([^"]*)"/);
-  add(`legacy:${p}`, r.status === 200 && /noindex/.test(robots) ? "PASS" : "FAIL", `HTTP ${r.status}, robots="${robots}"`);
-}
+// 4. Legacy routes: retired 2026-10-17 — they answer 410 Gone, checked in 2b ("gone:410"). The old 200 + noindex check is gone.
 
 // 5. On-page invariants per indexable page vs baseline
 const snap = {};
@@ -103,10 +106,13 @@ else {
 const robots = (await get("/robots.txt")).body;
 add("geo:robots", /User-agent: \*\s+Allow: \//.test(robots) && !/Disallow: \/\s*$/m.test(robots) ? "PASS" : "FAIL", "AI crawlers (GPTBot/OAI-SearchBot/PerplexityBot/ClaudeBot) must not be blocked");
 const llms = (await get("/llms.txt")).body;
-add("geo:llms-current", /corporate AI training/i.test(llms) && /\$499 per person/.test(llms) && /425-4142/.test(llms) && !/receptionist|\$199/i.test(llms) ? "PASS" : "FAIL", "llms.txt must describe corporate AI training + $499/person program + SMS number, and nothing about the receptionist");
+add("geo:llms-current", /corporate AI training/i.test(llms) && /no public price list/i.test(llms) && !/\$\d/.test(llms) && /425-4142/.test(llms) && !/receptionist|\$199/i.test(llms) ? "PASS" : "FAIL", "llms.txt must describe corporate AI training + no public price + SMS number, and nothing about the receptionist");
 
 // 7. Data plumbing the task needs — WARN until Jack wires them (HEALTH-CHECK.md §2)
-add("creds:google-api", existsSync(`${process.env.HOME}/.config/claude-seo/google-api.json`) ? "PASS" : "WARN", "GSC/GA4/PSI via claude-seo need ~/.config/claude-seo/google-api.json");
+// homedir(), not $HOME: PowerShell on Windows has no HOME. The config is not enough on its own — the key file it points to must exist.
+const credCfg = `${homedir()}/.config/claude-seo/google-api.json`;
+const credKey = existsSync(credCfg) ? JSON.parse(readFileSync(credCfg, "utf8")).service_account_path : null;
+add("creds:google-api", credKey && existsSync(credKey) ? "PASS" : "WARN", credKey ? (existsSync(credKey) ? "GSC/GA4 credentials present" : `config found, key file missing: ${credKey}`) : "GSC/GA4/PSI via claude-seo need ~/.config/claude-seo/google-api.json");
 
 const out = { date: today, checks };
 if (!PREVIEW) writeFileSync(`scripts/health/${today}.json`, JSON.stringify(out, null, 1) + "\n");

@@ -1,0 +1,10 @@
+{
+  "approved": true,
+  "slug": "chatgpt-vs-ai-agents",
+  "draftSha256": "0aa4cccd1a3805806c876e5ba6118e01a380b480848fbc841a11d9879ba0640d",
+  "configSha256": "b09c0cad21fe40d919dabb7bcc8ad081d2978e535875bcaeda73aced580ec0b5",
+  "approvedBy": "qianquandong",
+  "approvedAt": "2026-10-14T13:40:11.691Z",
+  "notBefore": "2026-12-16",
+  "approvalRun": "https://github.com/qianquandong/aimanjack-site/actions/runs/38573652928"
+}

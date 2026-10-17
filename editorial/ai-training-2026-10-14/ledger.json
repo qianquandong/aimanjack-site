@@ -1,0 +1,40 @@
+[
+  {
+    "slug": "ai-training-costs-small-business-teams",
+    "draftSha256": "9a925bb0471faeff5bf6120de09105d9143f12dca06662f1c34b24e509316e78",
+    "releaseSourceSha256": "4a038d0fb5c216e5f523ec87ca0094ee9bc46c43cb5da79bf38c20d789d77c85",
+    "protectedBefore": {
+      "/zh/contact/": "66550744ae4cc2f9a928765df23cc3c13e348e8db206942a1e0df24e20dcef9e",
+      "/zh/book/": "e136488d992a0befb9683749af1d1da3276be3ed0eeb4d69c94c2f307bfc2ec7",
+      "/zh/ai-training/": "fe62c0a462e9ff105cb82457d794e3c6bb69ef980384f6c9115505666a24120a",
+      "/book/": "991e21b44ab56c5ab86240dbfdb22dbfdcbd623bc26189da409ee1c9effc9054",
+      "/contact/": "fb2a9f87a3aad6e2a702987db7a48935610076965c2bdf07eb893986242f5936",
+      "/ai-training/": "973a3d81a73400eb5b10cae4d4e12acf3aabe72122fdc9207e479fc12ec68387"
+    },
+    "week": "2026-10-12",
+    "date": "2026-10-14",
+    "state": "verified",
+    "preparedAt": "2026-10-14T18:09:27.054Z",
+    "version": "f8674bae0cadb017337f91f65e469226133acb69",
+    "verifiedWeek": "2026-10-12",
+    "verifiedAt": "2026-10-14T18:10:15.959Z",
+    "checked": [
+      {
+        "path": "/blog/ai-training-costs-small-business-teams/",
+        "contentSha256": "66dbe0be78f2eb12f9a103d90dcbe29cd44b2a5977b24c603ff676e392072c92",
+        "resourcesSha256": "7c8733a3ec1705ca57c236f0efbb8d5ab4bd32ad8467e2a14430ce288ee9fb6a",
+        "canonical": "https://aimanjack.com/blog/ai-training-costs-small-business-teams/",
+        "status": 200
+      },
+      {
+        "path": "/zh/blog/ai-training-costs-small-business-teams/",
+        "contentSha256": "e416ef10a898262b88efad234ce9d8d1166587a60e0cca980f30586ddd1e30d8",
+        "resourcesSha256": "3ae95910a277121587399e7ba10209860c8a9e256fc68c576710ec9aebc7f358",
+        "canonical": "https://aimanjack.com/zh/blog/ai-training-costs-small-business-teams/",
+        "status": 200
+      }
+    ],
+    "firstPartyPagesChecked": 26,
+    "deploymentUrl": "https://474e3620.aimanjack.pages.dev"
+  }
+]

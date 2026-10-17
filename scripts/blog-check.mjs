@@ -4,7 +4,7 @@
 // Checks the on-page signals the SEO playbook cares about (knowledge/marketing/seo-blog-playbook.md in the Agent OS repo).
 // It cannot verify facts: numbers and first-person stories still go through the fact-check reviewer before hand-off.
 import { existsSync } from 'node:fs';
-import { dirname, join } from 'node:path';
+import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { render } from '../src/layout.mjs';
 import { postPage, pathOf } from '../src/blog.mjs';
@@ -12,7 +12,9 @@ import { postPage, pathOf } from '../src/blog.mjs';
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const slug = process.argv[2];
 if (!slug) { console.error('usage: node scripts/blog-check.mjs <slug>'); process.exit(2); }
-const file = join(ROOT, 'src/posts', `${slug}.mjs`);
+const fileArg = process.argv.indexOf('--file');
+if (fileArg !== -1 && !process.argv[fileArg + 1]) throw new Error('--file requires a path');
+const file = fileArg === -1 ? join(ROOT, 'src/posts', `${slug}.mjs`) : resolve(process.argv[fileArg + 1]);
 if (!existsSync(file)) { console.error(`no such post: src/posts/${slug}.mjs`); process.exit(2); }
 const { post } = await import(pathToFileURL(file).href);   // file URL, so the check also runs on Windows
 

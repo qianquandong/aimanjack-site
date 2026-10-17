@@ -1,0 +1,10 @@
+{
+  "approved": true,
+  "slug": "evaluate-ai-training",
+  "draftSha256": "d114ea85d26fb000827d6e7fb6cbe866a70e65aa2cbcbcd6e16cffdfe783a830",
+  "configSha256": "b09c0cad21fe40d919dabb7bcc8ad081d2978e535875bcaeda73aced580ec0b5",
+  "approvedBy": "qianquandong",
+  "approvedAt": "2026-10-14T13:32:29.991Z",
+  "notBefore": "2026-10-28",
+  "approvalRun": "https://github.com/qianquandong/aimanjack-site/actions/runs/38572573025"
+}

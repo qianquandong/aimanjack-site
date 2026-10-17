@@ -1,0 +1,10 @@
+{
+  "approved": true,
+  "slug": "ai-training-for-office-managers",
+  "draftSha256": "544bc5d0c1a634247943cb3ecc86d35acaf73c4faaf54a02cb4223d32839d4f8",
+  "configSha256": "b09c0cad21fe40d919dabb7bcc8ad081d2978e535875bcaeda73aced580ec0b5",
+  "approvedBy": "qianquandong",
+  "approvedAt": "2026-10-14T13:36:37.722Z",
+  "notBefore": "2026-12-02",
+  "approvalRun": "https://github.com/qianquandong/aimanjack-site/actions/runs/38573159991"
+}

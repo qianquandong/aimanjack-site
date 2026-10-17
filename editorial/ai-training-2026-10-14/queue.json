@@ -1,0 +1,160 @@
+{
+  "version": 1,
+  "owner": "qianquandong",
+  "timezone": "America/Chicago",
+  "weeklyLimit": 1,
+  "items": [
+    {
+      "slug": "ai-training-costs-small-business-teams",
+      "existing": false,
+      "order": 1,
+      "categories": [
+        5,
+        6,
+        7,
+        10,
+        16,
+        20
+      ],
+      "path": "/blog/ai-training-costs-small-business-teams/",
+      "baseSourceSha256": null,
+      "originalDate": null
+    },
+    {
+      "slug": "choose-corporate-ai-trainer-dallas-fort-worth",
+      "existing": false,
+      "order": 2,
+      "categories": [
+        1,
+        2,
+        7,
+        9,
+        12,
+        18
+      ],
+      "path": "/blog/choose-corporate-ai-trainer-dallas-fort-worth/",
+      "baseSourceSha256": null,
+      "originalDate": null
+    },
+    {
+      "slug": "evaluate-ai-training",
+      "existing": false,
+      "order": 3,
+      "categories": [
+        8,
+        11,
+        17
+      ],
+      "path": "/blog/evaluate-ai-training/",
+      "baseSourceSha256": null,
+      "originalDate": null
+    },
+    {
+      "slug": "ai-training-for-sales-teams",
+      "existing": false,
+      "order": 4,
+      "categories": [
+        3,
+        4,
+        10,
+        11,
+        13,
+        14,
+        15
+      ],
+      "path": "/blog/ai-training-for-sales-teams/",
+      "baseSourceSha256": null,
+      "originalDate": null
+    },
+    {
+      "slug": "ai-training-for-marketing-teams",
+      "existing": false,
+      "order": 5,
+      "categories": [
+        3,
+        4,
+        10,
+        11,
+        13,
+        14,
+        15
+      ],
+      "path": "/blog/ai-training-for-marketing-teams/",
+      "baseSourceSha256": null,
+      "originalDate": null
+    },
+    {
+      "slug": "ai-policy-for-small-business-employees",
+      "existing": true,
+      "order": 6,
+      "categories": [
+        13,
+        15,
+        16,
+        19
+      ],
+      "path": "/blog/ai-policy-for-small-business-employees/",
+      "baseSourceSha256": "592b3736e0b464f4baf76c036170996fb553b5d71732c0fb06b044b9fa8a5650",
+      "originalDate": "2026-10-13"
+    },
+    {
+      "slug": "ai-training-for-employees-start-with-one-task",
+      "existing": true,
+      "order": 7,
+      "categories": [
+        3,
+        4,
+        13,
+        14
+      ],
+      "path": "/blog/ai-training-for-employees-start-with-one-task/",
+      "baseSourceSha256": "32a85cbb269c144634575223b0f20ab265570e996d36f5a2b4a47cc9e6cb82ab",
+      "originalDate": "2026-09-17"
+    },
+    {
+      "slug": "ai-training-for-office-managers",
+      "existing": true,
+      "order": 8,
+      "categories": [
+        3,
+        4,
+        10,
+        19
+      ],
+      "path": "/blog/ai-training-for-office-managers/",
+      "baseSourceSha256": "9126f07559536394cba434beabb0c65b6b0cc0136712fb8da757525cc4c0803e",
+      "originalDate": "2026-09-28"
+    },
+    {
+      "slug": "ai-training-curriculum-nontechnical-teams",
+      "existing": true,
+      "order": 9,
+      "categories": [
+        6,
+        11,
+        13,
+        14,
+        15,
+        19
+      ],
+      "path": "/resources/ai-training-curriculum-nontechnical-teams/",
+      "baseSourceSha256": "73467e5ae0633420c42a446ceb8dcb3c3cd63916c363d1d5bb48064f317f1836",
+      "originalDate": "2026-07-17"
+    },
+    {
+      "slug": "chatgpt-vs-ai-agents",
+      "existing": true,
+      "order": 10,
+      "categories": [
+        4,
+        13,
+        15,
+        16,
+        20
+      ],
+      "path": "/resources/chatgpt-vs-ai-agents/",
+      "baseSourceSha256": "675a010244070d63b2cc3aacc49bea845dc371be1e8ece7755e357e163c4c177",
+      "originalDate": "2026-07-17"
+    }
+  ]
+}

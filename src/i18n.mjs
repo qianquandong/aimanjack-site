@@ -1,7 +1,6 @@
 // UI chrome strings. Page copy lives in src/pages/*.mjs and src/content/*.mjs.
 // zh follows the 2026-09 design canvas: formal, written business Chinese. Fixed terms: 工作坊、工作流、提示词、核验、智能体（Agent）、预约工作流咨询（primary CTA since 2026-09-28）.
 // The `demo` block and the legacy cta keys are only read by the noindex receptionist pages.
-import { PROGRAM_PRICE } from './config.mjs';
 
 export const T = {
   en: {
@@ -14,11 +13,11 @@ export const T = {
     },
     demo: { try: 'Try our AI demo line', alwaysOn: 'Always on, 24/7', langs: 'English · Español · 中文', live: 'Live call', role: 'AI demo · 24/7', customer: 'Customer', ai: 'AI', booked: 'Appointment booked', example: 'Example conversation' },
     sticky: 'Book a Workflow Call',
-    band: { h: 'Bring one task.<br>Leave with it <em>running.</em>', sub: 'Book a short call and bring one real task. We’ll figure out whether AI belongs in it and where the 4-session program should start.', price: `Programs start at ${PROGRAM_PRICE}/person. Custom team pricing available.`, email: 'Or email', text: 'text TRAINING to' },
+    band: { h: 'Bring one task.<br>Leave with it <em>running.</em>', sub: 'Book a short call and bring one real task. We’ll figure out whether AI belongs in it and where the 4-session program should start.', price: 'Every program is priced for your team. Get a written quote.', email: 'Or email', text: 'text TRAINING to' },
     footer: {
       tagline: 'Hands-on AI training for teams in Dallas–Fort Worth and remotely, in English or Chinese.',
       training: 'AI Training', teams: 'Teams', resources: 'Resources', company: 'Company',
-      corporate: 'Corporate training', dallas: 'Dallas–Fort Worth', workshops: '90-minute workshop', onsite: 'Onsite in Texas', tools: 'Free tools', templates: 'Templates', workflows: 'Workflows',
+      corporate: 'Corporate training', dallas: 'Dallas–Fort Worth', events: 'Community sessions', workshops: '90-minute workshop', onsite: 'Onsite in Texas', tools: 'Free tools', templates: 'Templates', workflows: 'Workflows',
       sales: 'Sales', marketing: 'Marketing', operations: 'Operations', leadership: 'Leadership',
       guides: 'Guides', cases: 'Case studies', newsletter: 'Real Agent Use Cases ↗', about: 'About', contact: 'Contact', book: 'Book a call',
       privacy: 'Privacy', terms: 'Terms', sms: 'SMS Terms', integrations: 'Integrations',
@@ -37,11 +36,11 @@ export const T = {
     },
     demo: { try: '体验 AI 演示线路', alwaysOn: '全天候在线', langs: '中文 · 英文 · 西班牙语', live: '通话中', role: 'AI 演示 · 全天候', customer: '顾客', ai: 'AI', booked: '预约已确认', example: '示例对话' },
     sticky: '预约工作流咨询',
-    band: { h: '带一项真实任务来，<br>带一条<em>可用的工作流</em>走。', sub: '预约一次简短沟通，带上一项真实任务。我们一起判断这项任务适不适合交给 AI，以及四次课程项目应该从哪里开始。', price: `四次课程项目每人 ${PROGRAM_PRICE} 起，团队可定制报价。`, email: '或发送邮件至', text: '短信发送 TRAINING 至' },
+    band: { h: '带一项真实任务来，<br>带一条<em>可用的工作流</em>走。', sub: '预约一次简短沟通，带上一项真实任务。我们一起判断这项任务适不适合交给 AI，以及四次课程项目应该从哪里开始。', price: '每个项目都按团队报价，先拿一份书面报价。', email: '或发送邮件至', text: '短信发送 TRAINING 至' },
     footer: {
       tagline: '为达拉斯—沃斯堡地区及远程团队提供实操型 AI 培训，支持中英文授课。',
       training: 'AI 培训', teams: '按团队', resources: '资源', company: '公司',
-      corporate: '企业培训', dallas: '达拉斯—沃斯堡', workshops: '90 分钟工作坊', onsite: '德州上门培训', tools: '免费工具', templates: '模板', workflows: '工作流',
+      corporate: '企业培训', dallas: '达拉斯—沃斯堡', events: '社区活动', workshops: '90 分钟工作坊', onsite: '德州上门培训', tools: '免费工具', templates: '模板', workflows: '工作流',
       sales: '销售', marketing: '市场', operations: '运营', leadership: '管理层',
       guides: '实践指南', cases: '案例', newsletter: 'Real Agent Use Cases ↗', about: '关于', contact: '联系', book: '预约通话',
       privacy: '隐私政策', terms: '服务条款', sms: '短信条款', integrations: '系统对接',

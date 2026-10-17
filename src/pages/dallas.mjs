@@ -4,12 +4,13 @@
 // offer page keeps the format, this page keeps the place. Every number comes from src/content/events.mjs (Luma) or config PROOF.
 // JSON-LD: business + person + a Service with the DFW area + FAQPage + breadcrumbs. No Review/AggregateRating (self-serving), no
 // Offer price except the approved program price in the shared Service, no unapproved format prices anywhere on the page.
-import { SITE, GBP_URL, PROOF, PROGRAM_PRICE, TRAINING, OFFERS } from '../config.mjs';
+import { SITE, GBP_URL, PROOF, TRAINING, OFFERS } from '../config.mjs';
 import { planBtn, ctaBand, L } from '../layout.mjs';
 import { breadcrumb } from '../components.mjs';
 import { business, person, faqPage, AREA } from '../schema.mjs';
 import { chooser } from './offers.mjs';
 import { EVENTS, VENUES, EVENT_STATS, LUMA_PROFILE, EVENTS_CHECKED_ON, eventDate } from '../content/events.mjs';
+import { EVENT_PAGES } from '../content/event-pages.mjs';
 
 const PATH = '/ai-training/dallas/';
 const S = TRAINING.sessions, M = TRAINING.sessionMin;
@@ -26,9 +27,9 @@ const PHOTOS = [
 
 const C = {
   en: {
-    title: 'AI Training for Dallas–Fort Worth Teams | AI Man Jack',
-    description: `Hands-on AI training for Dallas–Fort Worth teams, onsite or live online. ${EVENT_STATS.hosted} community sessions, ${EVENT_STATS.registrations} sign-ups and ${PROOF.reviews} Google reviews at ${PROOF.rating} in 2026. From ${PROGRAM_PRICE}/person.`,
-    og: { title: 'AI training for Dallas–Fort Worth teams', description: `Onsite in Dallas, Plano, Frisco, Richardson or Fort Worth, or live online. Real sessions, real sign-up counts, real reviews. From ${PROGRAM_PRICE}/person.` },
+    title: 'Corporate AI Training & Workshops in Dallas–Fort Worth | AI Man Jack',
+    description: `Hands-on AI training for Dallas–Fort Worth teams, onsite or live online. ${EVENT_STATS.hosted} community sessions, ${EVENT_STATS.registrations} sign-ups and ${PROOF.reviews} Google reviews at ${PROOF.rating} in 2026. Priced by quote.`,
+    og: { title: 'Corporate AI training & workshops in Dallas–Fort Worth', description: `Onsite in Dallas, Plano, Frisco, Richardson or Fort Worth, or live online. Real sessions, real sign-up counts, real reviews. Priced by quote.` },
     crumb: 'Dallas–Fort Worth',
     eyebrow: 'Dallas · Plano · Frisco · Richardson · Irving · McKinney · Fort Worth · Live online across the U.S. · English or Chinese',
     h1: 'AI training for <em>Dallas–Fort Worth</em> business teams, built on the work you already do',
@@ -58,19 +59,19 @@ const C = {
     faq: [
       ['Do you come onsite to Plano, Frisco or Fort Worth?', 'Yes. Onsite training runs at your office anywhere in Dallas–Fort Worth — Dallas, Fort Worth, Plano, Richardson, Frisco, McKinney, Irving, Arlington and the cities between. Elsewhere in Texas is available on request, with travel quoted separately. Remote sessions over video are available anywhere in the U.S.'],
       ['How many people can you train at once?', 'It is agreed in the quote. Every format is hands-on, so Jack needs to see each person’s workflow; a larger group is split into two sessions or run as a full onsite day with department blocks. The four-session program is priced per person, so a team of four and a team of fourteen both work.'],
-      ['What does AI training cost in Dallas?', `The ${S}-session customized program starts at ${PROGRAM_PRICE} per person and includes four live ${M}-minute sessions; team pricing depends on group size, goals and preparation. The 90-minute team workshop and the full onsite day are priced by scoped quote. You receive a written scope and price before anything is agreed.`],
+      ['What does AI training cost in Dallas?', 'Every team gets its own quote: it depends on group size, the format and how much preparation your workflows need. The four-session program, the 90-minute team workshop and the full onsite day are all priced in writing before anything is agreed. Use the <a href="/contact/quote/">quote form</a> or book a 20-minute call.'],
       ['Is the training in English or Chinese?', 'Either. The 2026 community series in Dallas ran in Chinese; company sessions run in whichever language the room works in, and the materials come in both.'],
       ['Which AI tools do you teach?', 'Whichever your company has already approved — ChatGPT, Microsoft Copilot, Claude or Gemini. If none is approved yet, we agree on one before the first session. The method is the same across tools, and the first thing covered is which data may go into a tool and which may not.'],
       ['What do we need to prepare?', 'Each attendee brings two or three tasks they repeat every week and a laptop with access to the approved tool. For an onsite day, a room with a screen and reliable Wi-Fi. No slides, no homework, no coding.'],
       ['How is this different from a public AI class in Dallas?', 'There is no product tour and no certificate. People work on their own tasks, with their own company’s rules on data, and at least one output in every session is deliberately flawed so the team learns what to check before anything goes out. Two weeks later we check what was kept.'],
       ['Can we attend a community session before booking?', `Yes. The community sessions in Dallas are free and listed on Luma, where you can see the next date. Come, watch how a session runs, then decide. ${EVENT_STATS.registrations} people signed up for them in 2026.`],
     ],
-    ld: { name: 'AI Training for Dallas–Fort Worth Teams', desc: `Hands-on corporate AI training for business teams in Dallas–Fort Worth: onsite at the company’s office in Dallas, Fort Worth, Plano, Richardson, Frisco, McKinney, Irving or Arlington, or live online. Taught by Jack Qian in English or Chinese. ${S} live ${M}-minute sessions from ${PROGRAM_PRICE} per person; 90-minute workshop and full onsite day by scoped quote.` },
+    ld: { name: 'AI Training for Dallas–Fort Worth Teams', desc: `Hands-on corporate AI training for business teams in Dallas–Fort Worth: onsite at the company’s office in Dallas, Fort Worth, Plano, Richardson, Frisco, McKinney, Irving or Arlington, or live online. Taught by Jack Qian in English or Chinese. The ${S}-session program, the 90-minute workshop and the full onsite day are each priced by scoped quote.` },
   },
   zh: {
-    title: '达拉斯—沃斯堡企业团队 AI 培训 | AI Man Jack',
-    description: `为达拉斯—沃斯堡团队提供实操 AI 培训，上门或线上直播。2026 年已办 ${EVENT_STATS.hosted} 场社区活动、${EVENT_STATS.registrations} 人报名，Google ${PROOF.reviews} 条评价 ${PROOF.rating} 分。每人 ${PROGRAM_PRICE} 起。`,
-    og: { title: '达拉斯—沃斯堡团队 AI 培训', description: `Dallas、Plano、Frisco、Richardson、Fort Worth 上门，或线上直播。真实活动、真实报名数、真实评价。每人 ${PROGRAM_PRICE} 起。` },
+    title: '达拉斯—沃斯堡企业 AI 培训与团队工作坊 | AI Man Jack',
+    description: `为达拉斯—沃斯堡团队提供实操 AI 培训，上门或线上直播。2026 年已办 ${EVENT_STATS.hosted} 场社区活动、${EVENT_STATS.registrations} 人报名，Google ${PROOF.reviews} 条评价 ${PROOF.rating} 分。按团队报价。`,
+    og: { title: '达拉斯—沃斯堡团队 AI 培训', description: `Dallas、Plano、Frisco、Richardson、Fort Worth 上门，或线上直播。真实活动、真实报名数、真实评价。按团队报价。` },
     crumb: '达拉斯—沃斯堡',
     eyebrow: 'Dallas · Plano · Frisco · Richardson · Irving · McKinney · Fort Worth · 全美线上直播 · 中英文授课',
     h1: '<em>达拉斯—沃斯堡</em>企业团队的 AI 培训，从你手头的工作出发',
@@ -100,14 +101,14 @@ const C = {
     faq: [
       ['可以到 Plano、Frisco 或 Fort Worth 上门吗？', '可以。上门培训覆盖达拉斯—沃斯堡任何地方：Dallas、Fort Worth、Plano、Richardson、Frisco、McKinney、Irving、Arlington 及中间的城市。德州其他城市可按需安排，差旅另行报价。全美范围内都可以视频远程。'],
       ['一次能培训多少人？', '在报价中确定。每种形式都是实操，Jack 需要看到每个人的工作流；人多的团队拆成两场，或者安排成按部门分块的全天上门培训。四次课程项目按人计价，四个人的团队和十四个人的团队都可以。'],
-      ['在达拉斯做 AI 培训要多少钱？', `四次定制课程项目每人 ${PROGRAM_PRICE} 起，包含四节 ${M} 分钟实时课程；团队价格取决于人数、目标和准备工作量。90 分钟团队工作坊和全天上门培训按需报价。在确认任何安排之前，你都会先收到书面的范围和报价。`],
+      ['在达拉斯做 AI 培训要多少钱？', '每个团队单独报价，取决于人数、培训形式和工作流需要的准备工作量。四次课程项目、90 分钟团队工作坊和全天上门培训，都会在确认任何安排之前先给出书面报价。可以填写<a href="/zh/contact/quote/">报价表单</a>，或预约 20 分钟通话。'],
       ['中文还是英文授课？', '都可以。2026 年在达拉斯办的社区系列用中文；企业课程用团队最顺手的语言，资料提供中英文两个版本。'],
       ['教哪些 AI 工具？', '贵公司已经批准的那个：ChatGPT、Microsoft Copilot、Claude 或 Gemini。还没批准任何工具的，第一节课之前先商定一个。方法在各种工具上通用，最先讲的是哪些数据能输入工具、哪些不能。'],
       ['我们需要准备什么？', '每位学员带两三项每周重复的任务，以及一台能访问已批准工具的笔记本电脑。上门培训还需要一间有屏幕、Wi-Fi 稳定的会议室。不用做幻灯片，没有作业，不用写代码。'],
       ['和达拉斯的公开 AI 课有什么不同？', '没有产品导览，也不发证书。每个人做的是自己的任务，遵守自己公司的数据规则；每场至少有一个刻意做错的输出，让团队学会东西发出去之前该查什么。两周后再看留下了什么。'],
       ['预约之前可以先来参加一次社区活动吗？', `可以。达拉斯的社区活动免费，都在 Luma 上，能看到下一场的日期。来看看一场活动是怎么进行的，再决定。2026 年有 ${EVENT_STATS.registrations} 人报名参加过。`],
     ],
-    ld: { name: '达拉斯—沃斯堡企业团队 AI 培训', desc: `面向达拉斯—沃斯堡企业团队的实操 AI 培训：到公司现场（Dallas、Fort Worth、Plano、Richardson、Frisco、McKinney、Irving、Arlington）或线上直播。Jack Qian 中英文授课。${S} 节 ${M} 分钟实时课程每人 ${PROGRAM_PRICE} 起；90 分钟工作坊和全天上门培训按需报价。` },
+    ld: { name: '达拉斯—沃斯堡企业团队 AI 培训', desc: `面向达拉斯—沃斯堡企业团队的实操 AI 培训：到公司现场（Dallas、Fort Worth、Plano、Richardson、Frisco、McKinney、Irving、Arlington）或线上直播。Jack Qian 中英文授课。${S} 节课程项目、90 分钟工作坊和全天上门培训均按需报价。` },
   },
 };
 
@@ -116,7 +117,7 @@ const page = (lang) => {
   const bc = breadcrumb(lang, [[zh ? 'AI 培训' : 'AI training', '/ai-training/'], [c.crumb, PATH]]);
   const head = (k, h, p, more) => `<div class="sec-head"><div><div class="eyebrow">${k}</div><h2>${h}</h2>${p ? `<p class="lead">${p}</p>` : ''}</div>${more || ''}</div>`;
   const venues = Object.entries(VENUES).filter(([k]) => k !== 'online').map(([k, v]) => `<dt>${v[lang]}</dt><dd>${EVENTS.filter((e) => e.venue === k).map((e) => eventDate(e.date, lang)).join(' · ')}</dd>`).join('');
-  const rows = EVENTS.map((e) => `<tr><th scope="row"><time datetime="${e.date}">${eventDate(e.date, lang)}</time></th><td data-label="${c.evHead[1]}">${e[lang]}${e.org ? ` <span class="muted">· ${e.org}</span>` : ''}</td><td data-label="${c.evHead[2]}">${VENUES[e.venue].short[lang]}</td><td data-label="${c.evHead[3]}">${e.role === 'speaker' ? c.evSpeaker : e.registrations}</td></tr>`).join('');
+  const rows = EVENTS.map((e) => `<tr><th scope="row"><time datetime="${e.date}">${eventDate(e.date, lang)}</time></th><td data-label="${c.evHead[1]}">${EVENT_PAGES[e.date] ? `<a href="${L(lang, `/events/${EVENT_PAGES[e.date].slug}/`)}">${e[lang]}</a>` : e[lang]}${e.org ? ` <span class="muted">· ${e.org}</span>` : ''}</td><td data-label="${c.evHead[2]}">${VENUES[e.venue].short[lang]}</td><td data-label="${c.evHead[3]}">${e.role === 'speaker' ? c.evSpeaker : e.registrations}</td></tr>`).join('');
   return {
     title: c.title, description: c.description, og: c.og, view: 'dallas_page_view', bodyClass: 'training-page dallas-page',
     body: `<section class="page-hero"><div class="wrap">${bc.html}<p class="eyebrow">${c.eyebrow}</p><h1 class="brand-hero-title" style="max-width:1080px">${c.h1}</h1><p class="lead" style="max-width:760px">${c.sub}</p>
@@ -138,7 +139,9 @@ const page = (lang) => {
 ${chooser(lang, { pos: 'dallas' })}
 
 <section class="sec tight" id="tools"><div class="wrap">${head(c.toolsK, c.toolsH, c.toolsP)}
-<div class="g4">${c.tools.map(([h, p]) => `<div class="card"><h3>${h}</h3><p>${p}</p></div>`).join('')}</div></div></section>
+<div class="g4">${c.tools.map(([h, p]) => { const k = { ChatGPT: 'chatgpt', 'Microsoft Copilot': 'copilot', Claude: 'claude' }[h]; return `<div class="card"><h3>${k ? `<a href="${L(lang, `/ai-training/${k}/`)}">${h} ${zh ? '培训' : 'training'} →</a>` : h}</h3><p>${p}</p></div>`; }).join('')}</div>
+<p style="margin-top:20px">${zh ? `也教 <a href="${L(lang, '/ai-training/grok/')}">Grok 与 Grok Bot</a>（实时调研和能在你们工具里干活的 AI 智能体）。` : `We also teach <a href="${L(lang, '/ai-training/grok/')}">Grok and Grok Bot</a>: real-time research and AI agents that work inside your tools.`}</p>
+<p>${zh ? '也可以按团队安排：' : 'Or plan it by team: '}${[['sales', '销售团队', 'sales teams'], ['marketing', '市场团队', 'marketing teams'], ['operations', '运营团队', 'operations teams'], ['leadership', '管理层', 'leadership teams']].map(([k, z, e]) => `<a href="${L(lang, `/ai-training/${k}-teams/`)}">${zh ? `${z} AI 培训` : `AI training for ${e}`}</a>`).join(zh ? '、' : ', ')}${zh ? '。' : '.'}</p></div></section>
 
 <section class="sec tight" id="testimonials"><div class="wrap">${head(c.revK, c.revH, c.revP, `<a class="more" href="${GBP_URL}" target="_blank" rel="noopener">${c.revMore}</a>`)}
 <div class="quote-grid">${c.rev.map(([name, q]) => `<figure class="quote"><span class="stars" aria-label="5 stars">★★★★★</span><blockquote style="margin:0;flex-grow:1"><p>${q}</p></blockquote><figcaption><b>${name}</b> <span>· ${c.revBy}</span></figcaption></figure>`).join('')}</div></div></section>
@@ -166,3 +169,6 @@ ${ctaBand(lang, { pos: 'dallas-final' })}`,
 };
 
 export const pages = [{ path: PATH, priority: 0.9, changefreq: 'monthly', en: page('en'), zh: page('zh') }];
+
+// Shared with the tool pages (src/pages/tool-training.mjs) so the same verified Google review quotes are used everywhere.
+export const REVIEWS = { en: C.en.rev, zh: C.zh.rev, by: { en: C.en.revBy, zh: C.zh.revBy } };
