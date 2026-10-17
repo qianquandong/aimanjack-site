@@ -16,8 +16,8 @@ SITE_ENV = "preview"
 SITE_ENV = "production"
 ROS_EVENTS_ENABLED = "false" # Enable only after outbox migration + receiver + scheduled processor are approved.
 MAILERLITE_SYNC_ENABLED = "false" # Independent quote opt-in adapter; DB switch is also false. No historical import.
-MAILERLITE_DOI_ACKNOWLEDGED = "false" # Set true only after verifying MailerLite's API/integrations double opt-in.
-# MAILERLITE_QUOTE_GROUP_ID: approved dedicated numeric group ID (non-secret; configure only at approved rollout).
+MAILERLITE_DOI_ACKNOWLEDGED = "true" # API double opt-in and jack@ sender verified in the account UI on 2026-10-16.
+MAILERLITE_QUOTE_GROUP_ID = "201548479243224466" # Empty dedicated Website - Get Quote Marketing group, API read verified.
 # MAILERLITE_API_TOKEN, MAILERLITE_PROCESS_TOKEN, MAILERLITE_WEBHOOK_SECRET: production secrets, never checked in.
 # Existing EMAIL_HASH_SECRET (32+ chars) must remain stable: both quote intake and signed suppression callbacks use it.
 # Booking data lives in Supabase (project aimanjack-crm, schema `booking`; db/schema.sql).

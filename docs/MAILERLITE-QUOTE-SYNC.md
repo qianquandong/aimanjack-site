@@ -43,7 +43,7 @@ Register the callback for these four events with `batchable=true` (required for 
 | `MAILERLITE_PROCESS_TOKEN` | Pages production secret, random 32+ characters; grants only this adapter's process/health routes. |
 | `MAILERLITE_WEBHOOK_SECRET` | Pages production secret from the registered provider callback; required before any enrollment. |
 | `EMAIL_HASH_SECRET` | Existing production quote identity HMAC key, 32+ characters; must match existing consent rows and remain stable. Do not generate a replacement casually. |
-| `MAILERLITE_DOI_ACKNOWLEDGED` | Checked-in false. Set true only after verifying MailerLite's account API/integrations DOI setting and confirmation sender. |
+| `MAILERLITE_DOI_ACKNOWLEDGED` | Production is true after the account API/integrations DOI switch and confirmation sender were verified in its UI on 2026-10-16. This is a manual acknowledgement, not a provider API attestation or a delivered-email test. |
 | `MAILERLITE_SYNC_ENABLED` | Checked-in false. Exact `true` permits the server processor; does not itself activate the database trigger. |
 | `revenue.mailerlite_configuration.enabled` | SQL false by default. Captures only new consent events after explicit activation. |
 | `MAILERLITE_PROCESS_TOKEN` on the CRM Worker | Server secret matching the Pages production process token; never use `ADMIN_TOKEN`. The separate CRM project owns the scheduler. |

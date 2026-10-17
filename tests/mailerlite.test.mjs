@@ -257,7 +257,9 @@ test('provider deleted/forgotten lookup records global tombstone and never upser
 
 test('configuration, scheduler and implementation are inert and independent of the existing CRM/ROS funnel', async () => {
   const toml = await readFile(new URL('../wrangler.toml', import.meta.url), 'utf8');
-  assert.match(toml, /MAILERLITE_SYNC_ENABLED = "false"/); assert.match(toml, /MAILERLITE_DOI_ACKNOWLEDGED = "false"/);
+  assert.match(toml, /MAILERLITE_SYNC_ENABLED = "false"/);
+  assert.match(toml, /MAILERLITE_DOI_ACKNOWLEDGED = "true"/);
+  assert.match(toml, /MAILERLITE_QUOTE_GROUP_ID = "201548479243224466"/);
   const sql = await readFile(new URL('../db/migrations/2026-10-16-mailerlite-quote-outbox.sql', import.meta.url), 'utf8');
   assert.ok(!sql.includes('insert into revenue.funnel_')); assert.ok(!sql.includes('create or replace function revenue.record_intake'));
 });
