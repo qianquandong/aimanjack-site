@@ -1,0 +1,64 @@
+name: SEO weekly autopublish
+
+# 2026-10-17, Jack (explicit choice): the weekly SEO routine (claude.ai cloud routine "aimanjack SEO/GEO 周检") goes
+# live by itself. The routine pushes `seo/weekly-YYYY-MM-DD`; this workflow gates it (scripts/seo-autopublish-gate.mjs:
+# path allowlist, blog-check, no [Jack 补] placeholders), merges it into production, rebuilds, runs the full offline test
+# suite, requires a byte-identical tree, then deploys with the same `sh deploy.sh --production` used by hand.
+# Any failure = nothing ships. Pause without editing this file: set repository variable SEO_AUTOPUBLISH_ENABLED=false.
+
+on:
+  push:
+    branches: ['seo/weekly-*']
+
+permissions:
+  contents: write
+
+concurrency:
+  group: approved-blog-production   # shared with the approved-blog publisher: never two production deploys at once
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: github.repository == 'qianquandong/aimanjack-site' && vars.SEO_AUTOPUBLISH_ENABLED != 'false'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Gate — only routine-safe changes
+        run: |
+          git fetch origin production
+          node scripts/seo-autopublish-gate.mjs origin/production
+
+      - name: Merge into production
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -B production origin/production
+          git merge --no-ff "$GITHUB_SHA" -m "autopublish: ${GITHUB_REF_NAME} (gate passed)"
+
+      - name: Rebuild, test, and require a clean tree
+        run: |
+          npm ci --ignore-scripts
+          node scripts/build.mjs
+          node --test tests/*.test.mjs
+          test -z "$(git status --porcelain)" || { git status --porcelain | head -20; echo 'Generated files differ from the build; refusing to publish.'; exit 1; }
+
+      - name: Push production
+        run: git push origin production
+
+      - name: Deploy
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN || secrets.CLOUDFLARE_PAGES_EDIT }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          sh deploy.sh --production | tee "$RUNNER_TEMP/deploy.log"
+          grep -q 'IndexNow ping: HTTP 200' "$RUNNER_TEMP/deploy.log" || echo '::warning::IndexNow did not confirm HTTP 200'
+
+      - name: Delete the published branch
+        run: git push origin --delete "$GITHUB_REF_NAME" || true
