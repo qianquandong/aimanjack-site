@@ -1,6 +1,8 @@
 # Get Quote -> MailerLite subscription sync
 
-Prepared offline on `feat/mailerlite-quote-outbox`, initially based on remote production `d00af77426553c9217dad57901ee92aa55f3c306` and fast-forwarded to `fa3fb5a9d1e2a121008765439f284bc2b11669d0` after reviewing the other task's SEO changes (verified 2026-10-16). **Not deployed; no production migration, API key, subscription, campaign, webhook registration, or historical import was performed by this change.**
+Prepared on `feat/mailerlite-quote-outbox`, initially based on remote production `d00af77426553c9217dad57901ee92aa55f3c306` and fast-forwarded to `fa3fb5a9d1e2a121008765439f284bc2b11669d0` after reviewing the other task's SEO changes (verified 2026-10-16). **Website code is not deployed; enrollment remains disabled. No subscriber import or marketing campaign has been sent.**
+
+2026-10-16 preparation checkpoint: the owner logged into the existing `aimanjack-crm` project. The exact migration was applied through its SQL Editor and the PostgREST schema cache was refreshed. `mailerlite_health()` confirmed `enabled=false` and all queue/mutation counters zero; anonymous/browser roles cannot invoke the processor, while the existing server role can. Production Pages API/process secrets and the CRM's matching process secret were stored separately from source. The CRM can read the empty dedicated MailerLite group; its shared native Cron is deployed with website processing disabled. These checks do not establish end-to-end website enrollment or email delivery. Provider callback registration, production website rollout and an owner-authorized DOI test remain pending.
 
 ## Behavior
 

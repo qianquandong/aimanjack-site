@@ -1,4 +1,4 @@
--- PREPARED ONLY / NOT APPLIED. Independent of ROS and the worksheet CRM funnel.
+-- INERT ON INITIAL APPLICATION. Independent of ROS and the worksheet CRM funnel.
 -- Captures only NEW explicit quote newsletter opt-ins after the database switch is enabled.
 -- Applying this migration neither backfills contacts nor enables MailerLite or any campaign.
 begin;
