@@ -578,3 +578,25 @@ test('no public price on any indexable page or in llms.txt (Jack, 2026-10-17: ev
   }
   assert.doesNotMatch(llms(), /\$\s?\d/);
 });
+
+test('every community session has an event page with Event markup, real photos on disk and links back', async () => {
+  const pages = await allPages();
+  const { EVENTS } = await import('../src/content/events.mjs');
+  const { EVENT_PAGES } = await import('../src/content/event-pages.mjs');
+  const { existsSync } = await import('node:fs');
+  for (const ev of EVENTS) {
+    const d = EVENT_PAGES[ev.date];
+    assert.ok(d, `${ev.date} has event-page detail`);
+    for (const [file] of d.photos) assert.ok(existsSync(new URL(`../img/events/${file}.webp`, import.meta.url)), `${file}.webp exists`);
+    for (const lang of ['en', 'zh']) {
+      const path = `/events/${d.slug}/`, x = find(pages, path, lang), route = `${lang}:${path}`;
+      assert.ok(x && !x.page.noindex, `${route} indexable`);
+      const b = body(x.html), j = ld(x.html);
+      assert.equal((b.match(/<h1[\s>]/g) || []).length, 1, `${route} one H1`);
+      assert.match(j, /"@type":"Event"/); assert.ok(j.includes(`"startDate":"${d.start}"`), `${route} startDate`);
+      assert.ok(b.includes(`href="${urlOf('/events/', lang)}"`), `${route} links the hub`);
+      if (ev.role === 'host') assert.ok(b.includes(String(ev.registrations)), `${route} shows the Luma sign-ups`);
+    }
+  }
+  for (const lang of ['en', 'zh']) { const hub = body(find(pages, '/events/', lang).html); for (const ev of EVENTS) assert.ok(hub.includes(`/events/${EVENT_PAGES[ev.date].slug}/`), `hub lists ${ev.date}`); }
+});

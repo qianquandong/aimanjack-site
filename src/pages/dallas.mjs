@@ -10,6 +10,7 @@ import { breadcrumb } from '../components.mjs';
 import { business, person, faqPage, AREA } from '../schema.mjs';
 import { chooser } from './offers.mjs';
 import { EVENTS, VENUES, EVENT_STATS, LUMA_PROFILE, EVENTS_CHECKED_ON, eventDate } from '../content/events.mjs';
+import { EVENT_PAGES } from '../content/event-pages.mjs';
 
 const PATH = '/ai-training/dallas/';
 const S = TRAINING.sessions, M = TRAINING.sessionMin;
@@ -116,7 +117,7 @@ const page = (lang) => {
   const bc = breadcrumb(lang, [[zh ? 'AI 培训' : 'AI training', '/ai-training/'], [c.crumb, PATH]]);
   const head = (k, h, p, more) => `<div class="sec-head"><div><div class="eyebrow">${k}</div><h2>${h}</h2>${p ? `<p class="lead">${p}</p>` : ''}</div>${more || ''}</div>`;
   const venues = Object.entries(VENUES).filter(([k]) => k !== 'online').map(([k, v]) => `<dt>${v[lang]}</dt><dd>${EVENTS.filter((e) => e.venue === k).map((e) => eventDate(e.date, lang)).join(' · ')}</dd>`).join('');
-  const rows = EVENTS.map((e) => `<tr><th scope="row"><time datetime="${e.date}">${eventDate(e.date, lang)}</time></th><td data-label="${c.evHead[1]}">${e[lang]}${e.org ? ` <span class="muted">· ${e.org}</span>` : ''}</td><td data-label="${c.evHead[2]}">${VENUES[e.venue].short[lang]}</td><td data-label="${c.evHead[3]}">${e.role === 'speaker' ? c.evSpeaker : e.registrations}</td></tr>`).join('');
+  const rows = EVENTS.map((e) => `<tr><th scope="row"><time datetime="${e.date}">${eventDate(e.date, lang)}</time></th><td data-label="${c.evHead[1]}">${EVENT_PAGES[e.date] ? `<a href="${L(lang, `/events/${EVENT_PAGES[e.date].slug}/`)}">${e[lang]}</a>` : e[lang]}${e.org ? ` <span class="muted">· ${e.org}</span>` : ''}</td><td data-label="${c.evHead[2]}">${VENUES[e.venue].short[lang]}</td><td data-label="${c.evHead[3]}">${e.role === 'speaker' ? c.evSpeaker : e.registrations}</td></tr>`).join('');
   return {
     title: c.title, description: c.description, og: c.og, view: 'dallas_page_view', bodyClass: 'training-page dallas-page',
     body: `<section class="page-hero"><div class="wrap">${bc.html}<p class="eyebrow">${c.eyebrow}</p><h1 class="brand-hero-title" style="max-width:1080px">${c.h1}</h1><p class="lead" style="max-width:760px">${c.sub}</p>
