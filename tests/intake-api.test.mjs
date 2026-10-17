@@ -45,8 +45,8 @@ const send = async (body, opts) => { const { jobs, res } = call(body, opts); con
 
 // A stateful stand-in for Supabase (schema revenue) + the email and ROS endpoints.
 const REAL_FETCH = globalThis.fetch;
-function fake(t, { rateLimit = () => true, record, rosStatus = 200, emailOk = true } = {}) {
-  const original = REAL_FETCH, receipts = new Map(), calls = [], records = [], ros = [], emails = [];
+function fake(t, { rateLimit = () => true, record, rosStatus = 200, emailOk = true, crmStatus = 201 } = {}) {
+  const original = REAL_FETCH, receipts = new Map(), calls = [], records = [], ros = [], emails = [], crm = [];
   t.after(() => { globalThis.fetch = original; });
   globalThis.fetch = async (url, options = {}) => {
     url = String(url); calls.push(url);
@@ -69,10 +69,11 @@ function fake(t, { rateLimit = () => true, record, rosStatus = 200, emailOk = tr
       return response({ receipt_id: row.receipt_id, received_at: row.received_at, deduped: false }, 200);
     }
     if (url.includes('/email/sending/send')) { emails.push(JSON.parse(options.body)); return emailOk ? response({ success: true }) : response('provider down', 503); }
+    if (url === 'https://crm.test/hook') { crm.push({ headers: options.headers, body: options.body }); return response({ ok: true }, crmStatus); }
     if (url === 'https://ros.test/hook') { ros.push({ headers: options.headers, body: options.body }); return response({ ok: rosStatus < 300 }, rosStatus); }
     throw new Error(`unexpected fetch ${options.method || 'GET'} ${url}`);
   };
-  return { receipts, calls, records, ros, emails };
+  return { receipts, calls, records, ros, emails, crm };
 }
 
 test('a valid submission makes exactly one receipt with normalized fields, separate consents and first-touch attribution', async (t) => {
@@ -387,4 +388,30 @@ test('quick quote from the home pages keeps the page and returns there without J
   assert.equal(zh.headers.get('location'), '/zh/#quote-received');
   const other = await send(quick({ page: '/blog/', consent_request: 'yes', email: 'blog@northwind-example.com' }), { form: true });
   assert.equal(other.headers.get('location'), '/contact/quote/#received', 'pages without the form stay untrusted');
+});
+
+test('a new quote is forwarded to the CRM, signed, once; a CRM outage never fails the visitor', async (t) => {
+  const e = { ...env, CRM_INTAKE_SECRET: 'crm-secret', CRM_INTAKE_URL: 'https://crm.test/hook' };
+  const db = fake(t);
+  const r = await send(valid(), { e });
+  assert.equal(r.status, 201);
+  assert.equal(db.crm.length, 1);
+  const { headers, body } = db.crm[0], ts = headers['x-intake-timestamp'];
+  assert.equal(headers['x-intake-signature'], 'v1=' + hmac('crm-secret', `intake.v1.${ts}.${body}`));
+  const p = JSON.parse(body);
+  assert.equal(p.receipt_id, (await r.json()).receipt_id);
+  assert.equal(p.kind, 'full');
+  assert.equal(p.email, 'dana.reyes@northwind-example.com');
+  await send(valid(), { e });
+  assert.equal(db.crm.length, 1, 'a deduped retry is not forwarded again');
+  await send(quick({ email: 'q@northwind-example.com' }), { e });
+  assert.equal(JSON.parse(db.crm.at(-1).body).kind, 'quick');
+  assert.equal(JSON.parse(db.crm.at(-1).body).tool, 'copilot');
+});
+
+test('CRM down: the request still succeeds; no forward without the secret', async (t) => {
+  const db = fake(t, { crmStatus: 503 });
+  assert.equal((await send(valid(), { e: { ...env, CRM_INTAKE_SECRET: 'crm-secret', CRM_INTAKE_URL: 'https://crm.test/hook' } })).status, 201);
+  assert.equal((await send(valid({ email: 'other@northwind-example.com' }))).status, 201);
+  assert.equal(db.crm.length, 1, 'only the configured environment forwards');
 });

@@ -429,6 +429,18 @@ function intakeOwnerText(v, receiptId) {
     '', 'This is a quote request, not a booked meeting. Reply to the sender directly.'].join('\n');
 }
 
+// 2026-10-17 (Jack): every new quote request also becomes a lead + a task for Grok's Inbox Manager in the 行云 CRM, which
+// is how Jack hears about it. Signed with CRM_INTAKE_SECRET: X-Intake-Signature = v1=HMAC-SHA256(secret, `intake.v1.${ts}.${body}`).
+// Supabase stays the record of truth; a failed forward is logged (no PII) and never fails the visitor's request.
+const CRM_INTAKE_URL = 'https://crm.aimanjack.com/api/webhooks/website-quote';
+async function crmForward(env, payload) {
+  const body = JSON.stringify(payload), ts = String(Math.floor(Date.now() / 1000));
+  const r = await fetch(env.CRM_INTAKE_URL || CRM_INTAKE_URL, { method: 'POST', redirect: 'manual', signal: AbortSignal.timeout(8000),
+    headers: { 'content-type': 'application/json', 'x-intake-timestamp': ts, 'x-intake-signature': `v1=${await hmacHex(env.CRM_INTAKE_SECRET, `intake.v1.${ts}.${body}`)}` }, body });
+  await r.body?.cancel();
+  if (!r.ok) throw Object.assign(new Error('crm forward'), { status: r.status });
+}
+
 async function intake(env, req, ctx) {
   const origin = req.headers.get('origin'), allowed = env.SITE_ORIGIN || 'https://aimanjack.com';
   if (!origin || (origin !== allowed && !/^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin))) return fail(403, 'origin_not_allowed', 'Use the quote form on aimanjack.com.');
@@ -486,6 +498,9 @@ async function intake(env, req, ctx) {
       const subject = quick ? `[quote request] ${v.tool} · ${v.attendees ?? '?'} people · ${companyDomain}` : `[quote request] ${v.company} · ${v.format}`;
       later(sendMail(env, { to, subject, text: intakeOwnerText(v, receiptId), reply_to: v.email }), 'intake owner email failed');
     }
+    if (env.CRM_INTAKE_SECRET) later(crmForward(env, { receipt_id: receiptId, kind: quick ? 'quick' : 'full', name: v.name, email: v.email, company: v.company || null,
+      company_domain: companyDomain, attendees: v.attendees ?? null, budget: v.budget || null, workflows: v.workflows || null, tool: quick ? v.tool : (v.format || null),
+      page: v.page || null, lang: v.lang, consent_newsletter: v.consent_newsletter, received_at: new Date().toISOString() }), 'intake crm forward failed');
 
   }
   return reply(rec.deduped ? 200 : 201, { ok: true, receipt_id: receiptId }, 'received');
