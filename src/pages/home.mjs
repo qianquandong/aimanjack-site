@@ -3,7 +3,7 @@
 import { SITE, TRAINING, PROOF, GBP_URL } from '../config.mjs';
 import { planBtn, photoHero, ctaBand, href, L } from '../layout.mjs';
 import { T } from '../i18n.mjs';
-import { business, person, website } from '../schema.mjs';
+import { business, person, website, faqPage } from '../schema.mjs';
 import { USE_CASES } from '../content/usecases.mjs';
 import { caseProof, clientProof } from './cases.mjs';
 import { progCard } from './training.mjs';
@@ -26,7 +26,7 @@ const C = {
     og: { title: 'Hands-on AI training for business teams', description: `Hands-on training with Jack Qian, in English or Chinese. Four live ${M}-minute sessions, priced for your team. Onsite in Dallas–Fort Worth or live online across the U.S.` },
     eyebrow: '<a href="/ai-training/dallas/">Dallas–Fort Worth onsite</a> · Remote across the U.S. · English or Chinese', h1: 'AI training for<br><em>business teams</em>,<br>built on real work.',
     sub: 'Jack Qian teaches non-technical teams to use <a href="/ai-training/chatgpt/">ChatGPT</a>, <a href="/ai-training/claude/">Claude</a>, Gemini or <a href="/ai-training/copilot/">Copilot</a> on work they already do. Bring a sales, marketing or operations task; build a repeatable workflow and learn how to check its output.',
-    seeProgram: 'See the 4-Session Program',
+    seeProgram: 'Take the AI Readiness Assessment',
     heroAlt: 'A full classroom in Dallas at one of Jack Qian’s hands-on AI workshops',
     stats: [['Custom', 'Priced for your team’s size and goals'], [`${S} × ${M} min`, 'Live, hands-on sessions'], [PROOF.hackathon, 'builders at one Dallas AI hackathon'], [`${PROOF.rating} ★`, `<a href="${GBP_URL}" target="_blank" rel="noopener">${PROOF.reviews} Google reviews ↗</a>`]],
     learnK: 'What you learn', learnH: 'Four things you can do after training',
@@ -48,6 +48,15 @@ const C = {
     revK: 'Reviewed on Google', revH: 'What attendees say', revMore: `Read all ${PROOF.reviews} reviews on Google ↗`,
     trustK: 'Safe and measurable', trustH: 'What your company can count on',
     trust: [['Your approved tools', 'Training runs on the AI tools your company already licenses or approves. No new accounts are required to attend.'], ['Synthetic or redacted practice material', 'Exercises use synthetic or redacted examples. For the tools and plan you use, we go through the data rules, including which settings and admin controls affect whether business data is used for model training.'], ['A review step in every workflow', 'Each workflow has a review step owned by someone on your team: what can go out as is, what needs a check, and what should never be left to AI.'], ['A two-week review', 'Two weeks after a workflow goes into use, the team checks whether it was used on real work and accurate enough, then decides to keep, change or stop it.']],
+    faqK: 'Questions & answers', faqH: 'Before you book', faqMore: 'More questions on the training page →',
+    faq: [
+      ['How many people can attend?', 'Each format fits a different group: a 90-minute workshop suits one team trying one or two tasks, a full day onsite suits several teams, and the four-session program suits a team that will use its workflows between sessions. Headcount is agreed in the written quote.'],
+      ['How far ahead should we book?', 'Send your preferred dates when you ask for a quote. The schedule, location and attendees are confirmed in writing before the first session.'],
+      ['How quickly will we hear back?', 'Jack replies by email within one business day. Once the details are clear, you get a recommended format and a written price.'],
+      ['Is training online or onsite?', 'Onsite in Dallas–Fort Worth, or live online anywhere in the U.S. Elsewhere in Texas is available on request, with travel quoted separately.'],
+      ['Which AI tools do you teach?', 'The tools your company already approves: ChatGPT, Claude, Gemini, Microsoft Copilot or Grok, depending on your team’s tasks and access.'],
+      ['What does training cost?', 'Every format is priced by a scoped quote for your team’s size, format and preparation. Ask for a quote below or book a 20-minute call.'],
+    ],
   },
   zh: {
     title: '企业团队 AI 实操培训 | AI Man Jack',
@@ -55,7 +64,7 @@ const C = {
     og: { title: '企业团队 AI 实操培训', description: `Jack Qian 中英文亲自授课。四节 ${M} 分钟课程，按团队报价。达拉斯—沃斯堡可上门，全美可远程。` },
     eyebrow: '<a href="/zh/ai-training/dallas/">达拉斯—沃斯堡上门</a> · 全美远程 · 中英文授课', h1: '企业团队的<br><em>AI 实操培训</em>，<br>从真实工作出发。',
     sub: 'Jack Qian 带非技术团队，把 <a href="/zh/ai-training/chatgpt/">ChatGPT</a>、<a href="/zh/ai-training/claude/">Claude</a>、Gemini 或 <a href="/zh/ai-training/copilot/">Copilot</a> 用在日常工作中。从你手头的销售、市场或运营任务出发，搭建可复用的工作流，并学会核验 AI 的输出。',
-    seeProgram: '查看四次课程项目',
+    seeProgram: '做一次 AI 准备度评估',
     heroAlt: '达拉斯，Jack Qian 主讲的一场 AI 实操工作坊，教室座无虚席',
     stats: [['定制', '按团队人数和目标报价'], [`${S} × ${M} 分钟`, '实时互动的实操课'], [PROOF.hackathon, '人参与达拉斯 AI 黑客松'], [`${PROOF.rating} ★`, `<a href="${GBP_URL}" target="_blank" rel="noopener">${PROOF.reviews} 条 Google 评价 ↗</a>`]],
     learnK: '培训成果', learnH: '培训结束后，你能做到的四件事',
@@ -77,6 +86,15 @@ const C = {
     revK: 'Google 评价', revH: '学员怎么说', revMore: `查看 Google 上全部 ${PROOF.reviews} 条评价 ↗`,
     trustK: '安全、可衡量', trustH: '企业可以放心的几件事',
     trust: [['用公司已批准的工具', '培训使用公司已经购买或批准的 AI 工具，参加培训不需要另开新账号。'], ['使用模拟或脱敏材料练习', '练习使用模拟或脱敏的材料。针对你们实际使用的工具和方案，我们会讲清数据规则，包括哪些设置和管理员控制会影响业务数据是否被用于模型训练。'], ['每条工作流都设有人工核验环节', '核验由团队指定的人负责：哪些可以直接发出、哪些要先检查、哪些不应交给 AI。'], ['两周复盘', '一条工作流投入使用两周后，团队一起检查它有没有用在真实工作上、准确度够不够，再决定保留、调整还是停用。']],
+    faqK: '常见问题', faqH: '预约之前', faqMore: '更多问题见培训页 →',
+    faq: [
+      ['可以有多少人参加？', '不同形式适合不同规模：90 分钟工作坊适合一个团队试做一两项任务；全天上门适合多个团队一起练习；四次课程项目适合要在课间实际使用工作流的团队。具体人数在书面报价中确认。'],
+      ['需要提前多久预约？', '申请报价时告诉我们希望的日期即可。时间、地点和参加人员会在第一节课前以书面形式确认。'],
+      ['多久能收到回复？', 'Jack 会在 1 个工作日内通过邮件回复；确认需求后，再给出推荐的培训形式和书面报价。'],
+      ['线上还是线下？', '达拉斯—沃斯堡可上门，全美可线上直播。德州其他地区可按需安排，差旅另行报价。'],
+      ['教哪些 AI 工具？', '公司已经批准使用的工具：ChatGPT、Claude、Gemini、Microsoft Copilot 或 Grok，视团队任务和权限而定。'],
+      ['培训费用是多少？', '每种形式都按团队人数、形式和准备工作量书面报价。可以在下方申请报价，或预约 20 分钟通话。'],
+    ],
   },
 };
 
@@ -89,7 +107,7 @@ const page = (lang) => {
     title: c.title, description: c.description, og: c.og, view: 'home_view', hero: 'photo', bodyClass: 'home-local',
     body: `${photoHero({ photo: 'workshop', alt: c.heroAlt, stats: c.stats, inner: `<div class="hero-main">
 <div class="col-a"><div class="eyebrow">${c.eyebrow}</div><h1 class="xl brand-hero-title">${c.h1}</h1></div>
-<div class="col-b"><p>${c.sub}</p><div class="cta-row">${planBtn(lang, { pos: 'hero', id: 'hero-cta' })}<a class="btn btn-secondary" href="${L(lang, '/ai-training/')}#formats" data-event="training_program_click" data-pos="hero">${c.seeProgram}</a></div></div></div>` })}
+<div class="col-b"><p>${c.sub}</p><div class="cta-row">${planBtn(lang, { pos: 'hero', id: 'hero-cta' })}<a class="btn btn-secondary" href="${href(lang, '/tools/ai-readiness-assessment/')}" data-event="tool_click" data-pos="hero">${c.seeProgram}</a></div></div></div>` })}
 
 <section class="sec" id="learn"><div class="wrap">${head(c.learnK, c.learnH)}
 <div class="g4">${c.learn.map(([h, p], i) => `<div class="oak learn-card"><span class="n">${n2(i)}</span><h3>${h}</h3><p>${p}</p></div>`).join('')}</div></div></section>
@@ -119,9 +137,11 @@ ${progCard(c.prog, `<a class="btn btn-primary" href="${L(lang, '/ai-training/')}
 
 <section class="sec tight" id="trust"><div class="wrap">${head(c.trustK, c.trustH)}
 <div class="g4">${c.trust.map(([h, p], i) => `<div class="oak learn-card"><span class="n">${n2(i)}</span><h3>${h}</h3><p>${p}</p></div>`).join('')}</div></div></section>
+<section class="sec" id="faq"><div class="wrap g12"><div style="grid-column:span 4;display:flex;flex-direction:column;gap:16px"><div class="eyebrow">${c.faqK}</div><h2 style="font-size:clamp(32px,3.6vw,52px)">${c.faqH}</h2><a class="more" href="${L(lang, '/ai-training/')}#faq">${c.faqMore}</a></div>
+<div class="faq" style="grid-column:6 / span 7">${c.faq.map(([q, a], i) => `<details${i === 0 ? ' open' : ''}><summary>${q}</summary><div class="faq-a"><p>${a}</p></div></details>`).join('\n')}</div></div></section>
 ${quickQuote(lang, { tool: 'general', path: '/' })}
 ${ctaBand(lang, { h: c.bandH, pos: 'home-final' })}`,
-    jsonld: [business(lang), person(), website()],
+    jsonld: [business(lang), person(), website(), faqPage(c.faq, `${SITE}${L(lang, '/')}#faq`)],
   };
 };
 
