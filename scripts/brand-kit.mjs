@@ -58,6 +58,16 @@ const quietCover = (w, h) => page(w, h, `
   <div style="font:700 ${h * .04}px/1 Satoshi;letter-spacing:.08em;text-transform:uppercase;color:${C.onDarkAccent}">Dallas–Fort Worth · Live online · English / 中文</div>
 </div>`);
 
+// LinkedIn company Page cover (1128×191 shown; rendered at 2×). The Page logo overlaps the bottom-left and the
+// name sits below the cover, so: no mark, no wordmark, tagline right-aligned and vertically centred.
+const companyCover = (w, h) => page(w, h, `
+<div style="position:absolute;inset:0;background:${C.ink}"></div>
+<div style="position:absolute;right:${-h * .2}px;top:${-h * .6}px;width:${h * 2.2}px;height:${h * 2.2}px;border-radius:50%;background:${C.accent};opacity:.14"></div>
+<div style="position:absolute;right:${w * .045}px;top:0;bottom:0;display:flex;flex-direction:column;justify-content:center;align-items:flex-end;gap:${h * .07}px">
+  <div style="font:700 ${h * .2}px/1 Satoshi;color:#fff;white-space:nowrap">Hands-on AI training for business teams</div>
+  <div style="font:700 ${h * .085}px/1 Satoshi;letter-spacing:.08em;text-transform:uppercase;color:${C.onDarkAccent};white-space:nowrap">Dallas–Fort Worth · Live online · English / 中文</div>
+</div>`);
+
 const TAG = 'Hands-on AI training for business teams';
 const SUB = 'Dallas–Fort Worth · Live online · English / 中文';
 const assets = {
@@ -76,9 +86,12 @@ const assets = {
   'cover-quiet-1640x624.png': [1640, 624, quietCover(1640, 624)],
   'cover-quiet-1400x660.png': [1400, 660, quietCover(1400, 660)], // Nextdoor crops covers to about 2.1:1
   'banner-x-1500x500.png': [1500, 500, banner(1500, 500, 1180, 360, { tag: TAG, sub: SUB, scale: .82, align: 'end' })],
+  'cover-linkedin-company-2256x382.png': [2256, 382, companyCover(2256, 382)],
 };
 
-for (const [name, [w, h, html]] of Object.entries(assets)) {
+// `node scripts/brand-kit.mjs <file.png> …` renders only the named assets.
+const only = process.argv.slice(2);
+for (const [name, [w, h, html]] of Object.entries(assets).filter(([n]) => !only.length || only.includes(n))) {
   const src = join(TMP, name.replace(/\.png$/, '.html')), out = join(OUT, name);
   writeFileSync(src, html);
   if (existsSync(out)) rmSync(out);

@@ -55,8 +55,9 @@ export const INTAKE_FORM_VERSION = 'intake-2026-10-08';
 export const QUICK_FORM_VERSION = 'intake-2026-10-17';   // short "easy quote" form on the tool pages (src/quick-quote.mjs), kind=quick
 export const CONSENT_NOTICE_VERSION = 'privacy-2026-10-17-mailerlite';   // owner approved publication; bump with quote consent or /privacy changes
 
-export const BUSINESS_SAME_AS = [GBP_URL, 'https://nextdoor.com/page/ai-man-jack-melissa-tx/', 'https://www.linkedin.com/in/jackqiandallas/', 'https://www.youtube.com/@JackBuildAI', 'https://x.com/AIManJack_', 'https://www.facebook.com/profile.php?id=100084925451350'];
-export const JACK_SAME_AS = ['https://realagentusecases.com/', 'https://luma.com/user/usr-FlERJUF6Mcrie58', 'https://github.com/qianquandong', 'https://www.linkedin.com/in/jackqiandallas/', 'https://www.youtube.com/@JackBuildAI', 'https://x.com/AIManJack_', 'https://www.threads.com/@jack_qian616', 'https://www.facebook.com/profile.php?id=100084925451350', 'https://nextdoor.com/page/ai-man-jack-melissa-tx/'];
+// Company profiles only on the business; Jack's personal Facebook stays off the site (Jack, 2026-10-18).
+export const BUSINESS_SAME_AS = [GBP_URL, 'https://nextdoor.com/page/ai-man-jack-melissa-tx/', 'https://www.linkedin.com/company/aimanjack/', 'https://www.facebook.com/profile.php?id=61595538390463', 'https://www.youtube.com/@JackBuildAI', 'https://x.com/AIManJack_'];
+export const JACK_SAME_AS = ['https://realagentusecases.com/', 'https://luma.com/user/usr-FlERJUF6Mcrie58', 'https://github.com/qianquandong', 'https://www.linkedin.com/in/jackqiandallas/', 'https://www.youtube.com/@JackBuildAI', 'https://x.com/AIManJack_', 'https://www.threads.com/@jack_qian616', 'https://nextdoor.com/page/ai-man-jack-melissa-tx/'];
 
 // Legacy receptionist pricing — read only by the noindex legacy pages (src/pages/pricing.mjs, product.mjs, industries.mjs).
 export const PRICING = {
