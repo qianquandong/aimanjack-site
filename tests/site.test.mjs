@@ -588,6 +588,27 @@ test('tool training pages: indexable, full FAQ, no public price anywhere, and a 
   }
 });
 
+test('nonprofit training page: same buying-page rules, client-data boundary, linked from the Dallas page', async () => {
+  const pages = await allPages();
+  const { NONPROFIT_PATH, DEPT_PAGES, deptPath } = await import('../src/pages/department-training.mjs');
+  for (const lang of ['en', 'zh']) {
+    const x = find(pages, NONPROFIT_PATH, lang), route = `${lang}:${NONPROFIT_PATH}`;
+    assert.ok(x && !x.page.noindex, `${route} indexable`);
+    const h = head(x.html), b = body(x.html), j = ld(x.html);
+    assert.equal((b.match(/<h1[\s>]/g) || []).length, 1, `${route} one H1`);
+    if (lang === 'en') assert.match(h, /<title>AI Training for Nonprofits in Dallas \| AI Man Jack<\/title>/, `${route} title`);
+    assert.doesNotMatch(h.match(/<title>[^<]*<\/title>/)[0] + b.match(/<h1[^>]*>[\s\S]*?<\/h1>/)[0], /Dallas–Fort Worth|达拉斯—沃斯堡/, `${route} leaves the metro term to the Dallas page`);
+    assert.ok((j.match(/"@type":"Question"/g) || []).length >= 10, `${route} FAQ`);
+    assert.doesNotMatch(b + j, /\$\s?\d/, `${route} prints no price`);
+    assert.doesNotMatch(j, /"@type":"Offer"|"price"|"(?:Review|AggregateRating)"/, `${route} no Offer/price or review markup`);
+    assert.ok(b.includes('name="tool" value="nonprofits"') && b.includes(`name="page" value="${urlOf(NONPROFIT_PATH, lang)}"`), `${route} form carries tool/page`);
+    assert.match(b, lang === 'en' ? /stays out of AI tools/ : /不放进 AI 工具/, `${route} states the client-data rule`);
+    for (const p of DEPT_PAGES.map(deptPath)) assert.ok(b.includes(`href="${urlOf(p, lang)}`), `${route} links ${p}`);
+    for (const re of BANNED) assert.doesNotMatch(b + j, re, `${route} contains ${re}`);
+    assert.ok(body(find(pages, '/ai-training/dallas/', lang).html).includes(`href="${urlOf(NONPROFIT_PATH, lang)}"`), `${lang} Dallas page links the nonprofit page`);
+  }
+});
+
 test('department training pages: buying pages that link to (and do not compete with) the use-case pages', async () => {
   const pages = await allPages();
   const { DEPT_PAGES, deptPath } = await import('../src/pages/department-training.mjs');
