@@ -588,6 +588,27 @@ test('tool training pages: indexable, full FAQ, no public price anywhere, and a 
   }
 });
 
+test('Plano city page: built on the Plano sessions, no price, no metro term in title/H1, linked from the Dallas page', async () => {
+  const pages = await allPages();
+  const { PLANO_PATH } = await import('../src/pages/plano.mjs');
+  for (const lang of ['en', 'zh']) {
+    const x = find(pages, PLANO_PATH, lang), route = `${lang}:${PLANO_PATH}`;
+    assert.ok(x && !x.page.noindex, `${route} indexable`);
+    const h = head(x.html), b = body(x.html), j = ld(x.html);
+    assert.equal((b.match(/<h1[\s>]/g) || []).length, 1, `${route} one H1`);
+    assert.match(h.match(/<title>[^<]*<\/title>/)[0], /Plano/, `${route} title names Plano`);
+    assert.doesNotMatch(h.match(/<title>[^<]*<\/title>/)[0] + b.match(/<h1[^>]*>[\s\S]*?<\/h1>/)[0], /Dallas–Fort Worth|达拉斯—沃斯堡/, `${route} leaves the metro term to the Dallas page`);
+    for (const slug of ['dallas-openclaw-meetup-2026-04-02', 'dfw-it-association-fireside-chat-2026-07-25']) assert.ok(b.includes(`href="${urlOf(`/events/${slug}/`, lang)}"`), `${route} links the Plano event ${slug}`);
+    assert.ok(b.includes('Schimelpfenig') && b.includes('Space Karaoke'), `${route} names both real Plano venues`);
+    assert.doesNotMatch(b + j, /\$\s?\d/, `${route} prints no price`);
+    assert.doesNotMatch(j, /"price"|"(?:Review|AggregateRating)"/, `${route} no price or review markup`);
+    assert.ok((j.match(/"@type":"Question"/g) || []).length >= 6, `${route} FAQ`);
+    assert.ok(b.includes(`name="page" value="${urlOf(PLANO_PATH, lang)}"`), `${route} quote form carries the page`);
+    for (const re of BANNED) assert.doesNotMatch(b + j, re, `${route} contains ${re}`);
+    assert.ok(body(find(pages, '/ai-training/dallas/', lang).html).includes(`href="${urlOf(PLANO_PATH, lang)}"`), `${lang} Dallas page links Plano`);
+  }
+});
+
 test('nonprofit training page: same buying-page rules, client-data boundary, linked from the Dallas page', async () => {
   const pages = await allPages();
   const { NONPROFIT_PATH, DEPT_PAGES, deptPath } = await import('../src/pages/department-training.mjs');
