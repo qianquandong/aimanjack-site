@@ -238,49 +238,49 @@ const DEPTS = {
   nonprofits: {
     en: {
       name: 'nonprofits', short: 'Nonprofits', ucMore: 'All use cases →',
-      otherH: 'AI training for the teams inside your organization',
+      otherH: 'AI training for the teams inside your organization', toolsH: 'Taught in the AI tools your organization has approved',
       title: 'AI Training for Nonprofits in Dallas | AI Man Jack',
-      description: 'Hands-on AI training for Dallas–Fort Worth nonprofits: grant drafts, donor letters, board minutes and program reports, with firm rules for client data. Get a quote by email.',
-      h1: 'AI training for nonprofit teams, with client data kept out',
+      description: 'Hands-on AI training for Dallas–Fort Worth nonprofits: grant drafts, donor letters, board minutes and program reports, with firm rules for client data. Onsite or online. Get a quote by email.',
+      h1: 'AI training for nonprofit teams, with client information kept out by default',
       sub: 'Nonprofit staff write constantly: grant applications and reports, donor thank-yous, board updates, volunteer emails and program summaries, usually with fewer people than the work needs. In a hands-on session each person builds a workflow on writing they already do, and the team agrees on the rule that matters most in human services: which client information never goes into an AI tool.',
       whyK: 'What changes', whyH: 'What your staff can do after the session',
-      why: ['Draft a grant narrative or report section from your own program descriptions and past approved applications, then check every figure against your records.', 'Write donor thank-you letters and appeal drafts in your organization’s voice, personalized from notes a person approves.', 'Turn board and committee meeting notes into minutes, decisions and owners, and draft the board update from the same material.', 'Summarize program activity and volunteer feedback into a short report without putting names or case details into the tool.'],
+      why: ['Draft a grant narrative or report section from your own program descriptions and past applications, then check every figure against your records.', 'Write donor thank-you letters and appeal drafts in your organization’s voice, personalized from notes a person approves.', 'Turn board and committee meeting notes into minutes, decisions and owners, and draft the board update from the same material.', 'Summarize program activity and volunteer feedback into a short report without putting names or case details into the tool.'],
       modK: 'Curriculum', modH: 'What the nonprofit training covers',
-      mods: [['Grant writing support', 'First drafts of narratives, letters of inquiry and report sections built from your own approved language, with every number, outcome and date checked against your records before submission.'], ['Donor and volunteer communications', 'Thank-you letters, appeals, newsletters and volunteer emails in your voice, with a person approving anything that names a donor.'], ['Board and committee work', 'Minutes, decision logs and board updates from meeting notes, with formal approvals kept with the board.'], ['Program reporting', 'Summaries of program activity from de-identified data and staff notes, structured the way your funders ask for it.'], ['Client data rules', 'A one-page boundary written for your services: client names, case notes and health, immigration or minors’ records stay out unless your organization has approved a tool and a process for them.'], ['Tools you already have', 'Training runs on the tools your organization already uses or approves, such as Microsoft 365 with Copilot or Google Workspace with Gemini. We compare options on your own tasks and do not sell licenses.']],
+      mods: [['Grant writing support', 'First drafts of narratives, letters of inquiry and report sections built from your own approved language, with every number, outcome and date checked against your records before submission.'], ['Donor and volunteer communications', 'Thank-you letters, appeals, newsletters and volunteer emails in your voice. Donor, volunteer and staff records go into an approved tool only as far as the task needs, and a person approves every message before it is sent.'], ['Board and committee work', 'Minutes, decision logs and board updates from meeting notes, with formal approvals kept with the board.'], ['Program reporting', 'Summaries of program activity from de-identified data and staff notes, structured the way your funders ask for it.'], ['Client data rules', 'A one-page boundary written for your services: client names, case notes and health, immigration or minors’ records stay out unless your organization has approved a tool and a process for them.'], ['Tools your organization has approved', 'Training runs on tools your organization has approved, with the accounts and data terms confirmed first, such as Microsoft 365 with Copilot or Google Workspace with Gemini. We compare options on your own tasks and do not sell licenses.']],
       wfH: 'The workflows nonprofit staff build',
       chargeH: 'Where a person stays in charge',
       watch: ['Anything that identifies a client, a case or a minor stays out of AI tools unless your organization has approved the tool and the process.', 'Grant submissions, financial figures and outcome data are checked against your records by a named person before they go out.', 'Letters to donors are approved by a person before sending; no tool sends on its own.', 'Decisions about services, eligibility and staff are made by people, not by a model.'],
       chargeP: 'We agree on these rules with your executive director or program lead before the session and write them on one page the staff keeps.',
       faq: [
-        ['Our staff are stretched and not technical. Is this realistic?', 'Yes. No coding is involved, and each person works on writing they already do, so the time in the session produces something they use the following week. A 90-minute workshop on one or two tasks is a common place to start.'],
+        ['Our staff are stretched and not technical. Is this realistic?', 'Yes. No coding is involved, and each person works on writing they already do, so each session aims to produce a reusable workflow. You can start with a 90-minute workshop on one or two tasks.'],
         ['Can AI help with grant writing?', 'With first drafts and restructuring, built from your own approved language and program descriptions. It can also produce numbers or outcomes that sound right and are not, so every figure is checked against your records and a person owns the final submission. Check each funder’s own rules on AI use.'],
         ['Is it safe to use AI with client information?', 'Treat it as off limits by default. Client names, case notes and health, immigration or minors’ records stay out unless your organization has approved a specific tool and process for them. Most of the useful work, such as grant drafts, donor letters and board updates, does not need client data at all.'],
-        ['Which AI tools do you teach?', `The ones your organization already uses or approves, often <a href="${toolPath('copilot')}">Microsoft Copilot</a> or <a href="${toolPath('chatgpt')}">ChatGPT</a>, sometimes <a href="${toolPath('claude')}">Claude</a> or Gemini. The workflows carry across tools.`],
-        ['Can our executive director or board members join?', `Yes. Leaders and board members often join a session on governance: which tools are approved, the data boundary and who signs off. See also <a href="${deptPath('leadership')}">leadership team training</a>.`],
+        ['Which AI tools do you teach?', `Tools your organization has approved, with the accounts and data terms confirmed, such as <a href="${toolPath('copilot')}">Microsoft Copilot</a>, <a href="${toolPath('chatgpt')}">ChatGPT</a>, <a href="${toolPath('claude')}">Claude</a> or Gemini. The workflows carry across tools.`],
+        ['Can our executive director or board members join?', `Yes. Leaders and board members can join a session on governance: which tools are approved, the data boundary and who signs off. See also <a href="${deptPath('leadership')}">leadership team training</a>.`],
         ['What does each person leave with?', 'At least one working workflow on their own material, such as a grant section, a donor letter or board minutes, written down so a colleague could repeat it, plus the one-page data boundary.'],
       ],
     },
     zh: {
       name: '非营利机构', short: '非营利机构', ucMore: '全部应用场景 →',
-      otherH: '机构内部各团队的 AI 培训',
+      otherH: '机构内部各团队的 AI 培训', toolsH: '用机构已经批准的 AI 工具来教',
       title: '非营利机构 AI 培训（达拉斯）| AI Man Jack',
       description: '面向达拉斯—沃斯堡非营利机构的 AI 实操培训：资助申请初稿、捐赠人信件、董事会纪要和项目报告，并为服务对象数据定下明确规则。上门或线上，留邮箱获取报价。',
-      h1: '非营利机构 AI 培训，服务对象的数据不进 AI',
-      sub: '非营利机构的同事几乎一直在写东西：资助申请和报告、给捐赠人的感谢信、董事会更新、志愿者邮件和项目总结，而人手通常比工作量少。实操课上，每个人用自己已经在写的内容搭建工作流，团队也会定下人类服务机构最重要的一条规则：哪些服务对象的信息绝不能放进 AI 工具。',
+      h1: '非营利机构 AI 培训，服务对象敏感信息默认不进 AI',
+      sub: '非营利机构的同事几乎一直在写东西：资助申请和报告、给捐赠人的感谢信、董事会汇报、志愿者邮件和项目总结，而人手通常比工作量少。实操课上，每个人用自己已经在写的内容搭建工作流，团队也会定下社会服务机构最重要的一条规则：哪些服务对象的信息绝不能放进 AI 工具。',
       whyK: '改变什么', whyH: '课后同事们能做到的事',
-      why: ['用机构自己的项目介绍和以往获批的申请起草资助申请或报告的段落，再把每个数字和记录核对一遍。', '用机构自己的语气写捐赠人感谢信和募款信初稿，个性化内容来自由人确认过的备注。', '把董事会和委员会的会议笔记整理成纪要、决定和负责人，并用同一份材料起草董事会更新。', '把项目进展和志愿者反馈汇总成简短报告，不把姓名或个案细节放进工具。'],
+      why: ['用机构自己的项目介绍和以往提交过的申请起草资助申请或报告的段落，再把每个数字和记录核对一遍。', '用机构自己的语气写捐赠人感谢信和募款信初稿，并根据经人工确认的备注调整内容。', '把董事会和委员会的会议笔记整理成纪要、决定和负责人，并用同一份材料起草董事会汇报。', '把项目进展和志愿者反馈汇总成简短报告，不把姓名或个案细节放进工具。'],
       modK: '课程内容', modH: '非营利机构培训讲什么',
-      mods: [['资助申请写作辅助', '用机构自己批准过的表述起草项目说明、意向书和报告段落，提交前每个数字、成果和日期都对照记录核对。'], ['捐赠人与志愿者沟通', '用机构语气写感谢信、募款信、简报和志愿者邮件，凡是提到捐赠人姓名的内容都由人审批。'], ['董事会与委员会工作', '根据会议笔记整理纪要、决定记录和董事会更新，正式审批仍由董事会完成。'], ['项目报告', '用去标识化的数据和同事笔记汇总项目进展，按资助方要求的结构来写。'], ['服务对象数据规则', '为你们的服务写一页纸的数据边界：服务对象姓名、个案记录，以及健康、移民或未成年人相关记录，除非机构批准了专门的工具和流程，否则一律不放进 AI。'], ['用你们已有的工具', '培训使用机构已经在用或已批准的工具，例如带 Copilot 的 Microsoft 365，或带 Gemini 的 Google Workspace。我们用你们自己的任务来比较，不卖许可证。']],
+      mods: [['资助申请写作辅助', '用机构自己批准过的表述起草项目说明、意向书和报告段落，提交前每个数字、成果和日期都对照记录核对。'], ['捐赠人与志愿者沟通', '用机构语气写感谢信、募款信、简报和志愿者邮件。捐赠人、志愿者和员工的资料只在已批准的工具里使用，并且只放任务必需的部分；每封信发出前都由人审批。'], ['董事会与委员会工作', '根据会议笔记整理纪要、决定记录和董事会汇报，正式审批仍由董事会完成。'], ['项目报告', '用去标识化的数据和同事笔记汇总项目进展，按资助方要求的结构来写。'], ['服务对象数据规则', '为你们的服务写一页纸的数据边界：服务对象姓名、个案记录，以及健康、移民或未成年人相关记录，除非机构批准了专门的工具和流程，否则一律不放进 AI。'], ['用机构已批准的工具', '培训使用机构明确批准、并先确认过账号和数据使用条款的工具，例如带 Copilot 的 Microsoft 365，或带 Gemini 的 Google Workspace。我们用你们自己的任务来比较，不卖许可证。']],
       wfH: '非营利机构同事会搭建的工作流',
       chargeH: '由人把关的环节',
       watch: ['凡是能识别服务对象、个案或未成年人的信息，除非机构批准了工具和流程，否则不放进 AI 工具。', '资助申请、财务数字和成果数据在提交前，由指定的人对照记录核对。', '给捐赠人的信件发送前由人审批；不让工具自动发送。', '关于服务、资格认定和员工的决定由人来做，不交给模型。'],
       chargeP: '课前我们会和执行主任或项目负责人约定这些规则，写成一页纸留给同事们。',
       faq: [
-        ['同事们都很忙，也不懂技术，现实吗？', '现实。不涉及写代码，每个人练的都是自己已经在写的内容，所以课上花的时间，第二周就能用上。常见的起点是一场 90 分钟工作坊，专做一两项任务。'],
+        ['同事们都很忙，也不懂技术，现实吗？', '现实。不涉及写代码，每个人练的都是自己已经在写的内容，每次课都以做出一条可复用的工作流为目标。可以先从一场 90 分钟工作坊开始，专做一两项任务。'],
         ['AI 能帮忙写资助申请吗？', '能帮忙起草和调整结构，素材来自机构自己批准过的表述和项目介绍。它也可能写出听起来合理、但并不真实的数字或成果，所以每个数字都要对照记录核对，最终提交由人负责。也请查看每家资助方自己关于使用 AI 的规定。'],
-        ['服务对象的信息可以放进 AI 吗？', '默认一律不放。服务对象姓名、个案记录，以及健康、移民或未成年人相关记录，除非机构批准了专门的工具和流程，否则都不放进去。大多数真正有用的工作，例如资助申请初稿、捐赠人信件和董事会更新，根本不需要服务对象的数据。'],
-        ['教哪些 AI 工具？', `机构已经在用或已批准的工具，常见的是 <a href="/zh${toolPath('copilot')}">Microsoft Copilot</a> 或 <a href="/zh${toolPath('chatgpt')}">ChatGPT</a>，有时是 <a href="/zh${toolPath('claude')}">Claude</a> 或 Gemini。工作流在各工具上通用。`],
-        ['执行主任或董事会成员可以参加吗？', `可以。负责人和董事会成员常常一起上一节治理相关的课：批准哪些工具、数据边界、由谁签字。也可以看看<a href="/zh${deptPath('leadership')}">管理层 AI 培训</a>。`],
+        ['服务对象的信息可以放进 AI 吗？', '默认一律不放。服务对象姓名、个案记录，以及健康、移民或未成年人相关记录，除非机构批准了专门的工具和流程，否则都不放进去。大多数真正有用的工作，例如资助申请初稿、捐赠人信件和董事会汇报，根本不需要服务对象的数据。'],
+        ['教哪些 AI 工具？', `机构明确批准、并确认过账号和数据条款的工具，例如 <a href="/zh${toolPath('copilot')}">Microsoft Copilot</a> 或 <a href="/zh${toolPath('chatgpt')}">ChatGPT</a>、<a href="/zh${toolPath('claude')}">Claude</a> 或 Gemini。工作流在各工具上通用。`],
+        ['执行主任或董事会成员可以参加吗？', `可以。负责人和董事会成员可以一起上一节治理相关的课：批准哪些工具、数据边界、由谁签字。也可以看看<a href="/zh${deptPath('leadership')}">管理层 AI 培训</a>。`],
         ['每个人能带走什么？', '至少一条基于自己材料的可用工作流，比如资助申请段落、捐赠人信件或董事会纪要，写清楚到同事也能照做，再加一页纸的数据边界。'],
       ],
     },
@@ -313,7 +313,7 @@ const page = (key, lang) => {
 ${key === 'operations' ? caseProof(lang, { real: true }) : ''}
 <section class="sec tight" id="in-charge"><div class="wrap"><div class="big-card oakc"><h2>${d.chargeH}</h2><ul class="ticks bang">${watch.map((x) => `<li><span>${x}</span></li>`).join('')}</ul><p>${d.chargeP}</p></div></div></section>
 
-<section class="sec tight" id="tools"><div class="wrap">${head(u.toolsK, u.toolsH, u.toolsP)}
+<section class="sec tight" id="tools"><div class="wrap">${head(u.toolsK, d.toolsH || u.toolsH, u.toolsP)}
 <div class="g4">${['copilot', 'chatgpt', 'claude', 'grok'].map((k) => `<a class="card" href="${L(lang, toolPath(k))}" style="text-decoration:none;color:inherit"><h3>${u.toolCard(TOOL_NAME[k])}</h3></a>`).join('')}</div></div></section>
 
 ${sharedBlocks(lang, key)}
@@ -328,7 +328,7 @@ ${kitForm(lang, `dept-${key}`)}
 ${quickQuote(lang, { tool: key, path })}`,
     jsonld: [
       BUSINESS_REF, person(),
-      { '@type': 'Service', '@id': `${url}#service`, name: d.title.split(' | ')[0], serviceType: u.ldType(d.name), description: d.description, url,
+      { '@type': 'Service', '@id': `${url}#service`, name: d.title.split(/\s*\|\s*/)[0], serviceType: u.ldType(d.name), description: d.description, url,
         provider: { '@id': `${SITE}/#business` }, availableLanguage: ['en', 'zh'], areaServed: AREA,
         audience: { '@type': 'BusinessAudience', audienceType: zh ? d.name : sector ? d.short : d.short + ' teams' } },
       faqPage(faq, `${url}#faq`), bc.ld,

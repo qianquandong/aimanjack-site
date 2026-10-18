@@ -607,6 +607,12 @@ test('nonprofit training page: same buying-page rules, client-data boundary, lin
     for (const re of BANNED) assert.doesNotMatch(b + j, re, `${route} contains ${re}`);
     assert.ok(body(find(pages, '/ai-training/dallas/', lang).html).includes(`href="${urlOf(NONPROFIT_PATH, lang)}"`), `${lang} Dallas page links the nonprofit page`);
   }
+  // Service names drop the " | AI Man Jack" suffix in both languages (zh titles end in "）| AI Man Jack").
+  for (const key of [...DEPT_PAGES, 'nonprofits']) for (const lang of ['en', 'zh']) {
+    const x = find(pages, key === 'nonprofits' ? NONPROFIT_PATH : deptPath(key), lang);
+    const svc = [...x.html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].flatMap((m) => { const j = JSON.parse(m[1]); return j['@graph'] || [j]; }).find((n) => n['@type'] === 'Service');
+    assert.ok(svc && svc.name.length > 8 && !svc.name.includes('AI Man Jack') && !svc.name.includes('|'), `${lang}:${key} Service.name "${svc?.name}"`);
+  }
 });
 
 test('department training pages: buying pages that link to (and do not compete with) the use-case pages', async () => {
