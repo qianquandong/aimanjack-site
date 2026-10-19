@@ -6,7 +6,8 @@ import { createHash, createHmac } from 'node:crypto';
 export async function fixture(t) {
   const pg = new PGlite(); t.after(() => pg.close());
   await pg.exec('create role anon; create role authenticated; create role service_role bypassrls;');
-  for (const file of ['2026-10-08-revenue-intake.sql', '2026-10-16-mailerlite-quote-outbox.sql'])
+  // CONSENT_SCOPE_MIGRATION=1 reruns every MailerLite test on the 2026-10-19 consent-scope schema (tests/consent-scope.test.mjs).
+  for (const file of ['2026-10-08-revenue-intake.sql', '2026-10-16-mailerlite-quote-outbox.sql', ...(process.env.CONSENT_SCOPE_MIGRATION === '1' ? ['2026-10-19-consent-scope.sql'] : [])])
     await pg.exec(await readFile(new URL('../db/migrations/' + file, import.meta.url), 'utf8'));
   const rows = async (sql, args = []) => (await pg.query(sql, args)).rows;
   const names = { begin_tick: [], end_tick: ['p_tick'], claim: ['p_tick', 'p_limit'], context: ['p_id', 'p_token', 'p_group'],
