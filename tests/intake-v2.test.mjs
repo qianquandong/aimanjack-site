@@ -306,7 +306,7 @@ test('multipart with a mixed-case boundary is parsed (boundaries are case-sensit
 });
 
 // Runs the real form script (as built into the page) against a minimal fake DOM. kind: 'quick' (tool pages) or 'full' (/contact/quote/).
-async function runFormScript(kind, { storage, responses }) {
+async function runFormScript(kind, { storage, responses, change = {} }) {
   let html, formId, msgId, okId, globalName;
   if (kind === 'quick') {
     const { quickQuote } = await import('../src/quick-quote.mjs');
@@ -323,6 +323,7 @@ async function runFormScript(kind, { storage, responses }) {
     : { lang: 'en', form_version: 'intake-2026-10-08', fill_ms: '', name: 'Dana Test', email: 'dana@example.test', company: 'Example Co', company_website: '',
       industry: 'distribution', headcount: '50-99', attendees: '12', format: 'workshop_90', location: 'dfw_onsite', location_city: '', workflows: 'Weekly reports',
       tools: '', timing: 'one_to_three', source: '', source_detail: '', company_url: '' };
+  Object.assign(values, change);
   const el = () => ({ textContent: '', hidden: false, disabled: false, attrs: {}, setAttribute(k, v) { this.attrs[k] = v; }, removeAttribute(k) { delete this.attrs[k]; }, focus() {}, querySelector: () => null });
   const btn = el(), msg = el(), ok = el(), ref = el(), handlers = {};
   const elements = { tool: { value: 'copilot' }, consent_request: { ...el(), checked: true }, consent_newsletter: { checked: false } };
@@ -336,7 +337,7 @@ async function runFormScript(kind, { storage, responses }) {
   const run = new Function('window', 'document', 'sessionStorage', 'FormData', 'fetch', 'crypto', 'TextEncoder', 'location', 'URLSearchParams', script);
   run(window, document, storage, FD, fakeFetch, globalThis.crypto, TextEncoder, { search: '' }, URLSearchParams);
   const submit = async () => { handlers.submit({ preventDefault() {} }); for (let i = 0; i < 20; i++) await new Promise((r) => setTimeout(r, 5)); };
-  return { submit, sent, events, btn, msg, ok, form, QQ: copy };
+  return { submit, sent, events, btn, msg, ok, form, QQ: copy, values };
 }
 const runQuickFormScript = (o) => runFormScript('quick', o);
 const fakeStorage = () => { const m = new Map(); return { m, getItem: (k) => (m.has(k) ? m.get(k) : null), setItem: (k, v) => m.set(k, String(v)), removeItem: (k) => m.delete(k) }; };
@@ -388,7 +389,7 @@ for (const kind of ['quick', 'full']) for (const errName of ['SecurityError', 'Q
   });
 }
 
-test('browser (full form): reload after a lost response reuses the key; changed content gets a new key', async () => {
+test('browser (full form): reload after a lost response reuses the key, and success clears it', async () => {
   const storage = fakeStorage();
   const a = await runFormScript('full', { storage, responses: [new Error('response lost')] });
   await a.submit();
@@ -411,4 +412,18 @@ test('end to end with blocked storage: a committed request whose response is los
   assert.equal(new Set(ui.sent.map((o) => o.submission_key)).size, 1, 'the retry carries the same key');
   assert.equal(await h.count('intake_receipts'), 1, 'one receipt');
   assert.equal(h.calls.crm.length, 1, 'one CRM forward');
+});
+
+test('browser: changed content gets a new key and resets a pending confirmation; storage that reads but cannot write still works in-page', async () => {
+  const quotaOnWrite = () => { const m = new Map(); return { m, getItem: (k) => (m.has(k) ? m.get(k) : null), setItem() { throw Object.assign(new Error('full'), { name: 'QuotaExceededError' }); }, removeItem: (k) => m.delete(k) }; };
+  for (const storage of [fakeStorage(), quotaOnWrite()]) {
+    const ui = await runFormScript('quick', { storage, responses: [{ status: 409, body: { ok: false, error: 'confirm_required' } }, new Error('lost'), new Error('lost')] });
+    await ui.submit();                       // asks to confirm
+    await ui.submit();                       // confirmed press, response lost
+    ui.values.attendees = '20';              // the person edits the form
+    await ui.submit();
+    assert.equal(ui.sent[0].submission_key, ui.sent[1].submission_key, 'unchanged content keeps the key');
+    assert.notEqual(ui.sent[2].submission_key, ui.sent[1].submission_key, 'changed content gets a new key');
+    assert.deepEqual(ui.sent.map((o) => o.confirm ?? null), [null, 'yes', null], 'a content change resets the pending confirmation');
+  }
 });
