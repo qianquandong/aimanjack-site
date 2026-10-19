@@ -136,5 +136,28 @@
         "position": null
       }
     ]
+  },
+  {
+    "date": "2026-10-19",
+    "probes": [
+      {
+        "prompt": "corporate AI training Dallas",
+        "cited": false,
+        "url": null,
+        "position": null
+      },
+      {
+        "prompt": "AI workshop for my team Dallas",
+        "cited": false,
+        "url": null,
+        "position": null
+      },
+      {
+        "prompt": "ChatGPT training for employees Dallas",
+        "cited": false,
+        "url": null,
+        "position": null
+      }
+    ]
   }
 ]
