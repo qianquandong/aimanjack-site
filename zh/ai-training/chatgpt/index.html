@@ -121,20 +121,24 @@ if(window.dataLayer)window.dataLayer.push(['event','kit_request',{page:location.
 <button class="btn btn-primary btn-lg" type="submit" data-event="quick_quote_submit" data-pos="chatgpt">提交申请 →</button>
 <p id="qq-msg" class="qf-msg" role="status" aria-live="polite"></p>
 </form></div></div></section>
-<script>window.QQ={"sending":"正在提交…","submit":"提交申请 →","invalid":"请检查：","needConsent":"请勾选同意联系的选项，以便我们回复。","rate":"提交过于频繁，请等几分钟再试。","failed":"未能提交。请重试，或发邮件至 jack@aimanjack.com。","labels":{"name":"姓名","email":"邮箱","attendees":"参加人数","budget":"大致预算（选填）","workflows":"补充说明（选填）"}}</script>
+<script>window.QQ={"sending":"正在提交…","submit":"提交申请 →","confirm":"提交得很快。请核对内容，再点一次按钮确认。","confirmBtn":"确认并发送 →","conflict":"提交过程中内容有变化，请再点一次发送。","invalid":"请检查：","needConsent":"请勾选同意联系的选项，以便我们回复。","rate":"提交过于频繁，请等几分钟再试。","failed":"未能提交。请重试，或发邮件至 jack@aimanjack.com。","labels":{"name":"姓名","email":"邮箱","attendees":"参加人数","budget":"大致预算（选填）","workflows":"补充说明（选填）"}}</script>
 <script>
 (function(){var D=document,f=D.getElementById('qq-form');if(!f||!window.fetch)return;var Q=window.QQ,E=f.elements,msg=D.getElementById('qq-msg'),ok=D.getElementById('quote-received'),btn=f.querySelector('button[type=submit]'),t0=Date.now(),started=false;
 var tr=function(n,p){if(window.amjTrack)window.amjTrack(n,p||{})};
+var sk=null,sc=null,cf=false,uuid=function(){if(window.crypto&&crypto.randomUUID)return crypto.randomUUID();var b=crypto.getRandomValues(new Uint8Array(16));b[6]=b[6]&15|64;b[8]=b[8]&63|128;var h=[].map.call(b,function(x){return(x+256).toString(16).slice(1)}).join('');return h.slice(0,8)+'-'+h.slice(8,12)+'-'+h.slice(12,16)+'-'+h.slice(16,20)+'-'+h.slice(20)},content=function(o){return JSON.stringify(Object.keys(o).filter(function(k){return!/^(ft_|fill_ms$|submission_key$|confirm$)/.test(k)}).sort().map(function(k){return[k,o[k]]}))};
 f.addEventListener('focusin',function(){if(started)return;started=true;tr('request_quote_start',{form:'quick',tool:E.tool.value})});
 f.addEventListener('submit',function(e){e.preventDefault();
  try{var ft=JSON.parse(sessionStorage.getItem('amj_ft')||'{}');["utm_source","utm_medium","utm_campaign","utm_content","utm_term","ref","landing","ts"].forEach(function(k){if(ft[k]!=null&&E['ft_'+k])E['ft_'+k].value=String(ft[k]).slice(0,200)})}catch(_){}
  var o={};new FormData(f).forEach(function(v,k){o[k]=v});o.consent_request=E.consent_request.checked;o.consent_newsletter=E.consent_newsletter.checked;o.fill_ms=String(Date.now()-t0);
+ var c=content(o);if(c!==sc){sk=uuid();sc=c;cf=false}o.submission_key=sk;if(cf)o.confirm='yes';
  [].forEach.call(f.querySelectorAll('[aria-invalid]'),function(x){x.removeAttribute('aria-invalid')});btn.disabled=true;btn.textContent=Q.sending;msg.textContent='';
  fetch(f.action,{method:'POST',headers:{'content-type':'application/json',accept:'application/json'},body:JSON.stringify(o)}).then(function(r){return r.json().catch(function(){return{}}).then(function(j){
-  if(r.ok&&j.ok){f.hidden=true;ok.setAttribute('data-show','');ok.focus();tr('submit_enterprise_inquiry',{form:'quick',tool:o.tool,receipt_id:j.receipt_id||''});if(o.consent_newsletter)tr('opt_in_newsletter',{form:'quick'});return}
+  if(r.ok&&j.ok){f.hidden=true;ok.setAttribute('data-show','');ok.focus();sk=sc=null;cf=false;if(j.receipt_id){tr('submit_enterprise_inquiry',{form:'quick',tool:o.tool,receipt_id:j.receipt_id});if(o.consent_newsletter)tr('opt_in_newsletter',{form:'quick'})}return}
+  if(j.error==='confirm_required'){cf=true;msg.textContent=Q.confirm;btn.disabled=false;btn.textContent=Q.confirmBtn;btn.focus();return}
+  if(j.error==='submission_conflict'){sk=sc=null;cf=false;msg.textContent=Q.conflict;return}
   if(j.error==='invalid'&&j.fields){var n=[];j.fields.forEach(function(k){var el=E[k];if(el&&el.setAttribute){el.setAttribute('aria-invalid','true');n.push(Q.labels[k]||k)}});msg.textContent=Q.invalid+n.join(', ')}
   else if(j.error==='consent_required'){E.consent_request.setAttribute('aria-invalid','true');msg.textContent=Q.needConsent}
-  else msg.textContent=j.error==='rate_limited'?Q.rate:Q.failed})}).catch(function(){msg.textContent=Q.failed}).then(function(){btn.disabled=false;btn.textContent=Q.submit})});
+  else msg.textContent=j.error==='rate_limited'?Q.rate:Q.failed})}).catch(function(){msg.textContent=Q.failed}).then(function(){if(!cf){btn.disabled=false;btn.textContent=Q.submit}})});
 })();
 </script>
 </main>
