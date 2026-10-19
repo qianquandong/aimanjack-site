@@ -99,10 +99,10 @@ content=function(o){return JSON.stringify(Object.keys(o).filter(function(k){retu
 hex=function(d){return[].map.call(new Uint8Array(d),function(x){return(x+256).toString(16).slice(1)}).join('')},
 load=function(){try{return JSON.parse(sessionStorage.getItem(K)||'null')}catch(_){return null}},
 save=function(v){try{sessionStorage.setItem(K,JSON.stringify(v))}catch(_){}};
-return{key:function(o){var c=content(o),s=load(),salt=(s&&s.s)||uuid(),sub=window.crypto&&crypto.subtle&&window.TextEncoder;
+return{key:function(o){var c=content(o);if(mem&&mem.c===c)return Promise.resolve(mem.k);
+ var s=load(),salt=(s&&s.s)||uuid(),sub=window.crypto&&crypto.subtle&&window.TextEncoder;
  var h=sub?crypto.subtle.digest('SHA-256',new TextEncoder().encode(salt+'|'+c)).then(hex,function(){return null}):Promise.resolve(null);
- return h.then(function(hh){if(hh){if(s&&s.h===hh&&s.k)return s.k;var k=uuid();cf=false;save({k:k,s:salt,h:hh});return k}
-  if(mem&&mem.c===c)return mem.k;cf=false;mem={c:c,k:uuid()};return mem.k})},
+ return h.then(function(hh){var k=hh&&s&&s.h===hh&&s.k?s.k:uuid();cf=false;mem={c:c,k:k};if(hh)save({k:k,s:salt,h:hh});return k})},
  needConfirm:function(){cf=true},confirming:function(){return cf},
  clear:function(){cf=false;mem=null;try{sessionStorage.removeItem(K)}catch(_){}}}};var S=SKM(f.id);
 f.addEventListener('focusin',function(){if(started)return;started=true;tr('request_quote_start',{form:'quick',tool:E.tool.value})});

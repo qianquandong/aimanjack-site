@@ -305,29 +305,40 @@ test('multipart with a mixed-case boundary is parsed (boundaries are case-sensit
   assert.equal(res.status, 303); assert.equal(await h.count('intake_receipts'), 1);
 });
 
-// Runs the real quick-form script (as built into the page) against a minimal fake DOM.
-async function runQuickFormScript({ storage, responses }) {
-  const { quickQuote } = await import('../src/quick-quote.mjs');
-  const html = quickQuote('en', { tool: 'copilot', path: '/ai-training/copilot/' });
-  const script = [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map((m) => m[1]).find((s) => s.includes('SKM('));
-  const QQ = JSON.parse(html.match(/window\.QQ=(\{[\s\S]*?\})<\/script>/)[1]);
-  const values = { kind: 'quick', tool: 'copilot', page: '/ai-training/copilot/', lang: 'en', form_version: 'intake-2026-10-17', fill_ms: '',
-    name: 'Dana Test', email: 'dana@example.test', attendees: '10', budget: '', workflows: 'Weekly reports', company_url: '' };
-  const el = () => ({ textContent: '', hidden: false, disabled: false, attrs: {}, setAttribute(k, v) { this.attrs[k] = v; }, removeAttribute(k) { delete this.attrs[k]; }, focus() {} });
-  const btn = el(), msg = el(), ok = el(), handlers = {};
+// Runs the real form script (as built into the page) against a minimal fake DOM. kind: 'quick' (tool pages) or 'full' (/contact/quote/).
+async function runFormScript(kind, { storage, responses }) {
+  let html, formId, msgId, okId, globalName;
+  if (kind === 'quick') {
+    const { quickQuote } = await import('../src/quick-quote.mjs');
+    html = quickQuote('en', { tool: 'copilot', path: '/ai-training/copilot/' }); formId = 'qq-form'; msgId = 'qq-msg'; okId = 'quote-received'; globalName = 'QQ';
+  } else {
+    const { pages } = await import('../src/pages/contact.mjs');
+    html = pages.find((p) => p.path === '/contact/quote/').en.body; formId = 'quote-form'; msgId = 'qf-msg'; okId = 'received'; globalName = 'QF';
+  }
+  const script = [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map((m) => m[1]).find((x) => x.includes('SKM('));
+  const copy = JSON.parse(html.match(new RegExp(`window\\.${globalName}=(\\{[\\s\\S]*?\\})</script>`))[1]);
+  const values = kind === 'quick'
+    ? { kind: 'quick', tool: 'copilot', page: '/ai-training/copilot/', lang: 'en', form_version: 'intake-2026-10-17', fill_ms: '',
+      name: 'Dana Test', email: 'dana@example.test', attendees: '10', budget: '', workflows: 'Weekly reports', company_url: '' }
+    : { lang: 'en', form_version: 'intake-2026-10-08', fill_ms: '', name: 'Dana Test', email: 'dana@example.test', company: 'Example Co', company_website: '',
+      industry: 'distribution', headcount: '50-99', attendees: '12', format: 'workshop_90', location: 'dfw_onsite', location_city: '', workflows: 'Weekly reports',
+      tools: '', timing: 'one_to_three', source: '', source_detail: '', company_url: '' };
+  const el = () => ({ textContent: '', hidden: false, disabled: false, attrs: {}, setAttribute(k, v) { this.attrs[k] = v; }, removeAttribute(k) { delete this.attrs[k]; }, focus() {}, querySelector: () => null });
+  const btn = el(), msg = el(), ok = el(), ref = el(), handlers = {};
   const elements = { tool: { value: 'copilot' }, consent_request: { ...el(), checked: true }, consent_newsletter: { checked: false } };
   for (const k of Object.keys(values)) elements[k] = elements[k] || { ...el(), value: values[k] };
-  const form = { id: 'qq-form', action: '/v1/intake', hidden: false, elements, addEventListener(type, fn) { handlers[type] = fn; }, querySelector: () => btn, querySelectorAll: () => [] };
+  const form = { id: formId, action: '/v1/intake', hidden: false, elements, addEventListener(type, fn) { handlers[type] = fn; }, querySelector: () => btn, querySelectorAll: () => [] };
   const sent = [], events = [];
   const fakeFetch = async (_url, opts) => { sent.push(JSON.parse(opts.body)); const next = responses.shift(); if (next instanceof Error) throw next; return new Response(JSON.stringify(next.body), { status: next.status }); };
-  const window = { QQ, fetch: fakeFetch, crypto: globalThis.crypto, TextEncoder, amjTrack: (n, p) => events.push([n, p]) };
-  const document = { getElementById: (id) => ({ 'qq-form': form, 'qq-msg': msg, 'quote-received': ok }[id]) };
+  const window = { [globalName]: copy, fetch: fakeFetch, crypto: globalThis.crypto, TextEncoder, amjTrack: (n, p) => events.push([n, p]) };
+  const document = { getElementById: (id) => ({ [formId]: form, [msgId]: msg, [okId]: ok, 'qf-ref': ref }[id]) };
   class FD { constructor(f) { this.f = f; } forEach(cb) { for (const [k, v] of Object.entries(values)) cb(v, k); } }
-  const run = new Function('window', 'document', 'sessionStorage', 'FormData', 'fetch', 'crypto', 'TextEncoder', script);
-  run(window, document, storage, FD, fakeFetch, globalThis.crypto, TextEncoder);
+  const run = new Function('window', 'document', 'sessionStorage', 'FormData', 'fetch', 'crypto', 'TextEncoder', 'location', 'URLSearchParams', script);
+  run(window, document, storage, FD, fakeFetch, globalThis.crypto, TextEncoder, { search: '' }, URLSearchParams);
   const submit = async () => { handlers.submit({ preventDefault() {} }); for (let i = 0; i < 20; i++) await new Promise((r) => setTimeout(r, 5)); };
-  return { submit, sent, events, btn, msg, ok, form, QQ };
+  return { submit, sent, events, btn, msg, ok, form, QQ: copy };
 }
+const runQuickFormScript = (o) => runFormScript('quick', o);
 const fakeStorage = () => { const m = new Map(); return { m, getItem: (k) => (m.has(k) ? m.get(k) : null), setItem: (k, v) => m.set(k, String(v)), removeItem: (k) => m.delete(k) }; };
 
 test('browser: a failed confirmation gives the button back; the key survives; GA fires only with a receipt', async () => {
@@ -359,4 +370,45 @@ test('browser: a reload after a lost response reuses the key; storage never hold
   await b.submit();
   assert.equal(b.sent[0].submission_key, a.sent[0].submission_key, 'same key after reload');
   assert.equal(b.events.filter(([n]) => n === 'submit_enterprise_inquiry').length, 0, 'no conversion without a receipt id');
+});
+
+const throwingStorage = (name) => ({ getItem() { throw Object.assign(new Error('blocked'), { name }); }, setItem() { throw Object.assign(new Error('blocked'), { name }); }, removeItem() { throw new Error('blocked'); } });
+
+for (const kind of ['quick', 'full']) for (const errName of ['SecurityError', 'QuotaExceededError']) {
+  test(`browser (${kind} form, storage ${errName}): a lost response and a retry reuse the key; confirmation survives`, async () => {
+    const ui = await runFormScript(kind, { storage: throwingStorage(errName), responses: [
+      new Error('response lost'), { status: 409, body: { ok: false, error: 'confirm_required' } }, new Error('network down'),
+      { status: 201, body: { ok: true, receipt_id: '11111111-2222-4333-8444-555555555555' } }] });
+    for (let i = 0; i < 4; i++) await ui.submit();
+    assert.equal(ui.sent.length, 4);
+    assert.equal(new Set(ui.sent.map((o) => o.submission_key)).size, 1, 'one key for every retry of unchanged content');
+    assert.deepEqual(ui.sent.map((o) => o.confirm ?? null), [null, null, 'yes', 'yes'], 'confirmation kept across the failed retry');
+    assert.equal(ui.btn.disabled, false);
+    assert.equal(ui.events.filter(([n]) => n === 'submit_enterprise_inquiry').length, 1);
+  });
+}
+
+test('browser (full form): reload after a lost response reuses the key; changed content gets a new key', async () => {
+  const storage = fakeStorage();
+  const a = await runFormScript('full', { storage, responses: [new Error('response lost')] });
+  await a.submit();
+  assert.ok(![...storage.m.values()].join(' ').match(/Dana|dana@example|Weekly|Example Co/), 'no form values in sessionStorage');
+  const b = await runFormScript('full', { storage, responses: [{ status: 201, body: { ok: true, receipt_id: '11111111-2222-4333-8444-555555555555' } }] });
+  await b.submit();
+  assert.equal(b.sent[0].submission_key, a.sent[0].submission_key);
+  assert.equal(storage.m.size, 0, 'cleared after the successful submission');
+});
+
+test('end to end with blocked storage: a committed request whose response is lost, then retried, makes one receipt', async (t) => {
+  const h = await harness(t);
+  // The real quick-form script with storage blocked; both of its sends "fail" in the page (response lost) ...
+  const ui = await runFormScript('quick', { storage: throwingStorage('SecurityError'), responses: [new Error('response lost'), new Error('response lost')] });
+  await ui.submit(); await ui.submit();
+  assert.equal(ui.sent.length, 2);
+  // ... but both reached the server, which committed them: replay exactly what the page sent against the real API.
+  // (the fake page submits within milliseconds; give it a human fill time, which is not part of the content fingerprint)
+  for (const body of ui.sent) assert.equal((await h.post({ ...body, fill_ms: '9000' })).status, 201);
+  assert.equal(new Set(ui.sent.map((o) => o.submission_key)).size, 1, 'the retry carries the same key');
+  assert.equal(await h.count('intake_receipts'), 1, 'one receipt');
+  assert.equal(h.calls.crm.length, 1, 'one CRM forward');
 });
