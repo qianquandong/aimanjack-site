@@ -32,6 +32,9 @@ create index if not exists intake_receipts_subject_recent on revenue.intake_rece
 
 -- Erasure replay guard (2026-10-19-consent-scope.sql), extended: also keep the content fingerprint, so after an erasure the same
 -- content is refused on any day and under any new submission key. Rows hold keyed hashes only.
+-- A legacy (submission_version 1) receipt has no content fingerprint, and the database cannot compute one (the key lives in the
+-- API). Erasing such a receipt therefore guards the person's identity hash itself: the form then refuses that person (503, the
+-- page offers email instead) rather than risk recreating their data. Fail closed; production had no erasures on 2026-10-19.
 create or replace function revenue.intake_receipts_keep_replay_guard() returns trigger
 language plpgsql security definer set search_path = pg_catalog, pg_temp as $$
 begin
@@ -40,6 +43,9 @@ begin
   if old.body_hash is not null then
     insert into revenue.erasure_replay_guards (dedupe_key, subject_email_hash) values (old.body_hash, old.subject_email_hash)
     on conflict (dedupe_key) do nothing;
+  elsif old.subject_email_hash is not null then
+    insert into revenue.erasure_replay_guards (dedupe_key, subject_email_hash) values (old.subject_email_hash, old.subject_email_hash)
+    on conflict (dedupe_key) do nothing;
   end if;
   return old;
 end $$;
@@ -47,7 +53,8 @@ end $$;
 create or replace function revenue.intake_receipts_refuse_replay() returns trigger
 language plpgsql security definer set search_path = pg_catalog, pg_temp as $$
 begin
-  if exists (select 1 from revenue.erasure_replay_guards g where g.dedupe_key = new.dedupe_key or g.dedupe_key = new.body_hash) then
+  if exists (select 1 from revenue.erasure_replay_guards g
+             where g.dedupe_key = new.dedupe_key or g.dedupe_key = new.body_hash or g.dedupe_key = new.subject_email_hash) then
     raise exception 'record_intake: erased_replay' using errcode = 'P0001';
   end if;
   return new;

@@ -522,16 +522,33 @@ const INTAKE_MAX_BYTES = 32 * 1024;
 const SUBMISSION_KEY = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
 const intakeV2Enabled = (env) => env.INTAKE_V2_ENABLED === 'true';
 
+// Counts bytes while streaming and cancels the upload as soon as it passes the limit (no Content-Length needed).
+async function readBounded(req, max) {
+  if (!req.body) return new Uint8Array(0);
+  const reader = req.body.getReader(), chunks = [];
+  let size = 0;
+  for (;;) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    size += value.byteLength;
+    if (size > max) { await reader.cancel().catch(() => {}); return null; }
+    chunks.push(value);
+  }
+  const out = new Uint8Array(size); let at = 0;
+  for (const c of chunks) { out.set(c, at); at += c.byteLength; }
+  return out;
+}
+
 async function readIntakeBodyLimited(req) {
-  const type = (req.headers.get('content-type') || '').toLowerCase();
+  const header = req.headers.get('content-type') || '', type = header.toLowerCase();   // keep `header` as sent: multipart boundaries are case-sensitive
   const declared = Number(req.headers.get('content-length'));
-  if (Number.isFinite(declared) && declared > INTAKE_MAX_BYTES) return { tooLarge: true };
-  const raw = await req.arrayBuffer().catch(() => null);
-  if (!raw) return { form: false, body: null };
-  if (raw.byteLength > INTAKE_MAX_BYTES) return { tooLarge: true };
+  if (Number.isFinite(declared) && declared > INTAKE_MAX_BYTES) { await req.body?.cancel().catch(() => {}); return { tooLarge: true }; }
+  let raw;
+  try { raw = await readBounded(req, INTAKE_MAX_BYTES); } catch { return { form: false, body: null }; }
+  if (raw === null) return { tooLarge: true };
   if (type.includes('application/json')) { try { return { form: false, body: JSON.parse(new TextDecoder().decode(raw)) }; } catch { return { form: false, body: null }; } }
   if (type.includes('application/x-www-form-urlencoded') || type.includes('multipart/form-data')) {
-    const fd = await new Response(raw, { headers: { 'content-type': type } }).formData().catch(() => null);
+    const fd = await new Response(raw, { headers: { 'content-type': header } }).formData().catch(() => null);
     return { form: true, body: fd ? Object.fromEntries([...fd.entries()].filter(([, v]) => typeof v === 'string')) : null };
   }
   return { form: false, body: null };
@@ -569,10 +586,12 @@ async function intakeV2(env, req, ctx) {
   const fast = fill !== null && Number.isFinite(fill) && fill < INTAKE_MIN_FILL_MS;
   if (fast && body.confirm !== 'yes') return isForm ? page(409, 'confirm_required') : json({ ok: false, error: 'confirm_required' }, 409);
 
+  // From here on the body is parsed: a no-JS visitor gets the form back with what they typed for anything they can retry.
+  const retry = (status, error) => (isForm ? page(status, error) : json({ ok: false, error }, status));
   const limited = await intakeRateLimit(env, req, v.email);
-  if (limited === 'limited') return reply(429, { ok: false, error: 'rate_limited' }, 'not-sent');
-  if (limited) return reply(503, { ok: false, error: 'intake_unavailable' }, 'not-sent');
-  if (!env.EMAIL_HASH_SECRET) { console.error('intake v2: EMAIL_HASH_SECRET unset'); return reply(503, { ok: false, error: 'intake_unavailable' }, 'not-sent'); }
+  if (limited === 'limited') return retry(429, 'rate_limited');
+  if (limited) return retry(503, 'intake_unavailable');
+  if (!env.EMAIL_HASH_SECRET) { console.error('intake v2: EMAIL_HASH_SECRET unset'); return retry(503, 'intake_unavailable'); }
 
   const companyDomain = v.company_website || v.email.split('@')[1];
   const bodyHash = await hmacHex(env.EMAIL_HASH_SECRET, `body:${canonicalContent({ ...v, kind: quick ? 'quick' : 'full' })}`);
@@ -588,14 +607,14 @@ async function intakeV2(env, req, ctx) {
       timing: v.timing, source: v.source, source_detail: v.source_detail || null, lang: v.lang, fill_ms: fill, timer: fill === null ? 'absent' : 'ok' };
   const receipt = { dedupe_key: dedupeKey, body_hash: bodyHash, form_version: v.form_version, payload, consent_request: true, consent_newsletter: v.consent_newsletter,
     consent_notice_version: INTAKE_CONSENT_NOTICE_VERSION, utm: v.utm, self_reported_source: v.source ?? null, ip_hash: ipHash, subject_email_hash: subjectHash,
-    risk: fast ? 'fast_fill_confirmed' : null };
+    risk: fast || body.confirm === 'yes' ? 'fast_fill_confirmed' : null };
   const consents = [{ consent_type: 'request_contact', granted: true }, { consent_type: 'newsletter', granted: v.consent_newsletter }];
   let rec;
   try { rec = await sb(env, 'rpc/record_intake_v2', { method: 'POST', schema: 'revenue', body: { p: receipt, p_consents: consents } }); }
-  catch (e) { console.error('intake v2 store unavailable', errInfo(e)); return reply(503, { ok: false, error: 'intake_unavailable' }, 'not-sent'); }
+  catch (e) { console.error('intake v2 store unavailable', errInfo(e)); return retry(503, 'intake_unavailable'); }
   if (rec?.conflict) return isForm ? page(409, 'submission_conflict') : json({ ok: false, error: 'submission_conflict' }, 409);
   const receiptId = rec?.receipt_id;
-  if (!receiptId) { console.error('intake v2 store returned no receipt'); return reply(503, { ok: false, error: 'intake_unavailable' }, 'not-sent'); }
+  if (!receiptId) { console.error('intake v2 store returned no receipt'); return retry(503, 'intake_unavailable'); }
 
   if (!rec.deduped) {
     const prev = typeof rec.previous_receipt_id === 'string' ? rec.previous_receipt_id : null;

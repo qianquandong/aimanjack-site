@@ -1,5 +1,6 @@
 import { SITE, EMAIL, SMS_TEL, SMS_DISPLAY, BOOK_URL, QUOTE_URL, INTAKE_FORM_VERSION } from '../config.mjs';
 import { pageHero, breadcrumb, BUSINESS_REF, L, T } from '../components.mjs';
+import { SUBMISSION_KEY_JS } from '../submission-key.mjs';
 
 const copy = {
   en: {
@@ -119,7 +120,7 @@ const quoteScript = `<script>
 (function(){var D=document,f=D.getElementById('quote-form');if(!f||!window.fetch)return;var Q=window.QF,msg=D.getElementById('qf-msg'),ok=D.getElementById('received'),btn=f.querySelector('button[type=submit]'),E=f.elements;
 var tr=function(n,p){if(window.amjTrack)window.amjTrack(n,p||{})};
 var t0=Date.now();
-var sk=null,sc=null,cf=false,uuid=function(){if(window.crypto&&crypto.randomUUID)return crypto.randomUUID();var b=crypto.getRandomValues(new Uint8Array(16));b[6]=b[6]&15|64;b[8]=b[8]&63|128;var h=[].map.call(b,function(x){return(x+256).toString(16).slice(1)}).join('');return h.slice(0,8)+'-'+h.slice(8,12)+'-'+h.slice(12,16)+'-'+h.slice(16,20)+'-'+h.slice(20)},content=function(o){return JSON.stringify(Object.keys(o).filter(function(k){return!/^(ft_|fill_ms$|submission_key$|confirm$)/.test(k)}).sort().map(function(k){return[k,o[k]]}))};
+${SUBMISSION_KEY_JS}var S=SKM(f.id);
 var pf=new URLSearchParams(location.search).get('format');if(pf&&E.format.querySelector('option[value="'+pf.replace(/[^a-z0-9_]/g,'')+'"]'))E.format.value=pf;
 var started=false;f.addEventListener('focusin',function(){if(started)return;started=true;tr('request_quote_start',{offer_format:E.format.value||''})});
 f.addEventListener('submit',function(e){e.preventDefault();
@@ -127,17 +128,19 @@ f.addEventListener('submit',function(e){e.preventDefault();
  try{var ft=JSON.parse(sessionStorage.getItem('amj_ft')||'{}');${JSON.stringify(FT)}.forEach(function(k){if(ft[k]!=null&&E['ft_'+k])E['ft_'+k].value=String(ft[k]).slice(0,200)})}catch(_){}
  var o={};new FormData(f).forEach(function(v,k){o[k]=v});
  o.consent_request=E.consent_request.checked;o.consent_newsletter=E.consent_newsletter.checked;o.fill_ms=String(Date.now()-t0);
- var c=content(o);if(c!==sc){sk=uuid();sc=c;cf=false}o.submission_key=sk;if(cf)o.confirm='yes';
  [].forEach.call(f.querySelectorAll('[aria-invalid]'),function(x){x.removeAttribute('aria-invalid')});
  btn.disabled=true;btn.textContent=Q.sending;msg.textContent='';
- fetch(f.action,{method:'POST',headers:{'content-type':'application/json',accept:'application/json'},body:JSON.stringify(o)}).then(function(r){return r.json().catch(function(){return{}}).then(function(j){
-  if(j.error==='confirm_required'){cf=true;msg.textContent=Q.confirm;btn.disabled=false;btn.textContent=Q.confirmBtn;btn.focus();return}
-  if(j.error==='submission_conflict'){sk=sc=null;cf=false;msg.textContent=Q.conflict;return}
-  if(r.ok&&j.ok){sk=sc=null;cf=false;f.hidden=true;ok.setAttribute('data-show','');if(j.receipt_id){D.getElementById('qf-ref').textContent=Q.ref.replace('{r}',String(j.receipt_id).slice(0,8).toUpperCase());
+ S.key(o).then(function(k){o.submission_key=k;if(S.confirming())o.confirm='yes';
+ return fetch(f.action,{method:'POST',headers:{'content-type':'application/json',accept:'application/json'},body:JSON.stringify(o)}).then(function(r){return r.json().catch(function(){return{}}).then(function(j){
+  if(j.error==='confirm_required'){S.needConfirm();msg.textContent=Q.confirm;return}
+  if(j.error==='submission_conflict'){S.clear();msg.textContent=Q.conflict;return}
+  if(r.ok&&j.ok){S.clear();f.hidden=true;ok.setAttribute('data-show','');if(j.receipt_id){D.getElementById('qf-ref').textContent=Q.ref.replace('{r}',String(j.receipt_id).slice(0,8).toUpperCase());
    tr('submit_enterprise_inquiry',{receipt_id:j.receipt_id,offer_format:o.format||''});if(o.consent_newsletter)tr('opt_in_newsletter',{form:'quote'})}ok.focus();return}
   if(j.error==='invalid'&&j.fields&&j.fields.length){var names=[];j.fields.forEach(function(n){var el=E[n];if(el&&el.setAttribute){el.setAttribute('aria-invalid','true');names.push(Q.labels[n]||n)}});msg.textContent=Q.invalid+names.join(', ');var first=E[j.fields[0]];if(first&&first.focus)first.focus()}
   else if(j.error==='consent_required'){E.consent_request.setAttribute('aria-invalid','true');msg.textContent=Q.consent;E.consent_request.focus()}
-  else if(j.error==='rate_limited')msg.textContent=Q.rate;else msg.textContent=Q.failed})}).catch(function(){msg.textContent=Q.failed}).then(function(){if(!cf){btn.disabled=false;btn.textContent=Q.submit}})});
+  else if(j.error==='rate_limited')msg.textContent=Q.rate;else msg.textContent=Q.failed})})}).catch(function(){msg.textContent=Q.failed})
+ // Always give the button back, keeping the confirmation state and the key for a retry.
+ .then(function(){btn.disabled=false;btn.textContent=S.confirming()?Q.confirmBtn:Q.submit;if(S.confirming())btn.focus()})});
 })();
 </script>`;
 

@@ -16,6 +16,8 @@ const TEXT = {
     consent_required: 'Please tick the consent box so Jack can reply to this request.',
     confirm_required: 'That was very fast. Please check your details and press the button again to confirm.',
     submission_conflict: 'This request changed while it was being sent. Please send it again.',
+    rate_limited: 'Too many requests from this connection. Please wait a few minutes, then send it again. Your answers are kept below.',
+    intake_unavailable: 'The request could not be saved just now. Please try again in a moment, or email jack@aimanjack.com. Your answers are kept below.',
   },
   zh: {
     title: '请检查你的申请', back: '返回原页面',
@@ -23,10 +25,13 @@ const TEXT = {
     consent_required: '请勾选同意联系的选项，Jack 才能回复这份申请。',
     confirm_required: '提交得很快。请核对内容，再点一次按钮确认。',
     submission_conflict: '提交过程中内容有变化，请再发送一次。',
+    rate_limited: '提交过于频繁，请等几分钟再发送。已填的内容保留在下面。',
+    intake_unavailable: '暂时无法保存这份申请。请稍后再试，或发邮件到 jack@aimanjack.com。已填的内容保留在下面。',
   },
 };
 
-// kind 'quick' (src/quick-quote.mjs) or 'full' (/contact/quote/). reason: invalid | consent_required | confirm_required | submission_conflict.
+// kind 'quick' (src/quick-quote.mjs) or 'full' (/contact/quote/).
+// reason: invalid | consent_required | confirm_required | submission_conflict | rate_limited | intake_unavailable.
 export function renderIntakeErrorPage({ lang = 'en', kind = 'full', body = {}, errors = [], reason = 'invalid', backPath }) {
   lang = lang === 'zh' ? 'zh' : 'en';
   const t = TEXT[lang], bad = new Set(errors);
