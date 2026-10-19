@@ -50,7 +50,17 @@ alter table revenue.consent_events add constraint consent_events_quote_form_bran
 -- A source clock may not run ahead of receipt by more than 5 minutes.
 alter table revenue.consent_events drop constraint if exists consent_events_source_time_check;
 alter table revenue.consent_events add constraint consent_events_source_time_check
-  check (source_occurred_at is null or source_occurred_at <= occurred_at + interval '5 minutes');
+  check (source_occurred_at is null or date_trunc('milliseconds', source_occurred_at) <= date_trunc('milliseconds', occurred_at) + interval '5 minutes');
+-- Times must be real instants (no 'infinity').
+alter table revenue.consent_events drop constraint if exists consent_events_finite_time_check;
+alter table revenue.consent_events add constraint consent_events_finite_time_check
+  check (isfinite(occurred_at) and (source_occurred_at is null or isfinite(source_occurred_at)));
+-- A grant is evidence of a fresh, explicit action that this system observed itself: a form submission or an owner-reviewed
+-- record, stamped with our own receipt time. A provider callback can only restrict (withdraw), never grant, and a grant never
+-- carries a foreign clock. Old, replayed or ambiguous provider activity therefore cannot be recorded as permission at all.
+alter table revenue.consent_events drop constraint if exists consent_events_fresh_grant_check;
+alter table revenue.consent_events add constraint consent_events_fresh_grant_check
+  check (not granted or (source in ('quote_form', 'kit_form', 'owner_manual') and source_occurred_at is null));
 create index if not exists consent_events_scope on revenue.consent_events (subject_email_hash, brand, channel, consent_type);
 
 -- Erasure replay guard. erase_subject / erase_receipt delete the receipt (and its day-scoped dedupe key). Without a trace, an
@@ -91,9 +101,9 @@ create trigger intake_receipts_refuse_replay before insert on revenue.intake_rec
 
 -- Ordering time for one consent event (mirrored by src/consent.mjs eventTime), at millisecond precision (what JavaScript and
 -- PostgREST clients can represent; ties are resolved explicitly below, never by sub-millisecond digits):
---   * a grant counts from the time its source reports, but never later than when this database received it, so a clock
---     running ahead cannot make an old grant beat a withdrawal;
---   * a withdrawal counts from the later of the two, so a provider clock running behind cannot hide an opt-out.
+--   * a grant always carries our own receipt time (consent_events_fresh_grant_check), so it counts from that;
+--   * a withdrawal counts from the later of its source time and our receipt time, so a provider clock running behind cannot
+--     hide an opt-out. A late-arriving withdrawal therefore wins over any grant received before it.
 -- Errors on this side only ever keep marketing off.
 create or replace function revenue.consent_event_time(p_source_at timestamptz, p_received_at timestamptz, p_decision text) returns timestamptz
 language sql immutable set search_path = pg_catalog, pg_temp as $$
@@ -182,8 +192,8 @@ begin
   if new.source<>'quote_form' or new.consent_type<>'newsletter' or not new.granted then return new; end if;
   -- 2026-10-19 (D3): only aimanjack.com email consent may enroll in the aimanjack.com MailerLite group.
   if new.brand<>'aimanjack' or new.channel<>'email' or coalesce(new.decision,'granted')<>'granted' then return new; end if;
-  -- 2026-10-19 (D3): after an erasure, nothing is queued until an owner-reviewed recovery.
-  if revenue.consent_state(new.subject_email_hash,'aimanjack','email','newsletter')='erased' then return new; end if;
+  -- 2026-10-19 (D3): nothing is queued while an erasure (without owner-reviewed recovery) or a withdrawal is in effect.
+  if revenue.consent_state(new.subject_email_hash,'aimanjack','email','newsletter') in ('erased','withdrawn') then return new; end if;
   if not exists(select 1 from revenue.mailerlite_configuration where enabled) then return new; end if;
   if not exists(select 1 from revenue.intake_receipts where receipt_id=new.receipt_id) then return new; end if;
   -- Consent events append even when the quote receipt dedupes. Never rely on its immutable initial checkbox value.

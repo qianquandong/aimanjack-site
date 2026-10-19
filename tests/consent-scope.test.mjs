@@ -102,35 +102,51 @@ test('T10: an unticked box records not_granted, keeps the earlier grant, and for
   await bothSay(f, d, 'aimanjack', 'newsletter', 'withdrawn');
 });
 
-// Ledger level. MailerLite suppression callbacks store tombstones without a source time; they are monotone instead (see T14).
+// Ledger level plus the live MailerLite processor. MailerLite suppression callbacks store tombstones without a source time;
+// they are monotone instead (see T14). Provider callbacks can only withdraw: a provider "active" can never be recorded as a grant.
 test('T11: a late, older active/grant cannot undo an unsubscribe; source and received times are both kept', async (t) => {
   const f = await scoped(t);
   const d = subject('late@example.test');
-  await f.event({ subject: d, type: 'newsletter', granted: true, decision: 'granted', source_at: '2026-10-01T10:00:00Z', at: '2026-10-01T10:00:05Z' });
-  await f.event({ subject: d, type: 'newsletter', granted: false, decision: 'withdrawn', source: 'provider_webhook', source_at: '2026-10-05T09:00:00Z', at: '2026-10-05T09:00:02Z' });
-  // Arrives last, but describes an earlier moment (an old "active" update replayed by a provider).
-  await f.event({ subject: d, type: 'newsletter', granted: true, decision: 'granted', source: 'provider_webhook', source_at: '2026-10-03T08:00:00Z', at: '2026-10-06T12:00:00Z' });
+  await f.event({ subject: d, type: 'newsletter', granted: true, decision: 'granted', source: 'quote_form', at: '2026-10-05T10:00:00Z' });
+  await f.event({ subject: d, type: 'newsletter', granted: false, decision: 'withdrawn', source: 'provider_webhook', source_at: '2026-10-05T10:01:30Z', at: '2026-10-05T10:02:00Z' });
   await bothSay(f, d, 'aimanjack', 'newsletter', 'withdrawn');
-  const last = (await f.ledger(d)).at(-1);
-  assert.equal(new Date(last.source_occurred_at).toISOString(), '2026-10-03T08:00:00.000Z');
-  assert.equal(new Date(last.occurred_at).toISOString(), '2026-10-06T12:00:00.000Z');
-  // A provider tombstone wins over any later grant, and controllable marketing stays at zero.
+  const w = (await f.ledger(d)).at(-1);
+  assert.equal(new Date(w.source_occurred_at).toISOString(), '2026-10-05T10:01:30.000Z', 'source time kept');
+  assert.equal(new Date(w.occurred_at).toISOString(), '2026-10-05T10:02:00.000Z', 'received time kept');
+  // The review scenario: an old grant made at 10:00 whose clock reads 10:04 arrives at 10:03, after the withdrawal. It cannot
+  // even be recorded: grants carry no foreign clock, and a provider can never grant.
+  await assert.rejects(f.event({ subject: d, type: 'newsletter', granted: true, decision: 'granted', source: 'provider_webhook', source_at: '2026-10-05T10:04:00Z', at: '2026-10-05T10:03:00Z' }), /fresh_grant_check/);
+  await assert.rejects(f.event({ subject: d, type: 'newsletter', granted: true, decision: 'granted', source: 'provider_webhook', at: '2026-10-05T10:03:00Z' }), /fresh_grant_check/, 'missing source time does not help');
+  await assert.rejects(f.event({ subject: d, type: 'newsletter', granted: true, decision: 'granted', source: 'kit_form', source_at: '2026-10-05T10:04:00Z', at: '2026-10-05T10:03:00Z' }), /fresh_grant_check/, 'a form grant is stamped by us');
+  await bothSay(f, d, 'aimanjack', 'newsletter', 'withdrawn');
+  // A withdrawal arriving late (its source clock behind ours) still wins over a grant received before it.
+  const l = subject('lagging@example.test');
+  await f.event({ subject: l, type: 'newsletter', granted: true, decision: 'granted', source: 'quote_form', at: '2026-10-05T10:00:10Z' });
+  await f.event({ subject: l, type: 'newsletter', granted: false, decision: 'withdrawn', source: 'provider_webhook', source_at: '2026-10-05T09:59:00Z', at: '2026-10-05T10:00:20Z' });
+  await bothSay(f, l, 'aimanjack', 'newsletter', 'withdrawn');
+  // Only a fresh first-party action after the withdrawal re-grants (the person ticks the box again).
+  await f.event({ subject: l, type: 'newsletter', granted: true, decision: 'granted', source: 'quote_form', at: '2026-10-05T11:00:00Z' });
+  await bothSay(f, l, 'aimanjack', 'newsletter', 'granted');
+  // A provider tombstone wins over any later grant.
   const e = subject('tomb@example.test');
   await f.rows(`insert into revenue.mailerlite_suppressions(identity_hash,subscriber_id,state,reason) values($1,'7','suppressed','unsubscribed')`, [e]);
-  await f.event({ subject: e, type: 'newsletter', granted: true, decision: 'granted', source_at: '2026-10-10T00:00:00Z' });
+  await f.event({ subject: e, type: 'newsletter', granted: true, decision: 'granted', source: 'quote_form' });
   await bothSay(f, e, 'aimanjack', 'newsletter', 'suppressed');
-  // Same story on the live MailerLite path (reported by review): queued enrollment must not go out.
+  // Source clocks may not run more than 5 minutes ahead of receipt; times must be finite.
+  await assert.rejects(f.event({ subject: e, type: 'newsletter', granted: false, decision: 'withdrawn', source: 'provider_webhook', source_at: '2099-01-01T00:00:00Z' }), /source_time_check/);
+  await assert.rejects(f.event({ subject: e, type: 'newsletter', granted: true, source: 'quote_form', at: 'infinity' }), /finite_time_check/);
+  // Live MailerLite path. Queued enrollment → a withdrawal whose provider clock reads 4 minutes ahead → a later form grant
+  // (now the newest row by event_id). The withdrawal still counts as later, so the processor must cancel, not enroll.
   const q = await scoped(t); await q.enable();
   const g = subject('dana@example.test');
   await q.intake(true);
-  await q.event({ subject: g, type: 'newsletter', granted: false, decision: 'withdrawn', source: 'provider_webhook' });
-  await q.event({ subject: g, type: 'newsletter', granted: true, decision: 'granted', source: 'provider_webhook', source_at: '2026-10-01T00:00:00Z' });
+  await q.event({ subject: g, type: 'newsletter', granted: false, decision: 'withdrawn', source: 'provider_webhook', source_at: new Date(Date.now() + 4 * 60e3).toISOString() });
+  await q.event({ subject: g, type: 'newsletter', granted: true, decision: 'granted', source: 'quote_form' });
   await bothSay(q, g, 'aimanjack', 'newsletter', 'withdrawn');
+  assert.equal((await q.rows('select count(*)::int n from revenue.mailerlite_sync_events')).at(0).n, 1, 'the later grant is not queued while withdrawn');
   const p = provider(); const out = await mailerliteProcessor({ ...q, fetchImpl: p.fetchImpl }).process();
   assert.equal(out.processed[0].outcome, 'cancelled'); assert.equal(out.processed[0].code, 'consent_not_effective');
   assert.equal(p.calls.filter((c) => c.method === 'POST').length, 0, 'controllable marketing stays at zero');
-  // Source clocks may not run ahead of receipt.
-  await assert.rejects(f.event({ subject: e, type: 'newsletter', granted: true, source_at: '2099-01-01T00:00:00Z' }), /source_time_check/);
 });
 
 test('T12: brand and purpose are isolated — RAUC or Kit-only consent never enables aimanjack.com long-term marketing', async (t) => {
@@ -171,29 +187,35 @@ test('T12: the MailerLite enrollment path ignores another brand’s consent in b
   assert.equal((await g.rows(`select count(*)::int n from revenue.mailerlite_sync_events e join revenue.consent_events c on c.event_id=e.consent_event_id where c.brand<>'aimanjack'`))[0].n, 0);
 });
 
-test('T13: after erasure, an identical resubmission and replayed provider events revive nothing', async (t) => {
+test('T13: after erasure, replayed enrollment and confirmation events revive nothing; a verbatim same-day resubmission is refused', async (t) => {
   const f = await scoped(t); await f.enable();
   const d = subject('dana@example.test');
   await f.intake(true);
   await f.rows('select revenue.erase_subject($1)', [d]);
   assert.equal((await f.rows('select count(*)::int n from revenue.intake_receipts'))[0].n, 0, 'personal data gone');
   assert.equal((await f.rows('select count(*)::int n from revenue.mailerlite_sync_events'))[0].n, 0, 'queued work cascaded away');
-  // The exact same request again (same person, same day → same dedupe key): refused, nothing stored, nothing queued.
+  // Replayed old enrollment / provider confirmation: a provider can never record a grant, with or without its old timestamp.
+  await assert.rejects(f.event({ subject: d, type: 'newsletter', granted: true, decision: 'granted', source: 'provider_webhook', source_at: '2026-10-01T00:00:00Z' }), /fresh_grant_check/);
+  await assert.rejects(f.event({ subject: d, type: 'kit_sequence', granted: true, decision: 'granted', source: 'provider_webhook' }), /fresh_grant_check/);
+  // The exact same request again the same UTC day (same dedupe key): refused, nothing stored, nothing queued.
   await assert.rejects(f.intake(true), /erased_replay/);
   assert.equal((await f.rows('select count(*)::int n from revenue.intake_receipts'))[0].n, 0, 'personal data not recreated');
-  assert.equal((await f.rows('select count(*)::int n from revenue.mailerlite_sync_events'))[0].n, 0);
   const guards = await f.rows('select * from revenue.erasure_replay_guards');
-  assert.equal(guards.length, 1); assert.ok(!JSON.stringify(guards).includes('@'), 'the guard holds only keyed hashes');
-  // Replayed provider events dated before the erasure, and a new quote on another day: still no enrollment.
-  await f.event({ subject: d, type: 'newsletter', granted: true, decision: 'granted', source: 'provider_webhook', source_at: '2026-10-01T00:00:00Z' });
-  await f.event({ subject: d, type: 'kit_sequence', granted: true, decision: 'granted', source: 'provider_webhook' });
-  await f.intake(true, 'dana@example.test', 'dana@example.test|another-day');
+  assert.equal(guards.length, 1); assert.ok(!JSON.stringify(guards).includes('@'), 'the guard holds only hashes');
   await bothSay(f, d, 'aimanjack', 'newsletter', 'erased');
   await bothSay(f, d, 'aimanjack', 'kit_sequence', 'erased');
-  assert.equal((await f.rows('select count(*)::int n from revenue.mailerlite_sync_events'))[0].n, 0, 'erased identity is not queued');
   let p = provider(); await mailerliteProcessor({ ...f, fetchImpl: p.fetchImpl }).process();
   assert.equal(p.calls.filter((c) => c.method === 'POST').length, 0, 'no DOI or subscription call');
   assert.ok((await f.ledger(d)).every((r) => !('payload' in r)), 'the ledger holds no personal fields');
+  // KNOWN LIMITATION (documented; fixed in PR02 with a durable submission key): the same body on another UTC day has a new
+  // dedupe key and is stored as a new submission — personal data is saved again because the person (or a replayer) sent it.
+  // Marketing still stays off: no queue entry, state 'erased', no provider call.
+  await f.intake(true, 'dana@example.test', 'dana@example.test|next-day');
+  assert.equal((await f.rows('select count(*)::int n from revenue.intake_receipts'))[0].n, 1, 'limitation: next-day resubmission is stored');
+  assert.equal((await f.rows('select count(*)::int n from revenue.mailerlite_sync_events'))[0].n, 0, 'but nothing is queued');
+  await bothSay(f, d, 'aimanjack', 'newsletter', 'erased');
+  p = provider(); await mailerliteProcessor({ ...f, fetchImpl: p.fetchImpl }).process();
+  assert.equal(p.calls.filter((c) => c.method === 'POST').length, 0, 'no provider mutation');
   // Only an owner-reviewed recovery reopens the scope; later opt-ins then count again.
   await f.event({ subject: d, type: 'newsletter', granted: true, decision: 'granted', source: 'owner_manual' });
   await bothSay(f, d, 'aimanjack', 'newsletter', 'granted');
@@ -206,15 +228,13 @@ test('T13: after erasure, an identical resubmission and replayed provider events
   await bothSay(f, d, 'aimanjack', 'newsletter', 'suppressed');
 });
 
-test('T13: erasure timing — events at or before the latest erasure are void, even if received later', async (t) => {
+test('T13: erasure timing — after the latest erasure only withdrawals and owner-reviewed recoveries count', async (t) => {
   const f = await scoped(t);
   const d = subject('fresh@example.test');
-  await f.event({ subject: d, type: 'newsletter', granted: true, decision: 'granted', at: '2026-10-01T00:00:00Z' });
+  await f.event({ subject: d, type: 'newsletter', granted: true, decision: 'granted', source: 'quote_form', at: '2026-10-01T00:00:00Z' });
   const erase = (at) => f.rows(`insert into revenue.consent_events (subject_email_hash, consent_type, granted, source, occurred_at) values ($1,'erasure',false,'dsar_erasure',$2)`, [d, at]);
   await erase('2026-10-02T00:00:00Z');
   await bothSay(f, d, 'aimanjack', 'newsletter', 'erased');
-  await f.event({ subject: d, type: 'newsletter', granted: true, decision: 'granted', source: 'owner_manual', source_at: '2026-10-01T12:00:00Z', at: '2026-10-03T00:00:00Z' });
-  await bothSay(f, d, 'aimanjack', 'newsletter', 'erased');   // an owner record dated before the erasure is a replay too
   await f.event({ subject: d, type: 'newsletter', granted: true, decision: 'granted', source: 'kit_form', at: '2026-10-04T00:00:00Z' });
   await bothSay(f, d, 'aimanjack', 'newsletter', 'erased');   // a form opt-in alone does not reopen an erased identity
   await f.event({ subject: d, type: 'newsletter', granted: true, decision: 'granted', source: 'owner_manual', at: '2026-10-05T00:00:00Z' });
@@ -223,6 +243,11 @@ test('T13: erasure timing — events at or before the latest erasure are void, e
   await bothSay(f, d, 'aimanjack', 'newsletter', 'erased');
   await f.event({ subject: d, type: 'newsletter', granted: false, decision: 'withdrawn', source: 'provider_webhook', at: '2026-10-07T00:00:00Z' });
   await bothSay(f, d, 'aimanjack', 'newsletter', 'withdrawn');  // withdrawals always count
+  // Same millisecond as the erasure is "at", not "after": still erased.
+  const n = subject('same-ms@example.test');
+  await f.rows(`insert into revenue.consent_events (subject_email_hash, consent_type, granted, source, occurred_at) values ($1,'erasure',false,'dsar_erasure','2026-10-05T10:00:00.000100Z')`, [n]);
+  await f.event({ subject: n, type: 'newsletter', granted: true, decision: 'granted', source: 'owner_manual', at: '2026-10-05T10:00:00.000900Z' });
+  await bothSay(f, n, 'aimanjack', 'newsletter', 'erased');
   // Erasure with no other events: every brand and purpose reads as erased, and nothing is allowed.
   const lone = subject('lone@example.test');
   await f.rows(`insert into revenue.consent_events (subject_email_hash, consent_type, granted, source) values ($1,'erasure',false,'dsar_erasure')`, [lone]);
@@ -230,32 +255,28 @@ test('T13: erasure timing — events at or before the latest erasure are void, e
     await bothSay(f, lone, brand, purpose, 'erased');
 });
 
-test('ordering: ties, clock skew and sub-millisecond timestamps resolve the same way in SQL and JavaScript', async (t) => {
+test('ordering: exact ties go to the withdrawal in both arrival orders; sub-millisecond digits never decide', async (t) => {
   const f = await scoped(t);
-  // Equal times: the withdrawal wins whichever arrives last.
+  // Exact computed-time ties: both rows received in the same millisecond, no source times.
   const a = subject('tie-a@example.test'), b = subject('tie-b@example.test');
-  await f.event({ subject: a, type: 'newsletter', granted: false, decision: 'withdrawn', source_at: '2026-10-05T09:00:00Z', at: '2026-10-05T09:00:01Z' });
-  await f.event({ subject: a, type: 'newsletter', granted: true, decision: 'granted', source_at: '2026-10-05T09:00:00Z', at: '2026-10-05T09:00:02Z' });
+  await f.event({ subject: a, type: 'newsletter', granted: false, decision: 'withdrawn', source: 'provider_webhook', at: '2026-10-05T09:00:00.000Z' });
+  await f.event({ subject: a, type: 'newsletter', granted: true, decision: 'granted', source: 'quote_form', at: '2026-10-05T09:00:00.000Z' });
   await bothSay(f, a, 'aimanjack', 'newsletter', 'withdrawn');
-  await f.event({ subject: b, type: 'newsletter', granted: true, decision: 'granted', source_at: '2026-10-05T09:00:00Z', at: '2026-10-05T09:00:01Z' });
-  await f.event({ subject: b, type: 'newsletter', granted: false, decision: 'withdrawn', source_at: '2026-10-05T09:00:00Z', at: '2026-10-05T09:00:02Z' });
+  await f.event({ subject: b, type: 'newsletter', granted: true, decision: 'granted', source: 'quote_form', at: '2026-10-05T09:00:00.000Z' });
+  await f.event({ subject: b, type: 'newsletter', granted: false, decision: 'withdrawn', source: 'provider_webhook', at: '2026-10-05T09:00:00.000Z' });
   await bothSay(f, b, 'aimanjack', 'newsletter', 'withdrawn');
-  // A source clock running 4 minutes ahead (allowed by the check) cannot beat a later withdrawal: it is clamped to receipt.
-  const c = subject('skew@example.test');
-  await f.event({ subject: c, type: 'newsletter', granted: true, decision: 'granted', source_at: '2026-10-05T10:04:00Z', at: '2026-10-05T10:00:00Z' });
-  await f.event({ subject: c, type: 'newsletter', granted: false, decision: 'withdrawn', source_at: '2026-10-05T10:02:00Z', at: '2026-10-05T10:02:00Z' });
-  await bothSay(f, c, 'aimanjack', 'newsletter', 'withdrawn');
-  // Sub-millisecond digits never decide (reported by review): withdrawal at .000900 vs older grant at .000100 → same ms → withdrawal.
+  // Sub-millisecond: a grant received .000900 and a withdrawal received .000100 of the same millisecond tie → withdrawal.
   const m = subject('micro@example.test');
-  await f.event({ subject: m, type: 'newsletter', granted: false, decision: 'withdrawn', source_at: '2026-10-05T10:00:00.000900Z', at: '2026-10-05T10:00:01Z' });
-  await f.event({ subject: m, type: 'newsletter', granted: true, decision: 'granted', source_at: '2026-10-05T10:00:00.000100Z', at: '2026-10-05T10:00:02Z' });
+  await f.event({ subject: m, type: 'newsletter', granted: false, decision: 'withdrawn', source: 'provider_webhook', at: '2026-10-05T10:00:00.000100Z' });
+  await f.event({ subject: m, type: 'newsletter', granted: true, decision: 'granted', source: 'quote_form', at: '2026-10-05T10:00:00.000900Z' });
   await bothSay(f, m, 'aimanjack', 'newsletter', 'withdrawn');
-  // Erasure at .000100 then consent at .000900 of the same millisecond: not after the erasure → erased in both.
-  const n = subject('micro-erase@example.test');
-  await f.event({ subject: n, type: 'newsletter', granted: true, decision: 'granted', at: '2026-10-05T09:00:00Z' });
-  await f.rows(`insert into revenue.consent_events (subject_email_hash, consent_type, granted, source, occurred_at) values ($1,'erasure',false,'dsar_erasure','2026-10-05T10:00:00.000100Z')`, [n]);
-  await f.event({ subject: n, type: 'newsletter', granted: true, decision: 'granted', source: 'owner_manual', at: '2026-10-05T10:00:00.000900Z' });
-  await bothSay(f, n, 'aimanjack', 'newsletter', 'erased');
+  // One millisecond later the person's fresh opt-in wins.
+  await f.event({ subject: m, type: 'newsletter', granted: true, decision: 'granted', source: 'quote_form', at: '2026-10-05T10:00:00.001900Z' });
+  await bothSay(f, m, 'aimanjack', 'newsletter', 'granted');
+  // The 5-minute source-skew check is evaluated at millisecond precision on both sides.
+  await assert.rejects(f.event({ subject: m, type: 'newsletter', granted: false, decision: 'withdrawn', source: 'provider_webhook', source_at: '2026-10-05T10:05:00.002Z', at: '2026-10-05T10:00:00.001Z' }), /source_time_check/);
+  await f.event({ subject: m, type: 'newsletter', granted: false, decision: 'withdrawn', source: 'provider_webhook', source_at: '2026-10-05T10:05:00.001900Z', at: '2026-10-05T10:00:00.001100Z' });
+  await bothSay(f, m, 'aimanjack', 'newsletter', 'withdrawn');
 });
 
 test('ordering: a provider clock running behind cannot hide a withdrawal; malformed rows fail closed in JavaScript', async (t) => {
@@ -267,8 +288,9 @@ test('ordering: a provider clock running behind cannot hide a withdrawal; malfor
   await bothSay(f, d, 'aimanjack', 'newsletter', 'withdrawn');
   const base = { event_id: 1, subject_email_hash: d, consent_type: 'newsletter', brand: 'aimanjack', channel: 'email', occurred_at: '2026-10-05T10:00:00Z' };
   const scope = { subject: d, brand: 'aimanjack', purpose: 'newsletter' };
-  for (const bad of [{ granted: true, source_occurred_at: '2026-10-05T10:06:00Z' }, { granted: false, decision: 'granted' }, { granted: true, decision: 'maybe' },
-    { granted: true, occurred_at: null }, { granted: true, occurred_at: 'not a date' }]) {
+  for (const bad of [{ granted: false, decision: 'withdrawn', source_occurred_at: '2026-10-05T10:06:00Z' }, { granted: false, decision: 'granted' }, { granted: true, decision: 'maybe' },
+    { granted: true, occurred_at: null }, { granted: true, occurred_at: 'not a date' }, { granted: true, occurred_at: 'infinity' },
+    { granted: true, source: 'provider_webhook' }, { granted: true, source_occurred_at: '2026-10-05T09:59:00Z' }, { granted: true, brand: 'other' }, { granted: true, channel: 'sms' }]) {
     assert.throws(() => effectiveState([{ ...base, ...bad }], scope), /invalid_consent_event/);
     assert.equal(allowsMarketing([{ ...base, ...bad }], scope), false);
   }

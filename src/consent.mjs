@@ -34,18 +34,22 @@ const ms = (t) => {
   if (!Number.isFinite(v)) throw new Error('invalid_consent_event');
   return v;
 };
-// Same as revenue.consent_event_time, at millisecond precision: a grant counts from the source time but never later than
-// receipt; a withdrawal counts from the later of the two. Clock errors can only keep marketing off.
+// Same as revenue.consent_event_time, at millisecond precision. Grants carry only our receipt time (see assertValid); a
+// withdrawal counts from the later of its source time and receipt time. Clock errors can only keep marketing off.
 export const eventTime = (e) => {
   const received = ms(e.occurred_at), source = ms(e.source_occurred_at) ?? received;
   return decisionOf(e) === 'withdrawn' ? Math.max(source, received) : Math.min(source, received);
 };
-// Rows the database would have rejected (see the checks in the migration) are not guessed at: the whole answer fails closed.
+// Rows the database rejects (checks in db/migrations/2026-10-19-consent-scope.sql) are not guessed at: the whole answer fails
+// closed. Supported domain = rows the database accepts; timestamps are compared at millisecond precision on both sides.
 const SKEW_MS = 5 * 60 * 1000;
+export const GRANT_SOURCES = ['quote_form', 'kit_form', 'owner_manual'];   // fresh, first-party actions only
 function assertValid(e) {
   const d = decisionOf(e);
   if (ms(e.occurred_at) === null || !DECISIONS.includes(d) || (e.decision != null && (d === 'granted') !== Boolean(e.granted))
-    || (e.source_occurred_at != null && ms(e.source_occurred_at) > ms(e.occurred_at) + SKEW_MS)) throw new Error('invalid_consent_event');
+    || !BRANDS.includes(e.brand ?? 'aimanjack') || !CHANNELS.includes(e.channel ?? 'email') || !PURPOSES.includes(e.consent_type)
+    || (e.source_occurred_at != null && ms(e.source_occurred_at) > ms(e.occurred_at) + SKEW_MS)
+    || (Boolean(e.granted) && (!GRANT_SOURCES.includes(e.source ?? 'quote_form') || e.source_occurred_at != null))) throw new Error('invalid_consent_event');
 }
 
 // State for one identity × brand × channel × purpose: 'granted' | 'withdrawn' | 'suppressed' | 'erased' | 'none'.
@@ -62,9 +66,9 @@ export function effectiveState(events, { subject, brand, channel = 'email', purp
   const erasures = own.filter((e) => e.consent_type === 'erasure').map((e) => ms(e.occurred_at));
   if (erasures.some((t) => t === null)) throw new Error('invalid_consent_event');
   const erasedAt = erasures.length ? Math.max(...erasures) : null;
+  own.filter((e) => e.consent_type !== 'erasure').forEach(assertValid);   // any malformed row for this person fails the answer
   const scoped = own.filter((e) => e.consent_type !== 'erasure' && (e.brand ?? 'aimanjack') === brand
     && (e.channel ?? 'email') === channel && e.consent_type === purpose);
-  scoped.forEach(assertValid);
   // A tombstone or an erasure decides even when this scope has no ledger row (same as the view's keys).
   if (brand === 'aimanjack' && channel === 'email' && MARKETING_PURPOSES.includes(purpose) && suppressed) return 'suppressed';
   if (!scoped.length) return erasedAt !== null && BRANDS.includes(brand) && channel === 'email' && PURPOSES.includes(purpose) ? 'erased' : 'none';
