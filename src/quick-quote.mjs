@@ -6,6 +6,7 @@
 // first-touch fields as /contact/quote/.
 import { EMAIL, QUICK_FORM_VERSION } from './config.mjs';
 import { L } from './layout.mjs';
+import { SUBMISSION_KEY_JS } from './submission-key.mjs';
 
 const FT = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'ref', 'landing', 'ts'];
 
@@ -20,6 +21,7 @@ const Q = {
     submit: 'Submit request →', sending: 'Sending…', hp: 'Leave this field empty',
     okH: 'Request received', okP: 'Thank you. Jack reads each request himself and will reply by email with a format and a quote. This does not book a meeting.',
     errH: 'Your request was not sent', errP: `Check your name, email and the consent box, then send it again. You can also email <a href="mailto:${EMAIL}">${EMAIL}</a>.`,
+    confirm: 'That was very fast. Please check your details and press the button again to confirm.', confirmBtn: 'Confirm and send →', conflict: 'Your request changed while it was being sent. Please press send again.',
     invalid: 'Please check: ', needConsent: 'Please tick the consent box so we can reply.', rate: 'Too many requests from this connection. Please wait a few minutes.', failed: `Not sent. Try again, or email ${EMAIL}.`,
   },
   zh: {
@@ -32,23 +34,33 @@ const Q = {
     submit: '提交申请 →', sending: '正在提交…', hp: '此栏请留空',
     okH: '申请已收到', okP: '谢谢。Jack 会亲自阅读每一份申请，并通过邮件回复推荐的形式和报价。这并不代表已预约会议。',
     errH: '申请未能提交', errP: `请检查姓名、邮箱和同意选项后再提交一次。也可以直接发邮件至 <a href="mailto:${EMAIL}">${EMAIL}</a>。`,
+    confirm: '提交得很快。请核对内容，再点一次按钮确认。', confirmBtn: '确认并发送 →', conflict: '提交过程中内容有变化，请再点一次发送。',
     invalid: '请检查：', needConsent: '请勾选同意联系的选项，以便我们回复。', rate: '提交过于频繁，请等几分钟再试。', failed: `未能提交。请重试，或发邮件至 ${EMAIL}。`,
   },
 };
 
+// The no-JS error page of /v1/intake (src/intake-error-page.mjs) reuses these labels.
+export const QUICK_COPY = Q;
+
 const script = `<script>
 (function(){var D=document,f=D.getElementById('qq-form');if(!f||!window.fetch)return;var Q=window.QQ,E=f.elements,msg=D.getElementById('qq-msg'),ok=D.getElementById('quote-received'),btn=f.querySelector('button[type=submit]'),t0=Date.now(),started=false;
 var tr=function(n,p){if(window.amjTrack)window.amjTrack(n,p||{})};
+${SUBMISSION_KEY_JS}var S=SKM(f.id);
 f.addEventListener('focusin',function(){if(started)return;started=true;tr('request_quote_start',{form:'quick',tool:E.tool.value})});
 f.addEventListener('submit',function(e){e.preventDefault();
  try{var ft=JSON.parse(sessionStorage.getItem('amj_ft')||'{}');${JSON.stringify(FT)}.forEach(function(k){if(ft[k]!=null&&E['ft_'+k])E['ft_'+k].value=String(ft[k]).slice(0,200)})}catch(_){}
  var o={};new FormData(f).forEach(function(v,k){o[k]=v});o.consent_request=E.consent_request.checked;o.consent_newsletter=E.consent_newsletter.checked;o.fill_ms=String(Date.now()-t0);
  [].forEach.call(f.querySelectorAll('[aria-invalid]'),function(x){x.removeAttribute('aria-invalid')});btn.disabled=true;btn.textContent=Q.sending;msg.textContent='';
- fetch(f.action,{method:'POST',headers:{'content-type':'application/json',accept:'application/json'},body:JSON.stringify(o)}).then(function(r){return r.json().catch(function(){return{}}).then(function(j){
-  if(r.ok&&j.ok){f.hidden=true;ok.setAttribute('data-show','');ok.focus();tr('submit_enterprise_inquiry',{form:'quick',tool:o.tool,receipt_id:j.receipt_id||''});if(o.consent_newsletter)tr('opt_in_newsletter',{form:'quick'});return}
+ S.key(o).then(function(k){o.submission_key=k;if(S.confirming())o.confirm='yes';
+ return fetch(f.action,{method:'POST',headers:{'content-type':'application/json',accept:'application/json'},body:JSON.stringify(o)}).then(function(r){return r.json().catch(function(){return{}}).then(function(j){
+  if(r.ok&&j.ok){f.hidden=true;ok.setAttribute('data-show','');ok.focus();S.clear();if(j.receipt_id){tr('submit_enterprise_inquiry',{form:'quick',tool:o.tool,receipt_id:j.receipt_id});if(o.consent_newsletter)tr('opt_in_newsletter',{form:'quick'})}return}
+  if(j.error==='confirm_required'){S.needConfirm();msg.textContent=Q.confirm;return}
+  if(j.error==='submission_conflict'){S.clear();msg.textContent=Q.conflict;return}
   if(j.error==='invalid'&&j.fields){var n=[];j.fields.forEach(function(k){var el=E[k];if(el&&el.setAttribute){el.setAttribute('aria-invalid','true');n.push(Q.labels[k]||k)}});msg.textContent=Q.invalid+n.join(', ')}
   else if(j.error==='consent_required'){E.consent_request.setAttribute('aria-invalid','true');msg.textContent=Q.needConsent}
-  else msg.textContent=j.error==='rate_limited'?Q.rate:Q.failed})}).catch(function(){msg.textContent=Q.failed}).then(function(){btn.disabled=false;btn.textContent=Q.submit})});
+  else msg.textContent=j.error==='rate_limited'?Q.rate:Q.failed})})}).catch(function(){msg.textContent=Q.failed})
+ // Always give the button back, keeping the confirmation state and the key for a retry.
+ .then(function(){btn.disabled=false;btn.textContent=S.confirming()?Q.confirmBtn:Q.submit;if(S.confirming())btn.focus()})});
 })();
 </script>`;
 
@@ -75,6 +87,6 @@ export function quickQuote(lang, { tool = 'general', path }) {
 <button class="btn btn-primary btn-lg" type="submit" data-event="quick_quote_submit" data-pos="${tool}">${c.submit}</button>
 <p id="qq-msg" class="qf-msg" role="status" aria-live="polite"></p>
 </form></div></div></section>
-<script>window.QQ=${JSON.stringify({ sending: c.sending, submit: c.submit, invalid: c.invalid, needConsent: c.needConsent, rate: c.rate, failed: c.failed, labels: { name: c.name, email: c.email, attendees: c.people, budget: c.budget, workflows: c.msg } })}</script>
+<script>window.QQ=${JSON.stringify({ sending: c.sending, submit: c.submit, confirm: c.confirm, confirmBtn: c.confirmBtn, conflict: c.conflict, invalid: c.invalid, needConsent: c.needConsent, rate: c.rate, failed: c.failed, labels: { name: c.name, email: c.email, attendees: c.people, budget: c.budget, workflows: c.msg } })}</script>
 ${script}`;
 }

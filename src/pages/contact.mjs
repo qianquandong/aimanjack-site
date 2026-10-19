@@ -1,5 +1,6 @@
 import { SITE, EMAIL, SMS_TEL, SMS_DISPLAY, BOOK_URL, QUOTE_URL, INTAKE_FORM_VERSION } from '../config.mjs';
 import { pageHero, breadcrumb, BUSINESS_REF, L, T } from '../components.mjs';
+import { SUBMISSION_KEY_JS } from '../submission-key.mjs';
 
 const copy = {
   en: {
@@ -73,6 +74,7 @@ const Q = {
     consentH: 'Consent', consentRequest: 'I agree to be contacted about this request. (required)', consentNewsletter: 'Send me occasional AI training tips (newsletter). Optional — unsubscribe at any time.',
     privacy: 'We use these details to reply to this request and prepare a quote. See the <a href="/privacy">Privacy Policy</a>.',
     hp: 'Leave this field empty', submit: 'Send request', sending: 'Sending…',
+    confirm: 'That was very fast. Please check your details and press the button again to confirm.', confirmBtn: 'Confirm and send', conflict: 'Your request changed while it was being sent. Please press send again.',
     okH: 'Request received', okP: 'Thank you — your request has been recorded<span id="qf-ref"></span>. This does not book a meeting. Jack reads each request himself and will reply by email. If you would like to talk it through, you can <a href="/book/">book a 20-minute workflow call</a>.', ref: ' (reference {r})',
     errH: 'Your request was not sent', errP: `Check that every required field is filled in and the consent box is ticked, then send it again. You can also email <a href="mailto:${EMAIL}">${EMAIL}</a>.`,
     invalid: 'Please check: ', consent: 'Please tick “I agree to be contacted about this request” so we can reply.', rate: 'Too many requests from this connection. Please wait a few minutes and try again.', failed: `Your request was not sent. Try again, or email ${EMAIL}.`,
@@ -102,6 +104,7 @@ const Q = {
     consentH: '同意事项', consentRequest: '我同意就本次申请接受联系。（必选）', consentNewsletter: '给我发送不定期的 AI 培训技巧（电子通讯）。选填，可随时退订。',
     privacy: '这些信息仅用于回复本次申请和准备报价。详见<a href="/zh/privacy">隐私政策</a>。',
     hp: '此栏请留空', submit: '提交申请', sending: '正在提交…',
+    confirm: '提交得很快。请核对内容，再点一次按钮确认。', confirmBtn: '确认并发送', conflict: '提交过程中内容有变化，请再点一次发送。',
     okH: '申请已收到', okP: '谢谢，你的申请已记录<span id="qf-ref"></span>。这并不代表已预约会议。Jack 会亲自阅读每一份申请，并通过邮件回复。如果想先聊一聊，可以<a href="/zh/book/">预约 20 分钟工作流咨询</a>。', ref: '（编号 {r}）',
     errH: '申请未能提交', errP: `请确认所有必填项都已填写，并勾选同意联系的选项，然后再提交一次。也可以直接发邮件至 <a href="mailto:${EMAIL}">${EMAIL}</a>。`,
     invalid: '请检查以下内容：', consent: '请勾选“我同意就本次申请接受联系”，以便我们回复你。', rate: '提交过于频繁，请等几分钟再试。', failed: `申请未能提交。请重试，或发邮件至 ${EMAIL}。`,
@@ -117,6 +120,7 @@ const quoteScript = `<script>
 (function(){var D=document,f=D.getElementById('quote-form');if(!f||!window.fetch)return;var Q=window.QF,msg=D.getElementById('qf-msg'),ok=D.getElementById('received'),btn=f.querySelector('button[type=submit]'),E=f.elements;
 var tr=function(n,p){if(window.amjTrack)window.amjTrack(n,p||{})};
 var t0=Date.now();
+${SUBMISSION_KEY_JS}var S=SKM(f.id);
 var pf=new URLSearchParams(location.search).get('format');if(pf&&E.format.querySelector('option[value="'+pf.replace(/[^a-z0-9_]/g,'')+'"]'))E.format.value=pf;
 var started=false;f.addEventListener('focusin',function(){if(started)return;started=true;tr('request_quote_start',{offer_format:E.format.value||''})});
 f.addEventListener('submit',function(e){e.preventDefault();
@@ -126,12 +130,17 @@ f.addEventListener('submit',function(e){e.preventDefault();
  o.consent_request=E.consent_request.checked;o.consent_newsletter=E.consent_newsletter.checked;o.fill_ms=String(Date.now()-t0);
  [].forEach.call(f.querySelectorAll('[aria-invalid]'),function(x){x.removeAttribute('aria-invalid')});
  btn.disabled=true;btn.textContent=Q.sending;msg.textContent='';
- fetch(f.action,{method:'POST',headers:{'content-type':'application/json',accept:'application/json'},body:JSON.stringify(o)}).then(function(r){return r.json().catch(function(){return{}}).then(function(j){
-  if(r.ok&&j.ok){f.hidden=true;ok.setAttribute('data-show','');if(j.receipt_id){D.getElementById('qf-ref').textContent=Q.ref.replace('{r}',String(j.receipt_id).slice(0,8).toUpperCase());
+ S.key(o).then(function(k){o.submission_key=k;if(S.confirming())o.confirm='yes';
+ return fetch(f.action,{method:'POST',headers:{'content-type':'application/json',accept:'application/json'},body:JSON.stringify(o)}).then(function(r){return r.json().catch(function(){return{}}).then(function(j){
+  if(j.error==='confirm_required'){S.needConfirm();msg.textContent=Q.confirm;return}
+  if(j.error==='submission_conflict'){S.clear();msg.textContent=Q.conflict;return}
+  if(r.ok&&j.ok){S.clear();f.hidden=true;ok.setAttribute('data-show','');if(j.receipt_id){D.getElementById('qf-ref').textContent=Q.ref.replace('{r}',String(j.receipt_id).slice(0,8).toUpperCase());
    tr('submit_enterprise_inquiry',{receipt_id:j.receipt_id,offer_format:o.format||''});if(o.consent_newsletter)tr('opt_in_newsletter',{form:'quote'})}ok.focus();return}
   if(j.error==='invalid'&&j.fields&&j.fields.length){var names=[];j.fields.forEach(function(n){var el=E[n];if(el&&el.setAttribute){el.setAttribute('aria-invalid','true');names.push(Q.labels[n]||n)}});msg.textContent=Q.invalid+names.join(', ');var first=E[j.fields[0]];if(first&&first.focus)first.focus()}
   else if(j.error==='consent_required'){E.consent_request.setAttribute('aria-invalid','true');msg.textContent=Q.consent;E.consent_request.focus()}
-  else if(j.error==='rate_limited')msg.textContent=Q.rate;else msg.textContent=Q.failed})}).catch(function(){msg.textContent=Q.failed}).then(function(){btn.disabled=false;btn.textContent=Q.submit})});
+  else if(j.error==='rate_limited')msg.textContent=Q.rate;else msg.textContent=Q.failed})})}).catch(function(){msg.textContent=Q.failed})
+ // Always give the button back, keeping the confirmation state and the key for a retry.
+ .then(function(){btn.disabled=false;btn.textContent=S.confirming()?Q.confirmBtn:Q.submit;if(S.confirming())btn.focus()})});
 })();
 </script>`;
 
@@ -176,11 +185,14 @@ ${lab('source_detail', input('source_detail', 'text', 'maxlength="120"'), { full
 </form></div>
 <aside class="stack" style="display:flex;flex-direction:column;gap:20px"><div class="big-card oakc"><h2 class="h3">${c.nextH}</h2><ol style="margin-left:22px;display:flex;flex-direction:column;gap:10px">${c.next.map((n) => `<li>${n}</li>`).join('')}</ol></div>
 <div class="big-card"><h2 class="h3">${c.talkH}</h2><p>${c.talkP}</p><a class="btn btn-secondary" href="${L(lang, BOOK_URL)}" data-event="workshop_cta_click" data-pos="quote-aside">${c.talk}</a></div></aside></div></section>
-<script>window.QF=${JSON.stringify({ sending: c.sending, submit: c.submit, ref: c.ref, invalid: c.invalid, consent: c.consent, rate: c.rate, failed: c.failed, labels: c.f })}</script>
+<script>window.QF=${JSON.stringify({ sending: c.sending, submit: c.submit, confirm: c.confirm, confirmBtn: c.confirmBtn, conflict: c.conflict, ref: c.ref, invalid: c.invalid, consent: c.consent, rate: c.rate, failed: c.failed, labels: c.f })}</script>
 ${quoteScript}`,
     jsonld: [{ '@type': 'ContactPage', '@id': `${SITE}${L(lang, QUOTE_URL)}`, name: c.title, about: { '@id': `${SITE}/#business` } }, BUSINESS_REF, bc.ld],
   };
 };
+
+// The no-JS error page of /v1/intake (src/intake-error-page.mjs) reuses these labels and options.
+export const QUOTE_COPY = Q;
 
 // The quote page is a form, not a landing page: noindex,follow and out of the sitemap (reversible: drop `indexable: false`).
 export const pages = [

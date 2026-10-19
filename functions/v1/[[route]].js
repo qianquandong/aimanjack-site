@@ -28,6 +28,7 @@ import { m365Send, m365Status, m365StartConnect, m365PollConnect, m365Disconnect
 import { reserveMailSend, isMailQuotaError } from '../../src/mail-quota.mjs';
 import { productionApiEnabled } from '../../src/deployment-safety.mjs';
 import { mailerliteRoute } from '../mailerlite.mjs';
+import { renderIntakeErrorPage } from '../../src/intake-error-page.mjs';
 
 const SOURCES = new Set(['web', 'voice', 'sms', 'admin']);
 // 'admin' suppresses the owner's own notice, so it is honoured only with the admin token; anything else is 'web'.
@@ -506,6 +507,132 @@ async function intake(env, req, ctx) {
   return reply(rec.deduped ? 200 : 201, { ok: true, receipt_id: receiptId }, 'received');
 }
 
+// ── Quote intake v2 (PR02, 2026-10-19; db/migrations/2026-10-19-intake-submissions.sql). Off unless INTAKE_V2_ENABLED=true. ──
+// One receipt per SUBMISSION instead of per (email, company domain, UTC day):
+//   * with JS the browser sends a random submission_key per submission attempt (kept across network retries, replaced when the
+//     content changes); without JS the content fingerprint is the submission identity;
+//   * same submission + same content → the existing receipt, nothing sent again; same key + different content → 409 conflict,
+//     nothing stored; a new submission → a new receipt, linked to the same person's previous one (owner decision: a second
+//     request the same day is a NEW request, forwarded in full).
+// Owner decisions (2026-10-19): a too-fast submission is not dropped — the visitor is asked to confirm and the second press
+// is stored; a no-JS error re-renders the form with what was typed (src/intake-error-page.mjs).
+// Every accepted request answers 201 { ok, receipt_id }: a retry and a first submission look the same, and nothing tells a
+// caller whether an email address was seen before. Hashes are keyed with EMAIL_HASH_SECRET; without it v2 fails closed.
+const INTAKE_MAX_BYTES = 32 * 1024;
+const SUBMISSION_KEY = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
+const intakeV2Enabled = (env) => env.INTAKE_V2_ENABLED === 'true';
+
+// Counts bytes while streaming and cancels the upload as soon as it passes the limit (no Content-Length needed).
+async function readBounded(req, max) {
+  if (!req.body) return new Uint8Array(0);
+  const reader = req.body.getReader(), chunks = [];
+  let size = 0;
+  for (;;) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    size += value.byteLength;
+    if (size > max) { await reader.cancel().catch(() => {}); return null; }
+    chunks.push(value);
+  }
+  const out = new Uint8Array(size); let at = 0;
+  for (const c of chunks) { out.set(c, at); at += c.byteLength; }
+  return out;
+}
+
+async function readIntakeBodyLimited(req) {
+  const header = req.headers.get('content-type') || '', type = header.toLowerCase();   // keep `header` as sent: multipart boundaries are case-sensitive
+  const declared = Number(req.headers.get('content-length'));
+  if (Number.isFinite(declared) && declared > INTAKE_MAX_BYTES) { await req.body?.cancel().catch(() => {}); return { tooLarge: true }; }
+  let raw;
+  try { raw = await readBounded(req, INTAKE_MAX_BYTES); } catch { return { form: false, body: null }; }
+  if (raw === null) return { tooLarge: true };
+  if (type.includes('application/json')) { try { return { form: false, body: JSON.parse(new TextDecoder().decode(raw)) }; } catch { return { form: false, body: null }; } }
+  if (type.includes('application/x-www-form-urlencoded') || type.includes('multipart/form-data')) {
+    const fd = await new Response(raw, { headers: { 'content-type': header } }).formData().catch(() => null);
+    return { form: true, body: fd ? Object.fromEntries([...fd.entries()].filter(([, v]) => typeof v === 'string')) : null };
+  }
+  return { form: false, body: null };
+}
+
+// What the person actually asked for, in a stable order. Attribution, form version and timing are not part of the content.
+const CONTENT_FIELDS = ['kind', 'name', 'email', 'company', 'company_website', 'industry', 'headcount', 'attendees', 'format', 'location', 'location_city',
+  'workflows', 'tools', 'timing', 'source', 'source_detail', 'budget', 'tool', 'page', 'lang', 'consent_newsletter'];
+const canonicalContent = (v) => JSON.stringify(CONTENT_FIELDS.map((k) => [k, v[k] ?? null]));
+
+async function intakeV2(env, req, ctx) {
+  const origin = req.headers.get('origin'), allowed = env.SITE_ORIGIN || 'https://aimanjack.com';
+  if (!origin || (origin !== allowed && !/^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin))) return fail(403, 'origin_not_allowed', 'Use the quote form on aimanjack.com.');
+  const read = await readIntakeBodyLimited(req);
+  const isForm = (req.headers.get('content-type') || '').toLowerCase().match(/x-www-form-urlencoded|multipart\/form-data/) !== null;
+  const { body } = read;
+  const lang = body?.lang === 'zh' ? 'zh' : 'en';
+  const quick = body?.kind === 'quick';
+  const quickPage = quick && typeof body.page === 'string' && QUICK_PAGE.test(body.page) ? body.page : null;
+  const back = (anchor) => new Response(null, { status: 303, headers: { location: quickPage ? `${quickPage}#quote-${anchor}` : `${lang === 'zh' ? '/zh' : ''}/contact/quote/#${anchor}`, 'cache-control': 'no-store' } });
+  // No-JS problems the visitor can fix: show the form again with what they typed.
+  const page = (status, reason, errors = []) => new Response(renderIntakeErrorPage({ lang, kind: quick ? 'quick' : 'full', body, errors, reason, backPath: quickPage }),
+    { status, headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'no-store', 'x-robots-tag': 'noindex, nofollow' } });
+  const reply = (status, data, anchor) => (isForm ? back(anchor) : json(data, status));
+  if (read.tooLarge) return reply(413, { ok: false, error: 'too_large' }, 'not-sent');
+  if (!body || typeof body !== 'object') return reply(400, { ok: false, error: 'bad_body' }, 'not-sent');
+  // Bots: a filled honeypot is answered like a success, nothing stored, no receipt (the page fires no conversion without one).
+  if (clean(body.company_url, 200)) return reply(200, { ok: true }, 'received');
+  if (!yes(body.consent_request)) return isForm ? page(400, 'consent_required', ['consent_request']) : json({ ok: false, error: 'consent_required', fields: ['consent_request'] }, 400);
+  const { errors, v } = quick ? validateQuickIntake(body) : validateIntake(body);
+  if (errors.length) return isForm ? page(400, 'invalid', errors) : json({ ok: false, error: 'invalid', fields: errors }, 400);
+  v.consent_newsletter = yes(body.consent_newsletter);
+  // Too fast for a person typing (autofill can be): ask once to confirm instead of silently dropping the request.
+  const fill = body.fill_ms === undefined || body.fill_ms === '' ? null : Number(body.fill_ms);
+  const fast = fill !== null && Number.isFinite(fill) && fill < INTAKE_MIN_FILL_MS;
+  if (fast && body.confirm !== 'yes') return isForm ? page(409, 'confirm_required') : json({ ok: false, error: 'confirm_required' }, 409);
+
+  // From here on the body is parsed: a no-JS visitor gets the form back with what they typed for anything they can retry.
+  const retry = (status, error) => (isForm ? page(status, error) : json({ ok: false, error }, status));
+  const limited = await intakeRateLimit(env, req, v.email);
+  if (limited === 'limited') return retry(429, 'rate_limited');
+  if (limited) return retry(503, 'intake_unavailable');
+  if (!env.EMAIL_HASH_SECRET) { console.error('intake v2: EMAIL_HASH_SECRET unset'); return retry(503, 'intake_unavailable'); }
+
+  const companyDomain = v.company_website || v.email.split('@')[1];
+  const bodyHash = await hmacHex(env.EMAIL_HASH_SECRET, `body:${canonicalContent({ ...v, kind: quick ? 'quick' : 'full' })}`);
+  const key = typeof body.submission_key === 'string' && SUBMISSION_KEY.test(body.submission_key.toLowerCase()) ? body.submission_key.toLowerCase() : null;
+  const dedupeKey = await hmacHex(env.EMAIL_HASH_SECRET, key ? `submission:${key}` : `submission-body:${bodyHash}`);
+  const subjectHash = await emailHmac(env, 'subject', v.email);
+  const ipHash = await ipHmac(env, 'intake-ip', clean(req.headers.get('cf-connecting-ip'), 64));
+  const payload = quick
+    ? { kind: 'quick', name: v.name, email: v.email, company: null, company_domain: companyDomain, attendees: v.attendees, budget: v.budget || null,
+      workflows: v.workflows || null, tool: v.tool, page: v.page, lang: v.lang, fill_ms: fill, timer: fill === null ? 'absent' : 'ok' }
+    : { name: v.name, email: v.email, company: v.company, company_website: v.company_website || null, company_domain: companyDomain, industry: v.industry, headcount: v.headcount,
+      attendees: v.attendees, format: v.format, location: v.location, location_city: v.location_city || null, workflows: v.workflows, tools: v.tools || null,
+      timing: v.timing, source: v.source, source_detail: v.source_detail || null, lang: v.lang, fill_ms: fill, timer: fill === null ? 'absent' : 'ok' };
+  const receipt = { dedupe_key: dedupeKey, body_hash: bodyHash, form_version: v.form_version, payload, consent_request: true, consent_newsletter: v.consent_newsletter,
+    consent_notice_version: INTAKE_CONSENT_NOTICE_VERSION, utm: v.utm, self_reported_source: v.source ?? null, ip_hash: ipHash, subject_email_hash: subjectHash,
+    risk: fast || body.confirm === 'yes' ? 'fast_fill_confirmed' : null };
+  const consents = [{ consent_type: 'request_contact', granted: true }, { consent_type: 'newsletter', granted: v.consent_newsletter }];
+  let rec;
+  try { rec = await sb(env, 'rpc/record_intake_v2', { method: 'POST', schema: 'revenue', body: { p: receipt, p_consents: consents } }); }
+  catch (e) { console.error('intake v2 store unavailable', errInfo(e)); return retry(503, 'intake_unavailable'); }
+  if (rec?.conflict) return isForm ? page(409, 'submission_conflict') : json({ ok: false, error: 'submission_conflict' }, 409);
+  const receiptId = rec?.receipt_id;
+  if (!receiptId) { console.error('intake v2 store returned no receipt'); return retry(503, 'intake_unavailable'); }
+
+  if (!rec.deduped) {
+    const prev = typeof rec.previous_receipt_id === 'string' ? rec.previous_receipt_id : null;
+    const later = (p, what) => { const job = p.catch((e) => console.error(what, errInfo(e))); if (ctx.waitUntil) ctx.waitUntil(job); };
+    if (!transportGap(env)) for (const to of parseOwnerEmails(env.OWNER_EMAIL).list) {
+      const subject = quick ? `[quote request] ${v.tool} · ${v.attendees ?? '?'} people · ${companyDomain}` : `[quote request] ${v.company} · ${v.format}`;
+      const text = intakeOwnerText(v, receiptId) + (prev ? `\n\nSame person sent an earlier request: ${prev}. This one may be a revision; the earlier one is kept.` : '');
+      later(sendMail(env, { to, subject, text, reply_to: v.email }), 'intake owner email failed');
+    }
+    // The CRM receiver's schema is strict, so the link to the earlier receipt travels as a note at the top of the message.
+    const note = prev ? `[可能是回执 ${prev.slice(0, 8)} 的修改 / possibly a revision of receipt ${prev.slice(0, 8)}]\n` : '';
+    if (env.CRM_INTAKE_SECRET) later(crmForward(env, { receipt_id: receiptId, kind: quick ? 'quick' : 'full', name: v.name || '', email: v.email, company: v.company || '',
+      company_domain: companyDomain || '', attendees: v.attendees ?? null, budget: v.budget || '', workflows: note + (v.workflows || ''), tool: (quick ? v.tool : v.format) || '',
+      page: v.page || '', lang: v.lang === 'zh' ? 'zh' : 'en', consent_newsletter: v.consent_newsletter === true, received_at: new Date().toISOString() }), 'intake crm forward failed');
+  }
+  return reply(201, { ok: true, receipt_id: receiptId }, 'received');
+}
+
 // kind: created | rescheduled | cancelled. Customer gets a confirmation, the owner a one-line notice.
 // Durable: rows are written to booking.notifications first, then sent in waitUntil (src/booking-notify.mjs).
 const notifierFor = (env) => createNotifier({ db: (path, o) => sb(env, path, o), env, alert: alertFromEnv(env) });
@@ -720,7 +847,7 @@ export async function onRequest(ctx) {
     }
     if (res === 'coupons' && id && !extra && req.method === 'PATCH') return await redeemCoupon(env, req, id);
     if (res === 'intake' && !id && req.method === 'POST') {
-      try { return await intake(env, req, ctx); }
+      try { return await (intakeV2Enabled(env) ? intakeV2(env, req, ctx) : intake(env, req, ctx)); }
       catch (e) { console.error('intake api', errInfo(e)); return fail(500, 'internal', 'Something went wrong on our side.'); }   // codes only: no PII in logs
     }
     return fail(404, 'not_found', 'No such route.');
