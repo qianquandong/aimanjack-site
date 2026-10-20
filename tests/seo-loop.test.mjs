@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import { existsSync, readFileSync } from 'node:fs';
 import { matchesTarget, verdict, wilson, readJsonl, addDays, daysBetween, TYPES } from '../scripts/seo-loop/lib.mjs';
-import { findOpportunities } from '../scripts/seo-loop/opportunities.mjs';
+import { findOpportunities, sitemapPaths } from '../scripts/seo-loop/opportunities.mjs';
 
 const root = new URL('../', import.meta.url);
 const targets = JSON.parse(readFileSync(new URL('state/seo/targets.json', root), 'utf8')).targets;
@@ -67,6 +67,17 @@ test('opportunities flag a target ranked by the wrong page and respect the coold
   assert.ok(fresh.candidates.some((c) => c.rule === 'target-wrong-page' && c.page === '/ai-training/dallas/'));
   const cooled = findOpportunities({ cur, prev: [], targets: t, ledger: [{ id: 'x', url: '/ai-training/plano/', type: 'faq', shippedResolved: '2026-10-20' }], last: '2026-11-01' });
   assert.ok(!cooled.candidates.some((c) => c.page === '/ai-training/plano/'), 'a page changed 12 days ago is not a candidate');
+});
+
+test('retired pages outside the sitemap never become candidates', () => {
+  const live = sitemapPaths(readFileSync(new URL('sitemap.xml', root), 'utf8'));
+  assert.ok(live.has('/') && live.has('/ai-training/dallas/'));
+  assert.ok(!live.has('/business-services/'));
+  const day = (date, pages) => ({ date, totals: { clicks: 0, impressions: 0, position: 0 }, pages, rows: [] });
+  const prev = [day('2026-09-01', [['/business-services/', 0, 100, 20], ['/ai-training/', 0, 80, 20]])];
+  const cur = [day('2026-10-01', [['/ai-training/', 0, 10, 20]])];
+  const out = findOpportunities({ cur, prev, targets: [], ledger: [], last: '2026-10-01', live });
+  assert.deepEqual(out.candidates.map((c) => c.page), ['/ai-training/']);
 });
 
 test('date helpers and Wilson interval', () => {
