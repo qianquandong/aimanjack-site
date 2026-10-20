@@ -1,0 +1,67 @@
+name: SEO on-page change
+
+# 2026-10-19 (Jack): edits to existing pages need his approval; new posts stay automatic (seo-weekly-autopublish.yml).
+# The Monday routine opens a PR from `seo/onpage-YYYY-MM-DD` with at most 3 small edits, each logged in state/seo/changes.jsonl.
+#   check  — on every push to the PR: path allowlist, ledger rules, title/description lengths, 28-day cooldown, build + full tests.
+#   deploy — when Jack merges the PR: rebuild production, test, require a clean tree, deploy (same steps as a manual deploy).
+# Pause deploys without editing this file: set repository variable SEO_ONPAGE_DEPLOY_ENABLED=false.
+
+on:
+  pull_request:
+    branches: [production]
+    types: [opened, synchronize, reopened, closed]
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    if: github.repository == 'qianquandong/aimanjack-site' && startsWith(github.head_ref, 'seo/onpage-') && github.event.action != 'closed'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Change rules
+        run: |
+          git fetch origin production
+          node scripts/seo-loop/check-change.mjs origin/production
+      - name: Build, test, clean tree
+        run: |
+          npm ci --ignore-scripts
+          node scripts/build.mjs
+          node --test tests/*.test.mjs
+          test -z "$(git status --porcelain)" || { git status --porcelain | head -20; echo 'Generated files differ from the build.'; exit 1; }
+
+  deploy:
+    if: github.repository == 'qianquandong/aimanjack-site' && startsWith(github.head_ref, 'seo/onpage-') && github.event.action == 'closed' && github.event.pull_request.merged == true && vars.SEO_ONPAGE_DEPLOY_ENABLED != 'false'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    concurrency:
+      group: approved-blog-production   # shared with the other production publishers: never two deploys at once
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: production
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Rebuild, test, and require a clean tree
+        run: |
+          git checkout -B production origin/production
+          npm ci --ignore-scripts
+          node scripts/build.mjs
+          node --test tests/*.test.mjs
+          test -z "$(git status --porcelain)" || { git status --porcelain | head -20; echo 'Generated files differ from the build; refusing to deploy.'; exit 1; }
+      - name: Deploy
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN || secrets.CLOUDFLARE_PAGES_EDIT }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: sh deploy.sh --production
