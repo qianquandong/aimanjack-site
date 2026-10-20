@@ -1,0 +1,65 @@
+name: SEO on-page auto-merge
+
+# 2026-10-20 (Jack: "auto-merge it"): on-page PRs from the Monday routine merge themselves once every check has passed and
+# Jack has not vetoed them within the review window. Veto: add the `hold` label to the PR, or close it.
+#   window   repository variable SEO_ONPAGE_AUTOMERGE_HOURS (default 24; 0 = as soon as checks pass)
+#   off      repository variable SEO_ONPAGE_AUTOMERGE=false (PRs then wait for a manual merge, deployed by seo-onpage.yml)
+# A merge made with the workflow token does not trigger other workflows, so this job deploys itself, with the same
+# rebuild → full tests → clean tree → deploy.sh steps as seo-onpage.yml. One PR per run.
+
+on:
+  schedule:
+    - cron: '37 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: approved-blog-production   # shared with every production publisher: never two deploys at once
+  cancel-in-progress: false
+
+jobs:
+  automerge:
+    if: github.repository == 'qianquandong/aimanjack-site' && vars.SEO_ONPAGE_AUTOMERGE != 'false'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      GH_TOKEN: ${{ github.token }}
+      SEO_ONPAGE_AUTOMERGE_HOURS: ${{ vars.SEO_ONPAGE_AUTOMERGE_HOURS || '24' }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: production
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Find a ready on-page PR
+        id: pick
+        run: node scripts/seo-loop/automerge-pick.mjs >> "$GITHUB_OUTPUT"
+
+      - name: Merge it
+        if: steps.pick.outputs.pr != ''
+        run: |
+          gh pr comment "${{ steps.pick.outputs.pr }}" --body "Auto-merged: all checks passed and no \`hold\` label within ${SEO_ONPAGE_AUTOMERGE_HOURS}h. Deploying now."
+          gh pr merge "${{ steps.pick.outputs.pr }}" --merge
+
+      - name: Rebuild, test, and require a clean tree
+        if: steps.pick.outputs.pr != ''
+        run: |
+          git fetch origin production
+          git checkout -B production origin/production
+          npm ci --ignore-scripts
+          node scripts/build.mjs
+          node --test tests/*.test.mjs
+          test -z "$(git status --porcelain)" || { git status --porcelain | head -20; echo 'Generated files differ from the build; refusing to deploy.'; exit 1; }
+
+      - name: Deploy
+        if: steps.pick.outputs.pr != ''
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN || secrets.CLOUDFLARE_PAGES_EDIT }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: sh deploy.sh --production

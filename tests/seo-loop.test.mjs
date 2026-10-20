@@ -3,6 +3,7 @@ import test from 'node:test';
 import { existsSync, readFileSync } from 'node:fs';
 import { matchesTarget, verdict, wilson, readJsonl, addDays, daysBetween, TYPES } from '../scripts/seo-loop/lib.mjs';
 import { findOpportunities, sitemapPaths } from '../scripts/seo-loop/opportunities.mjs';
+import { pick } from '../scripts/seo-loop/automerge-pick.mjs';
 
 const root = new URL('../', import.meta.url);
 const targets = JSON.parse(readFileSync(new URL('state/seo/targets.json', root), 'utf8')).targets;
@@ -78,6 +79,21 @@ test('retired pages outside the sitemap never become candidates', () => {
   const cur = [day('2026-10-01', [['/ai-training/', 0, 10, 20]])];
   const out = findOpportunities({ cur, prev, targets: [], ledger: [], last: '2026-10-01', live });
   assert.deepEqual(out.candidates.map((c) => c.page), ['/ai-training/']);
+});
+
+test('auto-merge picks only an on-page PR that passed its checks, aged past the window and was not held', () => {
+  const now = Date.parse('2026-10-27T15:00:00Z');
+  const ok = [{ name: 'check', status: 'COMPLETED', conclusion: 'SUCCESS' }, { name: 'offline-tests', status: 'COMPLETED', conclusion: 'SUCCESS' }, { name: 'deploy', status: 'COMPLETED', conclusion: 'SKIPPED' }];
+  const pr = (o) => ({ number: 1, headRefName: 'seo/onpage-2026-10-26', createdAt: '2026-10-26T14:30:00Z', isDraft: false, labels: [], mergeable: 'MERGEABLE', statusCheckRollup: ok, ...o });
+  assert.equal(pick([pr({})], { now, hours: 24 }).pr, 1);
+  assert.equal(pick([pr({ labels: [{ name: 'hold' }] })], { now, hours: 24 }).pr, null, 'hold label vetoes');
+  assert.equal(pick([pr({ createdAt: '2026-10-27T10:00:00Z' })], { now, hours: 24 }).pr, null, 'inside the review window');
+  assert.equal(pick([pr({ createdAt: '2026-10-27T10:00:00Z' })], { now, hours: 0 }).pr, 1, 'window 0 merges at once');
+  assert.equal(pick([pr({ statusCheckRollup: [ok[1]] })], { now }).pr, null, 'the on-page check must have run');
+  assert.equal(pick([pr({ statusCheckRollup: [...ok, { name: 'Cloudflare Pages', status: 'COMPLETED', conclusion: 'FAILURE' }] })], { now }).pr, null, 'any failed check blocks');
+  assert.equal(pick([pr({ statusCheckRollup: [...ok, { name: 'x', status: 'IN_PROGRESS', conclusion: null }] })], { now }).pr, null, 'running checks block');
+  assert.equal(pick([pr({ headRefName: 'seo/weekly-2026-10-26' })], { now }).pr, null, 'only seo/onpage-* branches');
+  assert.equal(pick([pr({ number: 2, createdAt: '2026-10-26T15:00:00Z' }), pr({ number: 1, createdAt: '2026-10-25T15:00:00Z' })], { now }).pr, 1, 'oldest first');
 });
 
 test('date helpers and Wilson interval', () => {

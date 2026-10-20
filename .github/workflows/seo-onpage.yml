@@ -3,7 +3,8 @@ name: SEO on-page change
 # 2026-10-19 (Jack): edits to existing pages need his approval; new posts stay automatic (seo-weekly-autopublish.yml).
 # The Monday routine opens a PR from `seo/onpage-YYYY-MM-DD` with at most 3 small edits, each logged in state/seo/changes.jsonl.
 #   check  — on every push to the PR: path allowlist, ledger rules, title/description lengths, 28-day cooldown, build + full tests.
-#   deploy — when Jack merges the PR: rebuild production, test, require a clean tree, deploy (same steps as a manual deploy).
+#   deploy — when Jack merges the PR by hand (auto-merges deploy from seo-onpage-automerge.yml, since a workflow-token merge
+#            triggers no other workflow): rebuild production, test, require a clean tree, deploy (same steps as a manual deploy).
 # Pause deploys without editing this file: set repository variable SEO_ONPAGE_DEPLOY_ENABLED=false.
 
 on:
