@@ -1,12 +1,13 @@
 # SEO loop (2026-10-19)
 
 The weekly SEO routine used to publish without ever measuring afterwards. This loop closes it: **code measures and ranks,
-Claude proposes, Jack approves page edits, every change is logged and scored at 14 and 28 days.**
+Claude proposes, page edits wait 24 hours for Jack's veto and then merge themselves, every change is logged and scored at 14 and 28 days.**
 
 ```
 daily   GitHub Actions  seo-loop-data.yml   pull GSC → score due changes → rank opportunities   → branch seo-data
 Sunday  GitHub Actions  seo-loop-data.yml   AI-answer visibility sample (Perplexity, if key)    → branch seo-data
-Monday  Claude routine  reads seo-data      ≤3 page edits + ledger lines → PR seo/onpage-DATE   → Jack merges → seo-onpage.yml deploys
+Monday  Claude routine  reads seo-data      ≤3 page edits + ledger lines → PR seo/onpage-DATE   → 24h veto window → auto-merge + deploy
+hourly  GitHub Actions  seo-onpage-automerge.yml  merges a ready on-page PR (checks green, open ≥24h, no `hold` label) and deploys
 Thursday Claude routine new post (unchanged) + a new-post ledger line → seo/weekly-DATE           → autopublish (no review)
 ```
 
@@ -22,6 +23,7 @@ Thursday Claude routine new post (unchanged) + a new-post ledger line → seo/we
 | `scripts/seo-loop/opportunities.mjs` | Target status (wrong page / striking / page one / not seen) + candidates (striking distance, low CTR, decay, cannibalization), 28-day cooldown → `seo-data:opportunities/DATE.{json,md}` |
 | `scripts/seo-loop/ai-visibility.mjs` | Mention and citation rate per prompt over N runs, Wilson interval, two control prompts |
 | `scripts/seo-loop/check-change.mjs` | Gate for `seo/onpage-*` PRs: allowlist, ledger rules, ≤3 changes, cooldown, title/description lengths |
+| `scripts/seo-loop/automerge-pick.mjs` | Picks the on-page PR that may auto-merge (2026-10-20, Jack) |
 | `scripts/seo-autopublish-gate.mjs` | Unattended branches may change posts and append `new-post` ledger lines; page modules only on `*-approved` branches |
 
 ## Rules worth knowing
@@ -36,5 +38,5 @@ Thursday Claude routine new post (unchanged) + a new-post ledger line → seo/we
 
 - Secrets: `GSC_SA_JSON` (required for any data), `PERPLEXITY_API_KEY` (optional, AI visibility).
 - First run: Actions → SEO loop data → Run workflow → backfill `90`.
-- Pause page deploys: repository variable `SEO_ONPAGE_DEPLOY_ENABLED=false`. Pause posts: `SEO_AUTOPUBLISH_ENABLED=false`.
+- Veto one on-page PR: add the `hold` label or close it. Review window: repository variable `SEO_ONPAGE_AUTOMERGE_HOURS` (default 24, 0 = immediate). Turn auto-merge off: `SEO_ONPAGE_AUTOMERGE=false` (then PRs wait for a manual merge). Pause deploys after a manual merge: `SEO_ONPAGE_DEPLOY_ENABLED=false`. Pause posts: `SEO_AUTOPUBLISH_ENABLED=false`.
 - Routine prompt: `docs/seo-loop-routine-prompt.md` (the live copy is in the claude.ai routine `trig_016KE4toQoBysY6E98ZFHc4W`).
