@@ -251,18 +251,6 @@
  ],
  "candidates": [
   {
-   "rule": "decay",
-   "page": "/business-services/",
-   "score": 130,
-   "why": "impressions 100 → 0 vs the previous 28 days"
-  },
-  {
-   "rule": "decay",
-   "page": "/ai-education/",
-   "score": 90,
-   "why": "impressions 60 → 0 vs the previous 28 days"
-  },
-  {
    "rule": "striking-distance",
    "page": "/use-cases/leadership/",
    "query": "i run a leadership team, what ai workflows should leaders like me build?",
