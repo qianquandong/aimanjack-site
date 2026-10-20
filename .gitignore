@@ -11,3 +11,6 @@ node_modules/
 
 # Full-resolution event photo originals (hundreds of MB) — keep local, publish only the compressed webp/jpg pairs
 img/events/raw/
+
+# SEO loop data branch checkout (scripts/seo-loop)
+.seo-data

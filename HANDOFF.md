@@ -4,6 +4,8 @@
 
 **2026-10-11 部署规则更新，优先于下文历史命令：** `sh deploy.sh` 只在本地构建、测试并生成只读预览；`--preview` 明确上传到 `aimanjack-review` 的 `review-<commit>` 分支，API 禁用；正式部署必须显式使用 `--production` 且位于 production 分支。正式数据库/邮箱变量只放 `[env.production.vars]`，不能复制凭据到预览。邮件配额复用既有原子限流表/RPC，无新增迁移。详见 `docs/BOOKING-EMAIL.md`。
 
+**2026-10-19 SEO 闭环（Jack 决定，修改下面 10-17 那条）：** 新文章仍全自动上线；**改已有页面改为走 PR、由 Jack 批准**：周一 routine 开 `seo/onpage-YYYY-MM-DD` PR（最多 3 处改动，每处写进 `state/seo/changes.jsonl`），`scripts/seo-loop/check-change.mjs` 把关，Jack 合并后 `.github/workflows/seo-onpage.yml` 自动上线。`seo/weekly-*` 分支不再放行 `src/pages/`（分支名以 `-approved` 结尾的除外）。数据每天由 `.github/workflows/seo-loop-data.yml` 写到 `seo-data` 分支（不进 production），改动在第 14、28 天自动打分。全貌见 `docs/seo-loop.md`。
+
 **2026-10-17 每周 SEO 自动上线（Jack 明确决定，优先于上面"正式部署需单独授权"）：** 每周 SEO 周检（云端 routine「aimanjack SEO/GEO 周检」）只需把 `seo/weekly-YYYY-MM-DD` 分支推上 GitHub，`.github/workflows/seo-weekly-autopublish.yml` 会自动把关并上线：`scripts/seo-autopublish-gate.mjs` 只放行文章（`src/posts/`）、页面文案（`src/pages/*.mjs`，legal/book/contact 除外）、`scripts/health/`、`scripts/geo-mentions.json` 和构建产物；发布的文章必须 blog-check 0 FAIL 且没有 `[Jack 补` 占位；随后合并 production、重建、全量测试、要求产物一致，再 `sh deploy.sh --production`。任何一步失败都不上线。暂停：把仓库变量 `SEO_AUTOPUBLISH_ENABLED` 设为 `false`。其他改动（代码、配置、`functions/`、法律页）仍然走 PR + 人工上线。
 
 给下一个接手的人（或下一个会话）。读完这一页就能接着干，不用翻聊天记录。

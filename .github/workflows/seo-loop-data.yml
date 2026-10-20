@@ -1,0 +1,82 @@
+name: SEO loop data
+
+# 2026-10-19: the measuring half of the SEO loop. Daily: pull yesterday-minus-2's Search Console data, score changes whose
+# 14/28-day checks are due, rank this week's opportunities. Sundays: also sample AI-answer visibility (if a Perplexity key exists).
+# Everything is written to the `seo-data` branch, never to production (production ships to Cloudflare; search queries stay private).
+# The Monday routine reads seo-data, proposes at most 3 page edits as a seo/onpage-* PR, and Jack approves by merging.
+# Secrets: GSC_SA_JSON (service-account JSON, read-only GSC user). Optional: PERPLEXITY_API_KEY.
+
+on:
+  schedule:
+    - cron: '23 11 * * *'   # 06:23 Dallas (CDT); off the hour because GitHub drops :00 schedules under load
+  workflow_dispatch:
+    inputs:
+      backfill:
+        description: 'Also pull this many past days (first run: 90)'
+        type: number
+        default: 0
+
+permissions:
+  contents: write
+
+concurrency:
+  group: seo-data
+  cancel-in-progress: false
+
+jobs:
+  data:
+    if: github.repository == 'qianquandong/aimanjack-site'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: production
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Check out the seo-data branch (create it on the first run)
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git ls-remote --exit-code --heads origin seo-data >/dev/null; then
+            git fetch origin seo-data
+            git worktree add -B seo-data .seo-data origin/seo-data
+          else
+            git worktree add --orphan -b seo-data .seo-data
+          fi
+
+      - name: Pull Search Console
+        env:
+          GSC_SA_JSON: ${{ secrets.GSC_SA_JSON }}
+        run: |
+          pip install --quiet google-api-python-client google-auth
+          python scripts/seo-loop/collect-gsc.py --out .seo-data --backfill "${{ inputs.backfill || 0 }}"
+
+      - name: Score due changes and rank opportunities
+        run: |
+          node scripts/seo-loop/score.mjs --data .seo-data --ref HEAD
+          node scripts/seo-loop/opportunities.mjs --data .seo-data --ref HEAD
+
+      - name: Sample AI-answer visibility (Sundays, or when run by hand)
+        env:
+          PERPLEXITY_API_KEY: ${{ secrets.PERPLEXITY_API_KEY }}
+        run: |
+          if [ "$(date -u +%u)" = 7 ] || [ "${{ github.event_name }}" = workflow_dispatch ]; then
+            node scripts/seo-loop/ai-visibility.mjs --data .seo-data
+          else
+            echo "Not Sunday; skipped"
+          fi
+
+      - name: Commit to seo-data
+        run: |
+          cd .seo-data
+          git add -A
+          if git diff --cached --quiet; then echo "No new data"; exit 0; fi
+          git commit -q -m "seo-data: $(date -u +%F)"
+          git push origin seo-data

@@ -1,0 +1,21 @@
+{
+  "_about": "Frozen prompt set for weekly AI-answer visibility sampling (scripts/seo-loop/ai-visibility.mjs). Method borrowed from elmohq/elmo (measurement.md) and coreyhaines31/marketingskills (prompt-portfolio.md): most prompts are unbranded, each is asked several times, engines are never pooled, and two controls check the measurement itself. Report the share of runs that mention or cite AI Man Jack, never a 'position'. Change the set only by bumping `version`; results from different versions are not comparable.",
+  "version": "2026-10-19",
+  "brand": ["AI Man Jack", "aimanjack", "Jack Qian"],
+  "domain": "aimanjack.com",
+  "runs": 3,
+  "prompts": [
+    { "id": "p01", "kind": "core", "text": "Who offers corporate AI training for business teams in Dallas?" },
+    { "id": "p02", "kind": "core", "text": "I want a hands-on AI workshop for my team in Dallas–Fort Worth. Who should I contact?" },
+    { "id": "p03", "kind": "core", "text": "Where can my company get onsite Microsoft Copilot training in Dallas?" },
+    { "id": "p04", "kind": "core", "text": "Recommend ChatGPT training for employees at a company in Dallas, Texas." },
+    { "id": "p05", "kind": "core", "text": "Who teaches Claude to non-technical business teams?" },
+    { "id": "p06", "kind": "core", "text": "What are good options for AI training for a nonprofit's staff in North Texas?" },
+    { "id": "p07", "kind": "core", "text": "Who runs AI workshops for leadership team retreats near Dallas?" },
+    { "id": "p08", "kind": "core", "text": "Is there AI training in Plano, Texas for small business teams?" },
+    { "id": "p09", "kind": "core", "text": "How should a small company train employees on an AI usage policy?" },
+    { "id": "p10", "kind": "core", "text": "AI training for business teams taught in Chinese and English in Texas" },
+    { "id": "c01", "kind": "control-brand", "text": "What is AI Man Jack (aimanjack.com)?", "expect": "mentioned" },
+    { "id": "c02", "kind": "control-unrelated", "text": "Best pizza restaurants in Chicago", "expect": "not-mentioned" }
+  ]
+}

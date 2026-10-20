@@ -14,11 +14,16 @@ const git = (...a) => execFileSync('git', a, { encoding: 'utf8' }).trim();
 const changed = git('diff', '--name-only', `${base}...HEAD`).split('\n').filter(Boolean);
 const problems = [];
 
-// What the routine may touch: blog posts, page copy modules, its own data files, and the generated output of the build.
+// What the routine may touch: blog posts, its own data files, and the generated output of the build.
 // Generated files are trusted only because the workflow rebuilds and requires a byte-identical tree afterwards.
+// 2026-10-19 (Jack): new posts stay fully automatic, but edits to existing pages need his approval. They now go through a
+// `seo/onpage-*` PR (scripts/seo-loop/check-change.mjs, deployed on merge by seo-onpage-deploy.yml). Page modules are only
+// allowed here on a branch whose name ends in `-approved`, the existing convention for content Jack already approved.
+const pagesApproved = /-approved$/.test(process.env.GITHUB_REF_NAME || '');
 const ALLOW = [
   /^src\/posts\/[a-z0-9-]+\.mjs$/,
-  /^src\/pages\/[a-z0-9-]+\.mjs$/,
+  ...(pagesApproved ? [/^src\/pages\/[a-z0-9-]+\.mjs$/] : []),
+  /^state\/seo\/changes\.jsonl$/,
   /^scripts\/health\/\d{4}-\d{2}-\d{2}\.json$/,
   /^scripts\/geo-mentions\.json$/,
   /^sitemap\.xml$/,
@@ -32,6 +37,21 @@ const DENY = [/^src\/pages\/(legal|book|contact)\.mjs$/, /^src\/posts\/_/];
 if (!changed.length) problems.push('branch has no changes against production');
 for (const f of changed) {
   if (DENY.some((re) => re.test(f)) || !ALLOW.some((re) => re.test(f))) problems.push(`not allowed for unattended publishing: ${f}`);
+}
+
+// Ledger: an unattended branch may only append `new-post` entries (one per post it publishes), never edit history.
+if (changed.includes('state/seo/changes.jsonl')) {
+  let before = '';
+  try { before = git('show', `${base}:state/seo/changes.jsonl`); } catch {}
+  const lines = (s) => s.split(/\r?\n/).filter((l) => l.trim());   // CRLF-safe
+  const old = new Set(lines(before));
+  const now = lines(readFileSync('state/seo/changes.jsonl', 'utf8'));
+  for (const l of old) if (!now.includes(l)) problems.push('state/seo/changes.jsonl is append-only: an existing line was changed or removed');
+  for (const l of now.filter((x) => !old.has(x))) {
+    let e; try { e = JSON.parse(l); } catch { problems.push(`ledger line is not JSON: ${l.slice(0, 80)}`); continue; }
+    if (e.type !== 'new-post' && !pagesApproved) problems.push(`ledger ${e.id}: unattended publishing may only log new-post entries (page edits go through a seo/onpage-* PR)`);
+    if (e.shipped) problems.push(`ledger ${e.id}: do not set "shipped"; the merge date is read from git`);
+  }
 }
 
 // Posts: a published post must pass blog-check and carry no open placeholder for Jack.
