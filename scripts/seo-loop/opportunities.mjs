@@ -11,7 +11,11 @@ import { COOLDOWN_DAYS, addDays, daysBetween, loadDays, latestDay, sum, readJson
 const arg = (k, d) => { const i = process.argv.indexOf(k); return i > 0 ? process.argv[i + 1] : d; };
 const data = arg('--data', '.seo-data'), ref = arg('--ref', 'production'), MIN = +arg('--min-impr', 10);
 
-export function findOpportunities({ cur, prev, targets, ledger, last, min = 10 }) {
+// Only pages in the current sitemap can be candidates: retired URLs (410) and noindex pages still appear in old GSC data
+// and would otherwise show up as "decay" (first real run, 2026-10-20: /business-services/, /ai-education/).
+export const sitemapPaths = (xml) => new Set([...xml.matchAll(/<loc>https:\/\/aimanjack\.com([^<]*)<\/loc>/g)].map((m) => m[1] || '/'));
+
+export function findOpportunities({ cur, prev, targets, ledger, last, min = 10, live = null }) {
   // Pages changed in the last 28 days are cooling down: they stay in the report but never become candidates.
   const cooling = new Map();
   for (const e of ledger) {
@@ -46,7 +50,7 @@ export function findOpportunities({ cur, prev, targets, ledger, last, min = 10 }
 
   // 2. Candidates (all rules are cheap to read and to change).
   const cand = [];
-  const add = (c) => { if (!cooling.has(c.page)) cand.push(c); };
+  const add = (c) => { if (!cooling.has(c.page) && (!live || live.has(c.page))) cand.push(c); };
   for (const s of targetStatus) {
     if (s.status === 'wrong-page') add({ rule: 'target-wrong-page', page: s.owner, target: s.id, score: 100 + s.impressions, why: `"${s.keyword}" is ranked by ${s.top_page}, not its owner page` });
     if (s.status === 'striking') add({ rule: 'target-striking', page: s.owner, target: s.id, score: 90 + s.impressions, why: `"${s.keyword}" sits at #${s.position}; one on-page change may reach page one` });
@@ -77,7 +81,7 @@ if (process.argv[1]?.endsWith('opportunities.mjs')) {
   const targets = JSON.parse(readFileSync('state/seo/targets.json', 'utf8')).targets;
   const ledger = readJsonl('state/seo/changes.jsonl').map((e) => ({ ...e, shippedResolved: shipDate(e, { ref }) }));
   const cur = loadDays(data, addDays(last, -27), last), prev = loadDays(data, addDays(last, -55), addDays(last, -28));
-  const out = { generated: new Date().toISOString().slice(0, 10), window: `${addDays(last, -27)}..${last}`, days_in_window: cur.length, totals: sum(cur.map((d) => [d.totals.clicks, d.totals.impressions, d.totals.position])), ...findOpportunities({ cur, prev, targets, ledger, last, min: MIN }) };
+  const out = { generated: new Date().toISOString().slice(0, 10), window: `${addDays(last, -27)}..${last}`, days_in_window: cur.length, totals: sum(cur.map((d) => [d.totals.clicks, d.totals.impressions, d.totals.position])), ...findOpportunities({ cur, prev, targets, ledger, last, min: MIN, live: sitemapPaths(readFileSync('sitemap.xml', 'utf8')) }) };
   mkdirSync(join(data, 'opportunities'), { recursive: true });
   writeFileSync(join(data, 'opportunities', `${last}.json`), JSON.stringify(out, null, 1) + '\n');
   const md = [`# SEO opportunities, ${out.window} (${out.days_in_window} days of data)`, '', `Site: ${out.totals.impressions} impressions, ${out.totals.clicks} clicks.`, '', '## Target keywords', '', '| id | keyword | status | impr | pos | Google shows |', '|---|---|---|---|---|---|',
