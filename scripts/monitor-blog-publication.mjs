@@ -4,13 +4,13 @@ import { join, resolve } from 'node:path';
 import { tmpdir } from 'node:os';
 import { pathToFileURL } from 'node:url';
 import { isDeepStrictEqual } from 'node:util';
-import { ROOT, PACK, inspect, draftForRelease, json, sha256, textOnly, routeOf, dateInChicago, weekInChicago, assertApproval } from './editorial-queue.mjs';
+import { ROOT, PACK, inspect, draftForRelease, json, sha256, textOnly, routeOf, dateInChicago, weekInChicago, assertApproval, ApprovalError, reviewedDirectoryCopy } from './editorial-queue.mjs';
 import { verifyArticle } from './publish-approved-blog.mjs';
 
 const REPO = 'qianquandong/aimanjack-site', PUBLISHER_ID = 384355210;
 const ORIGIN = 'https://aimanjack.com';
 const PROTECTED = ['/ai-training/', '/zh/ai-training/', '/book/', '/zh/book/', '/contact/', '/zh/contact/'];
-const ALERTS = new Set(['schedule_missing', 'publisher_failed', 'pending_verification', 'verification_failed', 'unknown']);
+const ALERTS = new Set(['approval_blocked', 'schedule_missing', 'publisher_failed', 'pending_verification', 'verification_failed', 'unknown']);
 
 function dallasParts(now) {
   return Object.fromEntries(new Intl.DateTimeFormat('en-US', { timeZone: 'America/Chicago', hourCycle: 'h23', hour: '2-digit', minute: '2-digit' }).formatToParts(now).map(p => [p.type, p.value]));
@@ -84,7 +84,7 @@ export function safeMonitorUrl(input, kind = 'public') {
   return url;
 }
 
-export async function readonlyGet(input, { kind = 'public', method = 'GET', token = '', fetchImpl = fetch } = {}) {
+async function readonlyResponse(input, { kind = 'public', method = 'GET', token = '', fetchImpl = fetch } = {}, allowNotFound = false) {
   if (method !== 'GET') throw new Error('Monitor requests must use GET');
   let url = safeMonitorUrl(input, kind);
   for (let redirects = 0; redirects <= 5; redirects++) {
@@ -100,12 +100,14 @@ export async function readonlyGet(input, { kind = 'public', method = 'GET', toke
       if (!location) throw new Error('Read-only redirect has no destination');
       url = safeMonitorUrl(new URL(location, url), kind); continue;
     }
-    if (response.status !== 200) throw new Error(`Read-only GET failed: ${url.pathname} (${response.status})`);
+    if (response.status !== 200 && !(allowNotFound && kind === 'public' && response.status === 404)) throw new Error(`Read-only GET failed: ${url.pathname} (${response.status})`);
     if (response.url) safeMonitorUrl(response.url, kind);
-    return response.text();
+    return { status: response.status, url: url.href, body: await response.text() };
   }
   throw new Error('Too many read-only redirects');
 }
+export async function readonlyGet(input, options) { return (await readonlyResponse(input, options)).body; }
+export async function readonlyProbe(input, options) { return readonlyResponse(input, options, true); }
 
 export async function readPublisherRuns(slot, get = readonlyGet) {
   const runs = [];
@@ -119,17 +121,33 @@ export async function readPublisherRuns(slot, get = readonlyGet) {
   throw new Error('GitHub run pagination limit reached; scheduler state is unknown, not missing');
 }
 
-async function validateSelectedApproval(item, approval, now) {
-  const draft = await draftForRelease(item);
-  assertApproval(approval, draft.bytes, await readFile(join(ROOT, 'src/config.mjs')), 'qianquandong', now);
+async function validateSelectedApproval(item, approval, now, root = ROOT) {
+  const draft = await draftForRelease(item, root);
+  assertApproval(approval, draft.bytes, await readFile(join(root, 'src/config.mjs')), 'qianquandong', now);
   if (approval.slug !== item.slug) throw new Error('Approval slug does not match the selected bilingual manuscript');
+  await reviewedDirectoryCopy(root, item);
   return draft;
 }
 
-async function verifyRelease(selection, approval, now) {
-  const { item, entry } = selection, draft = await validateSelectedApproval(item, approval, now);
+// Presence is independent evidence, never a substitute for approval or full release verification.
+export async function observeFormalPresence(item, { get = readonlyGet, probe = readonlyProbe } = {}) {
+  const paths = [routeOf(item), '/zh' + routeOf(item)];
+  const [pages, sitemap, ...directories] = await Promise.all([
+    Promise.all(paths.map(path => probe(path))), get('/sitemap.xml'), get('/blog/'), get('/zh/blog/')
+  ]);
+  const observed = pages.map((page, index) => ({ url: ORIGIN + paths[index], finalUrl: page.url, status: page.status,
+    inSitemap: sitemap.includes(`<loc>${ORIGIN + paths[index]}</loc>`),
+    inDirectory: [...directories[index].matchAll(/\bhref\s*=\s*["']([^"']+)["']/gi)].some(match => {
+      try { return new URL(match[1], ORIGIN + (index ? '/zh/blog/' : '/blog/')).href === ORIGIN + paths[index]; } catch { return false; }
+    }) }));
+  return { state: observed.every(page => page.status === 404 && !page.inSitemap && !page.inDirectory) ? 'absent' : 'present_or_partial',
+    verified: false, pages: observed };
+}
+
+async function verifyRelease(selection, approval, now, root = ROOT, get = readonlyGet) {
+  const { item, entry } = selection, draft = await validateSelectedApproval(item, approval, now, root);
   if (!entry.releaseSourceSha256 || !entry.version) throw new Error('Verified release provenance is incomplete');
-  const source = join(ROOT, 'src/posts', `${item.slug}.mjs`), bytes = await readFile(source);
+  const source = join(root, 'src/posts', `${item.slug}.mjs`), bytes = await readFile(source);
   if (sha256(bytes) !== entry.releaseSourceSha256) throw new Error('Published source changed after the verified release; manual review required');
   const { post } = await import(`${pathToFileURL(source).href}?monitor=${sha256(bytes)}`);
   const expected = { ...draft.post, status: 'published', date: item.existing ? item.originalDate : entry.date, updated: item.existing ? entry.date : undefined };
@@ -137,25 +155,25 @@ async function verifyRelease(selection, approval, now) {
   // Current canonical approval, ledger and exact release source are authoritative; historical publisher artifacts are not reinterpreted.
   const verification = await verifyArticle(post);
   for (const lang of ['en', 'zh']) {
-    const prefix = lang === 'zh' ? '/zh' : '', body = await readonlyGet(`${prefix}/blog/`), route = prefix + routeOf(post);
+    const prefix = lang === 'zh' ? '/zh' : '', body = await get(`${prefix}/blog/`), route = prefix + routeOf(post);
     const found = [...body.matchAll(/\bhref\s*=\s*["']([^"']+)["']/gi)].some(m => {
       try { return new URL(m[1], `${ORIGIN}${prefix}/blog/`).href === ORIGIN + route; } catch { return false; }
     });
     if (!found) throw new Error(`Article missing from formal ${lang} directory`);
   }
   for (const path of PROTECTED) {
-    const body = await readonlyGet(path), main = body.match(/<main\b[^>]*>([\s\S]*?)<\/main>/i)?.[1];
+    const body = await get(path), main = body.match(/<main\b[^>]*>([\s\S]*?)<\/main>/i)?.[1];
     if (!main || !entry.protectedBefore?.[path] || sha256(textOnly(main)) !== entry.protectedBefore[path]) throw new Error(`Protected training/booking/contact page drift: ${path}`);
   }
   return { ...verification, approvedSource: true, directories: true, sitemap: true, metadataAndSchemas: true, protectedPagesChecked: PROTECTED.length };
 }
 
-export async function monitor(now = new Date()) {
+export async function monitor(now = new Date(), { root = ROOT, get = readonlyGet, probe = readonlyProbe } = {}) {
   const result = { schemaVersion: 1, generatedAt: now.toISOString(), timezone: 'America/Chicago', dallasDate: dateInChicago(now), readOnly: true,
     monitorRun: process.env.GITHUB_RUN_ID ? `https://github.com/${REPO}/actions/runs/${process.env.GITHUB_RUN_ID}` : null, status: 'unknown' };
   try {
-    const report = await inspect(ROOT, now), approvals = {};
-    for (const item of report.items) approvals[item.slug] = await json(join(ROOT, PACK, 'approvals', `${item.slug}.json`), null);
+    const report = await inspect(root, now), approvals = {};
+    for (const item of report.items) approvals[item.slug] = await json(join(root, PACK, 'approvals', `${item.slug}.json`), null);
     const selection = selectMonitorTarget(report, approvals, now);
     result.slot = selection.slot;
     if (selection.item) {
@@ -163,15 +181,30 @@ export async function monitor(now = new Date()) {
         englishUrl: ORIGIN + routeOf(selection.item), chineseUrl: ORIGIN + '/zh' + routeOf(selection.item) };
     }
     if (!selection.item) { result.status = 'no_due'; result.message = 'No approved unpublished topic is due in this Dallas publication slot.'; return result; }
-    // Invalid approval/site facts are unknown state, not evidence that GitHub missed a trigger.
-    await validateSelectedApproval(selection.item, approvals[selection.item.slug], now);
+    // An invalid approval is a known release blocker. Keep collecting GET-only evidence,
+    // but fail visibly and never report a scheduler outage or verified publication.
+    try { await validateSelectedApproval(selection.item, approvals[selection.item.slug], now, root); }
+    catch (error) {
+      if (!(error instanceof ApprovalError)) throw error;
+      const approval = approvals[selection.item.slug], configSha256 = sha256(await readFile(join(root, 'src/config.mjs')));
+      result.status = 'approval_blocked'; result.error = error.message;
+      result.message = 'Owner review and exact-version reapproval are required. No publication or retry was attempted.';
+      result.approval = { code: error.code, approvedAt: approval?.approvedAt, approvalRun: approval?.approvalRun,
+        approvedDraftSha256: approval?.draftSha256, currentDraftSha256: selection.item.draftSha256,
+        approvedConfigSha256: approval?.configSha256, currentConfigSha256: configSha256 };
+      try { result.publication = await observeFormalPresence(selection.item, { get, probe }); }
+      catch (observationError) { result.publication = { state: 'unknown', verified: false, error: observationError.message }; }
+      try { result.publisherRuns = (await readPublisherRuns(selection.slot, get)).map(r => ({ id: r.id, event: r.event, status: r.status, conclusion: r.conclusion, createdAt: r.created_at, url: r.html_url })); }
+      catch (historyError) { result.publisherHistoryError = historyError.message; }
+      return result;
+    }
     // Run history is read even for a verified release, so the artifact includes independent scheduler evidence.
-    const runs = await readPublisherRuns(selection.slot);
+    const runs = await readPublisherRuns(selection.slot, get);
     result.publisherRuns = runs.map(r => ({ id: r.id, event: r.event, status: r.status, conclusion: r.conclusion, createdAt: r.created_at, url: r.html_url }));
     result.status = classifyPublisher(selection, runs, now);
     if (result.status === 'verify') {
       result.release = { version: selection.entry.version, verifiedAt: selection.entry.verifiedAt, releaseSourceSha256: selection.entry.releaseSourceSha256 };
-      try { result.checks = await verifyRelease(selection, approvals[selection.item.slug], now); result.status = 'verified'; }
+      try { result.checks = await verifyRelease(selection, approvals[selection.item.slug], now, root, get); result.status = 'verified'; }
       catch (error) { result.status = 'verification_failed'; throw error; }
     }
     result.message = ({ verified: 'Both formal language pages, approved content, discovery and first-party links verified with fresh GET requests.',

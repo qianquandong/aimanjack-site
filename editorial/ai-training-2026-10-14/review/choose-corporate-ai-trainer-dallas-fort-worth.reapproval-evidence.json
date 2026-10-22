@@ -1,0 +1,200 @@
+{
+  "reviewDateDallas": "2026-10-21",
+  "productionHead": "d999e81169550c8bcfe52bcebbf5d5502f4818f7",
+  "originalApprovalRun": 38572484838,
+  "originalApprovalCommit": "fdf16c5535c4517582de8fdba3df36d9c4d3d0d6",
+  "originalApprovalArchive": "approval-history/choose-corporate-ai-trainer-dallas-fort-worth/2026-10-14.json",
+  "originalConfigSha256": "b09c0cad21fe40d919dabb7bcc8ad081d2978e535875bcaeda73aced580ec0b5",
+  "currentConfigSha256": "a06773fafab6bc3da356d32b81abdc07795fd0c6bfd06e7d1fe85f44d208fcdb",
+  "oldDraftSha256": "99125504db029a262a6c146686efbdf5d9d15dfc5090ac7da34beb00a240a0d5",
+  "proposedDraftSha256": "2d89f87d9836a2937a304a5169b04c98cffd09f235988b2877740365c99483ed",
+  "formalOwnerApprovalForProposedVersion": false,
+  "latestConfirmedCloudMonitor": {
+    "runId": 39701130938,
+    "status": "failure",
+    "error": "Site facts changed after approval; review again"
+  },
+  "latestConfirmedPublisher": {
+    "runId": 39701109899,
+    "status": "success",
+    "releaseSteps": "skipped",
+    "published": false
+  },
+  "liveGetEvidence": {
+    "checkedAt": "2026-10-22T03:05:15.885627+00:00",
+    "method": "GET",
+    "pages": [
+      {
+        "path": "/blog/choose-corporate-ai-trainer-dallas-fort-worth/",
+        "status": 404,
+        "finalUrl": "https://aimanjack.com/blog/choose-corporate-ai-trainer-dallas-fort-worth/",
+        "sha256": "46675c75ee7c4a423a35a2aa51a6613cf656f2be90a75a57f277180d1f7509e0",
+        "containsTarget": false,
+        "title": "Page Not Found | AI Man Jack"
+      },
+      {
+        "path": "/zh/blog/choose-corporate-ai-trainer-dallas-fort-worth/",
+        "status": 404,
+        "finalUrl": "https://aimanjack.com/zh/blog/choose-corporate-ai-trainer-dallas-fort-worth/",
+        "sha256": "0504d17ceacaf90f87338d310824e77e8208b976d6a0f4e0bb238d0d0a232c8a",
+        "containsTarget": false,
+        "title": "页面不存在 | AI Man Jack"
+      },
+      {
+        "path": "/sitemap.xml",
+        "status": 200,
+        "finalUrl": "https://aimanjack.com/sitemap.xml",
+        "sha256": "accd0c95cff4caf84f801763b2b5a7dbc3cdf6f0e94ab11a2e1c26dc6749f1b9",
+        "containsTarget": false,
+        "title": null
+      },
+      {
+        "path": "/blog/",
+        "status": 200,
+        "finalUrl": "https://aimanjack.com/blog/",
+        "sha256": "84caf498d21d81c595f858fc47fcc704877ab7303e6301c89e894b1963a7782e",
+        "containsTarget": false,
+        "title": "Resources: AI Training and AI Workflow Notes | AI Man Jack"
+      },
+      {
+        "path": "/zh/blog/",
+        "status": 200,
+        "finalUrl": "https://aimanjack.com/zh/blog/",
+        "sha256": "62f42be2f3d0ae3fc64d6ba45543b7c22bacf448d0417ccaa4130d90693be4f9",
+        "containsTarget": false,
+        "title": "资源：员工 AI 培训与 AI 工作流实践笔记 | AI Man Jack"
+      },
+      {
+        "path": "/ai-training/",
+        "status": 200,
+        "finalUrl": "https://aimanjack.com/ai-training/",
+        "sha256": "9c0ece6c14d88a65d073e681a537ed3952bd470df41eabd1730c789cf964d02c",
+        "containsTarget": false,
+        "title": "Corporate AI Training for Employees | 4 Sessions | AI Man Jack"
+      },
+      {
+        "path": "/zh/ai-training/",
+        "status": 200,
+        "finalUrl": "https://aimanjack.com/zh/ai-training/",
+        "sha256": "a4db8c1f8de2f31528f3975fd1eb9dbdceaa87cadaa64d5ae8cc9f8df9da494f",
+        "containsTarget": false,
+        "title": "企业员工 AI 培训 | 四次定制实操课程 | AI Man Jack"
+      }
+    ]
+  },
+  "draftLinks": {
+    "checkedAt": "2026-10-22T03:17:35.826Z",
+    "method": "GET",
+    "results": [
+      {
+        "path": "/about/",
+        "status": 200
+      },
+      {
+        "path": "/ai-training/dallas/",
+        "status": 200
+      },
+      {
+        "path": "/ai-training/",
+        "status": 200
+      },
+      {
+        "path": "/case-studies/livestream-agency-scheduling/",
+        "status": 200
+      },
+      {
+        "path": "/templates/team-ai-training-brief/",
+        "status": 200
+      },
+      {
+        "path": "/book/",
+        "status": 200
+      },
+      {
+        "path": "/zh/about/",
+        "status": 200
+      },
+      {
+        "path": "/zh/ai-training/dallas/",
+        "status": 200
+      },
+      {
+        "path": "/zh/ai-training/",
+        "status": 200
+      },
+      {
+        "path": "/zh/case-studies/livestream-agency-scheduling/",
+        "status": 200
+      },
+      {
+        "path": "/zh/templates/team-ai-training-brief/",
+        "status": 200
+      },
+      {
+        "path": "/zh/book/",
+        "status": 200
+      }
+    ]
+  },
+  "localPatchedMonitor": {
+    "generatedAt": "2026-10-22T03:14:11.943Z",
+    "cloudRun": false,
+    "status": "approval_blocked",
+    "publication": {
+      "state": "absent",
+      "verified": false,
+      "pages": [
+        {
+          "url": "https://aimanjack.com/blog/choose-corporate-ai-trainer-dallas-fort-worth/",
+          "finalUrl": "https://aimanjack.com/blog/choose-corporate-ai-trainer-dallas-fort-worth/",
+          "status": 404,
+          "inSitemap": false,
+          "inDirectory": false
+        },
+        {
+          "url": "https://aimanjack.com/zh/blog/choose-corporate-ai-trainer-dallas-fort-worth/",
+          "finalUrl": "https://aimanjack.com/zh/blog/choose-corporate-ai-trainer-dallas-fort-worth/",
+          "status": 404,
+          "inSitemap": false,
+          "inDirectory": false
+        }
+      ]
+    },
+    "publisherRuns": [
+      {
+        "id": 39701109899,
+        "event": "schedule",
+        "status": "completed",
+        "conclusion": "success",
+        "createdAt": "2026-10-22T00:40:38Z",
+        "url": "https://github.com/qianquandong/aimanjack-site/actions/runs/39701109899"
+      },
+      {
+        "id": 39683088291,
+        "event": "schedule",
+        "status": "completed",
+        "conclusion": "success",
+        "createdAt": "2026-10-21T21:59:12Z",
+        "url": "https://github.com/qianquandong/aimanjack-site/actions/runs/39683088291"
+      },
+      {
+        "id": 39654423195,
+        "event": "schedule",
+        "status": "completed",
+        "conclusion": "success",
+        "createdAt": "2026-10-21T18:37:40Z",
+        "url": "https://github.com/qianquandong/aimanjack-site/actions/runs/39654423195"
+      },
+      {
+        "id": 39651528639,
+        "event": "schedule",
+        "status": "completed",
+        "conclusion": "success",
+        "createdAt": "2026-10-21T18:18:29Z",
+        "url": "https://github.com/qianquandong/aimanjack-site/actions/runs/39651528639"
+      }
+    ]
+  },
+  "productionModified": false,
+  "workflowsDispatched": false
+}
