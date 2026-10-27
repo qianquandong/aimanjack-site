@@ -1,0 +1,327 @@
+{
+ "generated": "2026-10-27",
+ "window": "2026-09-27..2026-10-24",
+ "days_in_window": 28,
+ "totals": {
+  "clicks": 20,
+  "impressions": 851,
+  "position": 12.9
+ },
+ "targets": [
+  {
+   "id": "t01",
+   "keyword": "corporate AI training Dallas",
+   "owner": "/ai-training/dallas/",
+   "status": "not-seen",
+   "impressions": 0,
+   "clicks": 0,
+   "position": null,
+   "top_page": null,
+   "queries": [],
+   "cooling": true
+  },
+  {
+   "id": "t02",
+   "keyword": "team AI workshop Dallas",
+   "owner": "/ai-training/dallas/",
+   "status": "not-seen",
+   "impressions": 0,
+   "clicks": 0,
+   "position": null,
+   "top_page": null,
+   "queries": [],
+   "cooling": true
+  },
+  {
+   "id": "t03",
+   "keyword": "onsite AI training Dallas",
+   "owner": "/ai-training/onsite-texas/",
+   "status": "not-seen",
+   "impressions": 0,
+   "clicks": 0,
+   "position": null,
+   "top_page": null,
+   "queries": [],
+   "cooling": false
+  },
+  {
+   "id": "t04",
+   "keyword": "Microsoft Copilot training Dallas",
+   "owner": "/ai-training/copilot/",
+   "status": "not-seen",
+   "impressions": 0,
+   "clicks": 0,
+   "position": null,
+   "top_page": null,
+   "queries": [],
+   "cooling": true
+  },
+  {
+   "id": "t05",
+   "keyword": "ChatGPT training for employees Dallas",
+   "owner": "/ai-training/chatgpt/",
+   "status": "not-seen",
+   "impressions": 0,
+   "clicks": 0,
+   "position": null,
+   "top_page": null,
+   "queries": [],
+   "cooling": true
+  },
+  {
+   "id": "t06",
+   "keyword": "AI training Plano",
+   "owner": "/ai-training/plano/",
+   "status": "not-seen",
+   "impressions": 0,
+   "clicks": 0,
+   "position": null,
+   "top_page": null,
+   "queries": [],
+   "cooling": true
+  },
+  {
+   "id": "t07",
+   "keyword": "corporate AI training Fort Worth",
+   "owner": null,
+   "status": "needs-page",
+   "impressions": 0,
+   "clicks": 0,
+   "position": null,
+   "top_page": null,
+   "queries": [],
+   "cooling": false
+  },
+  {
+   "id": "t08",
+   "keyword": "Microsoft Copilot training for business",
+   "owner": "/ai-training/copilot/",
+   "status": "not-seen",
+   "impressions": 0,
+   "clicks": 0,
+   "position": null,
+   "top_page": null,
+   "queries": [],
+   "cooling": true
+  },
+  {
+   "id": "t09",
+   "keyword": "Copilot training for executive assistants",
+   "owner": "/ai-training/copilot/",
+   "status": "not-seen",
+   "impressions": 0,
+   "clicks": 0,
+   "position": null,
+   "top_page": null,
+   "queries": [],
+   "cooling": true
+  },
+  {
+   "id": "t10",
+   "keyword": "ChatGPT training for business teams",
+   "owner": "/ai-training/chatgpt/",
+   "status": "not-seen",
+   "impressions": 0,
+   "clicks": 0,
+   "position": null,
+   "top_page": null,
+   "queries": [],
+   "cooling": true
+  },
+  {
+   "id": "t11",
+   "keyword": "Claude training for business teams",
+   "owner": "/ai-training/claude/",
+   "status": "not-seen",
+   "impressions": 0,
+   "clicks": 0,
+   "position": null,
+   "top_page": null,
+   "queries": [],
+   "cooling": true
+  },
+  {
+   "id": "t12",
+   "keyword": "AI training for business leaders",
+   "owner": "/ai-training/leadership-teams/",
+   "status": "not-seen",
+   "impressions": 0,
+   "clicks": 0,
+   "position": null,
+   "top_page": null,
+   "queries": [],
+   "cooling": true
+  },
+  {
+   "id": "t13",
+   "keyword": "AI workshop for leadership team retreat",
+   "owner": "/ai-training/leadership-teams/",
+   "status": "not-seen",
+   "impressions": 0,
+   "clicks": 0,
+   "position": null,
+   "top_page": null,
+   "queries": [],
+   "cooling": true
+  },
+  {
+   "id": "t14",
+   "keyword": "AI training for sales teams",
+   "owner": "/ai-training/sales-teams/",
+   "status": "not-seen",
+   "impressions": 0,
+   "clicks": 0,
+   "position": null,
+   "top_page": null,
+   "queries": [],
+   "cooling": true
+  },
+  {
+   "id": "t15",
+   "keyword": "AI training for operations teams",
+   "owner": "/ai-training/operations-teams/",
+   "status": "not-seen",
+   "impressions": 0,
+   "clicks": 0,
+   "position": null,
+   "top_page": null,
+   "queries": [],
+   "cooling": true
+  },
+  {
+   "id": "t16",
+   "keyword": "AI training for nonprofit staff",
+   "owner": "/ai-training/nonprofits/",
+   "status": "not-seen",
+   "impressions": 0,
+   "clicks": 0,
+   "position": null,
+   "top_page": null,
+   "queries": [],
+   "cooling": true
+  },
+  {
+   "id": "t17",
+   "keyword": "generative AI training for employees",
+   "owner": "/ai-training/",
+   "status": "not-seen",
+   "impressions": 0,
+   "clicks": 0,
+   "position": null,
+   "top_page": null,
+   "queries": [],
+   "cooling": false
+  },
+  {
+   "id": "t18",
+   "keyword": "AI literacy training for employees",
+   "owner": "/ai-training/",
+   "status": "not-seen",
+   "impressions": 0,
+   "clicks": 0,
+   "position": null,
+   "top_page": null,
+   "queries": [],
+   "cooling": false
+  },
+  {
+   "id": "t19",
+   "keyword": "AI usage policy training for employees",
+   "owner": "/blog/ai-policy-for-small-business-employees/",
+   "status": "not-seen",
+   "impressions": 0,
+   "clicks": 0,
+   "position": null,
+   "top_page": null,
+   "queries": [],
+   "cooling": true
+  },
+  {
+   "id": "t20",
+   "keyword": "hands-on AI agent workshop for teams",
+   "owner": "/ai-training/team-workshop/",
+   "status": "not-seen",
+   "impressions": 0,
+   "clicks": 0,
+   "position": null,
+   "top_page": null,
+   "queries": [],
+   "cooling": false
+  }
+ ],
+ "candidates": [
+  {
+   "rule": "striking-distance",
+   "page": "/use-cases/leadership/",
+   "query": "i run a leadership team, what ai workflows should leaders like me build?",
+   "score": 62,
+   "why": "\"i run a leadership team, what ai workflows should leaders like me build?\" at #10.3 with 12 impressions"
+  }
+ ],
+ "cooling": [
+  {
+   "page": "/ai-training/dallas/",
+   "since": "2026-10-17"
+  },
+  {
+   "page": "/blog/ai-policy-for-small-business-employees/",
+   "since": "2026-10-13"
+  },
+  {
+   "page": "/ai-training/sales-teams/",
+   "since": "2026-10-16"
+  },
+  {
+   "page": "/ai-training/marketing-teams/",
+   "since": "2026-10-16"
+  },
+  {
+   "page": "/ai-training/operations-teams/",
+   "since": "2026-10-16"
+  },
+  {
+   "page": "/ai-training/leadership-teams/",
+   "since": "2026-10-16"
+  },
+  {
+   "page": "/ai-training/copilot/",
+   "since": "2026-10-16"
+  },
+  {
+   "page": "/ai-training/chatgpt/",
+   "since": "2026-10-16"
+  },
+  {
+   "page": "/ai-training/claude/",
+   "since": "2026-10-16"
+  },
+  {
+   "page": "/ai-training/grok/",
+   "since": "2026-10-16"
+  },
+  {
+   "page": "/",
+   "since": "2026-10-17"
+  },
+  {
+   "page": "/ai-training/nonprofits/",
+   "since": "2026-10-17"
+  },
+  {
+   "page": "/ai-training/plano/",
+   "since": "2026-10-17"
+  },
+  {
+   "page": "/blog/copilot-chat-vs-microsoft-365-copilot/",
+   "since": "2026-10-17"
+  },
+  {
+   "page": "/blog/how-to-use-chatgpt-at-work/",
+   "since": "2026-10-19"
+  },
+  {
+   "page": "/blog/ai-literacy-training-for-employees/",
+   "since": "2026-10-22"
+  }
+ ]
+}
