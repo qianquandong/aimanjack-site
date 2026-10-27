@@ -159,5 +159,28 @@
         "position": null
       }
     ]
+  },
+  {
+    "date": "2026-10-26",
+    "probes": [
+      {
+        "prompt": "corporate AI training Dallas",
+        "cited": false,
+        "url": null,
+        "position": null
+      },
+      {
+        "prompt": "AI workshop for my team Dallas",
+        "cited": false,
+        "url": null,
+        "position": null
+      },
+      {
+        "prompt": "Microsoft Copilot training Dallas",
+        "cited": false,
+        "url": null,
+        "position": null
+      }
+    ]
   }
 ]
