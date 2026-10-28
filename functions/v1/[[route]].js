@@ -20,6 +20,7 @@ import { rosEventsRoute, rosEnabled } from '../../src/ros-events.mjs';
 //   GET  /v1/notifications?status=&booking=     (admin) ledger rows
 //   POST /v1/notifications/process              (admin) mark stale sends uncertain, send everything due
 //   POST /v1/notifications/requeue {ids:[…], include_bounced?}  (admin) owner-requested resend (bounced only if explicit)
+//   GET|POST /v1/admin/texts                    (admin; GET also TEXTS_READ_TOKEN) owner text inbox on the Twilio numbers (src/texts.mjs)
 // Instants are timestamptz; responses render them in the business tz with an offset (ISO 8601).
 // Revenue OS delivery is captured transactionally by database triggers; src/ros-events.mjs drains that outbox.
 
@@ -30,6 +31,7 @@ import { productionApiEnabled } from '../../src/deployment-safety.mjs';
 import { mailerliteRoute } from '../mailerlite.mjs';
 import { renderIntakeErrorPage } from '../../src/intake-error-page.mjs';
 import { ownerPush, suggestedReply } from '../../src/owner-push.mjs';
+import { textsRoute } from '../../src/texts.mjs';
 
 const SOURCES = new Set(['web', 'voice', 'sms', 'admin']);
 // 'admin' suppresses the owner's own notice, so it is honoured only with the admin token; anything else is 'web'.
@@ -838,6 +840,7 @@ export async function onRequest(ctx) {
       const cfg = describeMailConfig(env);
       return json(mailTransport(env) === 'm365' ? { ...cfg, m365: await m365Status(env, (p, o) => sb(env, p, o)) } : cfg);
     }
+    if (res === 'admin' && id === 'texts' && !extra) return await textsRoute({ env, req, url, admin: adminOk(env, req) });
     // One-time Microsoft 365 connection (delegated sign-in from the owner page): connect → poll until connected.
     if (res === 'admin' && id === 'm365' && req.method === 'POST' && ['connect', 'poll', 'disconnect'].includes(extra)) {
       if (!adminOk(env, req)) return fail(401, 'unauthorized', 'Bearer token required.');
