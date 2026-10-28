@@ -48,3 +48,13 @@ test('suggested reply: first name, company, the booking link, no price', () => {
   assert.match(zh, /^王，你好！/);
   assert.ok(zh.includes(BOOKING_LINK));
 });
+
+test('NTFY_TOKEN is sent as a bearer token; without it the request is anonymous', async (t) => {
+  const original = globalThis.fetch; t.after(() => { globalThis.fetch = original; });
+  const seen = [];
+  globalThis.fetch = async (url, o) => { seen.push(o.headers); return new Response('{}', { status: 200 }); };
+  await ownerPush({ NTFY_TOPIC: 'abc', NTFY_TOKEN: ' tk_123 ' }, full, { quick: false, companyDomain: 'acme-drilling.com' });
+  await ownerPush({ NTFY_TOPIC: 'abc' }, full, { quick: false, companyDomain: 'acme-drilling.com' });
+  assert.equal(seen[0].authorization, 'Bearer tk_123');
+  assert.equal(seen[1].authorization, undefined);
+});
