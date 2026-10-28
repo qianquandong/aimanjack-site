@@ -29,6 +29,7 @@ import { reserveMailSend, isMailQuotaError } from '../../src/mail-quota.mjs';
 import { productionApiEnabled } from '../../src/deployment-safety.mjs';
 import { mailerliteRoute } from '../mailerlite.mjs';
 import { renderIntakeErrorPage } from '../../src/intake-error-page.mjs';
+import { ownerPush, suggestedReply } from '../../src/owner-push.mjs';
 
 const SOURCES = new Set(['web', 'voice', 'sms', 'admin']);
 // 'admin' suppresses the owner's own notice, so it is honoured only with the admin token; anything else is 'web'.
@@ -422,12 +423,14 @@ function intakeOwnerText(v, receiptId) {
   const label = (k, x) => `${k}: ${x ?? ''}`;
   if (v.kind === 'quick') return [`New quick quote request (${receiptId})`, '', label('Name', v.name), label('Email', v.email), label('Tool page', v.tool),
     label('People', v.attendees), label('Approximate budget', v.budget), label('Page', v.page), label('Newsletter opt-in', v.consent_newsletter ? 'yes' : 'no'), '', 'Message:', v.workflows,
-    '', 'This is a quote request, not a booked meeting. Reply to the sender directly.'].join('\n');
+    '', 'This is a quote request, not a booked meeting. Reply to the sender directly.',
+    '', '--- Suggested reply (hit Reply, paste, edit if needed) ---', suggestedReply(v, { quick: v.kind === 'quick' })].join('\n');
   return [`New training quote request (${receiptId})`, '', label('Name', v.name), label('Email', v.email), label('Company', v.company), label('Website', v.company_website),
     label('Industry', v.industry), label('Company size', v.headcount), label('Attendees', v.attendees), label('Format', v.format),
     label('Location', v.location + (v.location_city ? ` (${v.location_city})` : '')), label('Timing', v.timing), label('Tools', v.tools),
     label('Heard about us', [v.source, v.source_detail].filter(Boolean).join(' — ')), label('Newsletter opt-in', v.consent_newsletter ? 'yes' : 'no'), '', 'Workflows:', v.workflows,
-    '', 'This is a quote request, not a booked meeting. Reply to the sender directly.'].join('\n');
+    '', 'This is a quote request, not a booked meeting. Reply to the sender directly.',
+    '', '--- Suggested reply (hit Reply, paste, edit if needed) ---', suggestedReply(v, { quick: v.kind === 'quick' })].join('\n');
 }
 
 // 2026-10-17 (Jack): every new quote request also becomes a lead + a task for Grok's Inbox Manager in the 行云 CRM, which
@@ -499,6 +502,7 @@ async function intake(env, req, ctx) {
       const subject = quick ? `[quote request] ${v.tool} · ${v.attendees ?? '?'} people · ${companyDomain}` : `[quote request] ${v.company} · ${v.format}`;
       later(sendMail(env, { to, subject, text: intakeOwnerText(v, receiptId), reply_to: v.email }), 'intake owner email failed');
     }
+    later(ownerPush(env, v, { quick, companyDomain }), 'intake owner push failed');
     if (env.CRM_INTAKE_SECRET) later(crmForward(env, { receipt_id: receiptId, kind: quick ? 'quick' : 'full', name: v.name || '', email: v.email, company: v.company || '',
       company_domain: companyDomain || '', attendees: v.attendees ?? null, budget: v.budget || '', workflows: v.workflows || '', tool: (quick ? v.tool : v.format) || '',
       page: v.page || '', lang: v.lang === 'zh' ? 'zh' : 'en', consent_newsletter: v.consent_newsletter === true, received_at: new Date().toISOString() }), 'intake crm forward failed');
@@ -626,6 +630,7 @@ async function intakeV2(env, req, ctx) {
     }
     // The CRM receiver's schema is strict, so the link to the earlier receipt travels as a note at the top of the message.
     const note = prev ? `[可能是回执 ${prev.slice(0, 8)} 的修改 / possibly a revision of receipt ${prev.slice(0, 8)}]\n` : '';
+    later(ownerPush(env, v, { quick, companyDomain }), 'intake owner push failed');
     if (env.CRM_INTAKE_SECRET) later(crmForward(env, { receipt_id: receiptId, kind: quick ? 'quick' : 'full', name: v.name || '', email: v.email, company: v.company || '',
       company_domain: companyDomain || '', attendees: v.attendees ?? null, budget: v.budget || '', workflows: note + (v.workflows || ''), tool: (quick ? v.tool : v.format) || '',
       page: v.page || '', lang: v.lang === 'zh' ? 'zh' : 'en', consent_newsletter: v.consent_newsletter === true, received_at: new Date().toISOString() }), 'intake crm forward failed');
