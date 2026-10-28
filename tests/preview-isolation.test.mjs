@@ -12,7 +12,7 @@ import { stagePreview } from '../scripts/stage-preview.mjs';
 test('every preview API fails closed even with production credentials or a wrong mode flag', async (t) => {
   let externalCalls = 0;
   t.mock.method(globalThis, 'fetch', () => { externalCalls++; throw new Error('preview must not call any external service'); });
-  const endpoints = ['availability', 'bookings', 'bookings/some-id', 'coupons', 'admin/email-config', 'admin/m365/connect', 'admin/m365/poll', 'admin/m365/disconnect', 'notifications/process', 'notifications/requeue', 'intake', 'ros-events', 'ros-events/process', 'ros-events/1/replay', 'mailerlite/process', 'mailerlite/health', 'mailerlite/webhook'];
+  const endpoints = ['availability', 'bookings', 'bookings/some-id', 'coupons', 'admin/email-config', 'admin/m365/connect', 'admin/m365/poll', 'admin/m365/disconnect', 'admin/texts', 'notifications/process', 'notifications/requeue', 'intake', 'ros-events', 'ros-events/process', 'ros-events/1/replay', 'mailerlite/process', 'mailerlite/health', 'mailerlite/webhook'];
   const processToken = 'p'.repeat(40), webhookSecret = 'w'.repeat(32);
   const webhookBody = JSON.stringify({ id: '42', email: 'isolation@example.invalid', status: 'unsubscribed', event: 'subscriber.unsubscribed' });
   const headers = { authorization: `Bearer ${processToken}`, 'content-type': 'application/json',

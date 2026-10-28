@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Texts">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<title>Texts · AI Man Jack (owner)</title>
+<style>
+  :root{--bg:#fff;--fg:#14171a;--muted:#5b6670;--line:#e3e7eb;--card:#f7f9fa;--bad:#b3261e;--accent:#1a56db;--mine:#1a56db;--mine-fg:#fff;--theirs:#eceff2}
+  @media (prefers-color-scheme:dark){:root{--bg:#0f1214;--fg:#e8ecef;--muted:#9aa5ae;--line:#263038;--card:#161b1f;--bad:#f2867e;--accent:#7aa2ff;--mine:#2f5fd0;--mine-fg:#fff;--theirs:#1f262c}}
+  *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;padding:16px;padding-top:calc(16px + env(safe-area-inset-top));padding-bottom:calc(16px + env(safe-area-inset-bottom))}
+  h1{font-size:20px;margin:0}.muted{color:var(--muted);font-size:14px}.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  input,textarea,button{font:inherit;border-radius:10px;border:1px solid var(--line);padding:10px 12px;background:var(--card);color:var(--fg)}
+  input,textarea{flex:1;min-width:0}textarea{resize:vertical;min-height:72px;width:100%}
+  button{cursor:pointer;background:var(--accent);color:#fff;border:0}button.secondary{background:var(--card);color:var(--fg);border:1px solid var(--line)}button:disabled{opacity:.5}
+  a{color:var(--accent)}.top{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:12px}
+  .thread{display:block;width:100%;text-align:left;background:var(--card);color:var(--fg);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin:8px 0}
+  .thread .who{font-weight:600;display:flex;justify-content:space-between;gap:8px}.thread .who span{font-weight:400;color:var(--muted);font-size:13px}
+  .thread .last{color:var(--muted);font-size:14px;margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .new{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--accent);margin-right:6px}
+  .msgs{display:flex;flex-direction:column;gap:6px;margin:12px 0}
+  .b{max-width:82%;padding:8px 12px;border-radius:16px;white-space:pre-wrap;word-wrap:break-word}
+  .in{align-self:flex-start;background:var(--theirs)}.out{align-self:flex-end;background:var(--mine);color:var(--mine-fg)}
+  .meta{font-size:11px;color:var(--muted);margin:-2px 4px 4px}.meta.r{align-self:flex-end}.meta.l{align-self:flex-start}
+  .banner{border-radius:12px;padding:10px 12px;margin:10px 0;border:1px solid var(--bad);color:var(--bad)}
+  .compose{position:sticky;bottom:0;background:var(--bg);padding-top:8px}
+  label.check{font-size:14px;color:var(--muted);display:flex;gap:6px;align-items:center}
+</style>
+</head>
+<body>
+<form id="login" autocomplete="off">
+  <h1>短信</h1>
+  <p class="muted">只有 Jack 能用。输入后台密码（admin token）。</p>
+  <div class="row"><input id="token" type="password" placeholder="Admin token" aria-label="Admin token" autocomplete="current-password"><button type="submit">打开</button></div>
+  <label class="check"><input id="remember" type="checkbox" checked style="flex:0"> 在这台手机上记住（不用每次输入）</label>
+</form>
+
+<div id="app" hidden>
+  <div id="listView">
+    <div class="top"><h1>短信</h1><div class="row"><button id="newBtn" type="button">新短信</button><button id="lock" class="secondary" type="button">锁定</button></div></div>
+    <p id="lines" class="muted"></p>
+    <div id="alerts"></div>
+    <div id="threads"><p class="muted">加载中…</p></div>
+  </div>
+  <div id="threadView" hidden>
+    <div class="top"><button id="back" class="secondary" type="button">‹ 返回</button><div style="text-align:right"><b id="peer"></b><div class="muted" id="via"></div></div></div>
+    <div id="talerts"></div>
+    <div id="msgs" class="msgs"></div>
+    <div class="compose">
+      <input id="to" type="tel" placeholder="对方号码，比如 214 555 0101" hidden>
+      <textarea id="body" placeholder="写回复…" maxlength="1600"></textarea>
+      <div class="row" style="justify-content:space-between;margin-top:6px"><span class="muted" id="count"></span><button id="send" type="button">发送</button></div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  var KEY = 'amj-texts-token', SEEN = 'amj-texts-seen', POLL_MS = 20000;
+  var $ = function (id) { return document.getElementById(id); };
+  var esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); };
+  var get = function (store, k) { try { return window[store].getItem(k); } catch (e) { return null; } };
+  var set = function (store, k, v) { try { if (v == null) window[store].removeItem(k); else window[store].setItem(k, v); } catch (e) {} };
+  var token = function () { return get('sessionStorage', KEY) || get('localStorage', KEY) || ''; };
+  var seen = function () { try { return JSON.parse(get('localStorage', SEEN) || '{}'); } catch (e) { return {}; } };
+  var markSeen = function (peer, at) { var s = seen(); s[peer] = at; set('localStorage', SEEN, JSON.stringify(s)); };
+  var fmt = function (n) { var m = /^\+1(\d{3})(\d{3})(\d{4})$/.exec(n || ''); return m ? '(' + m[1] + ') ' + m[2] + '-' + m[3] : n; };
+  var when = function (iso) { var d = new Date(iso), now = new Date(); return d.toDateString() === now.toDateString() ? d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }) : d.toLocaleDateString([], { month: 'short', day: 'numeric' }) + ' ' + d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }); };
+  var why = { 21610: '对方退订了（回过 STOP），不能再发。', 21211: '号码不对。', 21408: '这个地区不能发。', 30007: '运营商拦截了。', 30034: '号码还没完成 A2P 登记，运营商拦截。' };
+  function api(path, opts) {
+    opts = opts || {};
+    return fetch('/v1/admin/texts' + path, { method: opts.method || 'GET', headers: { authorization: 'Bearer ' + token(), 'content-type': 'application/json' }, body: opts.body ? JSON.stringify(opts.body) : undefined, cache: 'no-store', referrerPolicy: 'no-referrer' })
+      .then(function (r) {
+        if (r.status === 401) { lock(); throw new Error('密码不对，请重新输入。'); }
+        return r.json().then(function (d) {
+          if (r.status === 503 && d.missing) throw new Error('还没设置好：' + d.missing.join(', '));
+          if (!r.ok) throw new Error((why[d.code] || '出错了') + (d.code ? '（代码 ' + d.code + '）' : ''));
+          return d;
+        });
+      });
+  }
+  var current = null, timer = null;
+  function banner(id, e) { $(id).innerHTML = e ? '<div class="banner">' + esc(e.message || e) + '</div>' : ''; }
+  function loadList() {
+    return api('').then(function (d) {
+      banner('alerts');
+      $('lines').textContent = '号码：' + d.numbers.map(fmt).join('、');
+      var s = seen();
+      $('threads').innerHTML = d.threads.length ? d.threads.map(function (t) {
+        var fresh = t.last_in_at && (!s[t.with] || t.last_in_at > s[t.with]);
+        var last = (t.last.direction === 'out' ? '我：' : '') + (t.last.body || (t.last.media ? '[图片]' : ''));
+        return '<button class="thread" type="button" data-with="' + esc(t.with) + '" data-via="' + esc(t.via) + '"><div class="who"><div>' + (fresh ? '<i class="new"></i>' : '') + esc(fmt(t.with)) + '</div><span>' + esc(when(t.last.at)) + '</span></div><div class="last">' + esc(last) + '</div></button>';
+      }).join('') : '<p class="muted">还没有短信。</p>';
+      Array.prototype.forEach.call(document.querySelectorAll('.thread'), function (b) { b.onclick = function () { openThread(b.dataset.with); }; });
+    }).catch(function (e) { banner('alerts', e); });
+  }
+  function renderThread(d) {
+    current = { with: d.with, via: d.via };
+    $('peer').innerHTML = '<a href="tel:' + esc(d.with) + '">' + esc(fmt(d.with)) + '</a>';
+    $('via').textContent = '用 ' + fmt(d.via) + ' 回复';
+    $('msgs').innerHTML = d.messages.map(function (m) {
+      var side = m.direction === 'in' ? 'in' : 'out';
+      var status = side === 'out' && /failed|undelivered/.test(m.status) ? ' · 没发出去' + (why[m.error_code] ? '：' + why[m.error_code] : (m.error_code ? '（' + m.error_code + '）' : '')) : '';
+      return '<div class="b ' + side + '">' + esc(m.body || '') + (m.media ? (m.body ? '\n' : '') + '[图片 ' + m.media + ']' : '') + '</div><div class="meta ' + (side === 'in' ? 'l' : 'r') + '">' + esc(when(m.at)) + esc(status) + '</div>';
+    }).join('') || '<p class="muted">还没有消息。</p>';
+    var lastIn = d.messages.filter(function (m) { return m.direction === 'in'; }).pop();
+    if (lastIn) markSeen(d.with, lastIn.at);
+    window.scrollTo(0, document.body.scrollHeight);
+  }
+  function openThread(peer) {
+    $('listView').hidden = true; $('threadView').hidden = false; $('to').hidden = true; banner('talerts');
+    $('msgs').innerHTML = '<p class="muted">加载中…</p>';
+    return api('?with=' + encodeURIComponent(peer)).then(renderThread).catch(function (e) { banner('talerts', e); });
+  }
+  function newThread() {
+    current = null; $('listView').hidden = true; $('threadView').hidden = false; banner('talerts');
+    $('peer').textContent = '新短信'; $('via').textContent = ''; $('msgs').innerHTML = ''; $('to').hidden = false; $('to').value = ''; $('to').focus();
+  }
+  function e164(raw) { var d = String(raw).replace(/[^\d+]/g, ''); if (/^\d{10}$/.test(d)) return '+1' + d; if (/^1\d{10}$/.test(d)) return '+' + d; return d; }
+  $('send').onclick = function () {
+    var body = $('body').value.trim(), to = current ? current.with : e164($('to').value);
+    if (!body) return;
+    if (!/^\+[1-9]\d{7,14}$/.test(to)) { banner('talerts', '号码格式不对。'); return; }
+    var btn = this; btn.disabled = true;
+    api('', { method: 'POST', body: { to: to, body: body, from: current ? current.via : undefined } })
+      .then(function () { $('body').value = ''; $('count').textContent = ''; return openThread(to); })
+      .catch(function (e) { banner('talerts', e); })
+      .then(function () { btn.disabled = false; });
+  };
+  $('body').oninput = function () { var n = $('body').value.length; $('count').textContent = n > 160 ? n + ' 字，会分成 ' + Math.ceil(n / 153) + ' 条' : ''; };
+  $('back').onclick = function () { current = null; $('threadView').hidden = true; $('listView').hidden = false; loadList(); };
+  $('newBtn').onclick = newThread;
+  function tick() { if (document.hidden || !token()) return; if (current && $('body').value === '') openThread(current.with); else if (!current && !$('listView').hidden) loadList(); }
+  function start() { $('login').hidden = true; $('app').hidden = false; loadList(); clearInterval(timer); timer = setInterval(tick, POLL_MS); }
+  function lock() { clearInterval(timer); set('sessionStorage', KEY, null); set('localStorage', KEY, null); $('app').hidden = true; $('login').hidden = false; }
+  $('lock').onclick = lock;
+  document.addEventListener('visibilitychange', tick);
+  $('login').onsubmit = function (e) {
+    e.preventDefault(); var v = $('token').value.trim(); if (!v) return;
+    set($('remember').checked ? 'localStorage' : 'sessionStorage', KEY, v); $('token').value = ''; start();
+  };
+  if (token()) start();
+})();
+</script>
+</body>
+</html>

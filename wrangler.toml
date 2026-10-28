@@ -47,6 +47,13 @@ SITE_ORIGIN = "https://aimanjack.com"
 # inboxes, max 5, each gets its own message). Verify the effective value (masked) with
 #   curl -H "authorization: Bearer $ADMIN_TOKEN" https://aimanjack.com/v1/admin/email-config
 OWNER_EMAIL = "jack@aimanjack.com"
+# Owner text inbox /admin/texts/ (2026-10-28, src/texts.mjs): our Twilio numbers, read and replied to via Twilio's API.
+# (469) 425-4142 = A2P-registered SMS line; (469) 517-2968 = demo/voice line. Inbound webhooks stay with the SMS agent.
+TEXT_NUMBERS = "+14694254142,+14695172968"
+#   npx wrangler pages secret put TWILIO_ACCOUNT_SID --project-name aimanjack   AC… (Twilio console → Account info)
+#   npx wrangler pages secret put TWILIO_API_KEY     --project-name aimanjack   SK… of a Standard API key
+#   npx wrangler pages secret put TWILIO_API_SECRET  --project-name aimanjack   that key's secret (shown once)
+#   optional: TEXT_HIDE_NUMBERS (counterparts left out, e.g. Jack's own phone), TEXTS_READ_TOKEN (32+ chars, read-only)
 
 # Secrets (not here) — production only. Do not copy live secrets into preview.
 #   npx wrangler pages secret put SB_SECRET_KEY --project-name aimanjack   Supabase secret (service-role) key
