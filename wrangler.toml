@@ -79,3 +79,9 @@ TEXT_NUMBERS = "+14694254142,+14695172968"
 # ROS_EVENT_PROCESS_TOKEN: separate process-only token; never use ADMIN_TOKEN in the scheduler.
 # ROS_WEBHOOK_URL/SECRET and ROS_BOOKING_WEBHOOK_URL/SECRET: approved HTTPS receiver routes.
 # ROS_ALERT_NTFY_URL/TOKEN: customer-sync failure alert channel (separate from booking-email alerts).
+
+# Texts forwarded from Jack's personal iPhone (2026-10-28, src/phone-inbox.mjs): an iOS Shortcuts automation POSTs each
+# incoming text to /v1/phone/inbound; the last 300 / 30 days live in this KV namespace. Production only (preview is inert).
+[[env.production.kv_namespaces]]
+binding = "PHONE_INBOX"
+id = "fc38d5d0c50842fd9c73dfa72dfea604"   # aimanjack-phone-inbox
