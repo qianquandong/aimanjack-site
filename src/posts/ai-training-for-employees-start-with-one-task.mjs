@@ -21,7 +21,7 @@ export const post = {
     ],
     sections: `
 <h2>What we see in every room</h2>
-<p>Across five community talks in Plano and Dallas in 2026, each with 50 or more attendees, and one 37-guest hackathon, the same two people show up. One is overwhelmed by the number of AI products and has not picked any. The other tried a chatbot, got an impressive answer, and still cannot say how it fits their job.</p>
+<p>Across five community talks in Plano and Dallas in 2026, with 40 to 70 sign-ups each, and one 37-guest hackathon, the same two people show up. One is overwhelmed by the number of AI products and has not picked any. The other tried a chatbot, got an impressive answer, and still cannot say how it fits their job.</p>
 <p>A product demo makes both worse. The first person now has one more product to compare. The second watches another perfect answer that has nothing to do with their Tuesday. So our <a href="/ai-training/">AI training for employees</a> does not open with a tool. It opens with a task.</p>
 
 <h2>Why the first task decides everything</h2>
@@ -78,7 +78,7 @@ export const post = {
     ],
     sections: `
 <h2>每个课堂里的共同现象</h2>
-<p>2026 年，我们在 Plano 和达拉斯举办了五场社区讲座（每场 50 人以上）和一场 37 人的黑客松，每次都会遇到同样两类人。一类被层出不穷的 AI 产品弄得无所适从，至今没有选定任何一款；另一类试过聊天机器人，得到了令人印象深刻的回答，却说不清它与自己的工作有什么关系。</p>
+<p>2026 年，我们在 Plano 和达拉斯举办了五场社区讲座（每场 40 到 70 人报名）和一场 37 人的黑客松，每次都会遇到同样两类人。一类被层出不穷的 AI 产品弄得无所适从，至今没有选定任何一款；另一类试过聊天机器人，得到了令人印象深刻的回答，却说不清它与自己的工作有什么关系。</p>
 <p>产品演示只会让这两类人的问题更严重：前者多了一款需要比较的产品，后者又看了一个与自己周二的工作毫无关系的完美回答。所以我们的<a href="/zh/ai-training/">员工 AI 培训</a>不从工具讲起，而是从一项任务讲起。</p>
 
 <h2>为什么第一项任务决定成败</h2>

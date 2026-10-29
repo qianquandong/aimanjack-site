@@ -9,7 +9,7 @@ export const VENUES = {
     address: { '@type': 'PostalAddress', streetAddress: '2711 Lyndon B Johnson Fwy #136A', addressLocality: 'Dallas', addressRegion: 'TX', postalCode: '75234', addressCountry: 'US' } },
   planoLibrary: { en: 'Schimelpfenig Library, Plano', zh: 'Plano，Schimelpfenig 图书馆', short: { en: 'Plano', zh: 'Plano' },
     address: { '@type': 'PostalAddress', streetAddress: '5024 Custer Rd', addressLocality: 'Plano', addressRegion: 'TX', postalCode: '75023', addressCountry: 'US' } },
-  karaoke: { en: 'Space Karaoke Bar & Cafe, Plano', zh: 'Plano，Space Karaoke Bar & Cafe', short: { en: 'Plano', zh: 'Plano' },
+  karaoke: { en: 'Community venue, Plano', zh: 'Plano 社区活动场地', short: { en: 'Plano', zh: 'Plano' },
     address: { '@type': 'PostalAddress', addressLocality: 'Plano', addressRegion: 'TX', addressCountry: 'US' } },
   coworking: { en: 'Coworking space, 163 Town Place', zh: '163 Town Place 联合办公空间', short: { en: 'Dallas area', zh: '达拉斯周边' },
     address: { '@type': 'PostalAddress', streetAddress: '163 Town Pl', addressRegion: 'TX', addressCountry: 'US' } },

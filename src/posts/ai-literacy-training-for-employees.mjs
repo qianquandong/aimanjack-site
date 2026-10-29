@@ -27,7 +27,7 @@ export const post = {
     sections: `
 <h2>What people mean when they ask for AI literacy</h2>
 <p>The request usually arrives in one of two shapes. A manager has seen staff pasting work into chat assistants and wants everyone brought to the same baseline. Or someone in compliance has read that "AI literacy" is now an obligation in the EU and wants to know what a training programme should contain. Both are asking for AI literacy training for employees, and both need the same thing: a definition of "literate" that a manager can check on a Tuesday.</p>
-<p>A definition built on vocabulary does not work. Knowing what a large language model is, or what a token is, does not stop someone from pasting a client contract into a personal account. At the five community talks we ran in Plano and Dallas in 2026, each with 50 or more attendees, and at one 37-guest hackathon, the people who struggled were rarely missing a term. They were missing a way to decide whether an answer was good enough to use.</p>
+<p>A definition built on vocabulary does not work. Knowing what a large language model is, or what a token is, does not stop someone from pasting a client contract into a personal account. At the five community talks we ran in Plano and Dallas in 2026, with 40 to 70 sign-ups each, and at one 37-guest hackathon, the people who struggled were rarely missing a term. They were missing a way to decide whether an answer was good enough to use.</p>
 
 <h2>A definition you can check: five skills and three answers</h2>
 <p>Our <a href="/ai-training/">corporate AI training</a> is built around five practice steps. They also work as a plain definition of AI literacy for an office team. A literate employee can:</p>
@@ -102,7 +102,7 @@ export const post = {
     sections: `
 <h2>大家说“AI 素养”时，指的是什么</h2>
 <p>这类需求通常有两种来源。一种是管理者发现员工已经在把工作内容贴进各种对话式 AI，想让所有人达到同一条基线；另一种是负责合规的同事读到“AI 素养”在欧盟已成为一项义务，想知道培训该包含什么。两者要的都是员工 AI 素养培训，也都需要同一样东西：一个管理者在普通工作日就能检验的“懂 AI”的定义。</p>
-<p>靠名词解释来定义行不通。知道什么是大语言模型、什么是 token，并不能阻止有人把客户合同贴进个人账号。2026 年我们在 Plano 和达拉斯办过五场社区讲座（每场 50 人以上）和一场 37 人的黑客松，真正卡住的人很少是因为缺一个术语，而是缺少一种判断方法：这个回答够不够好、能不能拿去用。</p>
+<p>靠名词解释来定义行不通。知道什么是大语言模型、什么是 token，并不能阻止有人把客户合同贴进个人账号。2026 年我们在 Plano 和达拉斯办过五场社区讲座（每场 40 到 70 人报名）和一场 37 人的黑客松，真正卡住的人很少是因为缺一个术语，而是缺少一种判断方法：这个回答够不够好、能不能拿去用。</p>
 
 <h2>一个可以检验的定义：五项技能和三个答案</h2>
 <p>我们的<a href="/zh/ai-training/">企业 AI 培训</a>围绕五个实操步骤展开，它们也可以直接作为办公室团队 AI 素养的定义。具备 AI 素养的员工能够：</p>

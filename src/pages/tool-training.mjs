@@ -265,7 +265,7 @@ const TOOLS = {
 
 export const head = (k, h, p) => `<div class="sec-head"><div><div class="eyebrow">${k}</div><h2>${h}</h2>${p ? `<p class="lead">${p}</p>` : ''}</div></div>`;
 // Formats (no prices), local block and Google reviews: shared by the tool pages and the department pages (src/pages/department-training.mjs).
-export const sharedBlocks = (lang, pos) => { const s = SHARED[lang], rev = REVIEWS[lang].slice(0, 3);
+export const sharedBlocks = (lang, pos) => { const s = SHARED[lang], rev = REVIEWS[lang].slice(1, 4);
   return `<section class="sec tight" id="formats"><div class="wrap">${head(s.formatsK, s.formatsH, s.formatsP)}
 <div class="g3">${s.formats.map(([h, p, href]) => `<a class="card" href="${L(lang, href)}" data-event="offer_path_click" data-pos="${pos}-formats" style="text-decoration:none;color:inherit"><h3>${h}</h3><p>${p}</p><span class="muted" style="font-size:14px;font-weight:600">${s.byQuote} · ${s.see} →</span></a>`).join('')}</div></div></section>
 

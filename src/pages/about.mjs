@@ -3,16 +3,17 @@ import { EMAIL, SMS_TEL, SMS_DISPLAY, PROOF, GBP_URL } from '../config.mjs';
 import { L } from '../layout.mjs';
 import { breadcrumb } from '../components.mjs';
 import { business, person } from '../schema.mjs';
+import { EVENT_STATS } from '../content/events.mjs';
 
 const CITIES = ['Dallas', 'Fort Worth', 'Plano', 'Richardson', 'Frisco', 'McKinney', 'Arlington'];
 const C = {
   en: {
     title: 'About Jack Qian and AI Man Jack LLC, Dallas | AI Man Jack',
     description: 'AI Man Jack LLC is Jack Qian’s Dallas company for hands-on corporate AI training and AI workflow training, in English or Chinese. Built through real community sessions.',
-    crumb: 'About', h1: 'AI Man Jack helps teams learn and apply AI to <em>real work.</em>', sub: 'A one-person company in Dallas, Texas. Jack Qian designs the session, teaches it, and does the two-week follow-up himself.', heroAlt: 'Jack Qian teaching a hands-on AI session',
+    crumb: 'About', h1: 'AI Man Jack helps teams learn and apply AI to <em>real work.</em>', sub: 'Founded and taught by Jack Qian in Dallas, Texas. No sales team and no subcontracted trainers: Jack designs each session, teaches it, and does the two-week follow-up himself.', heroAlt: 'Jack Qian teaching a hands-on AI session',
     doesK: 'What the company does', does: 'AI Man Jack runs <a href="/ai-training/">hands-on AI training for business owners and teams</a>, remote across the U.S. or onsite in Dallas–Fort Worth, in English or Chinese. Each person works on a task they already do and leaves with a working AI workflow plus a way to verify its output.',
-    whoK: 'Who runs it', who: ['Jack Qian is an AI trainer, AI workflow builder and Dallas AI community organizer. By day he is a business planner at a Dallas semiconductor company; the workflows he teaches are the ones he runs on his own work first.', 'He also writes <a href="https://realagentusecases.com/" rel="noopener">Real Agent Use Cases</a>, a weekly newsletter on AI agents and workflows working professionals actually run.'],
-    stats: [[PROOF.talks, `community AI talks in Plano and Dallas, ${PROOF.perTalk} each`], [PROOF.hackathon, 'builders at one three-hour AI hackathon'], [`${PROOF.rating} ★`, `${PROOF.reviews} Google reviews`]],
+    whoK: 'Who runs it', who: ['Jack Qian is an AI trainer, AI workflow builder and Dallas AI community organizer. The workflows he teaches are the ones he runs on his own work first.', 'He also writes <a href="https://realagentusecases.com/" rel="noopener">Real Agent Use Cases</a>, a weekly newsletter on AI agents and workflows working professionals actually run.'],
+    stats: [[String(EVENT_STATS.hosted), `community AI sessions in Dallas–Fort Worth in 2026, ${EVENT_STATS.registrations} sign-ups`], [PROOF.hackathon, 'builders at one three-hour AI hackathon'], [`${PROOF.rating} ★`, `${PROOF.reviews} Google reviews`]],
     reviewSource: 'View Google reviews', reviewChecked: 'Verified',
     howK: 'How he works', howH: 'Four rules every session follows',
     how: [['Task first, tool second.', 'Every session starts with work the team already does, not with a product tour.'], ['Everyone builds.', 'No one leaves with slides alone; each person leaves with a workflow that ran.'], ['Verification is part of the exercise.', 'One output in every session is deliberately flawed, and the room has to catch it.'], ['Follow up before claiming.', 'Two weeks after a session he checks whether the workflow was tested and whether it should continue, change or stop.']],
@@ -23,10 +24,10 @@ const C = {
   zh: {
     title: '关于 Jack Qian 与 AI Man Jack LLC | AI Man Jack',
     description: 'AI Man Jack LLC 是 Jack Qian 在达拉斯创办的公司，提供实操型企业 AI 培训与 AI 工作流培训，支持中英文授课。课程在真实的社区课堂中打磨而成。',
-    crumb: '关于', h1: 'AI Man Jack 帮助团队学习 AI，<br>并将其应用于<em>真实工作</em>。', sub: '位于德州达拉斯的一人公司。课程设计、授课与两周回访，均由 Jack Qian 本人完成。', heroAlt: 'Jack Qian 正在讲授一场 AI 实操课程',
+    crumb: '关于', h1: 'AI Man Jack 帮助团队学习 AI，<br>并将其应用于<em>真实工作</em>。', sub: '由 Jack Qian 在德州达拉斯创办并亲自授课。没有销售团队，也不外包讲师：课程设计、授课与两周回访，均由他本人完成。', heroAlt: 'Jack Qian 正在讲授一场 AI 实操课程',
     doesK: '公司业务', does: 'AI Man Jack 为企业老板和团队提供<a href="/zh/ai-training/">实操型 AI 培训</a>，全美远程授课，也可在达拉斯—沃斯堡上门，中英文均可。每位学员基于自己的真实任务练习，带走一条可用的 AI 工作流以及核验输出的方法。',
-    whoK: '创始人', who: ['Jack Qian 是 AI 培训师、AI 工作流构建者，也是达拉斯 AI 社区的组织者。他的本职工作是在达拉斯一家半导体公司从事业务规划；他所教授的工作流，都先在自己的工作中实际运行过。', '他还撰写 <a href="https://realagentusecases.com/" rel="noopener">Real Agent Use Cases</a>——一份每周更新的通讯，介绍职场人士真正在用的 AI 智能体与工作流。'],
-    stats: [[PROOF.talks, `场社区 AI 讲座，Plano 与达拉斯，每场 ${PROOF.perTalk.replace('+', '')} 人以上`], [PROOF.hackathon, '人参与一场三小时的 AI 黑客松'], [`${PROOF.rating} ★`, `${PROOF.reviews} 条 Google 评价`]],
+    whoK: '创始人', who: ['Jack Qian 是 AI 培训师、AI 工作流构建者，也是达拉斯 AI 社区的组织者。他所教授的工作流，都先在自己的工作中实际运行过。', '他还撰写 <a href="https://realagentusecases.com/" rel="noopener">Real Agent Use Cases</a>——一份每周更新的通讯，介绍职场人士真正在用的 AI 智能体与工作流。'],
+    stats: [[String(EVENT_STATS.hosted), `场社区 AI 活动，2026 年在达拉斯—沃斯堡举办，共 ${EVENT_STATS.registrations} 人报名`], [PROOF.hackathon, '人参与一场三小时的 AI 黑客松'], [`${PROOF.rating} ★`, `${PROOF.reviews} 条 Google 评价`]],
     reviewSource: '查看 Google 评价', reviewChecked: '核对于',
     howK: '工作原则', howH: '每一场课程都遵循的四条原则',
     how: [['先定任务，再选工具。', '每一次课程都从团队已有的工作开始，而不是从产品介绍开始。'], ['人人动手。', '没有人只带着幻灯片离开；每位学员都带走一条实际运行过的工作流。'], ['核验是练习的一部分。', '每场课程都有一个刻意设置的错误输出，需要学员自己找出来。'], ['先回访，再下结论。', '课程两周后回访，确认工作流是否经过实测，以及应继续、调整还是停止。']],
