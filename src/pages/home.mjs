@@ -13,6 +13,7 @@ import { loc } from '../resources.mjs';
 import { templateCard } from './workflows.mjs';
 import { TOOLS, toolCard } from './freetools.mjs';
 import { REVIEWS } from './dallas.mjs';
+import { EVENT_STATS } from '../content/events.mjs';
 import { quickQuote } from '../quick-quote.mjs';
 
 const S = TRAINING.sessions, M = TRAINING.sessionMin;
@@ -28,7 +29,7 @@ const C = {
     sub: 'Jack Qian teaches non-technical teams to use <a href="/ai-training/chatgpt/">ChatGPT</a>, <a href="/ai-training/claude/">Claude</a>, Gemini or <a href="/ai-training/copilot/">Copilot</a> on work they already do. Bring a sales, marketing or operations task; build a repeatable workflow and learn how to check its output.',
     seeProgram: 'Take the AI Readiness Assessment',
     heroAlt: 'A full classroom in Dallas at one of Jack Qian’s hands-on AI workshops',
-    stats: [['Custom', 'Priced for your team’s size and goals'], [`${S} × ${M} min`, 'Live, hands-on sessions'], [PROOF.hackathon, 'builders at one Dallas AI hackathon'], [`${PROOF.rating} ★`, `<a href="${GBP_URL}" target="_blank" rel="noopener">${PROOF.reviews} Google reviews ↗</a>`]],
+    stats: [[String(EVENT_STATS.registrations), `sign-ups across ${EVENT_STATS.hosted} community AI sessions in 2026`], [`${S} × ${M} min`, 'Live, hands-on sessions'], [PROOF.hackathon, 'builders at one Dallas AI hackathon'], [`${PROOF.rating} ★`, `<a href="${GBP_URL}" target="_blank" rel="noopener">${PROOF.reviews} Google reviews ↗</a>`]],
     learnK: 'What you learn', learnH: 'Four things you can do after training',
     learn: [['Find the right AI use cases', 'Pick the tasks in your own week that are worth handing to AI, and skip the ones that are not.'], ['Build repeatable workflows', 'Go from a one-off prompt to a workflow that runs the same way next week.'], ['Verify AI output', 'Know which results can go straight out, which must be checked, and which should never be left to AI.'], ['Apply AI to real work', 'Leave with a working workflow for a task you already do, not a demo of someone else’s.']],
     roomK: 'Real rooms', roomH: 'Built in front of real people. Now applied to real businesses.',
@@ -66,7 +67,7 @@ const C = {
     sub: 'Jack Qian 带非技术团队，把 <a href="/zh/ai-training/chatgpt/">ChatGPT</a>、<a href="/zh/ai-training/claude/">Claude</a>、Gemini 或 <a href="/zh/ai-training/copilot/">Copilot</a> 用在日常工作中。从你手头的销售、市场或运营任务出发，搭建可复用的工作流，并学会核验 AI 的输出。',
     seeProgram: '做一次 AI 准备度评估',
     heroAlt: '达拉斯，Jack Qian 主讲的一场 AI 实操工作坊，教室座无虚席',
-    stats: [['定制', '按团队人数和目标报价'], [`${S} × ${M} 分钟`, '实时互动的实操课'], [PROOF.hackathon, '人参与达拉斯 AI 黑客松'], [`${PROOF.rating} ★`, `<a href="${GBP_URL}" target="_blank" rel="noopener">${PROOF.reviews} 条 Google 评价 ↗</a>`]],
+    stats: [[String(EVENT_STATS.registrations), `人报名 2026 年的 ${EVENT_STATS.hosted} 场社区 AI 活动`], [`${S} × ${M} 分钟`, '实时互动的实操课'], [PROOF.hackathon, '人参与达拉斯 AI 黑客松'], [`${PROOF.rating} ★`, `<a href="${GBP_URL}" target="_blank" rel="noopener">${PROOF.reviews} 条 Google 评价 ↗</a>`]],
     learnK: '培训成果', learnH: '培训结束后，你能做到的四件事',
     learn: [['识别合适的 AI 应用场景', '从日常工作中筛选出值得交给 AI 的任务，同时明确哪些并不适合。'], ['搭建可复用的工作流', '从一次性的提示词，升级为下周依然能稳定运行的工作流。'], ['核验 AI 的输出', '清楚哪些结果可以直接使用、哪些必须复核、哪些不应交给 AI。'], ['应用于真实工作', '带走的是针对自身任务的可用工作流，而不是别人的演示案例。']],
     roomK: '真实课堂', roomH: '先在真实课堂中打磨，如今用在真实的生意里。',
@@ -119,7 +120,7 @@ ${clientProof(lang, 'home')}
 
 ${caseProof(lang)}
 <section class="sec tight" id="testimonials"><div class="wrap">${head(c.revK, c.revH, [GBP_URL, c.revMore])}
-<div class="quote-grid">${[0, 1, 4].map((i) => REVIEWS[lang][i]).map(([name, q]) => `<figure class="quote"><span class="stars" aria-label="5 stars">★★★★★</span><blockquote style="margin:0;flex-grow:1"><p>${q}</p></blockquote><figcaption><b>${name}</b> <span>· ${REVIEWS.by[lang]}</span></figcaption></figure>`).join('')}</div></div></section>
+<div class="quote-grid">${[1, 2, 4].map((i) => REVIEWS[lang][i]).map(([name, q]) => `<figure class="quote"><span class="stars" aria-label="5 stars">★★★★★</span><blockquote style="margin:0;flex-grow:1"><p>${q}</p></blockquote><figcaption><b>${name}</b> <span>· ${REVIEWS.by[lang]}</span></figcaption></figure>`).join('')}</div></div></section>
 <section class="sec" id="teams"><div class="wrap">${head(c.teamK, c.teamH, [href(lang, '/use-cases/'), c.teamMore])}
 <div class="rows">${USE_CASES.map((u, i) => { const x = loc(u, lang); return `<a href="${href(lang, `/use-cases/${u.slug}/`)}" data-event="use_case_click" data-pos="home"><span class="n">${n2(i)}</span><h3>${x.title}</h3><p>${x.card}</p><span class="go" aria-hidden="true">→</span></a>`; }).join('')}</div><p class="rows-more"><a href="${L(lang, '/ai-training/')}#team-owners" data-event="use_case_click" data-pos="home-owners">${c.owners}</a></p></div></section>
 

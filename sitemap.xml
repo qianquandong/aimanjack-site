@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://aimanjack.com/about/</loc><lastmod>2026-10-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://aimanjack.com/zh/about/</loc><lastmod>2026-10-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://aimanjack.com/about/</loc><lastmod>2026-10-29</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://aimanjack.com/zh/about/</loc><lastmod>2026-10-29</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://aimanjack.com/blog/</loc><lastmod>2026-10-29</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://aimanjack.com/zh/blog/</loc><lastmod>2026-10-29</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://aimanjack.com/blog/hands-on-ai-agent-workshop-for-teams/</loc><lastmod>2026-10-29</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://aimanjack.com/zh/blog/hands-on-ai-agent-workshop-for-teams/</loc><lastmod>2026-10-29</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://aimanjack.com/blog/ai-literacy-training-for-employees/</loc><lastmod>2026-10-22</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://aimanjack.com/zh/blog/ai-literacy-training-for-employees/</loc><lastmod>2026-10-22</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://aimanjack.com/blog/ai-literacy-training-for-employees/</loc><lastmod>2026-10-29</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://aimanjack.com/zh/blog/ai-literacy-training-for-employees/</loc><lastmod>2026-10-29</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://aimanjack.com/blog/how-to-use-chatgpt-at-work/</loc><lastmod>2026-10-19</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://aimanjack.com/zh/blog/how-to-use-chatgpt-at-work/</loc><lastmod>2026-10-19</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://aimanjack.com/blog/copilot-chat-vs-microsoft-365-copilot/</loc><lastmod>2026-10-17</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
@@ -18,8 +18,8 @@
   <url><loc>https://aimanjack.com/zh/blog/ai-policy-for-small-business-employees/</loc><lastmod>2026-10-17</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://aimanjack.com/blog/ai-training-for-office-managers/</loc><lastmod>2026-10-17</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://aimanjack.com/zh/blog/ai-training-for-office-managers/</loc><lastmod>2026-10-17</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://aimanjack.com/blog/ai-training-for-employees-start-with-one-task/</loc><lastmod>2026-10-17</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://aimanjack.com/zh/blog/ai-training-for-employees-start-with-one-task/</loc><lastmod>2026-10-17</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://aimanjack.com/blog/ai-training-for-employees-start-with-one-task/</loc><lastmod>2026-10-29</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://aimanjack.com/zh/blog/ai-training-for-employees-start-with-one-task/</loc><lastmod>2026-10-29</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://aimanjack.com/resources/ai-training-curriculum-nontechnical-teams/</loc><lastmod>2026-10-17</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://aimanjack.com/zh/resources/ai-training-curriculum-nontechnical-teams/</loc><lastmod>2026-10-17</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://aimanjack.com/resources/chatgpt-vs-ai-agents/</loc><lastmod>2026-10-17</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
@@ -32,18 +32,18 @@
   <url><loc>https://aimanjack.com/zh/case-studies/livestream-agency-scheduling/</loc><lastmod>2026-10-17</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://aimanjack.com/contact/</loc><lastmod>2026-10-17</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://aimanjack.com/zh/contact/</loc><lastmod>2026-10-17</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://aimanjack.com/ai-training/dallas/</loc><lastmod>2026-10-18</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://aimanjack.com/zh/ai-training/dallas/</loc><lastmod>2026-10-18</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://aimanjack.com/ai-training/sales-teams/</loc><lastmod>2026-10-19</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://aimanjack.com/zh/ai-training/sales-teams/</loc><lastmod>2026-10-19</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://aimanjack.com/ai-training/marketing-teams/</loc><lastmod>2026-10-19</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://aimanjack.com/zh/ai-training/marketing-teams/</loc><lastmod>2026-10-19</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://aimanjack.com/ai-training/operations-teams/</loc><lastmod>2026-10-19</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://aimanjack.com/zh/ai-training/operations-teams/</loc><lastmod>2026-10-19</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://aimanjack.com/ai-training/leadership-teams/</loc><lastmod>2026-10-19</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://aimanjack.com/zh/ai-training/leadership-teams/</loc><lastmod>2026-10-19</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://aimanjack.com/ai-training/nonprofits/</loc><lastmod>2026-10-19</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://aimanjack.com/zh/ai-training/nonprofits/</loc><lastmod>2026-10-19</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://aimanjack.com/ai-training/dallas/</loc><lastmod>2026-10-29</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://aimanjack.com/zh/ai-training/dallas/</loc><lastmod>2026-10-29</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://aimanjack.com/ai-training/sales-teams/</loc><lastmod>2026-10-29</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://aimanjack.com/zh/ai-training/sales-teams/</loc><lastmod>2026-10-29</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://aimanjack.com/ai-training/marketing-teams/</loc><lastmod>2026-10-29</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://aimanjack.com/zh/ai-training/marketing-teams/</loc><lastmod>2026-10-29</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://aimanjack.com/ai-training/operations-teams/</loc><lastmod>2026-10-29</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://aimanjack.com/zh/ai-training/operations-teams/</loc><lastmod>2026-10-29</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://aimanjack.com/ai-training/leadership-teams/</loc><lastmod>2026-10-29</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://aimanjack.com/zh/ai-training/leadership-teams/</loc><lastmod>2026-10-29</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://aimanjack.com/ai-training/nonprofits/</loc><lastmod>2026-10-29</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://aimanjack.com/zh/ai-training/nonprofits/</loc><lastmod>2026-10-29</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://aimanjack.com/events/</loc><lastmod>2026-10-17</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://aimanjack.com/zh/events/</loc><lastmod>2026-10-17</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://aimanjack.com/events/dallas-openclaw-meetup-2026-04-02/</loc><lastmod>2026-10-18</lastmod><changefreq>yearly</changefreq><priority>0.6</priority></url>
@@ -64,8 +64,8 @@
   <url><loc>https://aimanjack.com/zh/tools/</loc><lastmod>2026-10-17</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://aimanjack.com/tools/ai-readiness-assessment/</loc><lastmod>2026-10-17</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
   <url><loc>https://aimanjack.com/zh/tools/ai-readiness-assessment/</loc><lastmod>2026-10-17</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://aimanjack.com/</loc><lastmod>2026-10-19</lastmod><changefreq>weekly</changefreq><priority>1</priority></url>
-  <url><loc>https://aimanjack.com/zh/</loc><lastmod>2026-10-19</lastmod><changefreq>weekly</changefreq><priority>1</priority></url>
+  <url><loc>https://aimanjack.com/</loc><lastmod>2026-10-29</lastmod><changefreq>weekly</changefreq><priority>1</priority></url>
+  <url><loc>https://aimanjack.com/zh/</loc><lastmod>2026-10-29</lastmod><changefreq>weekly</changefreq><priority>1</priority></url>
   <url><loc>https://aimanjack.com/privacy</loc><lastmod>2026-10-17</lastmod><changefreq>yearly</changefreq><priority>0.3</priority></url>
   <url><loc>https://aimanjack.com/zh/privacy</loc><lastmod>2026-10-17</lastmod><changefreq>yearly</changefreq><priority>0.3</priority></url>
   <url><loc>https://aimanjack.com/sms-terms</loc><lastmod>2026-10-17</lastmod><changefreq>yearly</changefreq><priority>0.3</priority></url>
@@ -76,8 +76,8 @@
   <url><loc>https://aimanjack.com/zh/ai-training/team-workshop/</loc><lastmod>2026-10-17</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://aimanjack.com/ai-training/onsite-texas/</loc><lastmod>2026-10-17</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://aimanjack.com/zh/ai-training/onsite-texas/</loc><lastmod>2026-10-17</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://aimanjack.com/ai-training/plano/</loc><lastmod>2026-10-19</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://aimanjack.com/zh/ai-training/plano/</loc><lastmod>2026-10-19</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://aimanjack.com/ai-training/plano/</loc><lastmod>2026-10-29</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://aimanjack.com/zh/ai-training/plano/</loc><lastmod>2026-10-29</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://aimanjack.com/templates/</loc><lastmod>2026-10-17</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://aimanjack.com/zh/templates/</loc><lastmod>2026-10-17</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://aimanjack.com/templates/sales-meeting-prep/</loc><lastmod>2026-10-17</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
@@ -108,16 +108,16 @@
   <url><loc>https://aimanjack.com/zh/templates/ai-data-boundaries-one-pager/</loc><lastmod>2026-10-17</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://aimanjack.com/templates/two-week-workflow-review/</loc><lastmod>2026-10-17</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://aimanjack.com/zh/templates/two-week-workflow-review/</loc><lastmod>2026-10-17</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://aimanjack.com/ai-training/copilot/</loc><lastmod>2026-10-19</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://aimanjack.com/zh/ai-training/copilot/</loc><lastmod>2026-10-19</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://aimanjack.com/ai-training/chatgpt/</loc><lastmod>2026-10-19</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://aimanjack.com/zh/ai-training/chatgpt/</loc><lastmod>2026-10-19</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://aimanjack.com/ai-training/claude/</loc><lastmod>2026-10-19</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://aimanjack.com/zh/ai-training/claude/</loc><lastmod>2026-10-19</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://aimanjack.com/ai-training/grok/</loc><lastmod>2026-10-19</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://aimanjack.com/zh/ai-training/grok/</loc><lastmod>2026-10-19</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://aimanjack.com/ai-training/</loc><lastmod>2026-10-18</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://aimanjack.com/zh/ai-training/</loc><lastmod>2026-10-18</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://aimanjack.com/ai-training/copilot/</loc><lastmod>2026-10-29</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://aimanjack.com/zh/ai-training/copilot/</loc><lastmod>2026-10-29</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://aimanjack.com/ai-training/chatgpt/</loc><lastmod>2026-10-29</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://aimanjack.com/zh/ai-training/chatgpt/</loc><lastmod>2026-10-29</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://aimanjack.com/ai-training/claude/</loc><lastmod>2026-10-29</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://aimanjack.com/zh/ai-training/claude/</loc><lastmod>2026-10-29</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://aimanjack.com/ai-training/grok/</loc><lastmod>2026-10-29</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://aimanjack.com/zh/ai-training/grok/</loc><lastmod>2026-10-29</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://aimanjack.com/ai-training/</loc><lastmod>2026-10-29</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://aimanjack.com/zh/ai-training/</loc><lastmod>2026-10-29</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
   <url><loc>https://aimanjack.com/use-cases/</loc><lastmod>2026-10-17</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://aimanjack.com/zh/use-cases/</loc><lastmod>2026-10-17</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://aimanjack.com/use-cases/sales/</loc><lastmod>2026-10-17</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>

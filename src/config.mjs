@@ -36,7 +36,8 @@ export const FEATURES = {
 
 // Training proof and price anchor. Real counts only — never bump these for marketing.
 // Google Maps (GBP_URL), checked 2026-10-12: 17 reviews; histogram shows all 17 at five stars.
-export const PROOF = { talks: 5, perTalk: '50+', hackathon: 37, reviews: 17, rating: '5.0', reviewsCheckedOn: '2026-10-12' };
+// talks = hosted sessions other than the hackathon; per-session counts and totals come from src/content/events.mjs (EVENT_STATS).
+export const PROOF = { talks: 5, hackathon: 37, reviews: 17, rating: '5.0', reviewsCheckedOn: '2026-10-12' };
 // The only public offer since 2026-09-28: the four-session program, priced per person. The half-day workshop was taken off the
 // site (not repriced); a 90-minute session is mentioned only as a shorter first step. Change a price here only.
 export const TRAINING = { sessions: 4, sessionMin: 90 };   // no public price (Jack, 2026-10-17): every format is quoted per team

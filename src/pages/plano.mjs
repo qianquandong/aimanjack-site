@@ -107,7 +107,7 @@ const page = (lang) => {
 <section class="sec tight" id="formats"><div class="wrap">${head(c.fmtK, c.fmtH)}${trainingFormatTable(lang)}</div></section>
 
 <section class="sec tight" id="testimonials"><div class="wrap">${head(c.revK, c.revH, '', `<a class="more" href="${GBP_URL}" target="_blank" rel="noopener">${c.revMore}</a>`)}
-<div class="quote-grid">${[0, 2, 4].map((i) => REVIEWS[lang][i]).map(([name, q]) => `<figure class="quote"><span class="stars" aria-label="5 stars">★★★★★</span><blockquote style="margin:0;flex-grow:1"><p>${q}</p></blockquote><figcaption><b>${name}</b> <span>· ${REVIEWS.by[lang]}</span></figcaption></figure>`).join('')}</div></div></section>
+<div class="quote-grid">${[1, 3, 4].map((i) => REVIEWS[lang][i]).map(([name, q]) => `<figure class="quote"><span class="stars" aria-label="5 stars">★★★★★</span><blockquote style="margin:0;flex-grow:1"><p>${q}</p></blockquote><figcaption><b>${name}</b> <span>· ${REVIEWS.by[lang]}</span></figcaption></figure>`).join('')}</div></div></section>
 
 <section class="sec tight" id="plan-by-team"><div class="wrap"><h2 class="h2-sm">${c.linksH}</h2><p>${links.map(([p, t]) => `<a href="${L(lang, p)}">${t}</a>`).join(zh ? '、' : ' · ')}</p></div></section>
 
