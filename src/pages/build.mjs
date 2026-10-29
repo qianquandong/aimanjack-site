@@ -96,8 +96,8 @@ const page = (lang) => {
 <section class="sec tight" id="deliverables"><div class="wrap">${head(c.getK, c.getH)}
 <div class="g2"><div class="oak">${ticks(c.get)}</div><div class="oak"><h3>${c.excH}</h3>${ticks(c.exc, ' x')}</div></div></div></section>
 
-<section class="sec tight" id="case"><div class="wrap g2" style="gap:24px"><div class="big-card"><div class="eyebrow">${c.caseK}</div><h2>${c.caseH}</h2><p>${c.caseP}</p><p><a href="${L(lang, CASE)}" data-event="case_study_click" data-pos="build">${c.caseLink} →</a></p></div>
-<div class="big-card"><dl class="kv">${c.caseFacts.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join('')}</dl></div></div></section>
+<section class="sec tight" id="case"><div class="wrap"><div class="big-card"><div class="eyebrow">${c.caseK}</div><h2>${c.caseH}</h2><p>${c.caseP}</p>
+<dl class="kv">${c.caseFacts.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join('')}</dl><p><a href="${L(lang, CASE)}" data-event="case_study_click" data-pos="build">${c.caseLink} →</a></p></div></div></section>
 
 <section class="sec tight" id="pricing"><div class="wrap"><div class="big-card oakc"><div class="eyebrow">${c.priceK}</div><h2>${c.priceH}</h2><p>${c.priceP}</p>${ctas('build-pricing', false)}</div></div></section>
 
