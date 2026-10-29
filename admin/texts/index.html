@@ -29,6 +29,8 @@
   .banner{border-radius:12px;padding:10px 12px;margin:10px 0;border:1px solid var(--bad);color:var(--bad)}
   .compose{position:sticky;bottom:0;background:var(--bg);padding-top:8px}
   label.check{font-size:14px;color:var(--muted);display:flex;gap:6px;align-items:center}
+  h2.sec{font-size:15px;margin:18px 0 4px;display:flex;justify-content:space-between;align-items:center;gap:8px}button.small{padding:6px 10px;font-size:14px}
+  .setup{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:14px}.setup code{display:block;word-break:break-all;margin:4px 0 8px;font-size:13px}
 </style>
 </head>
 <body>
@@ -44,13 +46,18 @@
     <div class="top"><h1>短信</h1><div class="row"><button id="newBtn" type="button">新短信</button><button id="lock" class="secondary" type="button">锁定</button></div></div>
     <p id="lines" class="muted"></p>
     <div id="alerts"></div>
+    <h2 class="sec"><span>私人手机 <span class="muted">（iPhone 转发，只读）</span></span><button id="setupBtn" class="secondary small" type="button">设置转发</button></h2>
+    <div id="setup" class="setup" hidden></div>
+    <div id="phone"><p class="muted">加载中…</p></div>
+    <h2 class="sec"><span>Twilio 号码</span></h2>
     <div id="threads"><p class="muted">加载中…</p></div>
   </div>
   <div id="threadView" hidden>
     <div class="top"><button id="back" class="secondary" type="button">‹ 返回</button><div style="text-align:right"><b id="peer"></b><div class="muted" id="via"></div></div></div>
     <div id="talerts"></div>
     <div id="msgs" class="msgs"></div>
-    <div class="compose">
+    <p id="phoneReply" class="muted" hidden></p>
+    <div class="compose" id="compose">
       <input id="to" type="tel" placeholder="对方号码，比如 214 555 0101" hidden>
       <textarea id="body" placeholder="写回复…" maxlength="1600"></textarea>
       <div class="row" style="justify-content:space-between;margin-top:6px"><span class="muted" id="count"></span><button id="send" type="button">发送</button></div>
@@ -73,17 +80,50 @@
   var why = { 21610: '对方退订了（回过 STOP），不能再发。', 21211: '号码不对。', 21408: '这个地区不能发。', 30007: '运营商拦截了。', 30034: '号码还没完成 A2P 登记，运营商拦截。' };
   function api(path, opts) {
     opts = opts || {};
-    return fetch('/v1/admin/texts' + path, { method: opts.method || 'GET', headers: { authorization: 'Bearer ' + token(), 'content-type': 'application/json' }, body: opts.body ? JSON.stringify(opts.body) : undefined, cache: 'no-store', referrerPolicy: 'no-referrer' })
+    return fetch((opts.base || '/v1/admin/texts') + path, { method: opts.method || 'GET', headers: { authorization: 'Bearer ' + token(), 'content-type': 'application/json' }, body: opts.body ? JSON.stringify(opts.body) : undefined, cache: 'no-store', referrerPolicy: 'no-referrer' })
       .then(function (r) {
         if (r.status === 401) { lock(); throw new Error('密码不对，请重新输入。'); }
         return r.json().then(function (d) {
+          if (r.status === 503 && d.error === 'phone_inbox_not_configured') throw new Error('私人手机转发还没开通。');
           if (r.status === 503 && d.missing) throw new Error('还没设置好：' + d.missing.join(', '));
           if (!r.ok) throw new Error((why[d.code] || '出错了') + (d.code ? '（代码 ' + d.code + '）' : ''));
           return d;
         });
       });
   }
-  var current = null, timer = null;
+  var current = null, phoneMsgs = [], timer = null;
+  var phoneSeenKey = function (from) { return 'phone:' + from; };
+  function loadPhone() {
+    return api('', { base: '/v1/admin/phone' }).then(function (d) {
+      phoneMsgs = d.messages; var by = {}, order = [], s = seen();
+      d.messages.forEach(function (m) { if (!by[m.from]) { by[m.from] = m; order.push(m.from); } });
+      $('phone').innerHTML = order.length ? order.slice(0, 20).map(function (f) {
+        var m = by[f], fresh = !s[phoneSeenKey(f)] || m.at > s[phoneSeenKey(f)];
+        return '<button class="thread pthread" type="button" data-from="' + esc(f) + '"><div class="who"><div>' + (fresh ? '<i class="new"></i>' : '') + esc(fmt(f)) + '</div><span>' + esc(when(m.at)) + '</span></div><div class="last">' + esc(m.body) + '</div></button>';
+      }).join('') : '<p class="muted">还没有转发过来的短信。点「设置转发」，在 iPhone 上设一次就好。</p>';
+      Array.prototype.forEach.call(document.querySelectorAll('.pthread'), function (b) { b.onclick = function () { openPhone(b.dataset.from); }; });
+    }).catch(function (e) { $('phone').innerHTML = '<div class="banner">' + esc(e.message || e) + '</div>'; });
+  }
+  function openPhone(from) {
+    current = { phone: from }; $('listView').hidden = true; $('threadView').hidden = false; $('to').hidden = true; $('compose').hidden = true; banner('talerts');
+    var num = /^\+\d{8,15}$/.test(from);
+    $('peer').innerHTML = num ? '<a href="tel:' + esc(from) + '">' + esc(fmt(from)) + '</a>' : esc(from);
+    $('via').textContent = '发到你的私人手机';
+    $('phoneReply').hidden = false;
+    $('phoneReply').innerHTML = num ? '这里只能看。<a href="sms:' + esc(from) + '">在 iPhone 上回复 ›</a>' : '这里只能看，回复请用 iPhone 的信息 App。';
+    var rows = phoneMsgs.filter(function (m) { return m.from === from; }).reverse();
+    $('msgs').innerHTML = rows.map(function (m) { return '<div class="b in">' + esc(m.body) + '</div><div class="meta l">' + esc(when(m.at)) + '</div>'; }).join('');
+    if (rows.length) markSeen(phoneSeenKey(from), rows[rows.length - 1].at);
+    window.scrollTo(0, document.body.scrollHeight);
+  }
+  $('setupBtn').onclick = function () {
+    var box = $('setup'); if (!box.hidden) { box.hidden = true; return; }
+    box.hidden = false; box.textContent = '加载中…';
+    api('/setup', { base: '/v1/admin/phone' }).then(function (d) {
+      box.innerHTML = '在 iPhone「快捷指令」里用这两样（点一下就复制）：<br>网址<code class="copy">' + esc(d.url) + '</code>转发密码（只能写入，不能读）<code class="copy">' + esc(d.token) + '</code><span class="muted">步骤见 Claude 发给你的说明。</span>';
+      Array.prototype.forEach.call(box.querySelectorAll('.copy'), function (c) { c.onclick = function () { try { navigator.clipboard.writeText(c.textContent); c.textContent += '  ✓ 已复制'; } catch (e) {} }; });
+    }).catch(function (e) { box.innerHTML = '<span style="color:var(--bad)">' + esc(e.message || e) + '</span>'; });
+  };
   function banner(id, e) { $(id).innerHTML = e ? '<div class="banner">' + esc(e.message || e) + '</div>' : ''; }
   function loadList() {
     return api('').then(function (d) {
@@ -112,12 +152,13 @@
     window.scrollTo(0, document.body.scrollHeight);
   }
   function openThread(peer) {
+    $('compose').hidden = false; $('phoneReply').hidden = true;
     $('listView').hidden = true; $('threadView').hidden = false; $('to').hidden = true; banner('talerts');
     $('msgs').innerHTML = '<p class="muted">加载中…</p>';
     return api('?with=' + encodeURIComponent(peer)).then(renderThread).catch(function (e) { banner('talerts', e); });
   }
   function newThread() {
-    current = null; $('listView').hidden = true; $('threadView').hidden = false; banner('talerts');
+    current = null; $('compose').hidden = false; $('phoneReply').hidden = true; $('listView').hidden = true; $('threadView').hidden = false; banner('talerts');
     $('peer').textContent = '新短信'; $('via').textContent = ''; $('msgs').innerHTML = ''; $('to').hidden = false; $('to').value = ''; $('to').focus();
   }
   function e164(raw) { var d = String(raw).replace(/[^\d+]/g, ''); if (/^\d{10}$/.test(d)) return '+1' + d; if (/^1\d{10}$/.test(d)) return '+' + d; return d; }
@@ -132,10 +173,10 @@
       .then(function () { btn.disabled = false; });
   };
   $('body').oninput = function () { var n = $('body').value.length; $('count').textContent = n > 160 ? n + ' 字，会分成 ' + Math.ceil(n / 153) + ' 条' : ''; };
-  $('back').onclick = function () { current = null; $('threadView').hidden = true; $('listView').hidden = false; loadList(); };
+  $('back').onclick = function () { current = null; $('threadView').hidden = true; $('listView').hidden = false; loadList(); loadPhone(); };
   $('newBtn').onclick = newThread;
-  function tick() { if (document.hidden || !token()) return; if (current && $('body').value === '') openThread(current.with); else if (!current && !$('listView').hidden) loadList(); }
-  function start() { $('login').hidden = true; $('app').hidden = false; loadList(); clearInterval(timer); timer = setInterval(tick, POLL_MS); }
+  function tick() { if (document.hidden || !token()) return; if (current && current.phone) return; if (current && $('body').value === '') openThread(current.with); else if (!current && !$('listView').hidden) { loadList(); loadPhone(); } }
+  function start() { $('login').hidden = true; $('app').hidden = false; loadList(); loadPhone(); clearInterval(timer); timer = setInterval(tick, POLL_MS); }
   function lock() { clearInterval(timer); set('sessionStorage', KEY, null); set('localStorage', KEY, null); $('app').hidden = true; $('login').hidden = false; }
   $('lock').onclick = lock;
   document.addEventListener('visibilitychange', tick);
