@@ -55,7 +55,7 @@ const Q = {
     title: 'Request an AI Training Quote for Your Team | AI Man Jack',
     description: 'Tell us about your team, the work you want AI to help with and the format you are considering. We use it to prepare a written scope and quote for AI training.',
     crumb: 'Request a quote', eyebrow: 'Training quote', h1: 'Request a training quote',
-    sub: 'For a 90-minute team workshop, a full-day onsite day in Texas, or the four-session program. The more we know about the work, the more useful the quote. This is AI training, not a custom ERP or CRM build.',
+    sub: 'For a 90-minute team workshop, a full-day onsite day in Texas, the four-session program, or an AI workflow build. The more we know about the work, the more useful the quote. Want the workflow built for you instead? Choose “AI workflow build” as the format.',
     choose: 'Choose one', required: 'required',
     f: {
       name: 'Your name', email: 'Work email', company: 'Company', company_website: 'Company website (optional)', industry: 'Industry', headcount: 'Company size',
@@ -66,7 +66,7 @@ const Q = {
     opt: {
       industry: [['professional_services', 'Professional services'], ['manufacturing', 'Manufacturing'], ['distribution', 'Distribution and logistics'], ['construction', 'Construction and field services'], ['healthcare', 'Healthcare'], ['finance', 'Financial services and insurance'], ['real_estate', 'Real estate'], ['retail', 'Retail and e-commerce'], ['technology', 'Technology'], ['nonprofit_education', 'Nonprofit and education'], ['public_sector', 'Public sector'], ['other', 'Other']],
       headcount: [['1-19', '1–19 employees'], ['20-49', '20–49 employees'], ['50-99', '50–99 employees'], ['100-249', '100–249 employees'], ['250-999', '250–999 employees'], ['1000+', '1,000 or more employees']],
-      format: [['workshop_90', '90-minute team workshop'], ['onsite_day', 'Full-day onsite (Texas)'], ['four_session', '4 × 90-min program'], ['not_sure', 'Not sure yet']],
+      format: [['workshop_90', '90-minute team workshop'], ['onsite_day', 'Full-day onsite (Texas)'], ['four_session', '4 × 90-min program'], ['workflow_build', 'AI workflow build (done for you)'], ['not_sure', 'Not sure yet']],
       location: [['remote', 'Remote (video)'], ['dfw_onsite', 'Onsite in Dallas–Fort Worth'], ['other_texas', 'Onsite elsewhere in Texas (travel quoted separately)']],
       timing: [['within_month', 'Within a month'], ['one_to_three', 'In 1–3 months'], ['three_plus', 'In more than 3 months'], ['exploring', 'Just exploring']],
       source: [['search', 'Search engine'], ['ai_assistant', 'AI assistant (ChatGPT, Claude, Perplexity…)'], ['linkedin', 'LinkedIn'], ['referral', 'Referral'], ['event', 'Event or workshop'], ['social_other', 'Other social media'], ['other', 'Other']],
@@ -85,7 +85,7 @@ const Q = {
     title: '申请团队 AI 培训报价 | AI Man Jack',
     description: '介绍你的团队、希望 AI 帮忙的工作和考虑中的培训形式，我们据此准备书面的服务范围与报价。',
     crumb: '申请报价', eyebrow: '培训报价', h1: '申请培训报价',
-    sub: '适用于 90 分钟团队工作坊、德州全天上门培训或四次课程项目。你对工作的描述越具体，报价就越贴合。这是 AI 培训，不是 ERP 或 CRM 定制开发。',
+    sub: '适用于 90 分钟团队工作坊、德州全天上门培训、四次课程项目或 AI 工作流搭建。你对工作的描述越具体，报价就越贴合。想让我们直接把工作流搭好？形式选“AI 工作流搭建”即可。',
     choose: '请选择', required: '必填',
     f: {
       name: '姓名', email: '工作邮箱', company: '公司名称', company_website: '公司网站（选填）', industry: '所属行业', headcount: '公司规模',
@@ -96,7 +96,7 @@ const Q = {
     opt: {
       industry: [['professional_services', '专业服务'], ['manufacturing', '制造业'], ['distribution', '分销与物流'], ['construction', '建筑与现场服务'], ['healthcare', '医疗健康'], ['finance', '金融与保险'], ['real_estate', '房地产'], ['retail', '零售与电商'], ['technology', '科技'], ['nonprofit_education', '非营利与教育'], ['public_sector', '政府与公共部门'], ['other', '其他']],
       headcount: [['1-19', '1–19 人'], ['20-49', '20–49 人'], ['50-99', '50–99 人'], ['100-249', '100–249 人'], ['250-999', '250–999 人'], ['1000+', '1,000 人以上']],
-      format: [['workshop_90', '90 分钟团队工作坊'], ['onsite_day', '全天上门培训（德州）'], ['four_session', '4 × 90 分钟课程项目'], ['not_sure', '还没确定']],
+      format: [['workshop_90', '90 分钟团队工作坊'], ['onsite_day', '全天上门培训（德州）'], ['four_session', '4 × 90 分钟课程项目'], ['workflow_build', 'AI 工作流搭建（帮你搭好）'], ['not_sure', '还没确定']],
       location: [['remote', '远程（视频）'], ['dfw_onsite', '达拉斯—沃斯堡上门'], ['other_texas', '德州其他城市上门（差旅另行报价）']],
       timing: [['within_month', '一个月内'], ['one_to_three', '1–3 个月内'], ['three_plus', '3 个月以后'], ['exploring', '先了解一下']],
       source: [['search', '搜索引擎'], ['ai_assistant', 'AI 助手（ChatGPT、Claude、Perplexity 等）'], ['linkedin', 'LinkedIn'], ['referral', '朋友或同事推荐'], ['event', '活动或工作坊'], ['social_other', '其他社交媒体'], ['other', '其他']],

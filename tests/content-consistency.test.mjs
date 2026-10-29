@@ -53,7 +53,7 @@ test('program buyer answers appear in visible FAQ and matching FAQ structured da
     } else {
       assert.deepEqual(answers.map(([q]) => q), ['培训使用哪些工具？', '参与者需要准备什么？', '培训包含软件开发或系统集成吗？']);
       const implementation = answers.find(([q]) => q === '培训包含软件开发或系统集成吗？')[1];
-      assert.equal(implementation, '培训不包含软件开发，也不包含 CRM／ERP 的配置和集成。连接真实业务系统或自动写入数据，需要另行明确实施范围、权限和测试要求。');
+      assert.equal(implementation, '培训不包含软件开发，也不包含 CRM／ERP 的配置和集成。连接真实业务系统或自动写入数据，需要另行明确实施范围、权限和测试要求，我们按 <a href="/zh/ai-workflow-build/">AI 工作流搭建</a>单独报价。');
     }
     for (const [q, answer] of answers) {
       assert.ok(TRAINING_FAQ[lang].some((pair) => pair[0] === q && pair[1] === answer));

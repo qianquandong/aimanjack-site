@@ -51,6 +51,8 @@ export const OFFERS = {
   onsite: { id: 'onsite-day', path: '/ai-training/onsite-texas/', format: 'onsite_day' },
   program: { id: 'custom-four', path: '/ai-training/', format: 'four_session' },
 };
+// Done-for-you builds (Jack, 2026-10-29): one service page, quoted per project, no public price. Not in OFFERS (training formats).
+export const BUILD = { id: 'workflow-build', path: '/ai-workflow-build/', format: 'workflow_build' };
 export const QUOTE_URL = '/contact/quote/';   // quote-intake form (src/pages/contact.mjs) → POST /v1/intake
 export const INTAKE_FORM_VERSION = 'intake-2026-10-08';
 export const QUICK_FORM_VERSION = 'intake-2026-10-17';   // short "easy quote" form on the tool pages (src/quick-quote.mjs), kind=quick

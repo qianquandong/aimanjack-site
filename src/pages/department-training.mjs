@@ -60,7 +60,7 @@ const DEPTS = {
       faq: [
         ['Our reps are not technical. Will they keep up?', 'Yes. No coding is involved. Reps work in the AI tool your company already approved, on an account from their own pipeline, and the session moves at the pace of real examples, not a demo.'],
         ['Which AI tools do you train sales teams on?', `The ones your company approves: usually Microsoft Copilot, ChatGPT or Claude, sometimes Grok for live research. The workflows are the same across tools; see <a href="${toolPath('copilot')}">Copilot</a>, <a href="${toolPath('chatgpt')}">ChatGPT</a> or <a href="${toolPath('claude')}">Claude</a> training for tool-specific detail.`],
-        ['Can AI work with our CRM?', 'Usually through what reps paste or export: account history, notes and past emails. Some AI tools can connect to a CRM directly, depending on your plan and what your admin allows; we start with the smallest access that does the job. We do not build integrations.'],
+        ['Can AI work with our CRM?', 'Usually through what reps paste or export: account history, notes and past emails. Some AI tools can connect to a CRM directly, depending on your plan and what your admin allows; we start with the smallest access that does the job. Training does not build integrations; if you want one built, that is a separate <a href="/ai-workflow-build/">AI workflow build</a>.'],
         ['Will AI-written emails sound generic?', 'Not if the instructions carry your voice. Reps give the tool two or three of their own past emails that worked, the call notes, and a list of what never to say. A person reads every email before it is sent.'],
         ['Is it safe to put customer information into AI?', 'Only into tools your company has approved, on business accounts, and only what the task needs. We agree on what never goes in, such as contract terms and personal data, what needs a check first, and what is fine.'],
         ['Can sales managers join, or get their own session?', `Either. Managers often join the rep session and stay for a short block on pipeline notes and coaching, or they take the <a href="${deptPath('leadership')}">leadership team training</a>.`],
@@ -83,7 +83,7 @@ const DEPTS = {
       faq: [
         ['销售都不懂技术，跟得上吗？', '跟得上。不涉及写代码。销售在公司已批准的 AI 工具里，用自己管线里的客户来练，节奏跟着真实案例走，而不是看演示。'],
         ['销售培训用哪些 AI 工具？', `用公司批准的工具：通常是 Microsoft Copilot、ChatGPT 或 Claude，有时用 Grok 做实时调研。工作流在各工具上通用；各工具的细节见 <a href="/zh${toolPath('copilot')}">Copilot</a>、<a href="/zh${toolPath('chatgpt')}">ChatGPT</a> 或 <a href="/zh${toolPath('claude')}">Claude</a> 培训。`],
-        ['AI 能配合我们的 CRM 吗？', '通常通过销售粘贴或导出的内容：客户历史、备注和往来邮件。部分 AI 工具可以直接连接 CRM，取决于你们的方案和管理员设置；我们从能完成任务的最小权限开始。我们不做系统对接开发。'],
+        ['AI 能配合我们的 CRM 吗？', '通常通过销售粘贴或导出的内容：客户历史、备注和往来邮件。部分 AI 工具可以直接连接 CRM，取决于你们的方案和管理员设置；我们从能完成任务的最小权限开始。培训不做系统对接开发；需要搭好的话，属于单独的<a href="/zh/ai-workflow-build/">AI 工作流搭建</a>。'],
         ['AI 写的邮件会不会千篇一律？', '只要指令里带着你们的口吻就不会。销售给工具两三封自己写过、效果好的邮件、通话笔记和一份绝不能说的话的清单。每封邮件发送前都由人读过。'],
         ['把客户信息放进 AI 安全吗？', '只能放进公司已批准、企业账号下的工具，而且只放任务需要的内容。我们会约定哪些绝不输入（例如合同条款和个人信息）、哪些先确认、哪些可以用。'],
         ['销售经理可以一起上，或者单独上吗？', `都可以。经理常常和销售一起上课，再留下来加一小段管线复盘和辅导的内容；也可以参加<a href="/zh${deptPath('leadership')}">管理层 AI 培训</a>。`],
