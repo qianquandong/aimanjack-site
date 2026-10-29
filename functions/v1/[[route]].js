@@ -312,7 +312,7 @@ async function redeemCoupon(env, req, code) {
 const INTAKE_ENUMS = {
   industry: ['professional_services', 'manufacturing', 'distribution', 'construction', 'healthcare', 'finance', 'real_estate', 'retail', 'technology', 'nonprofit_education', 'public_sector', 'other'],
   headcount: ['1-19', '20-49', '50-99', '100-249', '250-999', '1000+'],
-  format: ['workshop_90', 'onsite_day', 'four_session', 'not_sure'],
+  format: ['workshop_90', 'onsite_day', 'four_session', 'workflow_build', 'not_sure'],
   location: ['remote', 'dfw_onsite', 'other_texas'],
   timing: ['within_month', 'one_to_three', 'three_plus', 'exploring'],
   source: ['search', 'ai_assistant', 'linkedin', 'referral', 'event', 'social_other', 'other'],

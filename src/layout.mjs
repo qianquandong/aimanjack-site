@@ -1,4 +1,4 @@
-import { SITE, BRAND, EMAIL, SMS_TEL, SMS_DISPLAY, GA4_ID, BOOK_URL, OG_CARD, OFFERS, langPath, zhPath } from './config.mjs';
+import { SITE, BRAND, EMAIL, SMS_TEL, SMS_DISPLAY, GA4_ID, BOOK_URL, OG_CARD, OFFERS, BUILD, langPath, zhPath } from './config.mjs';
 import { T } from './i18n.mjs';
 
 export const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
@@ -51,7 +51,7 @@ function footer(lang) {
 ${col(f.training, [[L(lang, '/ai-training/'), f.corporate], [L(lang, '/ai-training/dallas/'), f.dallas], [L(lang, '/events/'), f.events], [L(lang, OFFERS.workshop.path), f.workshops], [L(lang, OFFERS.onsite.path), f.onsite], [href(lang, '/tools/'), f.tools], [href(lang, '/templates/'), f.templates], [href(lang, '/workflows/'), f.workflows]])}
 ${col(f.teams, [[href(lang, '/use-cases/sales/'), f.sales], [href(lang, '/use-cases/marketing/'), f.marketing], [href(lang, '/use-cases/operations/'), f.operations], [href(lang, '/use-cases/leadership/'), f.leadership]])}
 ${col(f.resources, [[L(lang, '/blog/'), f.guides], [L(lang, '/case-studies/'), f.cases], ['https://realagentusecases.com/', f.newsletter]])}
-${col(f.company, [[L(lang, '/about/'), f.about], [L(lang, '/contact/'), f.contact], [L(lang, BOOK_URL), f.book]])}
+${col(f.company, [[L(lang, BUILD.path), f.build], [L(lang, '/about/'), f.about], [L(lang, '/contact/'), f.contact], [L(lang, BOOK_URL), f.book]])}
 </div></div>
 <p class="ftr-legal">${f.legal}</p>
 <div class="ftr-bottom"><span>© 2026 AI Man Jack LLC · ${f.where}</span><div><a href="${L(lang, '/privacy')}">${f.privacy}</a><a href="${L(lang, '/terms')}">${f.terms}</a><a href="${L(lang, '/sms-terms')}">${f.sms}</a><a href="mailto:${EMAIL}" data-event="email_training_click" data-pos="footer">${EMAIL}</a><a href="sms:${SMS_TEL}?body=TRAINING%20-%20" data-event="sms_training_click" data-pos="footer">${SMS_DISPLAY}</a></div></div>

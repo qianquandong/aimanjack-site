@@ -1,6 +1,6 @@
 // Case studies. CURRENT cases (src/content/cases.mjs) are indexable proof pages for the training positioning.
 // LEGACY receptionist-era cases below stay HTTP 200 + noindex, out of the sitemap, and are never linked from an indexable page.
-import { SITE, DEMO_DISPLAY } from '../config.mjs';
+import { SITE, DEMO_DISPLAY, BUILD } from '../config.mjs';
 import { L, planBtn, ctaBand, href } from '../layout.mjs';
 import { pageHero, breadcrumb, finalCta, CASES, BUSINESS_REF, T } from '../components.mjs';
 import { card } from '../resources.mjs';
@@ -39,9 +39,9 @@ export const clientProof = (lang, where) => { const c = CLIENT_PROGRAM[lang], x 
 
 // ── Current case page: a proof page in the article layout (auto "on this page" list from the <h2>s) ──
 const STR = { en: { toc: 'On this page', ctaH: 'Have a process like this on your team?', ctaSub: 'Book a 20-minute call. Bring the task; we will work out what should be a rule, what AI can draft, and what a person must check.', moreK: 'Keep going', moreH: 'From this case to your team',
-    ops: ['Use case', 'AI for Operations', 'Where AI saves time in operations work, and which steps stay with a person.', 'Open use case'], wf: ['Workflows', 'Step-by-step AI workflows', 'Each with the prompt, an example, a human review checklist and when not to use it.', 'Browse workflows'], tr: ['Training', 'Corporate AI training', 'Each person brings a task they already do and leaves with a workflow and a way to verify it.', 'See how training works'] },
+    ops: ['Use case', 'AI for Operations', 'Where AI saves time in operations work, and which steps stay with a person.', 'Open use case'], wf: ['Workflows', 'Step-by-step AI workflows', 'Each with the prompt, an example, a human review checklist and when not to use it.', 'Browse workflows'], bd: ['Build', 'AI workflow builds', 'Want a workflow like this built for your team? Scoped first, tested on your real cases, handed over with training.', 'See workflow builds'], tr: ['Training', 'Corporate AI training', 'Each person brings a task they already do and leaves with a workflow and a way to verify it.', 'See how training works'] },
   zh: { toc: '本页目录', ctaH: '你的团队里也有这样的流程？', ctaSub: '预约 20 分钟通话。带上那项任务，我们一起分清哪些该写成规则、哪些可以让 AI 起草、哪些必须由人核验。', moreK: '接下来', moreH: '从这个案例到你的团队',
-    ops: ['应用场景', '运营团队的 AI 应用', 'AI 在运营工作里能省时间的环节，以及哪些步骤要留给人。', '查看应用场景'], wf: ['工作流', '分步骤的 AI 工作流', '每条都有提示词、示例、人工核验清单，以及不适用的情况。', '浏览工作流'], tr: ['培训', '企业 AI 培训', '每位学员带一项真实任务来，带一条工作流和一套核验方法走。', '了解培训方式'] } };
+    ops: ['应用场景', '运营团队的 AI 应用', 'AI 在运营工作里能省时间的环节，以及哪些步骤要留给人。', '查看应用场景'], wf: ['工作流', '分步骤的 AI 工作流', '每条都有提示词、示例、人工核验清单，以及不适用的情况。', '浏览工作流'], bd: ['搭建', 'AI 工作流搭建', '想让我们为你的团队搭一条这样的工作流？先定范围，用你们的真实案例测试，交接时附培训。', '了解工作流搭建'], tr: ['培训', '企业 AI 培训', '每位学员带一项真实任务来，带一条工作流和一套核验方法走。', '了解培训方式'] } };
 const table = (t) => `<div class="table-wrap"><table class="nums-t"><thead><tr>${t.head.map((h) => `<th scope="col">${h}</th>`).join('')}</tr></thead><tbody>${t.rows.map(([h, ...v]) => `<tr><th scope="row">${h}</th>${v.map((x) => `<td>${x}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
 const ul = (items) => `<ul>${items.map((i) => `<li>${i}</li>`).join('')}</ul>`;
 const ol = (items) => `<ol>${items.map(([b, t]) => `<li><strong>${b}</strong> ${t}</li>`).join('')}</ol>`;
@@ -62,7 +62,7 @@ const currentPage = (c0, lang) => {
     [c.teachH, `${ol(c.teach)}<p>${c.outro(ops, wf, tr)}</p>`],
   ];
   const toc = `<aside class="toc" aria-label="${s.toc}"><div class="eyebrow">${s.toc}</div><a href="#summary">${c.summaryH}</a>${secs.map(([h], i) => `<a href="#s${i + 1}">${h}</a>`).join('')}</aside>`;
-  const onward = [[s.ops, ops, 'use_case_click'], [s.wf, wf, 'resource_click'], [s.tr, tr, 'resource_to_training_click']].map(([[k, t, p, cta], h, ev]) => card({ href: h, kicker: k, title: t, text: p, cta, event: ev }));
+  const onward = [[s.ops, ops, 'use_case_click'], [s.bd, L(lang, BUILD.path), 'build_click'], [s.tr, tr, 'resource_to_training_click']].map(([[k, t, p, cta], h, ev]) => card({ href: h, kicker: k, title: t, text: p, cta, event: ev }));
   return {
     title: c.title, description: c.description, view: 'case_study_view', ogType: 'article', bodyClass: 'post',
     body: `<div class="wrap"><header class="art-head" style="background:none;border:0">${bc.html}<div class="eyebrow">${c.eyebrow}</div><h1 class="sm">${c.h1}</h1><p class="lead">${c.sub}</p><p class="art-by">${c.trust}</p></header>

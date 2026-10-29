@@ -694,3 +694,26 @@ test('every community session has an event page with Event markup, real photos o
   }
   for (const lang of ['en', 'zh']) { const hub = body(find(pages, '/events/', lang).html); for (const ev of EVENTS) assert.ok(hub.includes(`/events/${EVENT_PAGES[ev.date].slug}/`), `hub lists ${ev.date}`); }
 });
+
+test('workflow build page (Jack, 2026-10-29): indexable, in the sitemap, no price, quote preselects the build, linked from footer and training', async () => {
+  const pages = await allPages();
+  const { BUILD } = await import('../src/config.mjs');
+  const { readFileSync } = await import('node:fs');
+  const sm = readFileSync(new URL('../sitemap.xml', import.meta.url), 'utf8');
+  for (const lang of ['en', 'zh']) {
+    const x = find(pages, BUILD.path, lang), route = `${lang}:${BUILD.path}`;
+    assert.ok(x && !x.page.noindex, `${route} indexable`);
+    const b = body(x.html), j = ld(x.html);
+    assert.equal((b.match(/<h1[\s>]/g) || []).length, 1, `${route} one H1`);
+    assert.ok(sm.includes(`/${lang === 'zh' ? 'zh/' : ''}ai-workflow-build/</loc>`), `${route} in sitemap`);
+    assert.doesNotMatch(b + j, /\$\s?\d/, `${route} prints no price`);
+    assert.doesNotMatch(j, /"@type":"Offer"|"price"|"(?:Review|AggregateRating)"/, `${route} no Offer/price or review markup`);
+    assert.ok(b.includes(`href="${urlOf('/contact/quote/', lang)}?format=workflow_build"`), `${route} quote CTA preselects the build`);
+    assert.ok(b.includes(`href="${urlOf('/case-studies/livestream-agency-scheduling/', lang)}"`), `${route} links the case study`);
+    assert.ok(find(pages, '/', lang).html.includes(`href="${urlOf(BUILD.path, lang)}"`), `${lang}:/ footer links the build page`);
+    for (const p of ['/ai-training/team-workshop/', '/ai-training/onsite-texas/', '/contact/quote/']) {
+      const t = find(pages, p, lang).html;
+      assert.ok(t.includes(urlOf(BUILD.path, lang)) || t.includes('workflow_build'), `${lang}:${p} points to the build`);
+    }
+  }
+});

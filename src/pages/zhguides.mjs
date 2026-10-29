@@ -34,7 +34,7 @@ const priceGuide = () => {
 <dt>${a('/ai-training/', '四次课程项目', 'fee-prices')}</dt><dd>按团队报价，${TRAINING.sessions} 节 × ${TRAINING.sessionMin} 分钟实时课程，围绕学员手头的工作定制；团队可定制报价。</dd>
 <dt>${a(OFFERS.workshop.path, '90 分钟团队工作坊', 'fee-prices')}</dt><dd>按需报价：价格取决于人数、授课地点和准备工作量。</dd>
 <dt>${a(OFFERS.onsite.path, '全天上门培训（德州）', 'fee-prices')}</dt><dd>按需报价；达拉斯—沃斯堡以外的差旅和住宿另行报价，没有固定价格。</dd></dl></div>
-<div class="big-card oakc"><h2>为什么只有一种形式标了价</h2><p>本站唯一公开标价的是四次课程项目。另外两种形式在确定人数、地点和任务之前，我们不给一个笼统的数字，而是提交申请后出一份书面的服务范围和报价。</p><p>无论哪种形式，都是 AI 培训，不是 ERP 或 CRM 定制开发。</p>${ctas('fee-prices')}</div></div></section>
+<div class="big-card oakc"><h2>为什么只有一种形式标了价</h2><p>本站唯一公开标价的是四次课程项目。另外两种形式在确定人数、地点和任务之前，我们不给一个笼统的数字，而是提交申请后出一份书面的服务范围和报价。</p><p>无论哪种形式，都是 AI 培训，不是 ERP 或 CRM 定制开发。需要我们直接把工作流搭好，请看 <a href="/zh/ai-workflow-build/">AI 工作流搭建</a>，单独报价。</p>${ctas('fee-prices')}</div></div></section>
 
 <section class="sec tight" id="five-factors"><div class="wrap">${head('5 个因素', '影响 AI 培训价格的 5 个因素', '比较报价时，先确认人数、准备工作、数据要求、地点和跟进范围是否相同。')}
 ${nums([
@@ -45,7 +45,7 @@ ${nums([
   ['课后跟进', '四次课程项目会在后续课程中检查课间使用情况：哪条工作流用上了、结果是否准确、哪里需要调整。单次工作坊的课后支持不默认包含，需要另行确定范围。', '确认跟进次数、方式、时间范围和是否另收费，不只比较授课时长。'],
 ])}</div></section>
 
-<section class="sec tight" id="dont-pay"><div class="wrap g2" style="gap:24px"><div class="oak"><h2 class="h3">这些费用先问清楚</h2>${ticks(['证书或认证费。先确认团队是否有认证要求，不把一张证书当作工作流已经验证的证据。', '软件账号。培训费不包含工具许可证或订阅；先检查公司已批准的账号能否完成练习，是否需要其他费用在课前单独确认。', '系统开发。我们做的是 AI 培训，不是 ERP 或 CRM 定制开发；需要系统实施的话，应该找实施服务商。', '录像与资料。先核对报价包含哪些资料、是否有录像，以及可使用多久，不预设所有形式都包含同样的资源。'], ' x')}</div>
+<section class="sec tight" id="dont-pay"><div class="wrap g2" style="gap:24px"><div class="oak"><h2 class="h3">这些费用先问清楚</h2>${ticks(['证书或认证费。先确认团队是否有认证要求，不把一张证书当作工作流已经验证的证据。', '软件账号。培训费不包含工具许可证或订阅；先检查公司已批准的账号能否完成练习，是否需要其他费用在课前单独确认。', '系统开发。培训报价不含 ERP 或 CRM 定制开发；需要把工作流直接搭好，可以单独申请 <a href="/zh/ai-workflow-build/">AI 工作流搭建</a>报价。', '录像与资料。先核对报价包含哪些资料、是否有录像，以及可使用多久，不预设所有形式都包含同样的资源。'], ' x')}</div>
 <div class="oak"><h2 class="h3">先定边界，再谈价格</h2><p>无论找哪一家，开课前有三个问题比价格更重要：哪些工具已获批准、哪些信息不能输入、哪些输出必须由人签字确认。这些问题没有答案时，应先确定工具和数据边界，再安排练习。</p><p>制定团队规则时，也可以参考美国国家标准与技术研究院的 <a href="${NIST}" target="_blank" rel="noopener">NIST AI 风险管理框架</a>；该框架不是对本课程的认证或效果背书。怎么挑选培训机构，可以参考${a(CHOOSE_GUIDE, '《AI 培训机构哪家最好》', 'fee-body')}。</p></div></div></section>
 
 <section class="sec tight" id="faq"><div class="wrap">${head('常见问题', '关于价格，直接回答')}
@@ -91,7 +91,7 @@ ${nums([
 <dt>数据规则</dt><dd>课程一开始就讲：已批准的工具、禁止输入的信息、由谁签字确认。</dd>
 <dt>价格</dt><dd>四次课程项目、90 分钟工作坊和全天上门培训均按需报价，达拉斯—沃斯堡以外的差旅另计。详见${a(PRICE_GUIDE, '《AI 培训学费一般是多少》', 'choose-answers')}。</dd>
 <dt>语言</dt><dd>中文或英文，同一位讲师。</dd>
-<dt>不做的事</dt><dd>我们做 AI 培训，不做 ERP 或 CRM 定制开发。</dd></dl>${ctas('choose-answers')}</div></div></section>`,
+<dt>不做的事</dt><dd>培训不含 ERP 或 CRM 定制开发；需要直接搭好工作流，另做 <a href="/zh/ai-workflow-build/">AI 工作流搭建</a>，单独报价。</dd></dl>${ctas('choose-answers')}</div></div></section>`,
     jsonld: [webPage(CHOOSE_GUIDE, title, description), BUSINESS_REF, bc.ld],
   };
 };
