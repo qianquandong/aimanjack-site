@@ -1,0 +1,8 @@
+{
+  "reason": "The directory wording was already applied by the verified 2026-10-14 release. This topic now reviews the exact current renderer, including the separately shipped quote-only CTA and existing AI Rollout Kit form. No renderer edit is proposed. This new per-topic plan changes the bilingual approval bundle and requires an explicit owner approval; it does not change any existing approval record.",
+  "reviewedFromCommit": "d999e81169550c8bcfe52bcebbf5d5502f4818f7",
+  "originalDirectoryPlan": "index-copy.json",
+  "rendererBeforeSha256": "c650b6a5b71524505e4b3a5df5937a779113ef0c4170907e4889c8ae82edfb5b",
+  "rendererAfterSha256": "c650b6a5b71524505e4b3a5df5937a779113ef0c4170907e4889c8ae82edfb5b",
+  "replacements": []
+}

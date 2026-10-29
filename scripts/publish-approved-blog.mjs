@@ -4,7 +4,7 @@ import { existsSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { execFileSync } from 'node:child_process';
-import { ROOT, PACK, sha256, json, loadQueue, draftFor, draftForRelease, inspect, chooseRelease, routeOf, textOnly, dateInChicago, weekInChicago, isDallasPublicationWindow, applyDirectoryCopy } from './editorial-queue.mjs';
+import { ROOT, PACK, sha256, json, loadQueue, draftFor, draftForRelease, inspect, chooseRelease, routeOf, textOnly, dateInChicago, weekInChicago, isDallasPublicationWindow, applyDirectoryCopy, reviewedDirectoryCopy } from './editorial-queue.mjs';
 import { render } from '../src/layout.mjs';
 
 const REPO = 'qianquandong/aimanjack-site';
@@ -36,6 +36,8 @@ async function ownerAction(mode) {
   const date = process.env.BLOG_NOT_BEFORE || '';
   if (!/^\d{4}-\d{2}-\d{2}$/.test(date) || Number.isNaN(Date.parse(date)) || new Date(date).toISOString().slice(0, 10) !== date || date < dateInChicago()) throw new Error('Choose a valid release date today or later');
   if (await sourceHash(`src/posts/${item.slug}.mjs`) !== item.baseSourceSha256) throw new Error('The existing production article changed; reconcile it before approval');
+  // Refuse an approval that would immediately fail the exact renderer gate at publication.
+  await reviewedDirectoryCopy(ROOT, item);
   const record = { approved: true, slug: item.slug, draftSha256: draft.digest, configSha256: sha256(await readFile(join(ROOT, 'src/config.mjs'))), approvedBy: process.env.GITHUB_ACTOR, approvedAt: new Date().toISOString(), notBefore: date, approvalRun: `https://github.com/${REPO}/actions/runs/${process.env.GITHUB_RUN_ID}` };
   await remoteWrite(path, record, `Approve exact bilingual draft for scheduled release: ${item.slug}`);
   console.log(`Owner approval recorded for ${item.slug}, not before ${date}. No site deployment.`);
@@ -228,7 +230,7 @@ async function publish() {
     const date = dateInChicago();
     const released = { ...post, status: 'published', date: item.existing ? item.originalDate : date, updated: item.existing ? date : undefined };
     if (!released.date) throw new Error('Original publication date missing');
-    await applyDirectoryCopy();
+    await applyDirectoryCopy(ROOT, item);
     await writeFile(join(ROOT, source), `// Owner-approved bilingual editorial release.\nexport const post = ${JSON.stringify(released, null, 2)};\n`);
     entry = { slug: item.slug, draftSha256: digest, releaseSourceSha256: await sourceHash(source), protectedBefore: before, week: report.week, date, state: 'pending-verification', preparedAt: new Date().toISOString() };
     ledger = [...ledger, entry];

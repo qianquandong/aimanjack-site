@@ -1,6 +1,10 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { publicationSlot, selectMonitorTarget, classifyPublisher, safeMonitorUrl, readonlyGet, readPublisherRuns } from '../scripts/monitor-blog-publication.mjs';
+import { mkdtemp, mkdir, writeFile, rm } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+import { PACK, sha256, draftFor } from '../scripts/editorial-queue.mjs';
+import { publicationSlot, selectMonitorTarget, classifyPublisher, safeMonitorUrl, readonlyGet, readonlyProbe, readPublisherRuns, observeFormalPresence, monitor } from '../scripts/monitor-blog-publication.mjs';
 
 const now = new Date('2026-10-21T14:35:00Z'), slot = publicationSlot(now);
 const item = { slug: 'next-topic', draftSha256: 'exact-bilingual-version' };
@@ -78,4 +82,66 @@ test('repository run pagination filters the publisher and refuses an incomplete 
   let pages = 0;
   await assert.rejects(readPublisherRuns(slot, async () => { pages++; return JSON.stringify({ workflow_runs: Array.from({ length: 100 }, () => run()) }); }), /unknown, not missing/);
   assert.equal(pages, 5);
+});
+
+test('a diagnostic probe can observe a formal 404 without weakening successful-page or GitHub checks', async () => {
+  const fetchImpl = async url => ({ status: 404, url: String(url), text: async () => 'Not found' });
+  assert.equal((await readonlyProbe('/blog/missing/', { fetchImpl })).status, 404);
+  await assert.rejects(readonlyGet('/blog/missing/', { fetchImpl }), /404/);
+  await assert.rejects(readonlyProbe('https://api.github.com/repos/qianquandong/aimanjack-site/actions/runs', { kind: 'github', fetchImpl }), /404/);
+});
+
+test('formal presence checks cannot claim a verified publication from HTTP success or partial discovery', async () => {
+  const target = { slug: 'next-topic' }, get = async () => '', probe = async path => ({ url: 'https://aimanjack.com' + path, status: 404 });
+  const absent = await observeFormalPresence(target, { get, probe });
+  assert.equal(absent.state, 'absent');
+  assert.equal(absent.pages.length, 2);
+  const present = await observeFormalPresence(target, { get, probe: async path => ({ url: 'https://aimanjack.com' + path, status: 200 }) });
+  assert.equal(present.state, 'present_or_partial');
+  assert.equal(present.verified, false);
+  const staleDiscovery = await observeFormalPresence(target, { probe, get: async path => path === '/sitemap.xml' ? '<loc>https://aimanjack.com/blog/next-topic/</loc>' : '' });
+  assert.equal(staleDiscovery.state, 'present_or_partial');
+});
+
+test('configuration drift reports approval_blocked with live and run evidence, then needs a fresh exact approval', async t => {
+  const root = await mkdtemp(join(tmpdir(), 'aimanjack-monitor-approval-'));
+  t.after(() => rm(root, { recursive: true, force: true }));
+  for (const path of ['src', `${PACK}/posts`, `${PACK}/approvals`]) await mkdir(join(root, path), { recursive: true });
+  const target = { slug: 'next-topic', order: 1, existing: false, baseSourceSha256: null };
+  await writeFile(join(root, PACK, 'queue.json'), JSON.stringify({ version: 1, owner: 'qianquandong', timezone: 'America/Chicago', items: [target] }));
+  await writeFile(join(root, 'src/blog.mjs'), '// reviewed renderer\n');
+  const rendererSha256 = sha256('// reviewed renderer\n');
+  await writeFile(join(root, PACK, 'index-copy.json'), JSON.stringify({ rendererBeforeSha256: rendererSha256, rendererAfterSha256: rendererSha256, replacements: [] }));
+  await writeFile(join(root, PACK, 'posts/next-topic.mjs'), "export const post = {slug:'next-topic',status:'draft',en:{},zh:{}};");
+  const config = 'current quote-only business facts';
+  await writeFile(join(root, 'src/config.mjs'), config);
+  const draft = await draftFor(target, root), approvalPath = join(root, PACK, 'approvals/next-topic.json');
+  const record = { approved: true, slug: target.slug, approvedBy: 'qianquandong', approvedAt: '2026-10-14T13:31:51Z',
+    approvalRun: 'offline-test-fixture-only', notBefore: '2026-10-21', draftSha256: draft.digest, configSha256: sha256('old public price') };
+  await writeFile(approvalPath, JSON.stringify(record));
+  const calls = [], get = async (url, options) => {
+    calls.push(url);
+    if (options?.kind === 'github') return JSON.stringify({ workflow_runs: [run({ id: 123 })] });
+    return '';
+  };
+  const probe = async path => { calls.push(path); return { status: 404, url: 'https://aimanjack.com' + path }; };
+  const blocked = await monitor(now, { root, get, probe });
+  assert.equal(blocked.status, 'approval_blocked');
+  assert.equal(blocked.approval.code, 'site_facts_changed');
+  assert.equal(blocked.approval.approvedConfigSha256, record.configSha256);
+  assert.equal(blocked.approval.currentConfigSha256, sha256(config));
+  assert.equal(blocked.publication.state, 'absent');
+  assert.equal(blocked.publication.verified, false);
+  assert.equal(blocked.publisherRuns[0].id, 123, 'a green no-op remains independent scheduler evidence');
+  assert.ok(calls.includes('/blog/next-topic/'));
+  assert.ok(calls.includes('/zh/blog/next-topic/'));
+  assert.ok(calls.includes('/sitemap.xml'));
+  // Offline fixture only: no real approval is recorded or inferred by the monitor.
+  await writeFile(approvalPath, JSON.stringify({ ...record, configSha256: sha256(config) }));
+  const approved = await monitor(now, { root, get, probe });
+  assert.equal(approved.status, 'schedule_missing', 'approval and a successful publisher run still do not establish publication');
+  await writeFile(join(root, 'src/blog.mjs'), '// unreviewed renderer change\n');
+  assert.equal((await monitor(now, { root, get, probe })).approval.code, 'renderer_changed');
+  await writeFile(approvalPath, JSON.stringify({ ...record, draftSha256: 'stale manuscript', configSha256: sha256(config) }));
+  assert.equal((await monitor(now, { root, get, probe })).approval.code, 'draft_changed');
 });

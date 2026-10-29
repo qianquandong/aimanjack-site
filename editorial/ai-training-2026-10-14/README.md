@@ -22,6 +22,14 @@ Order: costs and formats; choosing a trainer; evaluating results; sales practice
 
 An instruction to write a draft or configure this scheduler is not approval of the article. Do not run `approve` on behalf of the owner without an explicit decision covering that version. Do not infer approval from a preview being opened.
 
+### Reapproval after a service or renderer change
+
+The 2026-10-21 investigation and exact proposed version are documented in `docs/blog-approval-reconciliation-2026-10-21.md`. Existing approval records remain authoritative; a review file or a new hash is not approval.
+
+A queue item may name `directory-copy/<its-own-slug>.json` instead of the original shared `index-copy.json`. That entire per-topic plan and the queue-item change are included in the bilingual release-bundle digest. This permits the owner to review the exact current renderer after the original directory correction has already shipped, without changing historical plans or accepting arbitrary renderer drift. Both approval and publication still require the reviewed renderer hash. The owner approval workflow now checks that renderer before recording a decision.
+
+`approval_blocked` is a failing monitor result requiring owner review. Its GET-only page-presence evidence does not authorize release. A stale due approval also fails the publisher planning step with `run_required=false`, instead of producing a misleading green no-op. No deployment step is selected in that case. Full content, metadata, discovery and protected-page verification remain required before `verified` can be reported.
+
 ## Cloud setup and release checks
 
 The workflow runs on GitHub-hosted infrastructure; the desktop can be off. It needs `CLOUDFLARE_ACCOUNT_ID` and a dedicated token with Cloudflare Pages Edit access to Aimanjack's account in GitHub Actions secrets. The owner saved this token as `CLOUDFLARE_PAGES_EDIT`; the workflow accepts that name or `CLOUDFLARE_API_TOKEN`. Never copy a personal local OAuth session into GitHub. Set repository variable `BLOG_AUTOPUBLISH_ENABLED=true` only after the cloud dry-run and credential check. Missing credentials stop an eligible release before its source or branch is changed. The read-only credential check confirms project access, not a production write.

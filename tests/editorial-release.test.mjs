@@ -1,11 +1,11 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile, writeFile, mkdtemp, mkdir, cp, copyFile, rm } from 'node:fs/promises';
-import { execFileSync } from 'node:child_process';
+import { execFileSync, spawnSync } from 'node:child_process';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { ROOT, PACK, assertApproval, sha256, chooseRelease, weekInChicago, dateInChicago, routeOf, approvalBundle, isDallasPublicationWindow, planEditorialAction, inspect, loadQueue, draftFor, draftForRelease } from '../scripts/editorial-queue.mjs';
+import { fileURLToPath, pathToFileURL } from 'node:url';
+import { ROOT, PACK, assertApproval, sha256, chooseRelease, weekInChicago, dateInChicago, routeOf, approvalBundle, isDallasPublicationWindow, planEditorialAction, inspect, loadQueue, draftFor, draftForRelease, reviewedDirectoryCopy, applyDirectoryCopy } from '../scripts/editorial-queue.mjs';
 import { allowedReleasePath } from '../scripts/publish-approved-blog.mjs';
 
 const bytes = Buffer.from('approved bilingual manuscript'), config = Buffer.from('approved site facts');
@@ -20,6 +20,7 @@ async function editorialFixture(t) {
   await mkdir(join(root, 'src'));
   await Promise.all([
     cp(join(ROOT, PACK, 'posts'), join(root, PACK, 'posts'), { recursive: true }),
+    cp(join(ROOT, PACK, 'directory-copy'), join(root, PACK, 'directory-copy'), { recursive: true }),
     ...['queue.json', 'index-copy.json'].map(path => copyFile(join(ROOT, PACK, path), join(root, PACK, path))),
     copyFile(join(ROOT, 'src/config.mjs'), join(root, 'src/config.mjs'))
   ]);
@@ -42,6 +43,37 @@ test('a real inspection selection retains the owner-approved bilingual bundle di
   assert.equal(draft.digest, selected.draftSha256);
   await assert.rejects(draftForRelease({ ...selected, draftSha256: 'changed' }, root), /no longer matches/);
   await assert.rejects(draftForRelease({ ...selected, slug: 'unknown-topic' }, root), /canonical draft queue/);
+});
+
+test('a reconciled topic binds its new renderer plan and still refuses any unreviewed renderer change', async t => {
+  const root = await editorialFixture(t), queue = await loadQueue(root), item = queue.items[1];
+  await copyFile(join(ROOT, 'src/blog.mjs'), join(root, 'src/blog.mjs'));
+  const current = await readFile(join(root, 'src/blog.mjs'), 'utf8'), draft = await draftFor(item, root);
+  assert.equal(await reviewedDirectoryCopy(root, item), current);
+  await applyDirectoryCopy(root, item);
+  assert.equal(await readFile(join(root, 'src/blog.mjs'), 'utf8'), current);
+  await assert.rejects(reviewedDirectoryCopy(root, queue.items[0]), /renderer changed/, 'the original renderer gate is preserved');
+  const path = join(root, PACK, item.directoryCopy), policy = JSON.parse(await readFile(path, 'utf8'));
+  await writeFile(path, JSON.stringify({ ...policy, reason: 'Different review scope' }));
+  assert.notEqual((await draftFor(item, root)).digest, draft.digest, 'the plan itself is included in the reviewed bundle');
+  await writeFile(join(root, 'src/blog.mjs'), current + '\n// unreviewed edit\n');
+  await assert.rejects(reviewedDirectoryCopy(root, item), /renderer changed/);
+  await assert.rejects(applyDirectoryCopy(root, item), /renderer changed/);
+  queue.items[1].directoryCopy = '../config.mjs';
+  await writeFile(join(root, PACK, 'queue.json'), JSON.stringify(queue));
+  await assert.rejects(loadQueue(root), /Unexpected per-article/);
+});
+
+test('a stale due approval is a visible plan blocker, with no release work selected', () => {
+  const item = { slug: 'stale', draftSha256: 'version', eligible: false, approvalDue: true, approvalIssue: { code: 'site_facts_changed', message: 'Site facts changed after approval; review again' } };
+  const report = { week: '2026-10-19', releaseWindowOpen: true, items: [item], ledger: [] };
+  const plan = planEditorialAction('publish', report);
+  assert.equal(plan.status, 'approval_blocked');
+  assert.equal(plan.runRequired, false);
+  assert.equal(plan.selected, null);
+  assert.equal(plan.blockers[0].code, 'site_facts_changed');
+  assert.equal(planEditorialAction('publish', { ...report, releaseWindowOpen: false }).status, undefined);
+  assert.equal(planEditorialAction('publish', { ...report, ledger: [{ state: 'verified', week: report.week }] }).status, undefined);
 });
 
 test('the real next-Wednesday queue skips the verified first version and selects the next approved topic', async t => {
@@ -140,6 +172,25 @@ test('the plan CLI reports a Thursday no-op to Actions without production creden
   `], { encoding: 'utf8', env: { ...process.env, BLOG_MODE: 'publish', GITHUB_OUTPUT: output, CLOUDFLARE_API_TOKEN: '', CLOUDFLARE_ACCOUNT_ID: '', GH_TOKEN: '' } });
   assert.deepEqual(JSON.parse(stdout), { runRequired: false, selected: null, reason: 'Outside Wednesday 09:00–23:59 America/Chicago' });
   assert.equal(await readFile(output, 'utf8'), 'run_required=false\n');
+});
+test('the plan CLI exits unsuccessfully for stale due approvals without requesting release work', async t => {
+  const directory = await editorialFixture(t);
+  await writeFile(join(directory, 'src/config.mjs'), '// changed after fixture approval\n');
+  await mkdir(join(directory, 'scripts'));
+  await copyFile(new URL('../scripts/editorial-queue.mjs', import.meta.url), join(directory, 'scripts/editorial-queue.mjs'));
+  const output = join(directory, 'github-output'), summary = join(directory, 'github-summary');
+  const script = pathToFileURL(join(directory, 'scripts/editorial-queue.mjs'));
+  const result = spawnSync(process.execPath, ['--input-type=module', '-e', `
+    const RealDate = Date;
+    globalThis.Date = class extends RealDate { constructor(...args) { super(...(args.length ? args : ['2026-10-21T15:00:00Z'])); } };
+    process.argv[1] = ${JSON.stringify(fileURLToPath(script))};
+    process.argv[2] = 'plan';
+    await import(${JSON.stringify(script.href)});
+  `], { encoding: 'utf8', env: { ...process.env, BLOG_MODE: 'publish', GITHUB_OUTPUT: output, GITHUB_STEP_SUMMARY: summary, CLOUDFLARE_API_TOKEN: '', CLOUDFLARE_ACCOUNT_ID: '', GH_TOKEN: '' } });
+  assert.equal(result.status, 1);
+  assert.equal(JSON.parse(result.stdout).status, 'approval_blocked');
+  assert.equal(await readFile(output, 'utf8'), 'run_required=false\n');
+  assert.match(await readFile(summary, 'utf8'), /No publication or deployment was attempted/);
 });
 test('one due bilingual topic is selected and unapproved drafts cannot be selected', () => {
   const report = { week: '2026-10-19', ledger: [], items: [{ slug: 'no', eligible: false }, { slug: 'first', eligible: true }, { slug: 'second', eligible: true }] };

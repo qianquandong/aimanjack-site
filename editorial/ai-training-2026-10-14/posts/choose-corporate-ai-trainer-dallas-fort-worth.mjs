@@ -1,5 +1,5 @@
 // Editorial draft only. Publish date must be set when an approved release is scheduled.
-// Service and identity facts: training, offers, about and Dallas event pages, checked in source on 2026-10-14.
+// Service and identity facts: training, offers, about and Dallas event pages, rechecked on 2026-10-21.
 // No provider ranking, certification claim, current Google rating or completed corporate-training result is asserted.
 export const post = {
   slug: 'choose-corporate-ai-trainer-dallas-fort-worth',
@@ -48,7 +48,7 @@ export const post = {
 <h2>How AI Man Jack answers the checklist</h2>
 <p><a href="/about/">Jack Qian</a> runs AI Man Jack LLC in Dallas and designs and teaches the sessions himself. His published background includes business planning at a Dallas semiconductor company, AI workflow building and community AI organizing. The <a href="/ai-training/dallas/">Dallas–Fort Worth event page</a> provides teaching records and venues. Those records support teaching experience, not measured corporate-training outcomes.</p>
 <p>The <a href="/ai-training/">training page</a> describes work for business owners and nontechnical teams, with sales, operations and marketing task examples. Sessions use company-approved tools, potentially including ChatGPT, Claude, Gemini or Microsoft Copilot, depending on the task and access. English or Chinese teaching, remote U.S. delivery and Dallas–Fort Worth onsite arrangements are available; elsewhere in Texas is on request.</p>
-<p>The published choices are a 90-minute workshop, full-day onsite training and four live 90-minute sessions. The four-session program starts at $499 per person; workshop and onsite fees are by scoped quote. Tool accounts are separate and travel outside DFW is quoted separately. Group size, preparation and schedule need written agreement.</p>
+<p>The published choices are a 90-minute workshop, full-day onsite training and four live 90-minute sessions. Every format is priced by a written team quote based on group size, goals and preparation. Tool accounts are separate and travel outside DFW is quoted separately. Group size, preparation and schedule need written agreement.</p>
 <p>The four-session program includes a review two weeks after the final session, considering actual use, accuracy and checking effort. Extra support after a standalone workshop or onsite day is separately scoped. Training does not include software development or CRM/ERP configuration and integration.</p>
 
 <h2>Read Aimanjack’s evidence with its limits</h2>
@@ -111,7 +111,7 @@ export const post = {
 <h2>AI Man Jack 如何回答这些问题</h2>
 <p><a href="/zh/about/">Jack Qian</a> 在达拉斯经营 AI Man Jack LLC，由他本人设计并讲授课程。公开经历包括半导体公司的业务规划、AI 工作流搭建和本地社区活动组织。<a href="/zh/ai-training/dallas/">DFW 活动页面</a>提供活动与场地记录，支持授课经历，不代表已经测得企业培训成效。</p>
 <p><a href="/zh/ai-training/">培训页面</a>面向企业老板和非技术团队，列出销售、运营和营销任务。按团队需要和权限，使用公司批准的 ChatGPT、Claude、Gemini 或 Microsoft Copilot 等工具。支持中英文、全美远程及 DFW 上门；德州其他地区按需安排。</p>
-<p>三种形式是 90 分钟工作坊、全天上门和四节各 90 分钟课程。四次项目每人 $499 起；前两种按范围报价。工具账号另计，DFW 以外差旅另行报价，人数、准备事项和课表需书面确认。</p>
+<p>三种形式是 90 分钟工作坊、全天上门和四节各 90 分钟课程。每种形式均按团队人数、目标和准备工作提供书面报价。工具账号另计，DFW 以外差旅另行报价，人数、准备事项和课表需书面确认。</p>
 <p>只有四次项目包含最后一课结束两周后的回访，查看实际使用、准确性和审核投入。单次工作坊或全天培训后的额外支持另议。培训不包括软件开发及 CRM／ERP 配置集成。</p>
 
 <h2>怎样理解 Aimanjack 当前的证据</h2>
